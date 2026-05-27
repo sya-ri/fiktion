@@ -109,6 +109,16 @@ public final class dev/s7a/fiktion/FiktionConfigureBuilder$DefaultImpls {
 	public static fun generatesValues (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 }
 
+public abstract interface class dev/s7a/fiktion/FiktionObjectArgument {
+}
+
+public final class dev/s7a/fiktion/FiktionObjectDefault : dev/s7a/fiktion/FiktionObjectArgument {
+	public static final field INSTANCE Ldev/s7a/fiktion/FiktionObjectDefault;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class dev/s7a/fiktion/FiktionObjectMetadata {
 	public fun <init> (Lkotlin/reflect/KType;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
 	public final fun construct (Ljava/util/List;)Ljava/lang/Object;
@@ -128,6 +138,17 @@ public final class dev/s7a/fiktion/FiktionObjectProperty {
 	public final fun getHasDefault ()Z
 	public final fun getName ()Ljava/lang/String;
 	public final fun getType ()Lkotlin/reflect/KType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/s7a/fiktion/FiktionObjectValue : dev/s7a/fiktion/FiktionObjectArgument {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;)Ldev/s7a/fiktion/FiktionObjectValue;
+	public static synthetic fun copy$default (Ldev/s7a/fiktion/FiktionObjectValue;Ljava/lang/Object;ILjava/lang/Object;)Ldev/s7a/fiktion/FiktionObjectValue;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/Object;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

@@ -186,6 +186,6 @@ class FiktionTest {
                     FiktionObjectProperty(name = "id", type = typeOf<String>()),
                 ),
         ) { values ->
-            User(id = values[0] as String)
+            User(id = values[0].valueOrDefault(defaultValue = null) as String)
         }
 }

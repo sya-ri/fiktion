@@ -4,6 +4,7 @@ import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalFiktionApi::class)
 class GenerateObjectTest {
@@ -117,6 +118,35 @@ class GenerateObjectTest {
         )
     }
 
+    @Test
+    fun `fake uses default values with configured probabilities`() {
+        assertDefaultProfileCount(defaultProbability = 0.0, expectedRange = 0..0)
+        assertDefaultProfileCount(defaultProbability = 0.3, expectedRange = 250..350)
+        assertDefaultProfileCount(defaultProbability = 0.5, expectedRange = 400..600)
+        assertDefaultProfileCount(defaultProbability = 1.0, expectedRange = 1_000..1_000)
+    }
+
+    @Test
+    fun `fake uses fifty percent as the default value probability`() {
+        assertDefaultProfileCount(defaultProbability = null, expectedRange = 400..600)
+    }
+
+    @Test
+    fun `fake uses nullable default values with configured probabilities`() {
+        assertOptionalDefaultProfileCount(defaultProbability = 0.0, expectedRange = 0..0)
+        assertOptionalDefaultProfileCount(defaultProbability = 0.3, expectedRange = 250..350)
+        assertOptionalDefaultProfileCount(defaultProbability = 0.5, expectedRange = 400..600)
+        assertOptionalDefaultProfileCount(defaultProbability = 1.0, expectedRange = 1_000..1_000)
+    }
+
+    @Test
+    fun `fake uses nullable null defaults with configured probabilities`() {
+        assertNullDefaultProfileCount(defaultProbability = 0.0, expectedRange = 0..0)
+        assertNullDefaultProfileCount(defaultProbability = 0.3, expectedRange = 250..350)
+        assertNullDefaultProfileCount(defaultProbability = 0.5, expectedRange = 400..600)
+        assertNullDefaultProfileCount(defaultProbability = 1.0, expectedRange = 1_000..1_000)
+    }
+
     /**
      * Returns metadata for constructing [User] from generated arguments.
      */
@@ -128,7 +158,7 @@ class GenerateObjectTest {
                     FiktionObjectProperty(name = "id", type = typeOf<String>()),
                 ),
         ) { values ->
-            User(id = values[0] as String)
+            User(id = values[0].valueOrDefault(defaultValue = null) as String)
         }
 
     /**
@@ -144,8 +174,26 @@ class GenerateObjectTest {
                 ),
         ) { values ->
             User(
-                id = values[0] as String,
-                profile = values[1] as Profile,
+                id = values[0].valueOrDefault(defaultValue = null) as String,
+                profile = values[1].valueOrDefault(defaultValue = null) as Profile,
+            )
+        }
+
+    /**
+     * Returns metadata for constructing [User] with a defaultable profile.
+     */
+    private fun userMetadataWithDefaultProfile(): FiktionObjectMetadata<User> =
+        FiktionObjectMetadata(
+            type = typeOf<User>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "profile", type = typeOf<Profile>(), hasDefault = true),
+                ),
+        ) { values ->
+            User(
+                id = values[0].valueOrDefault(defaultValue = null) as String,
+                profile = values[1].valueOrDefault(defaultValue = Profile(nickname = "default")) as Profile,
             )
         }
 
@@ -162,8 +210,26 @@ class GenerateObjectTest {
                 ),
         ) { values ->
             User(
-                id = values[0] as String,
-                optionalProfile = values[1] as Profile?,
+                id = values[0].valueOrDefault(defaultValue = null) as String,
+                optionalProfile = values[1].valueOrDefault(defaultValue = null) as Profile?,
+            )
+        }
+
+    /**
+     * Returns metadata for constructing [User] with a defaultable optional profile.
+     */
+    private fun userMetadataWithDefaultOptionalProfile(defaultValue: Profile?): FiktionObjectMetadata<User> =
+        FiktionObjectMetadata(
+            type = typeOf<User>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "optionalProfile", type = typeOf<Profile?>(), hasDefault = true),
+                ),
+        ) { values ->
+            User(
+                id = values[0].valueOrDefault(defaultValue = null) as String,
+                optionalProfile = values[1].valueOrDefault(defaultValue = defaultValue) as Profile?,
             )
         }
 
@@ -178,6 +244,78 @@ class GenerateObjectTest {
                     FiktionObjectProperty(name = "nickname", type = typeOf<String>()),
                 ),
         ) { values ->
-            Profile(nickname = values[0] as String)
+            Profile(nickname = values[0].valueOrDefault(defaultValue = null) as String)
         }
+
+    /**
+     * Asserts how often the non-null profile default is used across deterministic sample seeds.
+     */
+    private fun assertDefaultProfileCount(
+        defaultProbability: Double?,
+        expectedRange: IntRange,
+    ) {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultProfile())
+                type<String>() generates "id"
+                val spec = property<User, Profile>("profile") generates Profile(nickname = "generated")
+                if (defaultProbability != null) spec orDefaultAt defaultProbability
+            }
+
+        val defaultCount =
+            (0 until 1_000).count { seed ->
+                fiktion.fake<User>(seed = seed.toLong()).profile == Profile(nickname = "default")
+            }
+
+        assertTrue(defaultCount in expectedRange, "Expected $expectedRange defaults, but got $defaultCount.")
+    }
+
+    /**
+     * Asserts how often the nullable profile default is used across deterministic sample seeds.
+     */
+    private fun assertOptionalDefaultProfileCount(
+        defaultProbability: Double,
+        expectedRange: IntRange,
+    ) {
+        val defaultProfile = Profile(nickname = "default")
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultOptionalProfile(defaultProfile))
+                type<String>() generates "id"
+                val spec = property<User, Profile?>("optionalProfile") generates Profile(nickname = "generated")
+                spec orNullAt 0.0
+                spec orDefaultAt defaultProbability
+            }
+
+        val defaultCount =
+            (0 until 1_000).count { seed ->
+                fiktion.fake<User>(seed = seed.toLong()).optionalProfile == defaultProfile
+            }
+
+        assertTrue(defaultCount in expectedRange, "Expected $expectedRange nullable defaults, but got $defaultCount.")
+    }
+
+    /**
+     * Asserts how often the nullable null default is used across deterministic sample seeds.
+     */
+    private fun assertNullDefaultProfileCount(
+        defaultProbability: Double,
+        expectedRange: IntRange,
+    ) {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultOptionalProfile(defaultValue = null))
+                type<String>() generates "id"
+                val spec = property<User, Profile?>("optionalProfile") generates Profile(nickname = "generated")
+                spec orNullAt 0.0
+                spec orDefaultAt defaultProbability
+            }
+
+        val nullCount =
+            (0 until 1_000).count { seed ->
+                fiktion.fake<User>(seed = seed.toLong()).optionalProfile == null
+            }
+
+        assertTrue(nullCount in expectedRange, "Expected $expectedRange null defaults, but got $nullCount.")
+    }
 }

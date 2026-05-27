@@ -60,6 +60,8 @@ sealed interface dev.s7a.fiktion/Fiktion { // dev.s7a.fiktion/Fiktion|null[0]
     }
 }
 
+sealed interface dev.s7a.fiktion/FiktionObjectArgument // dev.s7a.fiktion/FiktionObjectArgument|null[0]
+
 sealed interface dev.s7a.fiktion/FiktionRuleBuilder { // dev.s7a.fiktion/FiktionRuleBuilder|null[0]
     abstract fun <#A1: kotlin/Any?, #B1: kotlin/Any?> property(dev.s7a.fiktion/PropertyPath<#A1, #B1>): dev.s7a.fiktion/RuleTarget<#B1> // dev.s7a.fiktion/FiktionRuleBuilder.property|property(dev.s7a.fiktion.PropertyPath<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
     abstract fun <#A1: kotlin/Any?, #B1: kotlin/Any?> property(kotlin.reflect/KProperty1<#A1, #B1>): dev.s7a.fiktion/RuleTarget<#B1> // dev.s7a.fiktion/FiktionRuleBuilder.property|property(kotlin.reflect.KProperty1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
@@ -126,14 +128,14 @@ final class <#A: kotlin/Any?> dev.s7a.fiktion/FakeSpec { // dev.s7a.fiktion/Fake
 }
 
 final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionObjectMetadata { // dev.s7a.fiktion/FiktionObjectMetadata|null[0]
-    constructor <init>(kotlin.reflect/KType, kotlin.collections/List<dev.s7a.fiktion/FiktionObjectProperty>, kotlin/Function1<kotlin.collections/List<kotlin/Any?>, #A>) // dev.s7a.fiktion/FiktionObjectMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.collections.List<dev.s7a.fiktion.FiktionObjectProperty>;kotlin.Function1<kotlin.collections.List<kotlin.Any?>,1:0>){}[0]
+    constructor <init>(kotlin.reflect/KType, kotlin.collections/List<dev.s7a.fiktion/FiktionObjectProperty>, kotlin/Function1<kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>, #A>) // dev.s7a.fiktion/FiktionObjectMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.collections.List<dev.s7a.fiktion.FiktionObjectProperty>;kotlin.Function1<kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>,1:0>){}[0]
 
     final val properties // dev.s7a.fiktion/FiktionObjectMetadata.properties|{}properties[0]
         final fun <get-properties>(): kotlin.collections/List<dev.s7a.fiktion/FiktionObjectProperty> // dev.s7a.fiktion/FiktionObjectMetadata.properties.<get-properties>|<get-properties>(){}[0]
     final val type // dev.s7a.fiktion/FiktionObjectMetadata.type|{}type[0]
         final fun <get-type>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionObjectMetadata.type.<get-type>|<get-type>(){}[0]
 
-    final fun construct(kotlin.collections/List<kotlin/Any?>): #A // dev.s7a.fiktion/FiktionObjectMetadata.construct|construct(kotlin.collections.List<kotlin.Any?>){}[0]
+    final fun construct(kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>): #A // dev.s7a.fiktion/FiktionObjectMetadata.construct|construct(kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>){}[0]
 }
 
 final class dev.s7a.fiktion.generators/FiktionCharset { // dev.s7a.fiktion.generators/FiktionCharset|null[0]
@@ -183,6 +185,19 @@ final class dev.s7a.fiktion/FiktionObjectProperty { // dev.s7a.fiktion/FiktionOb
     final fun toString(): kotlin/String // dev.s7a.fiktion/FiktionObjectProperty.toString|toString(){}[0]
 }
 
+final class dev.s7a.fiktion/FiktionObjectValue : dev.s7a.fiktion/FiktionObjectArgument { // dev.s7a.fiktion/FiktionObjectValue|null[0]
+    constructor <init>(kotlin/Any?) // dev.s7a.fiktion/FiktionObjectValue.<init>|<init>(kotlin.Any?){}[0]
+
+    final val value // dev.s7a.fiktion/FiktionObjectValue.value|{}value[0]
+        final fun <get-value>(): kotlin/Any? // dev.s7a.fiktion/FiktionObjectValue.value.<get-value>|<get-value>(){}[0]
+
+    final fun component1(): kotlin/Any? // dev.s7a.fiktion/FiktionObjectValue.component1|component1(){}[0]
+    final fun copy(kotlin/Any? = ...): dev.s7a.fiktion/FiktionObjectValue // dev.s7a.fiktion/FiktionObjectValue.copy|copy(kotlin.Any?){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion/FiktionObjectValue.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.s7a.fiktion/FiktionObjectValue.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.s7a.fiktion/FiktionObjectValue.toString|toString(){}[0]
+}
+
 final class dev.s7a.fiktion/PathRuleSegment { // dev.s7a.fiktion/PathRuleSegment|null[0]
     constructor <init>(kotlin/String?, kotlin/String, kotlin/String?) // dev.s7a.fiktion/PathRuleSegment.<init>|<init>(kotlin.String?;kotlin.String;kotlin.String?){}[0]
 
@@ -211,6 +226,12 @@ final value class dev.s7a.fiktion/Probability { // dev.s7a.fiktion/Probability|n
     final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion/Probability.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // dev.s7a.fiktion/Probability.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // dev.s7a.fiktion/Probability.toString|toString(){}[0]
+}
+
+final object dev.s7a.fiktion/FiktionObjectDefault : dev.s7a.fiktion/FiktionObjectArgument { // dev.s7a.fiktion/FiktionObjectDefault|null[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion/FiktionObjectDefault.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.s7a.fiktion/FiktionObjectDefault.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.s7a.fiktion/FiktionObjectDefault.toString|toString(){}[0]
 }
 
 final val dev.s7a.fiktion/percent // dev.s7a.fiktion/percent|@kotlin.Double{}percent[0]

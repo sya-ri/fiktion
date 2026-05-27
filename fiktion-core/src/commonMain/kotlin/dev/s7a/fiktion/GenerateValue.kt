@@ -18,16 +18,7 @@ internal fun generateValue(
     seed: Long,
     depth: Int,
 ): Any? {
-    val rules = config.effectiveRules()
-    val rule =
-        rules
-            .withIndex()
-            .filter { (_, rule) -> rule.matcher.matches(request) }
-            .maxWithOrNull(
-                compareBy<IndexedValue<RegisteredRule<*>>> { (_, rule) -> rule.precedence }
-                    .thenBy { (_, rule) -> rule.matcher.specificity }
-                    .thenBy { (index, _) -> index },
-            )?.value
+    val rule = config.selectRule(request)
 
     val contextSeed = rule?.seed ?: seed
     val path = request.toFakePath()

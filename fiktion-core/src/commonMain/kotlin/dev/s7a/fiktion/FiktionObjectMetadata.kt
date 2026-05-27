@@ -19,10 +19,10 @@ public class FiktionObjectMetadata<T>(
     /**
      * Creates an instance from generated constructor argument values.
      */
-    private val constructor: (List<Any?>) -> T,
+    private val constructor: (List<FiktionObjectArgument>) -> T,
 ) {
     /**
-     * Creates an instance from generated constructor argument [values].
+     * Creates an instance from generated constructor [arguments].
      */
-    public fun construct(values: List<Any?>): T = constructor(values)
+    public fun construct(arguments: List<FiktionObjectArgument>): T = constructor(arguments)
 }
