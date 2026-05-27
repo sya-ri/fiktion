@@ -3,7 +3,7 @@ package dev.s7a.fiktion
 /**
  * Configured fake data generator.
  */
-public interface Fiktion {
+public sealed interface Fiktion {
     /**
      * Entry point for creating and configuring Fiktion instances.
      */
@@ -11,13 +11,15 @@ public interface Fiktion {
         /**
          * Creates an isolated Fiktion instance.
          */
-        public operator fun invoke(configure: FiktionBuilder.() -> Unit = {}): Fiktion =
-            throw NotImplementedError("Fiktion runtime is not implemented yet.")
+        public operator fun invoke(configure: FiktionBuilder.() -> Unit = {}): Fiktion {
+            val builder = DefaultFiktionBuilder()
+            builder.configure()
+            return DefaultFiktion(builder.build())
+        }
 
         /**
          * Applies changes to the global Fiktion configuration and returns a snapshot that can restore the previous configuration.
          */
-        public fun configure(configure: FiktionBuilder.() -> Unit): FiktionSnapshot =
-            throw NotImplementedError("Global Fiktion configuration is not implemented yet.")
+        public fun configure(configure: FiktionConfigureBuilder.() -> Unit): FiktionSnapshot = GlobalFiktion.configure(configure)
     }
 }

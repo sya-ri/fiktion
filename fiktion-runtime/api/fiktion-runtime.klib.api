@@ -94,6 +94,11 @@ final class dev.s7a.fiktion.runtime/FakeType { // dev.s7a.fiktion.runtime/FakeTy
     final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion.runtime/FakeType.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // dev.s7a.fiktion.runtime/FakeType.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // dev.s7a.fiktion.runtime/FakeType.toString|toString(){}[0]
+
+    final object Companion { // dev.s7a.fiktion.runtime/FakeType.Companion|null[0]
+        final val Unknown // dev.s7a.fiktion.runtime/FakeType.Companion.Unknown|{}Unknown[0]
+            final fun <get-Unknown>(): dev.s7a.fiktion.runtime/FakeType // dev.s7a.fiktion.runtime/FakeType.Companion.Unknown.<get-Unknown>|<get-Unknown>(){}[0]
+    }
 }
 
 final class dev.s7a.fiktion.runtime/IncompatibleMetadataException : dev.s7a.fiktion.runtime/FiktionException { // dev.s7a.fiktion.runtime/IncompatibleMetadataException|null[0]

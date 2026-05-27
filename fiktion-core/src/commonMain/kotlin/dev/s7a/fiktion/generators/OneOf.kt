@@ -5,4 +5,7 @@ import dev.s7a.fiktion.runtime.FakeContext
 /**
  * Chooses one value from [values].
  */
-public fun <T> FakeContext.oneOf(values: List<T>): T = throw NotImplementedError("Choice helper generation is not implemented yet.")
+public fun <T> FakeContext.oneOf(values: List<T>): T {
+    require(values.isNotEmpty()) { "values must not be empty." }
+    return values[random.nextInt(values.size)]
+}

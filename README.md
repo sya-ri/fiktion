@@ -5,46 +5,47 @@ Fiktion is a Kotlin Multiplatform fake data library for tests.
 It is designed for the case where a test needs realistic-enough object graphs quickly, but still needs precise control when a specific property matters.
 
 ```kotlin
-val user = fake<User>()
+val id = fake<String>()
 
-val fixedUser = fake<User> {
-    User::name generates "Example User"
-    User::email generatesBy { "example-${random.nextInt()}@example.test" }
-}
+val user = Fiktion {
+    type<User>() generatesBy {
+        User(id = "user-${random.nextLong()}")
+    }
+}.fake<User>()
 ```
 
 The main code under test does not need Fiktion annotations or helper functions. Fiktion is intended to be added from tests and configured from the outside.
 
 ## Current Status
 
-This repository currently contains the project skeleton and public API shape. The generation engine, compiler plugin behavior, and Gradle plugin behavior are not implemented yet.
+This repository currently contains the project skeleton, public API shape, and the first runtime generation path. Primitive built-ins, explicit type rules, isolated `Fiktion` instances, global configuration snapshots, seeds, and generator helpers are implemented and covered by common tests.
 
-The examples below describe the intended API direction represented by the current skeleton.
+Object graph construction from Kotlin metadata, compiler plugin behavior, Gradle plugin behavior, default-value probabilities, and collection/map generation are still under development.
+
+Examples marked as planned depend on metadata/compiler work that is not implemented yet.
+
+Local `./gradlew build` skips browser test execution unless `-Pfiktion.enableBrowserTests=true` is provided. CI enables browser tests and installs Chrome before running Gradle.
 
 ## Basic Usage
 
-Generate fake data with the top-level `fake<T>()` function:
+Generate primitive fake data with the top-level `fake<T>()` function:
 
 ```kotlin
-val user = fake<User>()
-val order = fake<Order>()
+val text = fake<String>()
+val count = fake<Int>()
 ```
 
 Each call is expected to produce fresh fake data by default.
 
-Custom generators receive a runtime context with a random instance, current type, current property, path, recursion depth, and seed when one is provided:
+The current runtime path applies custom generators through explicit type rules. Custom generators receive a runtime
+context with a random instance, current type, recursion depth, and seed when one is provided. Property and path context
+are available when the generation request contains property metadata. Automatic object graph construction will provide
+that metadata once it is implemented.
 
-```kotlin
-val user = fake<User> {
-    User::id generatesBy {
-        "user-${random.nextLong()}"
-    }
-}
-```
+## Planned Per-Call Rules
 
-## Per-Call Rules
-
-Use the `fake<T> { ... }` block to override generation for one call.
+Use the `fake<T> { ... }` block to override generation for one call. Property-level examples in this section describe
+the intended object graph API and depend on metadata-based object construction.
 
 ```kotlin
 val user = fake<User> {
@@ -73,33 +74,33 @@ val user = fake<User> {
 }
 ```
 
-Property-name matching is available in the per-call scope for root-scoped dynamic rules:
+Property-name matching is available in the per-call scope for dynamic rules within the generated graph:
 
 ```kotlin
 val user = fake<User> {
-    "id" generates "user-1"
-    ".*Name".toRegex() generatesBy { "generated-name" }
+    name("id") generates "user-1"
+    name(".*Name".toRegex()) generatesBy { "generated-name" }
 }
 ```
 
 ## Global Rules
 
 Use `Fiktion.configure` to update the global configuration and receive a snapshot that can restore the previous configuration.
+The explicit type examples below work in the current runtime path. Property and name targets are part of the object graph
+rule surface and become useful when object graph construction provides property metadata.
 
 ```kotlin
 val snapshot = Fiktion.configure {
-    // User.id: String
-    rule<User, String>("id") generatesBy {
-        "user-${random.nextLong()}"
+    type<User>() generatesBy {
+        User(id = "user-${random.nextLong()}")
     }
 
-    // Order.id: String
-    rule<Order, String>("id") generatesBy {
-        "order-${random.nextLong()}"
+    type<Order>() generatesBy {
+        Order(id = "order-${random.nextLong()}")
     }
 
-    // *.email: inferred as String
-    "email" generatesBy {
+    // Planned object graph rule: *.email: String
+    name<String>("email") generatesBy {
         "test-${random.nextInt()}@example.test"
     }
 }
@@ -107,9 +108,12 @@ val snapshot = Fiktion.configure {
 try {
     val user = fake<User>()
 } finally {
-    snapshot.restore()
+    check(snapshot.restore())
 }
 ```
+
+Use `snapshot.restore(force = true)` only when the previous configuration must be restored even if another configuration
+was installed after this snapshot.
 
 Unrestricted owner-qualified rule APIs are available from Fiktion configuration, not from `fake<T> { ... }`.
 
@@ -119,26 +123,33 @@ Create an isolated Fiktion instance when a test suite needs a named rule set ins
 
 ```kotlin
 val fiktion = Fiktion {
-    rule<User, String>("id") generatesBy {
-        "api-user-${random.nextLong()}"
+    type<User>() generatesBy {
+        User(id = "api-user-${random.nextLong()}")
     }
 }
 
 val user = fiktion.fake<User>()
 ```
 
-## Rule Targets
+## Targets
 
-The global rule scope supports type, owner, property, path, and property-name targets:
+The global configuration scope supports type targets now and exposes planned property and name targets for generated
+object graphs:
 
 ```kotlin
-rule<User>() generatesBy { /* any User */ }
-rule<User, String>() generatesBy { /* any String property owned by User */ }
-rule<User, String>("id") generates "user-1"
-"id" generates "shared-id"
-rule(User::id) generates "user-1"
-rule(User::profile / Profile::nickname) generates "example"
+type<User>() generatesBy { /* any User */ }
+property<User, String>() generatesBy { /* any String property owned by User */ }
+property<User, String>("id") generates "user-1"
+name<String>("id") generates "shared-id"
+name("email") generatesBy { "test-${random.nextInt()}@example.test" }
+property<User, String>("id") generates "user-1"
+property(User::profile / Profile::nickname) generates "example"
 ```
+
+Bare property-reference rules such as `User::id generates "user-1"` are intentionally unavailable in global and
+isolated configuration scopes because Kotlin common code cannot recover the owner and value type from the reference
+alone. Use `property<User, String>("id")` there. The API dump tracks those low-level entry points as
+`DeprecationLevel.ERROR`.
 
 Rule precedence is intended to be:
 
@@ -148,16 +159,13 @@ Rule precedence is intended to be:
 4. Add-on rules
 5. Built-in primitive rules
 
-When multiple rules match at the same level, rule priority will be used to decide the winner:
+Within the same precedence level, more specific targets win before registration order. When two matching rules have the
+same specificity, the later registration wins.
 
-```kotlin
-"id" generates "fallback-id" withPriority 10
-rule<User, String>("id") generates "user-id" withPriority 20
-```
+## Planned Defaults And Nulls
 
-## Optional Defaults And Nulls
-
-Rules can opt into null or default-value generation with probabilities:
+Rules can opt into null generation with probabilities when the requested value type is nullable. Default-value
+probabilities are recorded for the object construction path and are not applied by the current primitive runtime path.
 
 ```kotlin
 val user = fake<User> {
@@ -167,8 +175,9 @@ val user = fake<User> {
 ```
 
 `Double` probabilities use `0.0..1.0`. Percentage helpers are available with `percent`.
+When a name rule intentionally generates `null`, declare the value type explicitly, for example `name<String?>("nickname") generates null` or `name<String?>("nickname") generatesBy { null }`.
 
-## Collections And Maps
+## Planned Collections And Maps
 
 Collection and map sizes are configured separately from element generation:
 
@@ -178,7 +187,9 @@ val catalog = fake<Catalog> {
         fake<Item>()
     } withSize 3
 
-    Catalog::tags.autoGenerates() withSize (1..5)
+    Catalog::tags generatesEach {
+        string(8)
+    } withSize (1..5)
 }
 ```
 
@@ -217,9 +228,9 @@ Add-ons contribute reusable rules for external libraries or project-specific typ
 public object KotlinxDatetimeFiktion : FiktionAddon {
     override val id: String = "dev.s7a.fiktion.kotlinx-datetime"
 
-    override fun install(builder: FiktionBuilder) {
+    override fun install(builder: FiktionAddonBuilder) {
         with(builder) {
-            rule<Instant>() generatesBy {
+            type<Instant>() generatesBy {
                 // Add-on-provided generation rule.
                 TODO()
             }

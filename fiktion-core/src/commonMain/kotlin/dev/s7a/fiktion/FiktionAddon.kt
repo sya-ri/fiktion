@@ -12,5 +12,5 @@ public interface FiktionAddon {
     /**
      * Installs this add-on into [builder].
      */
-    public fun install(builder: FiktionBuilder)
+    public fun install(builder: FiktionAddonBuilder)
 }

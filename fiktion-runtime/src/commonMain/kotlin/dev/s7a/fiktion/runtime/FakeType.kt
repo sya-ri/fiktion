@@ -12,4 +12,11 @@ public data class FakeType(
      * Human-readable type name used in diagnostics.
      */
     public val displayName: String,
-)
+) {
+    public companion object {
+        /**
+         * Type metadata was not available on the current generation path.
+         */
+        public val Unknown: FakeType = FakeType(id = "unknown", displayName = "unknown")
+    }
+}

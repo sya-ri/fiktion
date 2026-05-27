@@ -58,6 +58,7 @@ public final class dev/s7a/fiktion/runtime/FakeProperty {
 }
 
 public final class dev/s7a/fiktion/runtime/FakeType {
+	public static final field Companion Ldev/s7a/fiktion/runtime/FakeType$Companion;
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
@@ -68,6 +69,10 @@ public final class dev/s7a/fiktion/runtime/FakeType {
 	public final fun getId ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/s7a/fiktion/runtime/FakeType$Companion {
+	public final fun getUnknown ()Ldev/s7a/fiktion/runtime/FakeType;
 }
 
 public abstract class dev/s7a/fiktion/runtime/FiktionException : java/lang/RuntimeException {

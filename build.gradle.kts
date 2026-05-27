@@ -18,6 +18,12 @@ subprojects {
         apply(plugin = "org.jmailen.kotlinter")
         apply(plugin = "dev.detekt")
 
+        tasks.matching { it.name.endsWith("BrowserTest") }.configureEach {
+            onlyIf {
+                providers.gradleProperty("fiktion.enableBrowserTests").getOrElse("false").toBoolean()
+            }
+        }
+
         extensions.configure<DetektExtension>("detekt") {
             config.setFrom(rootProject.files("detekt.yml"))
             source.from("src")
