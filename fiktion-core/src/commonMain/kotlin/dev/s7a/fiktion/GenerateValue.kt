@@ -1,3 +1,5 @@
+@file:OptIn(dev.s7a.fiktion.runtime.ExperimentalFiktionApi::class)
+
 package dev.s7a.fiktion
 
 import kotlin.random.Random
@@ -39,6 +41,17 @@ internal fun generateValue(
         if (request.type.isMarkedNullable && nullProbability != null && context.random.nextDouble() < nullProbability.value) return null
 
         return rule.generator(context)
+    }
+
+    val metadata = config.metadata[request.type.toString()]
+    if (metadata != null) {
+        return generateObject(
+            request = request,
+            config = config,
+            seed = seed,
+            depth = depth,
+            metadata = metadata,
+        )
     }
 
     return generateBuiltIn(request.type, context)

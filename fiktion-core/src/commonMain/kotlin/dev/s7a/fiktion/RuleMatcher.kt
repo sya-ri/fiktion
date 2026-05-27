@@ -95,7 +95,11 @@ internal sealed interface RuleMatcher {
         /**
          * Returns true when the full property path exactly matches [segments].
          */
-        override fun matches(request: GenerationRequest): Boolean = request.pathSegments == segments
+        override fun matches(request: GenerationRequest): Boolean =
+            request.pathSegments.size == segments.size &&
+                segments.zip(request.pathSegments).all { (ruleSegment, requestSegment) ->
+                    ruleSegment.matches(requestSegment)
+                }
     }
 
     /**
@@ -167,3 +171,11 @@ internal sealed interface RuleMatcher {
             request.owner == owner && request.propertyName?.let(regex::matches) == true && request.type == value
     }
 }
+
+/**
+ * Returns whether this rule segment matches [requestSegment].
+ */
+private fun PathRuleSegment.matches(requestSegment: PathRuleSegment): Boolean =
+    name == requestSegment.name &&
+        (ownerId == null || ownerId == requestSegment.ownerId) &&
+        (valueId == null || valueId == requestSegment.valueId)

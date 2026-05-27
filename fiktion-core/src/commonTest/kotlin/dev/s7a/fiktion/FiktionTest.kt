@@ -1,12 +1,15 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.runtime.CannotGenerateException
+import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
+import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalFiktionApi::class)
 class FiktionTest {
     @Test
     fun `invoke creates an isolated instance with configured rules`() {
@@ -52,6 +55,21 @@ class FiktionTest {
     }
 
     @Test
+    fun `isolated instance metadata does not leak to other isolated instances`() {
+        val registered =
+            Fiktion {
+                register(userMetadata())
+                type<String>() generates "registered-id"
+            }
+        val empty = Fiktion()
+
+        assertEquals(User(id = "registered-id"), registered.fake<User>())
+        assertFailsWith<CannotGenerateException> {
+            empty.fake<User>(seed = 1)
+        }
+    }
+
+    @Test
     fun `configure returns a snapshot that restores the previous global configuration`() {
         assertFailsWith<CannotGenerateException> {
             fake<User>(seed = 1)
@@ -66,6 +84,25 @@ class FiktionTest {
             assertEquals(User(id = "global-user"), fake<User>())
         } finally {
             assertTrue(snapshot.restore())
+        }
+
+        assertFailsWith<CannotGenerateException> {
+            fake<User>(seed = 1)
+        }
+    }
+
+    @Test
+    fun `configure registers object metadata for top-level fake calls`() {
+        val snapshot =
+            Fiktion.configure {
+                register(userMetadata())
+                type<String>() generates "global-id"
+            }
+
+        try {
+            assertEquals(User(id = "global-id"), fake<User>())
+        } finally {
+            assertTrue(snapshot.restore(force = true))
         }
 
         assertFailsWith<CannotGenerateException> {
@@ -137,4 +174,18 @@ class FiktionTest {
             first.restore(force = true)
         }
     }
+
+    /**
+     * Returns metadata for constructing [User] from generated arguments.
+     */
+    private fun userMetadata(): FiktionObjectMetadata<User> =
+        FiktionObjectMetadata(
+            type = typeOf<User>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>()),
+                ),
+        ) { values ->
+            User(id = values[0] as String)
+        }
 }
