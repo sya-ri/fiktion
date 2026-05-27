@@ -1,0 +1,73 @@
+// Klib ABI Dump
+// Targets: [iosSimulatorArm64, js, linuxX64, macosArm64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <dev.s7a:fiktion-metadata>
+final enum class dev.s7a.fiktion.metadata/FiktionNullability : kotlin/Enum<dev.s7a.fiktion.metadata/FiktionNullability> { // dev.s7a.fiktion.metadata/FiktionNullability|null[0]
+    enum entry NON_NULL // dev.s7a.fiktion.metadata/FiktionNullability.NON_NULL|null[0]
+    enum entry NULLABLE // dev.s7a.fiktion.metadata/FiktionNullability.NULLABLE|null[0]
+    enum entry UNKNOWN // dev.s7a.fiktion.metadata/FiktionNullability.UNKNOWN|null[0]
+
+    final val entries // dev.s7a.fiktion.metadata/FiktionNullability.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<dev.s7a.fiktion.metadata/FiktionNullability> // dev.s7a.fiktion.metadata/FiktionNullability.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): dev.s7a.fiktion.metadata/FiktionNullability // dev.s7a.fiktion.metadata/FiktionNullability.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<dev.s7a.fiktion.metadata/FiktionNullability> // dev.s7a.fiktion.metadata/FiktionNullability.values|values#static(){}[0]
+}
+
+abstract interface <#A: kotlin/Any?> dev.s7a.fiktion.metadata/FiktionTypeMetadata { // dev.s7a.fiktion.metadata/FiktionTypeMetadata|null[0]
+    abstract val properties // dev.s7a.fiktion.metadata/FiktionTypeMetadata.properties|{}properties[0]
+        abstract fun <get-properties>(): kotlin.collections/List<dev.s7a.fiktion.metadata/FiktionPropertyMetadata> // dev.s7a.fiktion.metadata/FiktionTypeMetadata.properties.<get-properties>|<get-properties>(){}[0]
+    abstract val type // dev.s7a.fiktion.metadata/FiktionTypeMetadata.type|{}type[0]
+        abstract fun <get-type>(): dev.s7a.fiktion.metadata/FiktionTypeRef // dev.s7a.fiktion.metadata/FiktionTypeMetadata.type.<get-type>|<get-type>(){}[0]
+}
+
+final class dev.s7a.fiktion.metadata/FiktionPropertyMetadata { // dev.s7a.fiktion.metadata/FiktionPropertyMetadata|null[0]
+    constructor <init>(dev.s7a.fiktion.metadata/FiktionTypeRef, kotlin/String, dev.s7a.fiktion.metadata/FiktionTypeRef, dev.s7a.fiktion.metadata/FiktionNullability, kotlin/Boolean) // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.<init>|<init>(dev.s7a.fiktion.metadata.FiktionTypeRef;kotlin.String;dev.s7a.fiktion.metadata.FiktionTypeRef;dev.s7a.fiktion.metadata.FiktionNullability;kotlin.Boolean){}[0]
+
+    final val hasDefault // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.hasDefault|{}hasDefault[0]
+        final fun <get-hasDefault>(): kotlin/Boolean // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.hasDefault.<get-hasDefault>|<get-hasDefault>(){}[0]
+    final val name // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.name|{}name[0]
+        final fun <get-name>(): kotlin/String // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.name.<get-name>|<get-name>(){}[0]
+    final val nullability // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.nullability|{}nullability[0]
+        final fun <get-nullability>(): dev.s7a.fiktion.metadata/FiktionNullability // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.nullability.<get-nullability>|<get-nullability>(){}[0]
+    final val owner // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.owner|{}owner[0]
+        final fun <get-owner>(): dev.s7a.fiktion.metadata/FiktionTypeRef // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.owner.<get-owner>|<get-owner>(){}[0]
+    final val type // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.type|{}type[0]
+        final fun <get-type>(): dev.s7a.fiktion.metadata/FiktionTypeRef // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): dev.s7a.fiktion.metadata/FiktionTypeRef // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.component1|component1(){}[0]
+    final fun component2(): kotlin/String // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.component2|component2(){}[0]
+    final fun component3(): dev.s7a.fiktion.metadata/FiktionTypeRef // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.component3|component3(){}[0]
+    final fun component4(): dev.s7a.fiktion.metadata/FiktionNullability // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.component4|component4(){}[0]
+    final fun component5(): kotlin/Boolean // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.component5|component5(){}[0]
+    final fun copy(dev.s7a.fiktion.metadata/FiktionTypeRef = ..., kotlin/String = ..., dev.s7a.fiktion.metadata/FiktionTypeRef = ..., dev.s7a.fiktion.metadata/FiktionNullability = ..., kotlin/Boolean = ...): dev.s7a.fiktion.metadata/FiktionPropertyMetadata // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.copy|copy(dev.s7a.fiktion.metadata.FiktionTypeRef;kotlin.String;dev.s7a.fiktion.metadata.FiktionTypeRef;dev.s7a.fiktion.metadata.FiktionNullability;kotlin.Boolean){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.s7a.fiktion.metadata/FiktionPropertyMetadata.toString|toString(){}[0]
+}
+
+final class dev.s7a.fiktion.metadata/FiktionTypeRef { // dev.s7a.fiktion.metadata/FiktionTypeRef|null[0]
+    constructor <init>(kotlin/String, kotlin/String, kotlin.collections/List<dev.s7a.fiktion.metadata/FiktionTypeRef> = ...) // dev.s7a.fiktion.metadata/FiktionTypeRef.<init>|<init>(kotlin.String;kotlin.String;kotlin.collections.List<dev.s7a.fiktion.metadata.FiktionTypeRef>){}[0]
+
+    final val arguments // dev.s7a.fiktion.metadata/FiktionTypeRef.arguments|{}arguments[0]
+        final fun <get-arguments>(): kotlin.collections/List<dev.s7a.fiktion.metadata/FiktionTypeRef> // dev.s7a.fiktion.metadata/FiktionTypeRef.arguments.<get-arguments>|<get-arguments>(){}[0]
+    final val displayName // dev.s7a.fiktion.metadata/FiktionTypeRef.displayName|{}displayName[0]
+        final fun <get-displayName>(): kotlin/String // dev.s7a.fiktion.metadata/FiktionTypeRef.displayName.<get-displayName>|<get-displayName>(){}[0]
+    final val id // dev.s7a.fiktion.metadata/FiktionTypeRef.id|{}id[0]
+        final fun <get-id>(): kotlin/String // dev.s7a.fiktion.metadata/FiktionTypeRef.id.<get-id>|<get-id>(){}[0]
+
+    final fun component1(): kotlin/String // dev.s7a.fiktion.metadata/FiktionTypeRef.component1|component1(){}[0]
+    final fun component2(): kotlin/String // dev.s7a.fiktion.metadata/FiktionTypeRef.component2|component2(){}[0]
+    final fun component3(): kotlin.collections/List<dev.s7a.fiktion.metadata/FiktionTypeRef> // dev.s7a.fiktion.metadata/FiktionTypeRef.component3|component3(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ..., kotlin.collections/List<dev.s7a.fiktion.metadata/FiktionTypeRef> = ...): dev.s7a.fiktion.metadata/FiktionTypeRef // dev.s7a.fiktion.metadata/FiktionTypeRef.copy|copy(kotlin.String;kotlin.String;kotlin.collections.List<dev.s7a.fiktion.metadata.FiktionTypeRef>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion.metadata/FiktionTypeRef.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.s7a.fiktion.metadata/FiktionTypeRef.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.s7a.fiktion.metadata/FiktionTypeRef.toString|toString(){}[0]
+}
+
+final const val dev.s7a.fiktion.metadata/FIKTION_METADATA_SCHEMA_VERSION // dev.s7a.fiktion.metadata/FIKTION_METADATA_SCHEMA_VERSION|{}FIKTION_METADATA_SCHEMA_VERSION[0]
+    final fun <get-FIKTION_METADATA_SCHEMA_VERSION>(): kotlin/Int // dev.s7a.fiktion.metadata/FIKTION_METADATA_SCHEMA_VERSION.<get-FIKTION_METADATA_SCHEMA_VERSION>|<get-FIKTION_METADATA_SCHEMA_VERSION>(){}[0]

@@ -19,6 +19,7 @@ subprojects {
         apply(plugin = "dev.detekt")
 
         extensions.configure<DetektExtension>("detekt") {
+            config.setFrom(rootProject.files("detekt.yml"))
             source.from("src")
         }
     }
@@ -26,5 +27,9 @@ subprojects {
     plugins.withId("org.jetbrains.kotlin.jvm") {
         apply(plugin = "org.jmailen.kotlinter")
         apply(plugin = "dev.detekt")
+
+        extensions.configure<DetektExtension>("detekt") {
+            config.setFrom(rootProject.files("detekt.yml"))
+        }
     }
 }

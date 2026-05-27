@@ -1,0 +1,107 @@
+// Klib ABI Dump
+// Targets: [iosSimulatorArm64, js, linuxX64, macosArm64, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <dev.s7a:fiktion-runtime>
+open annotation class dev.s7a.fiktion.runtime/ExperimentalFiktionApi : kotlin/Annotation { // dev.s7a.fiktion.runtime/ExperimentalFiktionApi|null[0]
+    constructor <init>() // dev.s7a.fiktion.runtime/ExperimentalFiktionApi.<init>|<init>(){}[0]
+}
+
+final enum class dev.s7a.fiktion.runtime/FakeNullability : kotlin/Enum<dev.s7a.fiktion.runtime/FakeNullability> { // dev.s7a.fiktion.runtime/FakeNullability|null[0]
+    enum entry NON_NULL // dev.s7a.fiktion.runtime/FakeNullability.NON_NULL|null[0]
+    enum entry NULLABLE // dev.s7a.fiktion.runtime/FakeNullability.NULLABLE|null[0]
+    enum entry UNKNOWN // dev.s7a.fiktion.runtime/FakeNullability.UNKNOWN|null[0]
+
+    final val entries // dev.s7a.fiktion.runtime/FakeNullability.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<dev.s7a.fiktion.runtime/FakeNullability> // dev.s7a.fiktion.runtime/FakeNullability.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): dev.s7a.fiktion.runtime/FakeNullability // dev.s7a.fiktion.runtime/FakeNullability.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<dev.s7a.fiktion.runtime/FakeNullability> // dev.s7a.fiktion.runtime/FakeNullability.values|values#static(){}[0]
+}
+
+abstract interface dev.s7a.fiktion.runtime/FakeContext { // dev.s7a.fiktion.runtime/FakeContext|null[0]
+    abstract val depth // dev.s7a.fiktion.runtime/FakeContext.depth|{}depth[0]
+        abstract fun <get-depth>(): kotlin/Int // dev.s7a.fiktion.runtime/FakeContext.depth.<get-depth>|<get-depth>(){}[0]
+    abstract val path // dev.s7a.fiktion.runtime/FakeContext.path|{}path[0]
+        abstract fun <get-path>(): dev.s7a.fiktion.runtime/FakePath // dev.s7a.fiktion.runtime/FakeContext.path.<get-path>|<get-path>(){}[0]
+    abstract val property // dev.s7a.fiktion.runtime/FakeContext.property|{}property[0]
+        abstract fun <get-property>(): dev.s7a.fiktion.runtime/FakeProperty? // dev.s7a.fiktion.runtime/FakeContext.property.<get-property>|<get-property>(){}[0]
+    abstract val random // dev.s7a.fiktion.runtime/FakeContext.random|{}random[0]
+        abstract fun <get-random>(): kotlin.random/Random // dev.s7a.fiktion.runtime/FakeContext.random.<get-random>|<get-random>(){}[0]
+    abstract val seed // dev.s7a.fiktion.runtime/FakeContext.seed|{}seed[0]
+        abstract fun <get-seed>(): kotlin/Long // dev.s7a.fiktion.runtime/FakeContext.seed.<get-seed>|<get-seed>(){}[0]
+    abstract val type // dev.s7a.fiktion.runtime/FakeContext.type|{}type[0]
+        abstract fun <get-type>(): dev.s7a.fiktion.runtime/FakeType // dev.s7a.fiktion.runtime/FakeContext.type.<get-type>|<get-type>(){}[0]
+}
+
+final class dev.s7a.fiktion.runtime/AmbiguousRuleException : dev.s7a.fiktion.runtime/FiktionException { // dev.s7a.fiktion.runtime/AmbiguousRuleException|null[0]
+    constructor <init>(kotlin/String, kotlin/Throwable? = ...) // dev.s7a.fiktion.runtime/AmbiguousRuleException.<init>|<init>(kotlin.String;kotlin.Throwable?){}[0]
+}
+
+final class dev.s7a.fiktion.runtime/CannotGenerateException : dev.s7a.fiktion.runtime/FiktionException { // dev.s7a.fiktion.runtime/CannotGenerateException|null[0]
+    constructor <init>(kotlin/String, kotlin/Throwable? = ...) // dev.s7a.fiktion.runtime/CannotGenerateException.<init>|<init>(kotlin.String;kotlin.Throwable?){}[0]
+}
+
+final class dev.s7a.fiktion.runtime/FakePath { // dev.s7a.fiktion.runtime/FakePath|null[0]
+    constructor <init>(kotlin.collections/List<dev.s7a.fiktion.runtime/FakeProperty>) // dev.s7a.fiktion.runtime/FakePath.<init>|<init>(kotlin.collections.List<dev.s7a.fiktion.runtime.FakeProperty>){}[0]
+
+    final val segments // dev.s7a.fiktion.runtime/FakePath.segments|{}segments[0]
+        final fun <get-segments>(): kotlin.collections/List<dev.s7a.fiktion.runtime/FakeProperty> // dev.s7a.fiktion.runtime/FakePath.segments.<get-segments>|<get-segments>(){}[0]
+
+    final fun component1(): kotlin.collections/List<dev.s7a.fiktion.runtime/FakeProperty> // dev.s7a.fiktion.runtime/FakePath.component1|component1(){}[0]
+    final fun copy(kotlin.collections/List<dev.s7a.fiktion.runtime/FakeProperty> = ...): dev.s7a.fiktion.runtime/FakePath // dev.s7a.fiktion.runtime/FakePath.copy|copy(kotlin.collections.List<dev.s7a.fiktion.runtime.FakeProperty>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion.runtime/FakePath.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.s7a.fiktion.runtime/FakePath.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.s7a.fiktion.runtime/FakePath.toString|toString(){}[0]
+}
+
+final class dev.s7a.fiktion.runtime/FakeProperty { // dev.s7a.fiktion.runtime/FakeProperty|null[0]
+    constructor <init>(dev.s7a.fiktion.runtime/FakeType, kotlin/String, dev.s7a.fiktion.runtime/FakeType, dev.s7a.fiktion.runtime/FakeNullability) // dev.s7a.fiktion.runtime/FakeProperty.<init>|<init>(dev.s7a.fiktion.runtime.FakeType;kotlin.String;dev.s7a.fiktion.runtime.FakeType;dev.s7a.fiktion.runtime.FakeNullability){}[0]
+
+    final val name // dev.s7a.fiktion.runtime/FakeProperty.name|{}name[0]
+        final fun <get-name>(): kotlin/String // dev.s7a.fiktion.runtime/FakeProperty.name.<get-name>|<get-name>(){}[0]
+    final val nullability // dev.s7a.fiktion.runtime/FakeProperty.nullability|{}nullability[0]
+        final fun <get-nullability>(): dev.s7a.fiktion.runtime/FakeNullability // dev.s7a.fiktion.runtime/FakeProperty.nullability.<get-nullability>|<get-nullability>(){}[0]
+    final val owner // dev.s7a.fiktion.runtime/FakeProperty.owner|{}owner[0]
+        final fun <get-owner>(): dev.s7a.fiktion.runtime/FakeType // dev.s7a.fiktion.runtime/FakeProperty.owner.<get-owner>|<get-owner>(){}[0]
+    final val type // dev.s7a.fiktion.runtime/FakeProperty.type|{}type[0]
+        final fun <get-type>(): dev.s7a.fiktion.runtime/FakeType // dev.s7a.fiktion.runtime/FakeProperty.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): dev.s7a.fiktion.runtime/FakeType // dev.s7a.fiktion.runtime/FakeProperty.component1|component1(){}[0]
+    final fun component2(): kotlin/String // dev.s7a.fiktion.runtime/FakeProperty.component2|component2(){}[0]
+    final fun component3(): dev.s7a.fiktion.runtime/FakeType // dev.s7a.fiktion.runtime/FakeProperty.component3|component3(){}[0]
+    final fun component4(): dev.s7a.fiktion.runtime/FakeNullability // dev.s7a.fiktion.runtime/FakeProperty.component4|component4(){}[0]
+    final fun copy(dev.s7a.fiktion.runtime/FakeType = ..., kotlin/String = ..., dev.s7a.fiktion.runtime/FakeType = ..., dev.s7a.fiktion.runtime/FakeNullability = ...): dev.s7a.fiktion.runtime/FakeProperty // dev.s7a.fiktion.runtime/FakeProperty.copy|copy(dev.s7a.fiktion.runtime.FakeType;kotlin.String;dev.s7a.fiktion.runtime.FakeType;dev.s7a.fiktion.runtime.FakeNullability){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion.runtime/FakeProperty.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.s7a.fiktion.runtime/FakeProperty.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.s7a.fiktion.runtime/FakeProperty.toString|toString(){}[0]
+}
+
+final class dev.s7a.fiktion.runtime/FakeType { // dev.s7a.fiktion.runtime/FakeType|null[0]
+    constructor <init>(kotlin/String, kotlin/String) // dev.s7a.fiktion.runtime/FakeType.<init>|<init>(kotlin.String;kotlin.String){}[0]
+
+    final val displayName // dev.s7a.fiktion.runtime/FakeType.displayName|{}displayName[0]
+        final fun <get-displayName>(): kotlin/String // dev.s7a.fiktion.runtime/FakeType.displayName.<get-displayName>|<get-displayName>(){}[0]
+    final val id // dev.s7a.fiktion.runtime/FakeType.id|{}id[0]
+        final fun <get-id>(): kotlin/String // dev.s7a.fiktion.runtime/FakeType.id.<get-id>|<get-id>(){}[0]
+
+    final fun component1(): kotlin/String // dev.s7a.fiktion.runtime/FakeType.component1|component1(){}[0]
+    final fun component2(): kotlin/String // dev.s7a.fiktion.runtime/FakeType.component2|component2(){}[0]
+    final fun copy(kotlin/String = ..., kotlin/String = ...): dev.s7a.fiktion.runtime/FakeType // dev.s7a.fiktion.runtime/FakeType.copy|copy(kotlin.String;kotlin.String){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion.runtime/FakeType.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // dev.s7a.fiktion.runtime/FakeType.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // dev.s7a.fiktion.runtime/FakeType.toString|toString(){}[0]
+}
+
+final class dev.s7a.fiktion.runtime/IncompatibleMetadataException : dev.s7a.fiktion.runtime/FiktionException { // dev.s7a.fiktion.runtime/IncompatibleMetadataException|null[0]
+    constructor <init>(kotlin/String, kotlin/Throwable? = ...) // dev.s7a.fiktion.runtime/IncompatibleMetadataException.<init>|<init>(kotlin.String;kotlin.Throwable?){}[0]
+}
+
+final class dev.s7a.fiktion.runtime/InvalidRuleException : dev.s7a.fiktion.runtime/FiktionException { // dev.s7a.fiktion.runtime/InvalidRuleException|null[0]
+    constructor <init>(kotlin/String, kotlin/Throwable? = ...) // dev.s7a.fiktion.runtime/InvalidRuleException.<init>|<init>(kotlin.String;kotlin.Throwable?){}[0]
+}
+
+sealed class dev.s7a.fiktion.runtime/FiktionException : kotlin/RuntimeException // dev.s7a.fiktion.runtime/FiktionException|null[0]

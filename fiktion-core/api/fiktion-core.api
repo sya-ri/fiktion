@@ -1,0 +1,168 @@
+public final class dev/s7a/fiktion/FakeSpec {
+	public fun <init> ()V
+	public final fun autoGenerates (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun autoGenerates (Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Ljava/lang/String;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Lkotlin/text/Regex;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Lkotlin/text/Regex;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesEach (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesEach (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesKeys (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
+	public final fun generatesKeys (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
+	public final fun generatesValues (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
+	public final fun generatesValues (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
+	public final fun rule (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/RuleTarget;
+	public final fun rule (Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/RuleTarget;
+	public final fun withSeed (J)V
+}
+
+public abstract interface class dev/s7a/fiktion/Fiktion {
+	public static final field Companion Ldev/s7a/fiktion/Fiktion$Companion;
+}
+
+public final class dev/s7a/fiktion/Fiktion$Companion {
+	public final fun configure (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/FiktionSnapshot;
+	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/Fiktion;
+	public static synthetic fun invoke$default (Ldev/s7a/fiktion/Fiktion$Companion;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/s7a/fiktion/Fiktion;
+}
+
+public abstract interface class dev/s7a/fiktion/FiktionAddon {
+	public abstract fun getId ()Ljava/lang/String;
+	public abstract fun install (Ldev/s7a/fiktion/FiktionBuilder;)V
+}
+
+public final class dev/s7a/fiktion/FiktionBuilder {
+	public fun <init> ()V
+	public final fun autoGenerates (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun autoGenerates (Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Ljava/lang/String;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Lkotlin/text/Regex;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesBy (Lkotlin/text/Regex;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesEach (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesEach (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesKeys (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
+	public final fun generatesKeys (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
+	public final fun generatesValues (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
+	public final fun generatesValues (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
+	public final fun install (Ldev/s7a/fiktion/FiktionAddon;)V
+	public final fun rule (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/RuleTarget;
+	public final fun rule (Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/RuleTarget;
+	public final fun withSeed (J)V
+}
+
+public abstract interface class dev/s7a/fiktion/FiktionSnapshot {
+	public abstract fun restore ()V
+}
+
+public abstract interface class dev/s7a/fiktion/GenerationSpec {
+}
+
+public final class dev/s7a/fiktion/GenerationSpecKt {
+	public static final fun orDefaultAt (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun orDefaultAt-bBdImvs (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun orNullAt (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun orNullAt-bBdImvs (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun withMapSize (Ldev/s7a/fiktion/GenerationSpec;I)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun withMapSizeRange (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun withPriority (Ldev/s7a/fiktion/GenerationSpec;I)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun withSeed (Ldev/s7a/fiktion/GenerationSpec;J)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun withSize (Ldev/s7a/fiktion/GenerationSpec;I)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun withSize (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public abstract interface class dev/s7a/fiktion/MapEntrySpec : dev/s7a/fiktion/GenerationSpec {
+}
+
+public abstract interface class dev/s7a/fiktion/MapKeySpec : dev/s7a/fiktion/GenerationSpec {
+}
+
+public final class dev/s7a/fiktion/MapKeySpecKt {
+	public static final fun andValues (Ldev/s7a/fiktion/MapKeySpec;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
+}
+
+public abstract interface class dev/s7a/fiktion/MapValueSpec : dev/s7a/fiktion/GenerationSpec {
+}
+
+public final class dev/s7a/fiktion/MapValueSpecKt {
+	public static final fun andKeys (Ldev/s7a/fiktion/MapValueSpec;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
+}
+
+public final class dev/s7a/fiktion/Probability {
+	public static final synthetic fun box-impl (D)Ldev/s7a/fiktion/Probability;
+	public static fun constructor-impl (D)D
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (DLjava/lang/Object;)Z
+	public static final fun equals-impl0 (DD)Z
+	public final fun getValue ()D
+	public fun hashCode ()I
+	public static fun hashCode-impl (D)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (D)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()D
+}
+
+public final class dev/s7a/fiktion/ProbabilityKt {
+	public static final fun getPercent (D)D
+	public static final fun getPercent (I)D
+}
+
+public final class dev/s7a/fiktion/PropertyPath {
+	public final fun getProperties ()Ljava/util/List;
+}
+
+public final class dev/s7a/fiktion/PropertyPathKt {
+	public static final fun div (Ldev/s7a/fiktion/PropertyPath;Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/PropertyPath;
+	public static final fun div (Lkotlin/reflect/KProperty1;Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/PropertyPath;
+}
+
+public abstract interface class dev/s7a/fiktion/RuleTarget {
+}
+
+public final class dev/s7a/fiktion/RuleTargetKt {
+	public static final fun autoGenerates (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generatesBy (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generatesEach (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generatesIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generatesIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generatesIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/LongRange;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generatesOneOf (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/generators/FiktionCharset {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getChars ()Ljava/lang/String;
+}
+
+public final class dev/s7a/fiktion/generators/FiktionCharsets {
+	public static final field INSTANCE Ldev/s7a/fiktion/generators/FiktionCharsets;
+	public final fun getAlpha ()Ldev/s7a/fiktion/generators/FiktionCharset;
+	public final fun getAlphaNumeric ()Ldev/s7a/fiktion/generators/FiktionCharset;
+	public final fun getLowercaseAlpha ()Ldev/s7a/fiktion/generators/FiktionCharset;
+	public final fun getLowercaseAlphaNumeric ()Ldev/s7a/fiktion/generators/FiktionCharset;
+	public final fun getNumeric ()Ldev/s7a/fiktion/generators/FiktionCharset;
+	public final fun getUppercaseAlpha ()Ldev/s7a/fiktion/generators/FiktionCharset;
+	public final fun getUppercaseAlphaNumeric ()Ldev/s7a/fiktion/generators/FiktionCharset;
+}
+
+public final class dev/s7a/fiktion/generators/OneOfKt {
+	public static final fun oneOf (Ldev/s7a/fiktion/runtime/FakeContext;Ljava/util/List;)Ljava/lang/Object;
+}
+
+public final class dev/s7a/fiktion/generators/StringsKt {
+	public static final fun string (Ldev/s7a/fiktion/runtime/FakeContext;ILdev/s7a/fiktion/generators/FiktionCharset;)Ljava/lang/String;
+	public static final fun string (Ldev/s7a/fiktion/runtime/FakeContext;Lkotlin/ranges/IntRange;Ldev/s7a/fiktion/generators/FiktionCharset;)Ljava/lang/String;
+	public static synthetic fun string$default (Ldev/s7a/fiktion/runtime/FakeContext;ILdev/s7a/fiktion/generators/FiktionCharset;ILjava/lang/Object;)Ljava/lang/String;
+	public static synthetic fun string$default (Ldev/s7a/fiktion/runtime/FakeContext;Lkotlin/ranges/IntRange;Ldev/s7a/fiktion/generators/FiktionCharset;ILjava/lang/Object;)Ljava/lang/String;
+}
+

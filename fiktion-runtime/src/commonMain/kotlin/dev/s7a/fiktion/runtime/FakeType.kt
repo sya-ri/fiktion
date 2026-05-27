@@ -1,0 +1,15 @@
+package dev.s7a.fiktion.runtime
+
+/**
+ * Runtime description of a generated type.
+ */
+public data class FakeType(
+    /**
+     * Stable type identifier.
+     */
+    public val id: String,
+    /**
+     * Human-readable type name used in diagnostics.
+     */
+    public val displayName: String,
+)

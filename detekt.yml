@@ -1,0 +1,31 @@
+style:
+  MaxLineLength:
+    excludes:
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/Fake.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/FakeSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/FiktionBuilder.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/GenerationSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/MapKeySpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/MapValueSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/RuleTarget.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/generators/OneOf.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/generators/Strings.kt'
+  UnusedParameter:
+    excludes:
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/Fake.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/FakeSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/FiktionBuilder.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/GenerationSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/MapKeySpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/MapValueSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/RuleTarget.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/generators/OneOf.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/generators/Strings.kt'
+
+complexity:
+  TooManyFunctions:
+    excludes:
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/FakeSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/FiktionBuilder.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/GenerationSpec.kt'
+      - '**/fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/RuleTarget.kt'
