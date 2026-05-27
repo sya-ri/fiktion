@@ -16,6 +16,6 @@ internal data class InstalledAddon(
     /**
      * Returns a detached copy whose rules can be stored in an immutable configuration snapshot.
      */
-    fun snapshot(precedence: Int? = null): InstalledAddon =
+    fun snapshot(precedence: RulePrecedence? = null): InstalledAddon =
         copy(rules = rules.map { rule -> rule.snapshot(precedence = precedence ?: rule.precedence) })
 }

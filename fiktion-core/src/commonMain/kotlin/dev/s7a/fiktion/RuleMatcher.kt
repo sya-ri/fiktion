@@ -10,7 +10,7 @@ internal sealed interface RuleMatcher {
     /**
      * Relative specificity within the same precedence layer.
      */
-    val specificity: Int
+    val specificity: RuleSpecificity
 
     /**
      * Returns whether this matcher applies to [request].
@@ -26,7 +26,7 @@ internal sealed interface RuleMatcher {
          */
         val type: KType,
     ) : RuleMatcher {
-        override val specificity: Int = 0
+        override val specificity: RuleSpecificity = RuleSpecificity.TYPE
 
         /**
          * Returns true when the requested type exactly matches [type].
@@ -51,7 +51,7 @@ internal sealed interface RuleMatcher {
          */
         val value: KType,
     ) : RuleMatcher {
-        override val specificity: Int = 30
+        override val specificity: RuleSpecificity = RuleSpecificity.OWNER_NAME
 
         /**
          * Returns true when owner, property name, and value type all match.
@@ -73,7 +73,7 @@ internal sealed interface RuleMatcher {
          */
         val value: KType,
     ) : RuleMatcher {
-        override val specificity: Int = 20
+        override val specificity: RuleSpecificity = RuleSpecificity.OWNER_TYPE
 
         /**
          * Returns true when owner and value type match.
@@ -90,7 +90,7 @@ internal sealed interface RuleMatcher {
          */
         val segments: List<PathRuleSegment>,
     ) : RuleMatcher {
-        override val specificity: Int = 40
+        override val specificity: RuleSpecificity = RuleSpecificity.PATH
 
         /**
          * Returns true when the full property path exactly matches [segments].
@@ -111,7 +111,7 @@ internal sealed interface RuleMatcher {
          */
         val value: KType?,
     ) : RuleMatcher {
-        override val specificity: Int = 10
+        override val specificity: RuleSpecificity = RuleSpecificity.NAME
 
         /**
          * Returns true when the property name matches and [value] is absent or matches the requested type.
@@ -132,7 +132,7 @@ internal sealed interface RuleMatcher {
          */
         val value: KType?,
     ) : RuleMatcher {
-        override val specificity: Int = 10
+        override val specificity: RuleSpecificity = RuleSpecificity.NAME
 
         /**
          * Returns true when the property name matches [regex] and [value] is absent or matches the requested type.
@@ -158,7 +158,7 @@ internal sealed interface RuleMatcher {
          */
         val value: KType,
     ) : RuleMatcher {
-        override val specificity: Int = 30
+        override val specificity: RuleSpecificity = RuleSpecificity.OWNER_NAME
 
         /**
          * Returns true when owner, property-name regex, and value type all match.

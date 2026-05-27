@@ -18,19 +18,22 @@ internal data class FiktionConfig(
     val rules: List<RegisteredRule<*>> = emptyList(),
 ) {
     /**
-     * Returns this configuration with [other] applied as a higher-precedence overlay.
+     * Returns this configuration with [other] applied as a [rulePrecedence] overlay.
      */
-    fun overlaidBy(other: FiktionConfig): FiktionConfig =
+    fun overlaidBy(
+        other: FiktionConfig,
+        rulePrecedence: RulePrecedence,
+    ): FiktionConfig =
         FiktionConfig(
             seed = other.seed ?: seed,
             addons =
                 addons.filterNot { addon ->
                     other.addons.any { overlay -> overlay.id == addon.id }
-                } + other.addons.map { addon -> addon.snapshot(precedence = ADDON_PRECEDENCE) },
+                } + other.addons.map { addon -> addon.snapshot(precedence = RulePrecedence.ADDON) },
             rules =
                 rules +
                     other.rules.map { rule ->
-                        rule.snapshot(precedence = nextRulePrecedence())
+                        rule.snapshot(precedence = rulePrecedence)
                     },
         )
 
@@ -40,24 +43,12 @@ internal data class FiktionConfig(
     fun normalized(): FiktionConfig =
         FiktionConfig(
             seed = seed,
-            addons = addons.map { addon -> addon.snapshot(precedence = ADDON_PRECEDENCE) },
-            rules = rules.map { rule -> rule.snapshot(precedence = 0) },
+            addons = addons.map { addon -> addon.snapshot(precedence = RulePrecedence.ADDON) },
+            rules = rules.map { rule -> rule.snapshot(precedence = RulePrecedence.GLOBAL) },
         )
-
-    /**
-     * Returns the precedence for the next explicit rule overlay.
-     */
-    private fun nextRulePrecedence(): Int = rules.maxOfOrNull { rule -> rule.precedence }?.plus(1) ?: 0
 
     /**
      * Returns rules in lookup order from lowest to highest precedence.
      */
     fun effectiveRules(): List<RegisteredRule<*>> = addons.flatMap { it.rules } + rules
-
-    private companion object {
-        /**
-         * Precedence used for add-on rules below every explicit rule layer.
-         */
-        const val ADDON_PRECEDENCE: Int = -1
-    }
 }

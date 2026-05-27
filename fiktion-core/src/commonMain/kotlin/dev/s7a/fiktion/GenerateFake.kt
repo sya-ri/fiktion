@@ -15,7 +15,11 @@ internal fun <T> generateFake(
     val spec = FakeSpec<T>()
     spec.configure()
     val rootSeed = spec.seed ?: seed ?: baseConfig.seed ?: Random.nextLong()
-    val config = baseConfig.overlaidBy(FiktionConfig(rules = spec.rules))
+    val config =
+        baseConfig.overlaidBy(
+            other = FiktionConfig(rules = spec.rules),
+            rulePrecedence = RulePrecedence.PER_CALL,
+        )
     val request = GenerationRequest(type = type)
     val value = generateValue(request = request, config = config, seed = rootSeed, depth = 0)
     @Suppress("UNCHECKED_CAST")

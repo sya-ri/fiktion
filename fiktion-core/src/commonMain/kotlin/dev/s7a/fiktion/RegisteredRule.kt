@@ -33,7 +33,7 @@ internal data class RegisteredRule<T>(
     /**
      * Precedence layer assigned while composing configurations.
      */
-    val precedence: Int = 0,
+    val precedence: RulePrecedence = RulePrecedence.GLOBAL,
 ) : GenerationSpec<T> {
     override fun withSeed(seed: Long): GenerationSpec<T> {
         this.seed = seed
@@ -53,5 +53,5 @@ internal data class RegisteredRule<T>(
     /**
      * Returns a detached copy that can be stored in an immutable configuration snapshot.
      */
-    fun snapshot(precedence: Int = this.precedence): RegisteredRule<T> = copy(precedence = precedence)
+    fun snapshot(precedence: RulePrecedence = this.precedence): RegisteredRule<T> = copy(precedence = precedence)
 }

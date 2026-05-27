@@ -88,7 +88,11 @@ class GenerateValueTest {
                         owner = typeOf<User>(),
                         propertyName = "id",
                     ),
-                config = base.overlaidBy(overlay),
+                config =
+                    base.overlaidBy(
+                        other = overlay,
+                        rulePrecedence = RulePrecedence.PER_CALL,
+                    ),
                 seed = 123,
                 depth = 0,
             )
