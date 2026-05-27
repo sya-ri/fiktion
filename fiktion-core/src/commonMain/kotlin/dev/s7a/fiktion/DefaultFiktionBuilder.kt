@@ -1,3 +1,5 @@
+@file:OptIn(dev.s7a.fiktion.runtime.ExperimentalFiktionApi::class)
+
 package dev.s7a.fiktion
 
 /**
@@ -19,7 +21,7 @@ internal class DefaultFiktionBuilder private constructor(
      * Creates a builder initialized from [config].
      */
     constructor(config: FiktionConfig) :
-        this(MutableFiktionConfig(seed = config.seed, addons = config.addons, rules = config.rules))
+        this(MutableFiktionConfig(seed = config.seed, addons = config.addons, rules = config.rules, metadata = config.metadata))
 
     /**
      * Builds an immutable configuration snapshot.
@@ -34,5 +36,10 @@ internal class DefaultFiktionBuilder private constructor(
         config.installAddon(addon.id) {
             addon.install(DefaultFiktionAddonBuilder(config))
         }
+    }
+
+    @dev.s7a.fiktion.runtime.ExperimentalFiktionApi
+    override fun <T> register(metadata: FiktionObjectMetadata<T>) {
+        config.register(metadata)
     }
 }

@@ -1,3 +1,5 @@
+@file:OptIn(dev.s7a.fiktion.runtime.ExperimentalFiktionApi::class)
+
 package dev.s7a.fiktion
 
 /**
@@ -7,6 +9,7 @@ internal class MutableFiktionConfig(
     seed: Long? = null,
     addons: List<InstalledAddon> = emptyList(),
     rules: List<RegisteredRule<*>> = emptyList(),
+    metadata: Map<String, FiktionObjectMetadata<*>> = emptyMap(),
 ) {
     /**
      * Root seed configured for the resulting snapshot.
@@ -24,6 +27,11 @@ internal class MutableFiktionConfig(
     private val rules: MutableList<RegisteredRule<*>> = rules.toMutableList()
 
     /**
+     * Object construction metadata keyed by stable type id.
+     */
+    private val metadata: MutableMap<String, FiktionObjectMetadata<*>> = metadata.toMutableMap()
+
+    /**
      * Rule buffer for the add-on currently being installed.
      */
     private var installingAddonRules: MutableList<RegisteredRule<*>>? = null
@@ -35,6 +43,13 @@ internal class MutableFiktionConfig(
         val targetRules = installingAddonRules ?: rules
         targetRules.removeAll { it.key == rule.key }
         targetRules += rule
+    }
+
+    /**
+     * Registers [metadata], replacing existing metadata for the same generated type.
+     */
+    fun register(metadata: FiktionObjectMetadata<*>) {
+        this.metadata[metadata.type.toString()] = metadata
     }
 
     /**
@@ -64,5 +79,6 @@ internal class MutableFiktionConfig(
             seed = seed,
             addons = addons.map { addon -> addon.snapshot() },
             rules = rules.map { rule -> rule.snapshot() },
+            metadata = metadata,
         ).normalized()
 }

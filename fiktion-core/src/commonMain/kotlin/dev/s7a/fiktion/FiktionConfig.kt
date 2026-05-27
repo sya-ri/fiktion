@@ -1,3 +1,5 @@
+@file:OptIn(dev.s7a.fiktion.runtime.ExperimentalFiktionApi::class)
+
 package dev.s7a.fiktion
 
 /**
@@ -16,6 +18,10 @@ internal data class FiktionConfig(
      * Explicit rules configured by users for a global, isolated, or per-call scope.
      */
     val rules: List<RegisteredRule<*>> = emptyList(),
+    /**
+     * Object construction metadata keyed by stable type id.
+     */
+    val metadata: Map<String, FiktionObjectMetadata<*>> = emptyMap(),
 ) {
     /**
      * Returns this configuration with [other] applied as a [rulePrecedence] overlay.
@@ -35,6 +41,7 @@ internal data class FiktionConfig(
                     other.rules.map { rule ->
                         rule.snapshot(precedence = rulePrecedence)
                     },
+            metadata = metadata + other.metadata,
         )
 
     /**
@@ -45,6 +52,7 @@ internal data class FiktionConfig(
             seed = seed,
             addons = addons.map { addon -> addon.snapshot(precedence = RulePrecedence.ADDON) },
             rules = rules.map { rule -> rule.snapshot(precedence = RulePrecedence.GLOBAL) },
+            metadata = metadata,
         )
 
     /**

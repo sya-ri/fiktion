@@ -72,6 +72,7 @@ public final class dev/s7a/fiktion/FiktionAddonBuilder$DefaultImpls {
 
 public abstract interface class dev/s7a/fiktion/FiktionBuilder : dev/s7a/fiktion/FiktionRuleBuilder {
 	public abstract fun install (Ldev/s7a/fiktion/FiktionAddon;)V
+	public abstract fun register (Ldev/s7a/fiktion/FiktionObjectMetadata;)V
 	public abstract fun withSeed (J)V
 }
 
@@ -106,6 +107,29 @@ public final class dev/s7a/fiktion/FiktionConfigureBuilder$DefaultImpls {
 	public static fun generatesKeys (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
 	public static fun generatesValues (Ldev/s7a/fiktion/FiktionConfigureBuilder;Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 	public static fun generatesValues (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
+}
+
+public final class dev/s7a/fiktion/FiktionObjectMetadata {
+	public fun <init> (Lkotlin/reflect/KType;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
+	public final fun construct (Ljava/util/List;)Ljava/lang/Object;
+	public final fun getProperties ()Ljava/util/List;
+	public final fun getType ()Lkotlin/reflect/KType;
+}
+
+public final class dev/s7a/fiktion/FiktionObjectProperty {
+	public fun <init> (Ljava/lang/String;Lkotlin/reflect/KType;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/reflect/KType;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlin/reflect/KType;
+	public final fun component3 ()Z
+	public final fun copy (Ljava/lang/String;Lkotlin/reflect/KType;Z)Ldev/s7a/fiktion/FiktionObjectProperty;
+	public static synthetic fun copy$default (Ldev/s7a/fiktion/FiktionObjectProperty;Ljava/lang/String;Lkotlin/reflect/KType;ZILjava/lang/Object;)Ldev/s7a/fiktion/FiktionObjectProperty;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHasDefault ()Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getType ()Lkotlin/reflect/KType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class dev/s7a/fiktion/FiktionRuleBuilder {

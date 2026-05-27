@@ -1,5 +1,7 @@
 package dev.s7a.fiktion
 
+import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
+
 /**
  * Builder exposed when creating isolated Fiktion instances.
  */
@@ -13,4 +15,10 @@ public interface FiktionBuilder : FiktionRuleBuilder {
      * Installs reusable rules from [addon].
      */
     public fun install(addon: FiktionAddon)
+
+    /**
+     * Registers object construction [metadata].
+     */
+    @ExperimentalFiktionApi
+    public fun <T> register(metadata: FiktionObjectMetadata<T>)
 }
