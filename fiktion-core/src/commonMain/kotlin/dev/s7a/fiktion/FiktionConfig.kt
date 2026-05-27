@@ -19,9 +19,9 @@ internal data class FiktionConfig(
      */
     val rules: List<RegisteredRule<*>> = emptyList(),
     /**
-     * Object construction metadata keyed by stable type id.
+     * Type construction metadata keyed by stable type id.
      */
-    val metadata: Map<String, FiktionObjectMetadata<*>> = emptyMap(),
+    val metadata: Map<String, FiktionTypeMetadata<*>> = emptyMap(),
 ) {
     /**
      * Returns this configuration with [other] applied as a [rulePrecedence] overlay.

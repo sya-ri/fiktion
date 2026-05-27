@@ -41,15 +41,30 @@ internal fun generateValue(
         return rule.generator(context)
     }
 
-    val metadata = config.metadata[request.type.nonNullTypeId()]
-    if (metadata != null) {
-        return generateObject(
-            request = request,
-            config = config,
-            seed = seed,
-            depth = depth,
-            metadata = metadata,
-        )
+    when (val metadata = config.metadata[request.type.nonNullTypeId()]) {
+        is FiktionObjectMetadata<*> -> {
+            return generateObject(
+                request = request,
+                config = config,
+                seed = seed,
+                depth = depth,
+                metadata = metadata,
+            )
+        }
+
+        is FiktionValueMetadata<*> -> {
+            return generateValueClass(
+                request = request,
+                config = config,
+                seed = seed,
+                depth = depth,
+                metadata = metadata,
+            )
+        }
+
+        null -> {
+            Unit
+        }
     }
 
     return generateBuiltIn(request.type, context)

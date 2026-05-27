@@ -11,7 +11,7 @@ public class FiktionObjectMetadata<T>(
     /**
      * Type represented by this metadata.
      */
-    public val type: KType,
+    override val type: KType,
     /**
      * Constructor properties in invocation order.
      */
@@ -20,7 +20,7 @@ public class FiktionObjectMetadata<T>(
      * Creates an instance from generated constructor argument values.
      */
     private val constructor: (List<FiktionObjectArgument>) -> T,
-) {
+) : FiktionTypeMetadata<T> {
     /**
      * Creates an instance from generated constructor [arguments].
      */

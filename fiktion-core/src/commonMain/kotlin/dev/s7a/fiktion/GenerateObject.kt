@@ -75,7 +75,7 @@ private fun GenerationRequest.child(property: FiktionObjectProperty): Generation
 /**
  * Derives a stable child seed for the constructor property at [index].
  */
-private fun Long.childSeed(index: Int): Long = this xor ((index + 1).toLong() * CHILD_SEED_STEP)
+internal fun Long.childSeed(index: Int): Long = this xor ((index + 1).toLong() * CHILD_SEED_STEP)
 
 /**
  * Odd constant used to spread deterministic child seeds.

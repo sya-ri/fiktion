@@ -21,7 +21,14 @@ internal class DefaultFiktionBuilder private constructor(
      * Creates a builder initialized from [config].
      */
     constructor(config: FiktionConfig) :
-        this(MutableFiktionConfig(seed = config.seed, addons = config.addons, rules = config.rules, metadata = config.metadata))
+        this(
+            MutableFiktionConfig(
+                seed = config.seed,
+                addons = config.addons,
+                rules = config.rules,
+                metadata = config.metadata,
+            ),
+        )
 
     /**
      * Builds an immutable configuration snapshot.
@@ -39,7 +46,7 @@ internal class DefaultFiktionBuilder private constructor(
     }
 
     @dev.s7a.fiktion.runtime.ExperimentalFiktionApi
-    override fun <T> register(metadata: FiktionObjectMetadata<T>) {
+    override fun <T> register(metadata: FiktionTypeMetadata<T>) {
         config.register(metadata)
     }
 }

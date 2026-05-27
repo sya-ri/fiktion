@@ -72,7 +72,7 @@ public final class dev/s7a/fiktion/FiktionAddonBuilder$DefaultImpls {
 
 public abstract interface class dev/s7a/fiktion/FiktionBuilder : dev/s7a/fiktion/FiktionRuleBuilder {
 	public abstract fun install (Ldev/s7a/fiktion/FiktionAddon;)V
-	public abstract fun register (Ldev/s7a/fiktion/FiktionObjectMetadata;)V
+	public abstract fun register (Ldev/s7a/fiktion/FiktionTypeMetadata;)V
 	public abstract fun withSeed (J)V
 }
 
@@ -119,11 +119,11 @@ public final class dev/s7a/fiktion/FiktionObjectDefault : dev/s7a/fiktion/Fiktio
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class dev/s7a/fiktion/FiktionObjectMetadata {
+public final class dev/s7a/fiktion/FiktionObjectMetadata : dev/s7a/fiktion/FiktionTypeMetadata {
 	public fun <init> (Lkotlin/reflect/KType;Ljava/util/List;Lkotlin/jvm/functions/Function1;)V
 	public final fun construct (Ljava/util/List;)Ljava/lang/Object;
 	public final fun getProperties ()Ljava/util/List;
-	public final fun getType ()Lkotlin/reflect/KType;
+	public fun getType ()Lkotlin/reflect/KType;
 }
 
 public final class dev/s7a/fiktion/FiktionObjectProperty {
@@ -200,6 +200,17 @@ public abstract interface class dev/s7a/fiktion/FiktionSnapshot {
 
 public final class dev/s7a/fiktion/FiktionSnapshot$DefaultImpls {
 	public static synthetic fun restore$default (Ldev/s7a/fiktion/FiktionSnapshot;ZILjava/lang/Object;)Z
+}
+
+public abstract interface class dev/s7a/fiktion/FiktionTypeMetadata {
+	public abstract fun getType ()Lkotlin/reflect/KType;
+}
+
+public final class dev/s7a/fiktion/FiktionValueMetadata : dev/s7a/fiktion/FiktionTypeMetadata {
+	public fun <init> (Lkotlin/reflect/KType;Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
+	public final fun construct (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun getType ()Lkotlin/reflect/KType;
+	public final fun getUnderlyingType ()Lkotlin/reflect/KType;
 }
 
 public abstract interface class dev/s7a/fiktion/GenerationSpec {

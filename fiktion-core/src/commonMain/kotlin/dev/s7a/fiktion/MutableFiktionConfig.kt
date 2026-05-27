@@ -9,7 +9,7 @@ internal class MutableFiktionConfig(
     seed: Long? = null,
     addons: List<InstalledAddon> = emptyList(),
     rules: List<RegisteredRule<*>> = emptyList(),
-    metadata: Map<String, FiktionObjectMetadata<*>> = emptyMap(),
+    metadata: Map<String, FiktionTypeMetadata<*>> = emptyMap(),
 ) {
     /**
      * Root seed configured for the resulting snapshot.
@@ -27,9 +27,9 @@ internal class MutableFiktionConfig(
     private val rules: MutableList<RegisteredRule<*>> = rules.toMutableList()
 
     /**
-     * Object construction metadata keyed by stable type id.
+     * Type construction metadata keyed by stable type id.
      */
-    private val metadata: MutableMap<String, FiktionObjectMetadata<*>> = metadata.toMutableMap()
+    private val metadata: MutableMap<String, FiktionTypeMetadata<*>> = metadata.toMutableMap()
 
     /**
      * Rule buffer for the add-on currently being installed.
@@ -48,7 +48,7 @@ internal class MutableFiktionConfig(
     /**
      * Registers [metadata], replacing existing metadata for the same generated type.
      */
-    fun register(metadata: FiktionObjectMetadata<*>) {
+    fun register(metadata: FiktionTypeMetadata<*>) {
         this.metadata[metadata.type.nonNullTypeId()] = metadata
     }
 

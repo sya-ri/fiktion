@@ -17,8 +17,8 @@ public interface FiktionBuilder : FiktionRuleBuilder {
     public fun install(addon: FiktionAddon)
 
     /**
-     * Registers object construction [metadata].
+     * Registers type construction [metadata].
      */
     @ExperimentalFiktionApi
-    public fun <T> register(metadata: FiktionObjectMetadata<T>)
+    public fun <T> register(metadata: FiktionTypeMetadata<T>)
 }

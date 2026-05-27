@@ -22,7 +22,7 @@ abstract interface dev.s7a.fiktion/FiktionAddon { // dev.s7a.fiktion/FiktionAddo
 abstract interface dev.s7a.fiktion/FiktionAddonBuilder : dev.s7a.fiktion/FiktionRuleBuilder // dev.s7a.fiktion/FiktionAddonBuilder|null[0]
 
 abstract interface dev.s7a.fiktion/FiktionBuilder : dev.s7a.fiktion/FiktionRuleBuilder { // dev.s7a.fiktion/FiktionBuilder|null[0]
-    abstract fun <#A1: kotlin/Any?> register(dev.s7a.fiktion/FiktionObjectMetadata<#A1>) // dev.s7a.fiktion/FiktionBuilder.register|register(dev.s7a.fiktion.FiktionObjectMetadata<0:0>){0§<kotlin.Any?>}[0]
+    abstract fun <#A1: kotlin/Any?> register(dev.s7a.fiktion/FiktionTypeMetadata<#A1>) // dev.s7a.fiktion/FiktionBuilder.register|register(dev.s7a.fiktion.FiktionTypeMetadata<0:0>){0§<kotlin.Any?>}[0]
     abstract fun install(dev.s7a.fiktion/FiktionAddon) // dev.s7a.fiktion/FiktionBuilder.install|install(dev.s7a.fiktion.FiktionAddon){}[0]
     abstract fun withSeed(kotlin/Long) // dev.s7a.fiktion/FiktionBuilder.withSeed|withSeed(kotlin.Long){}[0]
 }
@@ -41,6 +41,11 @@ sealed interface <#A: kotlin/Any?, #B: kotlin.collections/Collection<#A>> dev.s7
 sealed interface <#A: kotlin/Any?, #B: kotlin/Any?, #C: kotlin.collections/Map<#A, #B>> dev.s7a.fiktion/MapGenerationSpec : dev.s7a.fiktion/GenerationSpec<#C> { // dev.s7a.fiktion/MapGenerationSpec|null[0]
     abstract fun withSize(kotlin.ranges/IntRange): dev.s7a.fiktion/MapGenerationSpec<#A, #B, #C> // dev.s7a.fiktion/MapGenerationSpec.withSize|withSize(kotlin.ranges.IntRange){}[0]
     abstract fun withSize(kotlin/Int): dev.s7a.fiktion/MapGenerationSpec<#A, #B, #C> // dev.s7a.fiktion/MapGenerationSpec.withSize|withSize(kotlin.Int){}[0]
+}
+
+sealed interface <#A: kotlin/Any?> dev.s7a.fiktion/FiktionTypeMetadata { // dev.s7a.fiktion/FiktionTypeMetadata|null[0]
+    abstract val type // dev.s7a.fiktion/FiktionTypeMetadata.type|{}type[0]
+        abstract fun <get-type>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionTypeMetadata.type.<get-type>|<get-type>(){}[0]
 }
 
 sealed interface <#A: kotlin/Any?> dev.s7a.fiktion/RuleTarget // dev.s7a.fiktion/RuleTarget|null[0]
@@ -127,7 +132,7 @@ final class <#A: kotlin/Any?> dev.s7a.fiktion/FakeSpec { // dev.s7a.fiktion/Fake
     final inline fun <#A1: reified kotlin/Any?> (kotlin.reflect/KProperty1<#A, #A1>).invoke(noinline kotlin/Function1<dev.s7a.fiktion/FakeSpec<#A1>, kotlin/Unit>): dev.s7a.fiktion/GenerationSpec<#A1> // dev.s7a.fiktion/FakeSpec.invoke|invoke@kotlin.reflect.KProperty1<1:0,0:0>(kotlin.Function1<dev.s7a.fiktion.FakeSpec<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
 }
 
-final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionObjectMetadata { // dev.s7a.fiktion/FiktionObjectMetadata|null[0]
+final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionObjectMetadata : dev.s7a.fiktion/FiktionTypeMetadata<#A> { // dev.s7a.fiktion/FiktionObjectMetadata|null[0]
     constructor <init>(kotlin.reflect/KType, kotlin.collections/List<dev.s7a.fiktion/FiktionObjectProperty>, kotlin/Function1<kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>, #A>) // dev.s7a.fiktion/FiktionObjectMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.collections.List<dev.s7a.fiktion.FiktionObjectProperty>;kotlin.Function1<kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>,1:0>){}[0]
 
     final val properties // dev.s7a.fiktion/FiktionObjectMetadata.properties|{}properties[0]
@@ -136,6 +141,17 @@ final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionObjectMetadata { // dev.s7a
         final fun <get-type>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionObjectMetadata.type.<get-type>|<get-type>(){}[0]
 
     final fun construct(kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>): #A // dev.s7a.fiktion/FiktionObjectMetadata.construct|construct(kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>){}[0]
+}
+
+final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionValueMetadata : dev.s7a.fiktion/FiktionTypeMetadata<#A> { // dev.s7a.fiktion/FiktionValueMetadata|null[0]
+    constructor <init>(kotlin.reflect/KType, kotlin.reflect/KType, kotlin/Function1<kotlin/Any?, #A>) // dev.s7a.fiktion/FiktionValueMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.reflect.KType;kotlin.Function1<kotlin.Any?,1:0>){}[0]
+
+    final val type // dev.s7a.fiktion/FiktionValueMetadata.type|{}type[0]
+        final fun <get-type>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionValueMetadata.type.<get-type>|<get-type>(){}[0]
+    final val underlyingType // dev.s7a.fiktion/FiktionValueMetadata.underlyingType|{}underlyingType[0]
+        final fun <get-underlyingType>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionValueMetadata.underlyingType.<get-underlyingType>|<get-underlyingType>(){}[0]
+
+    final fun construct(kotlin/Any?): #A // dev.s7a.fiktion/FiktionValueMetadata.construct|construct(kotlin.Any?){}[0]
 }
 
 final class dev.s7a.fiktion.generators/FiktionCharset { // dev.s7a.fiktion.generators/FiktionCharset|null[0]
