@@ -1,4 +1,7 @@
-@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+@file:OptIn(
+    org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class,
+    org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation::class,
+)
 
 plugins {
     kotlin("multiplatform")
@@ -24,5 +27,9 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
+    }
+
+    abiValidation {
+        enabled.set(true)
     }
 }
