@@ -35,8 +35,16 @@ public inline operator fun <reified Root, reified Intermediate : Any, reified Va
         properties = listOf(this, next),
         segments =
             listOf(
-                PathRuleSegment(ownerId = typeOf<Root>().toString(), name = name, valueId = typeOf<Intermediate>().toString()),
-                PathRuleSegment(ownerId = typeOf<Intermediate>().toString(), name = next.name, valueId = typeOf<Value>().toString()),
+                PathRuleSegment(
+                    ownerId = typeOf<Root>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                    name = name,
+                    valueId = typeOf<Intermediate>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                ),
+                PathRuleSegment(
+                    ownerId = typeOf<Intermediate>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                    name = next.name,
+                    valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                ),
             ),
     )
 
@@ -51,5 +59,10 @@ public inline operator fun <Root, reified Intermediate : Any, reified Value> Pro
     PropertyPath(
         properties = properties + next,
         segments =
-            segments + PathRuleSegment(ownerId = typeOf<Intermediate>().toString(), name = next.name, valueId = typeOf<Value>().toString()),
+            segments +
+                PathRuleSegment(
+                    ownerId = typeOf<Intermediate>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                    name = next.name,
+                    valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                ),
     )

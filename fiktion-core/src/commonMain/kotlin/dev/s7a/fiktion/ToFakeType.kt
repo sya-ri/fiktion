@@ -11,8 +11,8 @@ import kotlin.reflect.KType
  */
 internal fun KType.toFakeType(): FakeType =
     FakeType(
-        id = toString(),
-        displayName = toString(),
+        id = typeId(),
+        displayName = typeId(),
     )
 
 /**

@@ -43,7 +43,7 @@ internal fun generateValue(
         return rule.generator(context)
     }
 
-    val metadata = config.metadata[request.type.toString()]
+    val metadata = config.metadata[request.type.nonNullTypeId()]
     if (metadata != null) {
         return generateObject(
             request = request,

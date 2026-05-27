@@ -34,7 +34,7 @@ internal data class GenerationRequest(
             PathRuleSegment(
                 ownerId = null,
                 name = property.name,
-                valueId = if (index == propertyPath.lastIndex) type.toString() else null,
+                valueId = if (index == propertyPath.lastIndex) type.nonNullTypeId() else null,
             )
         },
 )

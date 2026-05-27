@@ -95,6 +95,28 @@ class GenerateObjectTest {
         )
     }
 
+    @Test
+    fun `fake constructs nullable object properties from non-null metadata`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                register(profileMetadata())
+                type<String>() generatesBy {
+                    path.segments.joinToString(".") { segment -> segment.name }
+                }
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(
+            User(
+                id = "id",
+                optionalProfile = Profile(nickname = "optionalProfile.nickname"),
+            ),
+            user,
+        )
+    }
+
     /**
      * Returns metadata for constructing [User] from generated arguments.
      */
@@ -124,6 +146,24 @@ class GenerateObjectTest {
             User(
                 id = values[0] as String,
                 profile = values[1] as Profile,
+            )
+        }
+
+    /**
+     * Returns metadata for constructing [User] with a generated optional profile.
+     */
+    private fun userMetadataWithOptionalProfile(): FiktionObjectMetadata<User> =
+        FiktionObjectMetadata(
+            type = typeOf<User>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "optionalProfile", type = typeOf<Profile?>()),
+                ),
+        ) { values ->
+            User(
+                id = values[0] as String,
+                optionalProfile = values[1] as Profile?,
             )
         }
 

@@ -49,7 +49,7 @@ internal class MutableFiktionConfig(
      * Registers [metadata], replacing existing metadata for the same generated type.
      */
     fun register(metadata: FiktionObjectMetadata<*>) {
-        this.metadata[metadata.type.toString()] = metadata
+        this.metadata[metadata.type.nonNullTypeId()] = metadata
     }
 
     /**

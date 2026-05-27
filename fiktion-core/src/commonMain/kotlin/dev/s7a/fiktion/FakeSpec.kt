@@ -97,14 +97,21 @@ public class FakeSpec<Root> {
      * Generates [value] for this property.
      */
     public inline infix fun <reified Value> KProperty1<Root, Value>.generates(value: Value): GenerationSpec<Value> =
-        propertyByValueType<Value>(name = name, valueId = typeOf<Value>().toString()).generates(value)
+        propertyByValueType<Value>(
+            name = name,
+            valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+        ).generates(value)
 
     /**
      * Generates this property by invoking [generator].
      */
     public inline infix fun <reified Value> KProperty1<Root, Value>.generatesBy(
         noinline generator: Generator<Value>,
-    ): GenerationSpec<Value> = propertyByValueType<Value>(name = name, valueId = typeOf<Value>().toString()).generatesBy(generator)
+    ): GenerationSpec<Value> =
+        propertyByValueType<Value>(
+            name = name,
+            valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+        ).generatesBy(generator)
 
     /**
      * Planned API for generating this property using automatic generation.

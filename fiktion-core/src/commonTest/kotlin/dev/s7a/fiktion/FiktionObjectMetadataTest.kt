@@ -15,7 +15,7 @@ class FiktionObjectMetadataTest {
 
         builder.register(metadata)
 
-        assertSame(metadata, builder.build().metadata[typeOf<User>().toString()])
+        assertSame(metadata, builder.build().metadata[typeOf<User>().nonNullTypeId()])
     }
 
     @Test
@@ -27,7 +27,7 @@ class FiktionObjectMetadataTest {
         builder.register(first)
         builder.register(second)
 
-        val metadata = builder.build().metadata[typeOf<User>().toString()]
+        val metadata = builder.build().metadata[typeOf<User>().nonNullTypeId()]
         assertSame(second, metadata)
         assertEquals(User(id = "second"), second.construct(emptyList()))
     }
@@ -38,15 +38,15 @@ class FiktionObjectMetadataTest {
             FiktionConfig(
                 metadata =
                     mapOf(
-                        typeOf<User>().toString() to userMetadata("base"),
-                        typeOf<Profile>().toString() to profileMetadata("profile"),
+                        typeOf<User>().nonNullTypeId() to userMetadata("base"),
+                        typeOf<Profile>().nonNullTypeId() to profileMetadata("profile"),
                     ),
             )
         val overlay =
             FiktionConfig(
                 metadata =
                     mapOf(
-                        typeOf<User>().toString() to userMetadata("overlay"),
+                        typeOf<User>().nonNullTypeId() to userMetadata("overlay"),
                     ),
             )
 
@@ -56,8 +56,8 @@ class FiktionObjectMetadataTest {
                 rulePrecedence = RulePrecedence.INSTANCE,
             )
 
-        val userMetadata = config.metadata[typeOf<User>().toString()] as FiktionObjectMetadata<*>
-        val profileMetadata = config.metadata[typeOf<Profile>().toString()] as FiktionObjectMetadata<*>
+        val userMetadata = config.metadata[typeOf<User>().nonNullTypeId()] as FiktionObjectMetadata<*>
+        val profileMetadata = config.metadata[typeOf<Profile>().nonNullTypeId()] as FiktionObjectMetadata<*>
         assertEquals(User(id = "overlay"), userMetadata.construct(emptyList()))
         assertEquals(Profile(nickname = "profile"), profileMetadata.construct(emptyList()))
     }

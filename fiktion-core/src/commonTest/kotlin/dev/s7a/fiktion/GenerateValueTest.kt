@@ -161,14 +161,14 @@ class GenerateValueTest {
                         pathSegments =
                             listOf(
                                 PathRuleSegment(
-                                    ownerId = typeOf<User>().toString(),
+                                    ownerId = typeOf<User>().nonNullTypeId(),
                                     name = "profile",
-                                    valueId = typeOf<Profile>().toString(),
+                                    valueId = typeOf<Profile>().nonNullTypeId(),
                                 ),
                                 PathRuleSegment(
-                                    ownerId = typeOf<Profile>().toString(),
+                                    ownerId = typeOf<Profile>().nonNullTypeId(),
                                     name = "nickname",
-                                    valueId = typeOf<String>().toString(),
+                                    valueId = typeOf<String>().nonNullTypeId(),
                                 ),
                             ),
                     ),
@@ -216,7 +216,7 @@ class GenerateValueTest {
             )
 
         assertEquals(
-            listOf(PathRuleSegment(ownerId = null, name = "id", valueId = typeOf<String>().toString())),
+            listOf(PathRuleSegment(ownerId = null, name = "id", valueId = typeOf<String>().nonNullTypeId())),
             request.pathSegments,
         )
     }
@@ -237,7 +237,7 @@ class GenerateValueTest {
                 .key as RuleKey.Path
 
         assertEquals(
-            listOf(typeOf<Profile>().toString(), typeOf<String>().toString()),
+            listOf(typeOf<Profile>().nonNullTypeId(), typeOf<String>().nonNullTypeId()),
             key.segments.map { segment -> segment.valueId },
         )
     }

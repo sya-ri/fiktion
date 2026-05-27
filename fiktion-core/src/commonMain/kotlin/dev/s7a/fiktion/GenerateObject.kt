@@ -39,9 +39,9 @@ private fun GenerationRequest.child(property: FiktionObjectProperty): Generation
         pathSegments =
             pathSegments +
                 PathRuleSegment(
-                    ownerId = type.toString(),
+                    ownerId = type.nonNullTypeId(),
                     name = property.name,
-                    valueId = property.type.toString(),
+                    valueId = property.type.nonNullTypeId(),
                 ),
     )
 
