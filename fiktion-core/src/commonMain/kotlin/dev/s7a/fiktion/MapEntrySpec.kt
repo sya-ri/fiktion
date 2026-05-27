@@ -5,4 +5,4 @@ package dev.s7a.fiktion
  *
  * Map generation is not implemented by the current runtime path.
  */
-public interface MapEntrySpec<MapType : Map<Key, Value>, Key, Value> : MapGenerationSpec<Key, Value, MapType>
+public interface MapEntrySpec<Key, Value, MapType : Map<Key, Value>> : MapGenerationSpec<Key, Value, MapType>

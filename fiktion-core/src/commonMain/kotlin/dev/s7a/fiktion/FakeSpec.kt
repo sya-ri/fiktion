@@ -128,7 +128,7 @@ public class FakeSpec<Root> {
      */
     public infix fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesKeys(
         generator: Generator<Key>,
-    ): MapKeySpec<MapType, Key, Value> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapKeySpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
 
     /**
      * Planned API for generating map values for this property by invoking [generator].
@@ -137,7 +137,7 @@ public class FakeSpec<Root> {
      */
     public infix fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesValues(
         generator: Generator<Value>,
-    ): MapValueSpec<MapType, Key, Value> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapValueSpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
 
     /**
      * Planned API for generating this property by applying nested per-call configuration to [Value].
@@ -183,7 +183,7 @@ public class FakeSpec<Root> {
      */
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesKeys(
         generator: Generator<Key>,
-    ): MapKeySpec<MapType, Key, Value> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapKeySpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
 
     /**
      * Planned API for generating map values for this nested property path by invoking [generator].
@@ -192,7 +192,7 @@ public class FakeSpec<Root> {
      */
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesValues(
         generator: Generator<Value>,
-    ): MapValueSpec<MapType, Key, Value> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapValueSpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
 
     /**
      * Planned API for generating this nested property path by applying nested per-call configuration to [Value].
