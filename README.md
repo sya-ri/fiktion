@@ -5,13 +5,13 @@ Fiktion is a Kotlin Multiplatform fake data library for tests.
 It is designed for the case where a test needs realistic-enough object graphs quickly, but still needs precise control when a specific property matters.
 
 ```kotlin
-val id = fake<String>()
+// Generate a complete fake value.
+val anyUser = fake<User>()
 
-val user = Fiktion {
-    type<User>() generatesBy {
-        User(id = "user-${random.nextLong()}")
-    }
-}.fake<User>()
+// Override only the values that matter for the test.
+val user = fake<User> {
+    User::id generates "user-1"
+}
 ```
 
 The main code under test does not need Fiktion annotations or helper functions. Fiktion is intended to be added from tests and configured from the outside.
