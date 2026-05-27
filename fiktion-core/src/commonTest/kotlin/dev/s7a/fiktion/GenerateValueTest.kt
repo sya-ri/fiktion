@@ -6,6 +6,7 @@ import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class GenerateValueTest {
     @Test
@@ -119,6 +120,51 @@ class GenerateValueTest {
             )
 
         assertNull(value)
+    }
+
+    @Test
+    fun `generateValue returns the generated value when null probability never applies`() {
+        val builder = DefaultFiktionBuilder()
+
+        with(builder) {
+            type<String?>() generates "value" orNullAt 0.0
+        }
+
+        val value =
+            generateValue(
+                request = GenerationRequest(type = typeOf<String?>()),
+                config = builder.build(),
+                seed = 123,
+                depth = 0,
+            )
+
+        assertEquals("value", value)
+    }
+
+    @Test
+    fun `generateValue uses fifty percent as the default null probability for nullable rules`() {
+        val builder = DefaultFiktionBuilder()
+
+        with(builder) {
+            type<String?>() generates "value"
+        }
+
+        val nullCount = countNulls(config = builder.build(), samples = 1_000)
+
+        assertTrue(nullCount in 400..600, "Expected about 50% nulls, but got $nullCount nulls.")
+    }
+
+    @Test
+    fun `generateValue uses the configured null probability for nullable rules`() {
+        val builder = DefaultFiktionBuilder()
+
+        with(builder) {
+            type<String?>() generates "value" orNullAt 0.3
+        }
+
+        val nullCount = countNulls(config = builder.build(), samples = 1_000)
+
+        assertTrue(nullCount in 250..350, "Expected about 30% nulls, but got $nullCount nulls.")
     }
 
     @Test
@@ -241,4 +287,20 @@ class GenerateValueTest {
             key.segments.map { segment -> segment.valueId },
         )
     }
+
+    /**
+     * Counts generated null values across deterministic sample seeds.
+     */
+    private fun countNulls(
+        config: FiktionConfig,
+        samples: Int,
+    ): Int =
+        (0 until samples).count { seed ->
+            generateValue(
+                request = GenerationRequest(type = typeOf<String?>()),
+                config = config,
+                seed = seed.toLong(),
+                depth = 0,
+            ) == null
+        }
 }
