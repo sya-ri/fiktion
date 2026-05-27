@@ -1,3 +1,5 @@
+import dev.detekt.gradle.extensions.DetektExtension
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
     alias(libs.plugins.kotlin.jvm) apply false
@@ -16,7 +18,7 @@ subprojects {
         apply(plugin = "org.jmailen.kotlinter")
         apply(plugin = "dev.detekt")
 
-        extensions.configure<dev.detekt.gradle.extensions.DetektExtension>("detekt") {
+        extensions.configure<DetektExtension>("detekt") {
             source.from("src")
         }
     }
