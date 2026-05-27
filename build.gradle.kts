@@ -1,8 +1,8 @@
 plugins {
-    kotlin("multiplatform") version "2.3.21" apply false
-    kotlin("jvm") version "2.3.21" apply false
-    id("org.jmailen.kotlinter") version "5.4.2" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.23.8" apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlinter) apply false
+    alias(libs.plugins.detekt) apply false
 }
 
 group = "dev.s7a"
