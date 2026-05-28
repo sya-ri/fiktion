@@ -27,24 +27,13 @@ public final class dev/s7a/fiktion/CollectionGenerationSpec$DefaultImpls {
 public abstract interface annotation class dev/s7a/fiktion/ExperimentalFiktionApi : java/lang/annotation/Annotation {
 }
 
-public final class dev/s7a/fiktion/FakeContext {
-	public fun <init> (JLdev/s7a/fiktion/FakeType;Ldev/s7a/fiktion/FakeProperty;Ldev/s7a/fiktion/FakePath;I)V
-	public final fun component1 ()J
-	public final fun component2 ()Ldev/s7a/fiktion/FakeType;
-	public final fun component3 ()Ldev/s7a/fiktion/FakeProperty;
-	public final fun component4 ()Ldev/s7a/fiktion/FakePath;
-	public final fun component5 ()I
-	public final fun copy (JLdev/s7a/fiktion/FakeType;Ldev/s7a/fiktion/FakeProperty;Ldev/s7a/fiktion/FakePath;I)Ldev/s7a/fiktion/FakeContext;
-	public static synthetic fun copy$default (Ldev/s7a/fiktion/FakeContext;JLdev/s7a/fiktion/FakeType;Ldev/s7a/fiktion/FakeProperty;Ldev/s7a/fiktion/FakePath;IILjava/lang/Object;)Ldev/s7a/fiktion/FakeContext;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDepth ()I
-	public final fun getPath ()Ldev/s7a/fiktion/FakePath;
-	public final fun getProperty ()Ldev/s7a/fiktion/FakeProperty;
-	public final fun getRandom ()Lkotlin/random/Random;
-	public final fun getSeed ()J
-	public final fun getType ()Ldev/s7a/fiktion/FakeType;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
+public abstract interface class dev/s7a/fiktion/FakeContext {
+	public abstract fun getDepth ()I
+	public abstract fun getPath ()Ldev/s7a/fiktion/FakePath;
+	public abstract fun getProperty ()Ldev/s7a/fiktion/FakeProperty;
+	public abstract fun getRandom ()Lkotlin/random/Random;
+	public abstract fun getSeed ()J
+	public abstract fun getType ()Ldev/s7a/fiktion/FakeType;
 }
 
 public final class dev/s7a/fiktion/FakeKt {
@@ -405,11 +394,17 @@ public final class dev/s7a/fiktion/RuleTargetKt {
 	public static final fun generatesUShortIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/UIntRange;)Ldev/s7a/fiktion/GenerationSpec;
 }
 
-public final class dev/s7a/fiktion/TypeFamilyGenerationContext {
+public final class dev/s7a/fiktion/TypeFamilyGenerationContext : dev/s7a/fiktion/FakeContext {
 	public final fun argumentType (I)Lkotlin/reflect/KType;
 	public final fun fake (I)Ljava/lang/Object;
 	public final fun fake (II)Ljava/lang/Object;
 	public final fun getContext ()Ldev/s7a/fiktion/FakeContext;
+	public fun getDepth ()I
+	public fun getPath ()Ldev/s7a/fiktion/FakePath;
+	public fun getProperty ()Ldev/s7a/fiktion/FakeProperty;
+	public fun getRandom ()Lkotlin/random/Random;
+	public fun getSeed ()J
+	public fun getType ()Ldev/s7a/fiktion/FakeType;
 }
 
 public abstract interface class dev/s7a/fiktion/TypeFamilyRuleTarget {

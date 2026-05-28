@@ -1,5 +1,6 @@
 package dev.s7a.fiktion.generators
 
+import dev.s7a.fiktion.DefaultFakeContext
 import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.childSeed
 
@@ -8,7 +9,7 @@ import dev.s7a.fiktion.childSeed
  */
 @Suppress("DEPRECATION")
 internal fun FakeContext.childContext(index: Int): FakeContext =
-    FakeContext(
+    DefaultFakeContext(
         seed = seed.childSeed(index),
         type = type,
         property = property,

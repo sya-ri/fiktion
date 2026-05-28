@@ -15,7 +15,7 @@ internal fun <Element, CollectionType : Collection<Element>> FakeContext.generat
         List(count) { index ->
             val elementSeed = seed.childSeed(index)
             elementGenerator(
-                FakeContext(
+                DefaultFakeContext(
                     seed = elementSeed,
                     type = type,
                     property = property,

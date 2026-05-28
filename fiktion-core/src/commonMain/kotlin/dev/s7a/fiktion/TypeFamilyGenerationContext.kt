@@ -10,9 +10,9 @@ public class TypeFamilyGenerationContext internal constructor(
      * Fake context for the outer value being generated.
      */
     public val context: FakeContext,
-    private val type: KType,
+    private val requestedType: KType,
     private val config: FiktionConfig,
-) {
+) : FakeContext by context {
     /**
      * Generates a value for the type argument at [argumentIndex].
      */
@@ -36,6 +36,6 @@ public class TypeFamilyGenerationContext internal constructor(
      * Returns the requested type argument at [argumentIndex].
      */
     public fun argumentType(argumentIndex: Int): KType =
-        type.arguments.getOrNull(argumentIndex)?.type
-            ?: throw CannotGenerateException("Cannot generate $type because type argument $argumentIndex is unavailable.")
+        requestedType.arguments.getOrNull(argumentIndex)?.type
+            ?: throw CannotGenerateException("Cannot generate $requestedType because type argument $argumentIndex is unavailable.")
 }

@@ -82,7 +82,7 @@ internal fun generateAutomaticMap(
 @Suppress("DEPRECATION")
 private fun FakeContext.childContext(index: Int): FakeContext {
     val childSeed = seed.childSeed(index)
-    return FakeContext(
+    return DefaultFakeContext(
         seed = childSeed,
         type = type,
         property = property,

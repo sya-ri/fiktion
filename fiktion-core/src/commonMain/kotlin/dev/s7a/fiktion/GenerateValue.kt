@@ -22,7 +22,7 @@ internal fun generateValue(
     val contextSeed = rule?.seed ?: seed
     val path = request.toFakePath()
     val context =
-        FakeContext(
+        DefaultFakeContext(
             seed = contextSeed,
             type = request.type.toFakeType(),
             property = path.segments.lastOrNull(),
@@ -70,7 +70,7 @@ internal fun generateValue(
             return rule.generate(
                 TypeFamilyGenerationContext(
                     context = context,
-                    type = request.type,
+                    requestedType = request.type,
                     config = config,
                 ),
             )

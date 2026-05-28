@@ -22,6 +22,21 @@ final enum class dev.s7a.fiktion/FakeNullability : kotlin/Enum<dev.s7a.fiktion/F
     final fun values(): kotlin/Array<dev.s7a.fiktion/FakeNullability> // dev.s7a.fiktion/FakeNullability.values|values#static(){}[0]
 }
 
+abstract interface dev.s7a.fiktion/FakeContext { // dev.s7a.fiktion/FakeContext|null[0]
+    abstract val depth // dev.s7a.fiktion/FakeContext.depth|{}depth[0]
+        abstract fun <get-depth>(): kotlin/Int // dev.s7a.fiktion/FakeContext.depth.<get-depth>|<get-depth>(){}[0]
+    abstract val path // dev.s7a.fiktion/FakeContext.path|{}path[0]
+        abstract fun <get-path>(): dev.s7a.fiktion/FakePath // dev.s7a.fiktion/FakeContext.path.<get-path>|<get-path>(){}[0]
+    abstract val property // dev.s7a.fiktion/FakeContext.property|{}property[0]
+        abstract fun <get-property>(): dev.s7a.fiktion/FakeProperty? // dev.s7a.fiktion/FakeContext.property.<get-property>|<get-property>(){}[0]
+    abstract val random // dev.s7a.fiktion/FakeContext.random|{}random[0]
+        abstract fun <get-random>(): kotlin.random/Random // dev.s7a.fiktion/FakeContext.random.<get-random>|<get-random>(){}[0]
+    abstract val seed // dev.s7a.fiktion/FakeContext.seed|{}seed[0]
+        abstract fun <get-seed>(): kotlin/Long // dev.s7a.fiktion/FakeContext.seed.<get-seed>|<get-seed>(){}[0]
+    abstract val type // dev.s7a.fiktion/FakeContext.type|{}type[0]
+        abstract fun <get-type>(): dev.s7a.fiktion/FakeType // dev.s7a.fiktion/FakeContext.type.<get-type>|<get-type>(){}[0]
+}
+
 abstract interface dev.s7a.fiktion/FiktionAddon { // dev.s7a.fiktion/FiktionAddon|null[0]
     abstract val id // dev.s7a.fiktion/FiktionAddon.id|{}id[0]
         abstract fun <get-id>(): kotlin/String // dev.s7a.fiktion/FiktionAddon.id.<get-id>|<get-id>(){}[0]
@@ -209,33 +224,6 @@ final class dev.s7a.fiktion/CannotGenerateException : kotlin/RuntimeException { 
     constructor <init>(kotlin/String, kotlin/Throwable? = ...) // dev.s7a.fiktion/CannotGenerateException.<init>|<init>(kotlin.String;kotlin.Throwable?){}[0]
 }
 
-final class dev.s7a.fiktion/FakeContext { // dev.s7a.fiktion/FakeContext|null[0]
-    constructor <init>(kotlin/Long, dev.s7a.fiktion/FakeType, dev.s7a.fiktion/FakeProperty?, dev.s7a.fiktion/FakePath, kotlin/Int) // dev.s7a.fiktion/FakeContext.<init>|<init>(kotlin.Long;dev.s7a.fiktion.FakeType;dev.s7a.fiktion.FakeProperty?;dev.s7a.fiktion.FakePath;kotlin.Int){}[0]
-
-    final val depth // dev.s7a.fiktion/FakeContext.depth|{}depth[0]
-        final fun <get-depth>(): kotlin/Int // dev.s7a.fiktion/FakeContext.depth.<get-depth>|<get-depth>(){}[0]
-    final val path // dev.s7a.fiktion/FakeContext.path|{}path[0]
-        final fun <get-path>(): dev.s7a.fiktion/FakePath // dev.s7a.fiktion/FakeContext.path.<get-path>|<get-path>(){}[0]
-    final val property // dev.s7a.fiktion/FakeContext.property|{}property[0]
-        final fun <get-property>(): dev.s7a.fiktion/FakeProperty? // dev.s7a.fiktion/FakeContext.property.<get-property>|<get-property>(){}[0]
-    final val random // dev.s7a.fiktion/FakeContext.random|{}random[0]
-        final fun <get-random>(): kotlin.random/Random // dev.s7a.fiktion/FakeContext.random.<get-random>|<get-random>(){}[0]
-    final val seed // dev.s7a.fiktion/FakeContext.seed|{}seed[0]
-        final fun <get-seed>(): kotlin/Long // dev.s7a.fiktion/FakeContext.seed.<get-seed>|<get-seed>(){}[0]
-    final val type // dev.s7a.fiktion/FakeContext.type|{}type[0]
-        final fun <get-type>(): dev.s7a.fiktion/FakeType // dev.s7a.fiktion/FakeContext.type.<get-type>|<get-type>(){}[0]
-
-    final fun component1(): kotlin/Long // dev.s7a.fiktion/FakeContext.component1|component1(){}[0]
-    final fun component2(): dev.s7a.fiktion/FakeType // dev.s7a.fiktion/FakeContext.component2|component2(){}[0]
-    final fun component3(): dev.s7a.fiktion/FakeProperty? // dev.s7a.fiktion/FakeContext.component3|component3(){}[0]
-    final fun component4(): dev.s7a.fiktion/FakePath // dev.s7a.fiktion/FakeContext.component4|component4(){}[0]
-    final fun component5(): kotlin/Int // dev.s7a.fiktion/FakeContext.component5|component5(){}[0]
-    final fun copy(kotlin/Long = ..., dev.s7a.fiktion/FakeType = ..., dev.s7a.fiktion/FakeProperty? = ..., dev.s7a.fiktion/FakePath = ..., kotlin/Int = ...): dev.s7a.fiktion/FakeContext // dev.s7a.fiktion/FakeContext.copy|copy(kotlin.Long;dev.s7a.fiktion.FakeType;dev.s7a.fiktion.FakeProperty?;dev.s7a.fiktion.FakePath;kotlin.Int){}[0]
-    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion/FakeContext.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // dev.s7a.fiktion/FakeContext.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // dev.s7a.fiktion/FakeContext.toString|toString(){}[0]
-}
-
 final class dev.s7a.fiktion/FakePath { // dev.s7a.fiktion/FakePath|null[0]
     constructor <init>(kotlin.collections/List<dev.s7a.fiktion/FakeProperty>) // dev.s7a.fiktion/FakePath.<init>|<init>(kotlin.collections.List<dev.s7a.fiktion.FakeProperty>){}[0]
 
@@ -347,9 +335,21 @@ final class dev.s7a.fiktion/PathRuleSegment { // dev.s7a.fiktion/PathRuleSegment
     final fun toString(): kotlin/String // dev.s7a.fiktion/PathRuleSegment.toString|toString(){}[0]
 }
 
-final class dev.s7a.fiktion/TypeFamilyGenerationContext { // dev.s7a.fiktion/TypeFamilyGenerationContext|null[0]
+final class dev.s7a.fiktion/TypeFamilyGenerationContext : dev.s7a.fiktion/FakeContext { // dev.s7a.fiktion/TypeFamilyGenerationContext|null[0]
     final val context // dev.s7a.fiktion/TypeFamilyGenerationContext.context|{}context[0]
         final fun <get-context>(): dev.s7a.fiktion/FakeContext // dev.s7a.fiktion/TypeFamilyGenerationContext.context.<get-context>|<get-context>(){}[0]
+    final val depth // dev.s7a.fiktion/TypeFamilyGenerationContext.depth|{}depth[0]
+        final fun <get-depth>(): kotlin/Int // dev.s7a.fiktion/TypeFamilyGenerationContext.depth.<get-depth>|<get-depth>(){}[0]
+    final val path // dev.s7a.fiktion/TypeFamilyGenerationContext.path|{}path[0]
+        final fun <get-path>(): dev.s7a.fiktion/FakePath // dev.s7a.fiktion/TypeFamilyGenerationContext.path.<get-path>|<get-path>(){}[0]
+    final val property // dev.s7a.fiktion/TypeFamilyGenerationContext.property|{}property[0]
+        final fun <get-property>(): dev.s7a.fiktion/FakeProperty? // dev.s7a.fiktion/TypeFamilyGenerationContext.property.<get-property>|<get-property>(){}[0]
+    final val random // dev.s7a.fiktion/TypeFamilyGenerationContext.random|{}random[0]
+        final fun <get-random>(): kotlin.random/Random // dev.s7a.fiktion/TypeFamilyGenerationContext.random.<get-random>|<get-random>(){}[0]
+    final val seed // dev.s7a.fiktion/TypeFamilyGenerationContext.seed|{}seed[0]
+        final fun <get-seed>(): kotlin/Long // dev.s7a.fiktion/TypeFamilyGenerationContext.seed.<get-seed>|<get-seed>(){}[0]
+    final val type // dev.s7a.fiktion/TypeFamilyGenerationContext.type|{}type[0]
+        final fun <get-type>(): dev.s7a.fiktion/FakeType // dev.s7a.fiktion/TypeFamilyGenerationContext.type.<get-type>|<get-type>(){}[0]
 
     final fun argumentType(kotlin/Int): kotlin.reflect/KType // dev.s7a.fiktion/TypeFamilyGenerationContext.argumentType|argumentType(kotlin.Int){}[0]
     final fun fake(kotlin/Int): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fake|fake(kotlin.Int){}[0]
