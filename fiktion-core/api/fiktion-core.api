@@ -416,6 +416,16 @@ public final class dev/s7a/fiktion/TypeFamilyRuleTargetKt {
 	public static final fun generatesBy (Ldev/s7a/fiktion/TypeFamilyRuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 }
 
+public final class dev/s7a/fiktion/generators/ArithmeticExceptionKt {
+	public static final fun arithmeticException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/ArithmeticException;
+	public static synthetic fun arithmeticException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/ArithmeticException;
+}
+
+public final class dev/s7a/fiktion/generators/AssertionErrorKt {
+	public static final fun assertionError (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/AssertionError;
+	public static synthetic fun assertionError$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/AssertionError;
+}
+
 public final class dev/s7a/fiktion/generators/BooleanArrayKt {
 	public static final fun booleanArray (Ldev/s7a/fiktion/FakeContext;I)[Z
 	public static synthetic fun booleanArray$default (Ldev/s7a/fiktion/FakeContext;IILjava/lang/Object;)[Z
@@ -458,6 +468,16 @@ public final class dev/s7a/fiktion/generators/CharRangeKt {
 	public static final fun charRange (Ldev/s7a/fiktion/FakeContext;Ldev/s7a/fiktion/generators/FiktionCharset;)Lkotlin/ranges/CharRange;
 }
 
+public final class dev/s7a/fiktion/generators/ClassCastExceptionKt {
+	public static final fun classCastException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/ClassCastException;
+	public static synthetic fun classCastException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/ClassCastException;
+}
+
+public final class dev/s7a/fiktion/generators/ConcurrentModificationExceptionKt {
+	public static final fun concurrentModificationException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/util/ConcurrentModificationException;
+	public static synthetic fun concurrentModificationException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/util/ConcurrentModificationException;
+}
+
 public final class dev/s7a/fiktion/generators/DoubleArrayKt {
 	public static final fun doubleArray (Ldev/s7a/fiktion/FakeContext;I)[D
 	public static synthetic fun doubleArray$default (Ldev/s7a/fiktion/FakeContext;IILjava/lang/Object;)[D
@@ -475,6 +495,16 @@ public final class dev/s7a/fiktion/generators/DurationKt {
 
 public final class dev/s7a/fiktion/generators/DurationUnitKt {
 	public static final fun durationUnit (Ldev/s7a/fiktion/FakeContext;)Lkotlin/time/DurationUnit;
+}
+
+public final class dev/s7a/fiktion/generators/ErrorKt {
+	public static final fun error (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/Error;
+	public static synthetic fun error$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/Error;
+}
+
+public final class dev/s7a/fiktion/generators/ExceptionKt {
+	public static final fun exception (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/Exception;
+	public static synthetic fun exception$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/Exception;
 }
 
 public final class dev/s7a/fiktion/generators/FiktionCharset {
@@ -505,6 +535,21 @@ public final class dev/s7a/fiktion/generators/FloatKt {
 	public static final fun float (Ldev/s7a/fiktion/FakeContext;)F
 	public static final fun float (Ldev/s7a/fiktion/FakeContext;FF)F
 	public static final fun float (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedFloatingPointRange;)F
+}
+
+public final class dev/s7a/fiktion/generators/IllegalArgumentExceptionKt {
+	public static final fun illegalArgumentException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/IllegalArgumentException;
+	public static synthetic fun illegalArgumentException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/IllegalArgumentException;
+}
+
+public final class dev/s7a/fiktion/generators/IllegalStateExceptionKt {
+	public static final fun illegalStateException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/IllegalStateException;
+	public static synthetic fun illegalStateException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/IllegalStateException;
+}
+
+public final class dev/s7a/fiktion/generators/IndexOutOfBoundsExceptionKt {
+	public static final fun indexOutOfBoundsException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/IndexOutOfBoundsException;
+	public static synthetic fun indexOutOfBoundsException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/IndexOutOfBoundsException;
 }
 
 public final class dev/s7a/fiktion/generators/InstantKt {
@@ -565,6 +610,21 @@ public final class dev/s7a/fiktion/generators/MapKt {
 	public static synthetic fun mutableMap$default (Ldev/s7a/fiktion/FakeContext;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/Map;
 }
 
+public final class dev/s7a/fiktion/generators/NoSuchElementExceptionKt {
+	public static final fun noSuchElementException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/util/NoSuchElementException;
+	public static synthetic fun noSuchElementException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/util/NoSuchElementException;
+}
+
+public final class dev/s7a/fiktion/generators/NullPointerExceptionKt {
+	public static final fun nullPointerException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/NullPointerException;
+	public static synthetic fun nullPointerException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/NullPointerException;
+}
+
+public final class dev/s7a/fiktion/generators/NumberFormatExceptionKt {
+	public static final fun numberFormatException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/NumberFormatException;
+	public static synthetic fun numberFormatException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/NumberFormatException;
+}
+
 public final class dev/s7a/fiktion/generators/OneOfKt {
 	public static final fun oneOf (Ldev/s7a/fiktion/FakeContext;Ljava/util/List;)Ljava/lang/Object;
 }
@@ -584,6 +644,11 @@ public final class dev/s7a/fiktion/generators/ResultKt {
 	public static final fun result-edXGijw (Ldev/s7a/fiktion/FakeContext;DLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 	public static synthetic fun result-edXGijw$default (Ldev/s7a/fiktion/FakeContext;DLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/lang/Object;
 	public static final fun successResult (Ldev/s7a/fiktion/FakeContext;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
+public final class dev/s7a/fiktion/generators/RuntimeExceptionKt {
+	public static final fun runtimeException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/RuntimeException;
+	public static synthetic fun runtimeException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/RuntimeException;
 }
 
 public final class dev/s7a/fiktion/generators/SequenceKt {
@@ -617,36 +682,8 @@ public final class dev/s7a/fiktion/generators/StringKt {
 }
 
 public final class dev/s7a/fiktion/generators/ThrowableKt {
-	public static final fun arithmeticException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/ArithmeticException;
-	public static synthetic fun arithmeticException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/ArithmeticException;
-	public static final fun assertionError (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/AssertionError;
-	public static synthetic fun assertionError$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/AssertionError;
-	public static final fun classCastException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/ClassCastException;
-	public static synthetic fun classCastException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/ClassCastException;
-	public static final fun concurrentModificationException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/util/ConcurrentModificationException;
-	public static synthetic fun concurrentModificationException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/util/ConcurrentModificationException;
-	public static final fun error (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/Error;
-	public static synthetic fun error$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/Error;
-	public static final fun exception (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/Exception;
-	public static synthetic fun exception$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/Exception;
-	public static final fun illegalArgumentException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/IllegalArgumentException;
-	public static synthetic fun illegalArgumentException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/IllegalArgumentException;
-	public static final fun illegalStateException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/IllegalStateException;
-	public static synthetic fun illegalStateException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/IllegalStateException;
-	public static final fun indexOutOfBoundsException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/IndexOutOfBoundsException;
-	public static synthetic fun indexOutOfBoundsException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/IndexOutOfBoundsException;
-	public static final fun noSuchElementException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/util/NoSuchElementException;
-	public static synthetic fun noSuchElementException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/util/NoSuchElementException;
-	public static final fun nullPointerException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/NullPointerException;
-	public static synthetic fun nullPointerException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/NullPointerException;
-	public static final fun numberFormatException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/NumberFormatException;
-	public static synthetic fun numberFormatException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/NumberFormatException;
-	public static final fun runtimeException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/RuntimeException;
-	public static synthetic fun runtimeException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/RuntimeException;
 	public static final fun throwable (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/Throwable;
 	public static synthetic fun throwable$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/Throwable;
-	public static final fun unsupportedOperationException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/UnsupportedOperationException;
-	public static synthetic fun unsupportedOperationException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/UnsupportedOperationException;
 }
 
 public final class dev/s7a/fiktion/generators/TripleKt {
@@ -717,6 +754,11 @@ public final class dev/s7a/fiktion/generators/UShortKt {
 
 public final class dev/s7a/fiktion/generators/UnitKt {
 	public static final fun unit (Ldev/s7a/fiktion/FakeContext;)V
+}
+
+public final class dev/s7a/fiktion/generators/UnsupportedOperationExceptionKt {
+	public static final fun unsupportedOperationException (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;)Ljava/lang/UnsupportedOperationException;
+	public static synthetic fun unsupportedOperationException$default (Ldev/s7a/fiktion/FakeContext;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/UnsupportedOperationException;
 }
 
 public final class dev/s7a/fiktion/generators/UuidKt {
