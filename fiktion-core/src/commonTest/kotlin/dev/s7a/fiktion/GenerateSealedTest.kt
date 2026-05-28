@@ -82,7 +82,11 @@ class GenerateSealedTest {
                 fiktion.fake<Message>(seed = 123)
             }
 
-        assertTrue(error.message.orEmpty().contains("registered sealed metadata has no subtypes"))
+        assertTrue(error.message.orEmpty().contains("Generated sealed metadata"))
+        assertTrue(error.message.orEmpty().contains("Message"))
+        assertTrue(error.message.orEmpty().contains("has no concrete subtypes"))
+        assertTrue(error.message.orEmpty().contains("type<"))
+        assertTrue(error.message.orEmpty().contains("generatesBy { ... }"))
     }
 
     @Test
@@ -99,7 +103,7 @@ class GenerateSealedTest {
 
         assertTrue(error.message.orEmpty().contains("TextMessage"))
         assertTrue(error.message.orEmpty().contains("sealed metadata selected subtype"))
-        assertTrue(error.message.orEmpty().contains("no generation rule or metadata is registered"))
+        assertTrue(error.message.orEmpty().contains("No generation rule or generated metadata was found"))
         assertTrue(error.cause is CannotGenerateException)
     }
 
@@ -113,7 +117,11 @@ class GenerateSealedTest {
             }
 
         assertTrue(error.message.orEmpty().contains("TextMessage"))
-        assertTrue(error.message.orEmpty().contains("Register metadata"))
+        assertTrue(error.message.orEmpty().contains("No generation rule or generated metadata was found"))
+        assertTrue(error.message.orEmpty().contains("Fiktion compiler plugin is applied"))
+        assertTrue(error.message.orEmpty().contains("type<"))
+        assertTrue(error.message.orEmpty().contains("TextMessage"))
+        assertTrue(error.message.orEmpty().contains("generatesBy { ... }"))
     }
 
     @Test

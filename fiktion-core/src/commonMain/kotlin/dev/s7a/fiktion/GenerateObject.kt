@@ -2,6 +2,7 @@
 
 package dev.s7a.fiktion
 
+import dev.s7a.fiktion.runtime.CannotGenerateException
 import kotlin.random.Random
 
 /**
@@ -27,12 +28,19 @@ internal fun generateObject(
                 FiktionObjectDefault
             } else {
                 FiktionObjectValue(
-                    generateValue(
-                        request = childRequest,
-                        config = config,
-                        seed = childSeed,
-                        depth = depth + 1,
-                    ),
+                    try {
+                        generateValue(
+                            request = childRequest,
+                            config = config,
+                            seed = childSeed,
+                            depth = depth + 1,
+                        )
+                    } catch (cause: CannotGenerateException) {
+                        throw CannotGenerateException(
+                            message = objectArgumentGenerationMessage(type = request.type, property = property),
+                            cause = cause,
+                        )
+                    },
                 )
             }
         }

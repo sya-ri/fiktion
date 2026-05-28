@@ -1,9 +1,11 @@
 package dev.s7a.fiktion
 
+import dev.s7a.fiktion.runtime.CannotGenerateException
 import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalFiktionApi::class)
@@ -71,6 +73,29 @@ class GenerateObjectTest {
             ),
             user,
         )
+    }
+
+    @Test
+    fun `fake reports constructor argument when generated object property cannot be generated`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithProfile())
+                type<String>() generates "id"
+            }
+
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                fiktion.fake<User>(seed = 123)
+            }
+
+        assertTrue(error.message.orEmpty().contains("Failed while generating constructor argument profile"))
+        assertTrue(error.message.orEmpty().contains("type<"))
+        assertTrue(error.message.orEmpty().contains("Profile"))
+        assertTrue(error.message.orEmpty().contains("property<"))
+        assertTrue(error.message.orEmpty().contains("User"))
+        assertTrue(error.message.orEmpty().contains("\"profile\""))
+        assertTrue(error.message.orEmpty().contains("generatesBy { ... }"))
+        assertTrue(error.cause is CannotGenerateException)
     }
 
     @Test

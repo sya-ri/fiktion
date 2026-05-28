@@ -6,6 +6,7 @@ import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalFiktionApi::class)
 class GenerateValueClassTest {
@@ -64,6 +65,27 @@ class GenerateValueClassTest {
         }
     }
 
+    @Test
+    fun `fake reports underlying value type when value metadata cannot be generated`() {
+        val fiktion =
+            Fiktion {
+                register(complexUserIdMetadata())
+            }
+
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                fiktion.fake<ComplexUserId>(seed = 1)
+            }
+
+        assertTrue(error.message.orEmpty().contains("Generated value metadata was found"))
+        assertTrue(error.message.orEmpty().contains("ComplexUserId"))
+        assertTrue(error.message.orEmpty().contains("underlying value type"))
+        assertTrue(error.message.orEmpty().contains("ComplexUserIdValue"))
+        assertTrue(error.message.orEmpty().contains("type<"))
+        assertTrue(error.message.orEmpty().contains("generatesBy { ... }"))
+        assertTrue(error.cause is CannotGenerateException)
+    }
+
     /**
      * Returns test metadata for [UserId].
      */
@@ -73,5 +95,16 @@ class GenerateValueClassTest {
             underlyingType = typeOf<String>(),
         ) { value ->
             UserId(value as String)
+        }
+
+    /**
+     * Returns test metadata for [ComplexUserId].
+     */
+    private fun complexUserIdMetadata(): FiktionValueMetadata<ComplexUserId> =
+        FiktionValueMetadata(
+            type = typeOf<ComplexUserId>(),
+            underlyingType = typeOf<ComplexUserIdValue>(),
+        ) { value ->
+            ComplexUserId(value as ComplexUserIdValue)
         }
 }

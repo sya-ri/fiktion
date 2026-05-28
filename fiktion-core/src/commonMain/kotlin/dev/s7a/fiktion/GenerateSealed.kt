@@ -17,10 +17,7 @@ internal fun generateSealed(
     metadata: FiktionSealedMetadata<*>,
 ): Any? {
     if (metadata.subtypes.isEmpty()) {
-        throw CannotGenerateException(
-            "Cannot generate ${request.type} because the registered sealed metadata has no subtypes. " +
-                "Register sealed metadata with at least one concrete subtype.",
-        )
+        throw CannotGenerateException(emptySealedMetadataMessage(request.type))
     }
 
     val subtype = metadata.subtypes[context.random.nextInt(metadata.subtypes.size)]
