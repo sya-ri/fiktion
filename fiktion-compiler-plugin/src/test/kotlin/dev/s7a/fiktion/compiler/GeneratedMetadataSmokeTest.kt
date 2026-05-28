@@ -92,6 +92,30 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin skips protected constructors by default`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedProtectedConstructorUser>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `explicit rules can generate classes with protected constructors`() {
+        val fiktion =
+            Fiktion {
+                type<GeneratedProtectedConstructorUser>() generates GeneratedProtectedConstructorUser.create(id = "configured")
+            }
+
+        assertEquals("configured", fiktion.fake<GeneratedProtectedConstructorUser>(seed = 123).id)
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for internal constructors`() {
+        val user = fake<GeneratedInternalConstructorUser>(seed = 123)
+
+        assertEquals(fake<GeneratedInternalConstructorUser>(seed = 123).id, user.id)
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for nested fake calls`() {
         assertEquals(fake<GeneratedUserWrapper>(seed = 123), fake<GeneratedUserWrapper>(seed = 123))
     }
@@ -310,6 +334,36 @@ private class GeneratedPrivateConstructorUser private constructor(
         fun create(id: String): GeneratedPrivateConstructorUser = GeneratedPrivateConstructorUser(id)
     }
 }
+
+/**
+ * Smoke-test class whose protected constructor should not receive generated metadata.
+ */
+private open class GeneratedProtectedConstructorUser protected constructor(
+    /**
+     * Protected-constructor user identifier.
+     */
+    val id: String,
+) {
+    /**
+     * Factory for tests that explicitly define how to create this type.
+     */
+    companion object {
+        /**
+         * Creates a protected-constructor user for explicit rule tests.
+         */
+        fun create(id: String): GeneratedProtectedConstructorUser = GeneratedProtectedConstructorUser(id)
+    }
+}
+
+/**
+ * Smoke-test class whose internal constructor should receive generated metadata.
+ */
+private class GeneratedInternalConstructorUser internal constructor(
+    /**
+     * Internal-constructor user identifier.
+     */
+    val id: String,
+)
 
 /**
  * Smoke-test model that depends on nested compiler-generated metadata.
