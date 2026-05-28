@@ -41,6 +41,6 @@ jobs:
           install-dependencies: true
 
       - name: Build
-        run: ./gradlew build --stacktrace -Pfiktion.enableBrowserTests=true
+        run: ./gradlew build --stacktrace
         env:
           CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
