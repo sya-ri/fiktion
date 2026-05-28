@@ -1,13 +1,8 @@
-package dev.s7a.fiktion.generators
-
-import dev.s7a.fiktion.DefaultFakeContext
-import dev.s7a.fiktion.FakeContext
-import dev.s7a.fiktion.childSeed
+package dev.s7a.fiktion
 
 /**
  * Creates a child fake context for generator parts.
  */
-@Suppress("DEPRECATION")
 internal fun FakeContext.childContext(index: Int): FakeContext =
     DefaultFakeContext(
         seed = seed.childSeed(index),

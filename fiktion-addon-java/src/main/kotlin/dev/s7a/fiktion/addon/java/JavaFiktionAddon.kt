@@ -383,7 +383,7 @@ public object JavaFiktionAddon : FiktionAddon {
                 }
             }
             configureCollection<PriorityBlockingQueue<*>> { elements ->
-                PriorityBlockingQueue<Any>(DEFAULT_JAVA_BLOCKING_QUEUE_CAPACITY, compareBy(Any::toString)).apply {
+                PriorityBlockingQueue<Any>(1, compareBy(Any::toString)).apply {
                     addAll(elements.filterNotNull())
                 }
             }
@@ -807,5 +807,3 @@ public object JavaFiktionAddon : FiktionAddon {
         }
     }
 }
-
-private const val DEFAULT_JAVA_BLOCKING_QUEUE_CAPACITY: Int = 1

@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.childContext
 
 /**
  * Generates a triple from [first], [second], and [third].

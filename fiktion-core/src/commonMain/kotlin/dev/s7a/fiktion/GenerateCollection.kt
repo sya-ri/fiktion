@@ -5,7 +5,7 @@ import kotlin.reflect.KType
 /**
  * Generates a collection using [spec] and the converter configured for [request].
  */
-@Suppress("UNCHECKED_CAST", "DEPRECATION")
+@Suppress("UNCHECKED_CAST")
 internal fun <Element, CollectionType : Collection<Element>> FakeContext.generateCollection(
     request: GenerationRequest,
     config: FiktionConfig,

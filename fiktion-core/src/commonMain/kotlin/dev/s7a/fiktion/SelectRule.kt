@@ -11,13 +11,24 @@ internal fun FiktionConfig.selectRule(request: GenerationRequest): DefaultGenera
  * Selects the effective rule for [request] from this rule collection.
  */
 internal fun Iterable<DefaultGenerationSpec<*>>.selectRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
-    withIndex()
-        .filter { (_, rule) -> rule.matcher.matches(request) }
-        .maxWithOrNull(
-            compareBy<IndexedValue<DefaultGenerationSpec<*>>> { (_, rule) -> rule.precedence }
-                .thenBy { (_, rule) -> rule.matcher.specificity }
-                .thenBy { (index, _) -> index },
-        )?.value
+    filter { rule -> rule.matcher.matches(request) }
+        .fold(initial = null) { selected, candidate ->
+            when {
+                selected == null -> candidate
+                candidate.hasHigherPriorityThan(selected) -> candidate
+                else -> selected
+            }
+        }
+
+/**
+ * Returns whether this rule should override [other] within the effective lookup order.
+ */
+private fun DefaultGenerationSpec<*>.hasHigherPriorityThan(other: DefaultGenerationSpec<*>): Boolean =
+    when {
+        precedence != other.precedence -> precedence > other.precedence
+        matcher.specificity != other.matcher.specificity -> matcher.specificity > other.matcher.specificity
+        else -> true
+    }
 
 /**
  * Selects the effective collection converter for [request] from this configuration.

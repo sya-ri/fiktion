@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.childContext
 import dev.s7a.fiktion.Probability
 import dev.s7a.fiktion.percent
 

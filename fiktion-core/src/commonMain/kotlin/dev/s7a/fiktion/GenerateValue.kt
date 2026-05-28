@@ -10,7 +10,6 @@ private const val DEFAULT_NULL_PROBABILITY = 0.5
 /**
  * Generates a single value for [request] using [config].
  */
-@Suppress("DEPRECATION")
 internal fun generateValue(
     request: GenerationRequest,
     config: FiktionConfig,
