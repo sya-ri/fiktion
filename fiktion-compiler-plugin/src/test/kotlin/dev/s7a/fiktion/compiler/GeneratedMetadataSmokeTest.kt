@@ -54,6 +54,20 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin skips fun interfaces`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedUserFactory>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `compiler plugin skips annotation classes`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedUserAnnotation>(seed = 123)
+        }
+    }
+
+    @Test
     fun `compiler plugin skips inner classes`() {
         assertFailsWith<CannotGenerateException> {
             fake<GeneratedOuterUser.GeneratedInnerUser>(seed = 123)
@@ -201,6 +215,11 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata for companion objects`() {
+        assertEquals(GeneratedCompanionOwner, fake<GeneratedCompanionOwner.Companion>(seed = 123))
+    }
+
+    @Test
     fun `compiler plugin generated registrar uses once guard`() {
         val guard = generatedRegistrarGuardField()
         val generatedMetadata = generatedMetadataReference()
@@ -299,6 +318,26 @@ private interface GeneratedUserContract {
      */
     val id: String
 }
+
+/**
+ * Smoke-test fun interface that generated metadata should not target.
+ */
+private fun interface GeneratedUserFactory {
+    /**
+     * Creates a user identifier.
+     */
+    fun create(): String
+}
+
+/**
+ * Smoke-test annotation class that generated metadata should not target.
+ */
+private annotation class GeneratedUserAnnotation(
+    /**
+     * Annotation user identifier.
+     */
+    val id: String,
+)
 
 /**
  * Smoke-test outer class containing an inner class that generated metadata should not target.
@@ -542,6 +581,16 @@ private data class GeneratedEmailNotification(
  * Smoke-test nested sealed singleton leaf.
  */
 private data object GeneratedIdleNotification : GeneratedSystemNotification
+
+/**
+ * Smoke-test class containing a companion object.
+ */
+private class GeneratedCompanionOwner {
+    /**
+     * Smoke-test companion object that depends on compiler-generated metadata.
+     */
+    companion object
+}
 
 /**
  * Smoke-test model used to verify the generated registrar guard.
