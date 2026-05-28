@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
+import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -45,7 +46,7 @@ internal class FiktionGeneratedMetadataCollector {
      */
     @OptIn(UnsafeDuringIrConstructionAPI::class)
     private fun IrClass.toCandidate(): FiktionGeneratedMetadataCandidate? {
-        if (isExpect || isInner) return null
+        if (isExpect || isInner || isLocalClass()) return null
         val className = fqNameWhenAvailable?.asString().orEmpty()
         if (className.isBlank()) return null
 
@@ -117,4 +118,9 @@ internal class FiktionGeneratedMetadataCollector {
                 listOf(subtype)
             }
         }
+
+    /**
+     * Returns whether this class is declared in a local scope.
+     */
+    private fun IrClass.isLocalClass(): Boolean = parent !is IrFile && parent !is IrClass
 }

@@ -51,6 +51,27 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin skips inner classes`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedOuterUser.GeneratedInnerUser>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `compiler plugin skips local classes`() {
+        class GeneratedLocalUser(
+            /**
+             * Local user identifier.
+             */
+            val id: String,
+        )
+
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedLocalUser>(seed = 123)
+        }
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for nested fake calls`() {
         assertEquals(fake<GeneratedUserWrapper>(seed = 123), fake<GeneratedUserWrapper>(seed = 123))
     }
@@ -233,6 +254,21 @@ private interface GeneratedUserContract {
      * Contract user identifier.
      */
     val id: String
+}
+
+/**
+ * Smoke-test outer class containing an inner class that generated metadata should not target.
+ */
+private class GeneratedOuterUser {
+    /**
+     * Smoke-test inner class that generated metadata should not target.
+     */
+    inner class GeneratedInnerUser(
+        /**
+         * Inner user identifier.
+         */
+        val id: String,
+    )
 }
 
 /**
