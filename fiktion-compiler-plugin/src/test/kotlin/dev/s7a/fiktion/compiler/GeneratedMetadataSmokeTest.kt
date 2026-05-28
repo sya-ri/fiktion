@@ -37,6 +37,20 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin skips abstract classes`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedAbstractUser>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `compiler plugin skips interfaces`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedUserContract>(seed = 123)
+        }
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for nested fake calls`() {
         assertEquals(fake<GeneratedUserWrapper>(seed = 123), fake<GeneratedUserWrapper>(seed = 123))
     }
@@ -199,6 +213,26 @@ private class GeneratedRegularUserWithoutPrimaryConstructor {
     constructor(id: String) {
         this.id = id
     }
+}
+
+/**
+ * Smoke-test abstract class that generated metadata should not target.
+ */
+private abstract class GeneratedAbstractUser(
+    /**
+     * Abstract user identifier.
+     */
+    val id: String,
+)
+
+/**
+ * Smoke-test interface that generated metadata should not target.
+ */
+private interface GeneratedUserContract {
+    /**
+     * Contract user identifier.
+     */
+    val id: String
 }
 
 /**

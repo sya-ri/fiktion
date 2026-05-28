@@ -72,7 +72,7 @@ internal class FiktionGeneratedMetadataCollector {
             )
         }
 
-        if (kind != ClassKind.CLASS) return null
+        if (kind != ClassKind.CLASS || modality == Modality.ABSTRACT) return null
         val valueClass = isValue || valueClassRepresentation != null
         val constructor = declarations.filterIsInstance<IrConstructor>().firstOrNull { constructor -> constructor.isPrimary } ?: return null
         val parameters = constructor.parameters.filter { parameter -> parameter.kind == IrParameterKind.Regular }
