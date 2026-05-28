@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.FakeContext
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
@@ -102,10 +101,5 @@ internal open class DefaultFiktionRuleBuilder(
     private fun <Value> target(
         key: RuleKey,
         matcher: RuleMatcher,
-    ): RuleTarget<Value> =
-        DefaultRuleTarget { generator: FakeContext.() -> Value ->
-            val rule = RegisteredRule(key = key, matcher = matcher, generator = generator)
-            config.add(rule)
-            rule
-        }
+    ): RuleTarget<Value> = DefaultRuleTarget(config, key, matcher)
 }

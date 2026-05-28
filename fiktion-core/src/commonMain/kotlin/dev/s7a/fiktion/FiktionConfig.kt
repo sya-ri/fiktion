@@ -17,7 +17,7 @@ internal data class FiktionConfig(
     /**
      * Explicit rules configured by users for a global, isolated, or per-call scope.
      */
-    val rules: List<RegisteredRule<*>> = emptyList(),
+    val rules: List<DefaultGenerationSpec<*>> = emptyList(),
     /**
      * Type construction metadata keyed by stable type id.
      */
@@ -58,5 +58,5 @@ internal data class FiktionConfig(
     /**
      * Returns rules in lookup order from lowest to highest precedence.
      */
-    fun effectiveRules(): List<RegisteredRule<*>> = addons.flatMap { it.rules } + rules
+    fun effectiveRules(): List<DefaultGenerationSpec<*>> = addons.flatMap { it.rules } + rules
 }

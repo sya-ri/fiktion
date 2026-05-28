@@ -131,31 +131,36 @@ public sealed interface FiktionRuleBuilder {
         throw NotImplementedError("Automatic property generation is not implemented yet.")
 
     /**
-     * Planned API for generating each element for this collection property by invoking [generator].
-     *
-     * This is not implemented by the current runtime path.
+     * Generates each element for this collection property by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Owner, Element, CollectionType : Collection<Element>> KProperty1<Owner, CollectionType>.generatesEach(
         generator: Generator<Element>,
-    ): CollectionGenerationSpec<Element, CollectionType> = throw NotImplementedError("Collection generation is not implemented yet.")
+    ): CollectionGenerationSpec<Element, CollectionType> = property(this).generatesEach(generator)
 
     /**
-     * Planned API for generating map keys for this property by invoking [generator].
-     *
-     * This is not implemented by the current runtime path.
+     * Generates each entry for this map property by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
+    public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesEach(
+        generator: Generator<Pair<Key, Value>>,
+    ): MapEntrySpec<Key, Value, MapType> = property(this).generatesEach(generator)
+
+    /**
+     * Generates map keys for this property by invoking [generator].
+     */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesKeys(
         generator: Generator<Key>,
-    ): MapKeySpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapKeySpec<Key, Value, MapType> = property(this).generatesKeys(generator)
 
     /**
-     * Planned API for generating map values for this property by invoking [generator].
-     *
-     * This is not implemented by the current runtime path.
+     * Generates map values for this property by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesValues(
         generator: Generator<Value>,
-    ): MapValueSpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
 
     /**
      * Generates [value] for this nested property path.
@@ -178,31 +183,32 @@ public sealed interface FiktionRuleBuilder {
         throw NotImplementedError("Automatic property generation is not implemented yet.")
 
     /**
-     * Planned API for generating each element for this nested collection property path by invoking [generator].
-     *
-     * This is not implemented by the current runtime path.
+     * Generates each element for this nested collection property path by invoking [generator].
      */
     public infix fun <Root, Element, CollectionType : Collection<Element>> PropertyPath<Root, CollectionType>.generatesEach(
         generator: Generator<Element>,
-    ): CollectionGenerationSpec<Element, CollectionType> = throw NotImplementedError("Collection generation is not implemented yet.")
+    ): CollectionGenerationSpec<Element, CollectionType> = property(this).generatesEach(generator)
 
     /**
-     * Planned API for generating map keys for this nested property path by invoking [generator].
-     *
-     * This is not implemented by the current runtime path.
+     * Generates each entry for this nested map property path by invoking [generator].
+     */
+    public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesEach(
+        generator: Generator<Pair<Key, Value>>,
+    ): MapEntrySpec<Key, Value, MapType> = property(this).generatesEach(generator)
+
+    /**
+     * Generates map keys for this nested property path by invoking [generator].
      */
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesKeys(
         generator: Generator<Key>,
-    ): MapKeySpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapKeySpec<Key, Value, MapType> = property(this).generatesKeys(generator)
 
     /**
-     * Planned API for generating map values for this nested property path by invoking [generator].
-     *
-     * This is not implemented by the current runtime path.
+     * Generates map values for this nested property path by invoking [generator].
      */
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesValues(
         generator: Generator<Value>,
-    ): MapValueSpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
+    ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
 }
 
 /**

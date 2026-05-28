@@ -1,9 +1,7 @@
 package dev.s7a.fiktion
 
 /**
- * Planned configured generation rule for map values.
- *
- * Map generation is not implemented by the current runtime path.
+ * Configured generation rule for map values.
  */
 public sealed interface MapGenerationSpec<Key, Value, MapType : Map<Key, Value>> : GenerationSpec<MapType> {
     /**

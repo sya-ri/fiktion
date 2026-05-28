@@ -16,9 +16,9 @@ internal class DefaultRuleNameTarget(
      */
     private val matcher: (KType) -> RuleMatcher,
     /**
-     * Callback that stores the registered rule.
+     * Callback that stores the registered spec.
      */
-    private val register: (RegisteredRule<*>) -> Unit,
+    private val register: (DefaultGenerationSpec<*>) -> Unit,
 ) : RuleNameTarget {
     /**
      * Registers [generator] for [type].
@@ -28,8 +28,8 @@ internal class DefaultRuleNameTarget(
         type: KType,
         generator: FakeContext.() -> Any?,
     ): GenerationSpec<*> {
-        val rule = RegisteredRule(key = key(type), matcher = matcher(type), generator = generator)
-        register(rule)
-        return rule
+        val spec = DefaultGenerationSpec(key = key(type), matcher = matcher(type), generator = generator)
+        register(spec)
+        return spec
     }
 }

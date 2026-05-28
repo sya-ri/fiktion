@@ -8,7 +8,7 @@ package dev.s7a.fiktion
 internal class MutableFiktionConfig(
     seed: Long? = null,
     addons: List<InstalledAddon> = emptyList(),
-    rules: List<RegisteredRule<*>> = emptyList(),
+    rules: List<DefaultGenerationSpec<*>> = emptyList(),
     metadata: Map<String, FiktionTypeMetadata<*>> = emptyMap(),
 ) {
     /**
@@ -24,7 +24,7 @@ internal class MutableFiktionConfig(
     /**
      * Explicit rule buffer.
      */
-    private val rules: MutableList<RegisteredRule<*>> = rules.toMutableList()
+    private val rules: MutableList<DefaultGenerationSpec<*>> = rules.toMutableList()
 
     /**
      * Type construction metadata keyed by stable type id.
@@ -32,18 +32,33 @@ internal class MutableFiktionConfig(
     private val metadata: MutableMap<String, FiktionTypeMetadata<*>> = metadata.toMutableMap()
 
     /**
+     * Mutable map generation specs keyed by the same rule identity used for replacement.
+     */
+    private val mapGenerationSpecs: MutableMap<RuleKey, DefaultMapGenerationSpec<*, *, *>> = mutableMapOf()
+
+    /**
      * Rule buffer for the add-on currently being installed.
      */
-    private var installingAddonRules: MutableList<RegisteredRule<*>>? = null
+    private var installingAddonRules: MutableList<DefaultGenerationSpec<*>>? = null
 
     /**
      * Adds [rule], replacing an existing rule with the same key within the current rule layer.
      */
-    fun add(rule: RegisteredRule<*>) {
+    fun add(rule: DefaultGenerationSpec<*>) {
         val targetRules = installingAddonRules ?: rules
         targetRules.removeAll { it.key == rule.key }
         targetRules += rule
     }
+
+    /**
+     * Returns the shared map generation spec for [key].
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <Key, Value, MapType : Map<Key, Value>> mapGenerationSpec(
+        key: RuleKey,
+        create: () -> DefaultMapGenerationSpec<Key, Value, MapType>,
+    ): DefaultMapGenerationSpec<Key, Value, MapType> =
+        mapGenerationSpecs.getOrPut(key) { create() } as DefaultMapGenerationSpec<Key, Value, MapType>
 
     /**
      * Registers [metadata], replacing existing metadata for the same generated type.
@@ -60,7 +75,7 @@ internal class MutableFiktionConfig(
         install: () -> Unit,
     ) {
         val previousAddonRules = installingAddonRules
-        val addonRules = mutableListOf<RegisteredRule<*>>()
+        val addonRules = mutableListOf<DefaultGenerationSpec<*>>()
         installingAddonRules = addonRules
         try {
             install()

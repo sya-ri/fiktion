@@ -11,7 +11,7 @@ internal data class InstalledAddon(
     /**
      * Rules contributed by this add-on.
      */
-    val rules: List<RegisteredRule<*>>,
+    val rules: List<DefaultGenerationSpec<*>>,
 ) {
     /**
      * Returns a detached copy whose rules can be stored in an immutable configuration snapshot.

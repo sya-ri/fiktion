@@ -64,7 +64,7 @@ class GenerateValueTest {
             FiktionConfig(
                 rules =
                     listOf(
-                        RegisteredRule(
+                        DefaultGenerationSpec(
                             key = RuleKey.Property(typeOf<User>(), "id", typeOf<String>()),
                             matcher = RuleMatcher.Property(typeOf<User>(), "id", typeOf<String>()),
                             generator = { "global-property-id" },
@@ -75,7 +75,7 @@ class GenerateValueTest {
             FiktionConfig(
                 rules =
                     listOf(
-                        RegisteredRule(
+                        DefaultGenerationSpec(
                             key = RuleKey.Type(typeOf<String>()),
                             matcher = RuleMatcher.Type(typeOf<String>()),
                             generator = { "per-call-string" },

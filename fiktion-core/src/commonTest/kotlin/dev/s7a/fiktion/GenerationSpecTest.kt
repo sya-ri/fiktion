@@ -8,7 +8,7 @@ import kotlin.test.assertSame
 class GenerationSpecTest {
     @Test
     fun `withSeed stores the seed and returns the same spec`() {
-        val rule = registeredStringRule()
+        val rule = stringSpec()
 
         val spec = rule withSeed 123
 
@@ -18,7 +18,7 @@ class GenerationSpecTest {
 
     @Test
     fun `orNullAt stores a probability value and returns the same spec`() {
-        val rule = registeredStringRule()
+        val rule = stringSpec()
 
         val spec = rule orNullAt 30.percent
 
@@ -28,7 +28,7 @@ class GenerationSpecTest {
 
     @Test
     fun `orNullAt accepts a raw probability value`() {
-        val rule = registeredStringRule()
+        val rule = stringSpec()
 
         rule orNullAt 0.3
 
@@ -37,7 +37,7 @@ class GenerationSpecTest {
 
     @Test
     fun `orDefaultAt stores a probability value and returns the same spec`() {
-        val rule = registeredStringRule()
+        val rule = stringSpec()
 
         val spec = rule orDefaultAt 40.percent
 
@@ -47,7 +47,7 @@ class GenerationSpecTest {
 
     @Test
     fun `orDefaultAt accepts a raw probability value`() {
-        val rule = registeredStringRule()
+        val rule = stringSpec()
 
         rule orDefaultAt 0.4
 
@@ -57,8 +57,8 @@ class GenerationSpecTest {
     /**
      * Creates a string rule for generation spec tests.
      */
-    private fun registeredStringRule(): RegisteredRule<String> =
-        RegisteredRule(
+    private fun stringSpec(): DefaultGenerationSpec<String> =
+        DefaultGenerationSpec(
             key = RuleKey.Type(typeOf<String>()),
             matcher = RuleMatcher.Type(typeOf<String>()),
             generator = { "value" },

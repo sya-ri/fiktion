@@ -8,10 +8,13 @@ import dev.s7a.fiktion.runtime.Generator
 public interface MapValueSpec<Key, Value, MapType : Map<Key, Value>> : MapGenerationSpec<Key, Value, MapType>
 
 /**
- * Planned API for completing this map rule by generating keys with [generator].
- *
- * This is not implemented by the current runtime path.
+ * Completes this map rule by generating keys with [generator].
  */
 public infix fun <Key, Value, MapType : Map<Key, Value>> MapValueSpec<Key, Value, MapType>.andKeys(
     generator: Generator<Key>,
-): MapEntrySpec<Key, Value, MapType> = throw NotImplementedError("Map generation is not implemented yet.")
+): MapEntrySpec<Key, Value, MapType> {
+    val spec = this as DefaultMapGenerationSpec<Key, Value, MapType>
+    require(spec.keyGenerator == null) { "Map keys are already configured for this rule target." }
+    spec.keyGenerator = generator
+    return spec
+}
