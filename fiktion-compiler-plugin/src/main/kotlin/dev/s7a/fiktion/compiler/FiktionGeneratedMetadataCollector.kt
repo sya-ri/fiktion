@@ -12,14 +12,14 @@ import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrVisitorVoid
 
 /**
- * Collects data classes that can receive generated object metadata.
+ * Collects classes that can receive generated Fiktion metadata.
  */
-internal class FiktionObjectMetadataCollector {
+internal class FiktionGeneratedMetadataCollector {
     /**
      * Returns metadata candidates found in [moduleFragment].
      */
-    fun collect(moduleFragment: IrModuleFragment): List<FiktionObjectMetadataCandidate> {
-        val candidates = mutableListOf<FiktionObjectMetadataCandidate>()
+    fun collect(moduleFragment: IrModuleFragment): List<FiktionGeneratedMetadataCandidate> {
+        val candidates = mutableListOf<FiktionGeneratedMetadataCandidate>()
 
         moduleFragment.accept(
             object : IrVisitorVoid() {
@@ -39,22 +39,27 @@ internal class FiktionObjectMetadataCollector {
     }
 
     /**
-     * Returns an object metadata candidate for this class, or `null` when the class is outside the supported shape.
+     * Returns a generated metadata candidate for this class, or `null` when the class is outside the supported shape.
      */
     @OptIn(UnsafeDuringIrConstructionAPI::class)
-    private fun IrClass.toCandidate(): FiktionObjectMetadataCandidate? {
-        if (!isData || kind != ClassKind.CLASS || isExpect || isInner) return null
+    private fun IrClass.toCandidate(): FiktionGeneratedMetadataCandidate? {
+        if (kind != ClassKind.CLASS || isExpect || isInner) return null
+        val valueClass = isValue || valueClassRepresentation != null
+        if (!isData && !valueClass) return null
         val constructor = declarations.filterIsInstance<IrConstructor>().firstOrNull { constructor -> constructor.isPrimary } ?: return null
         val className = fqNameWhenAvailable?.asString().orEmpty()
         if (className.isBlank()) return null
+        val parameters = constructor.parameters.filter { parameter -> parameter.kind == IrParameterKind.Regular }
+        if (valueClass && parameters.size != 1) return null
 
-        return FiktionObjectMetadataCandidate(
+        return FiktionGeneratedMetadataCandidate(
             irClass = this,
             constructor = constructor,
             className = className,
+            isValueClass = valueClass,
             properties =
-                constructor.parameters.filter { parameter -> parameter.kind == IrParameterKind.Regular }.map { parameter ->
-                    FiktionObjectPropertyCandidate(
+                parameters.map { parameter ->
+                    FiktionGeneratedMetadataPropertyCandidate(
                         parameter = parameter,
                         name = parameter.name.asString(),
                         type = parameter.type.render(),

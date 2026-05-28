@@ -4,9 +4,9 @@ import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 
 /**
- * Object metadata declaration that can be generated for one Kotlin class.
+ * Metadata declaration that can be generated for one Kotlin class.
  */
-internal data class FiktionObjectMetadataCandidate(
+internal data class FiktionGeneratedMetadataCandidate(
     /**
      * IR class represented by this candidate.
      */
@@ -20,7 +20,11 @@ internal data class FiktionObjectMetadataCandidate(
      */
     val className: String,
     /**
+     * Whether this candidate represents a Kotlin value class.
+     */
+    val isValueClass: Boolean,
+    /**
      * Constructor properties in invocation order.
      */
-    val properties: List<FiktionObjectPropertyCandidate>,
+    val properties: List<FiktionGeneratedMetadataPropertyCandidate>,
 )

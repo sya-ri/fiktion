@@ -12,7 +12,7 @@ public class FiktionIrGenerationExtension : IrGenerationExtension {
         moduleFragment: IrModuleFragment,
         pluginContext: IrPluginContext,
     ) {
-        val candidates = FiktionObjectMetadataCollector().collect(moduleFragment)
+        val candidates = FiktionGeneratedMetadataCollector().collect(moduleFragment)
         FiktionGeneratedMetadataRegistrar(pluginContext, candidates).registerBeforeFakeCalls(moduleFragment)
     }
 }

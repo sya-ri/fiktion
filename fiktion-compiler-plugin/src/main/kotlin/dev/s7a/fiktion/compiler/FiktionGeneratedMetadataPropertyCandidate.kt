@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 /**
  * Constructor property metadata that can be generated for one Kotlin value parameter.
  */
-internal data class FiktionObjectPropertyCandidate(
+internal data class FiktionGeneratedMetadataPropertyCandidate(
     /**
      * IR constructor parameter represented by this property.
      */

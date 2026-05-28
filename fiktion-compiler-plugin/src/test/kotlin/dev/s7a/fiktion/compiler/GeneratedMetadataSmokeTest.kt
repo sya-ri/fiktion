@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.compiler
 
 import dev.s7a.fiktion.fake
+import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -53,6 +54,12 @@ class GeneratedMetadataSmokeTest {
         val user = fake<GeneratedUserWithPropertyDefault>(seed = 0)
 
         assertEquals("label-${user.id}", user.label)
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for value classes`() {
+        assertEquals(fake<GeneratedUserId>(seed = 123), fake<GeneratedUserId>(seed = 123))
+        assertTrue(fake<GeneratedUserId>(seed = 123).value.isNotBlank())
     }
 }
 
@@ -136,6 +143,17 @@ private data class GeneratedUserWithPropertyDefault(
      * Label derived from [id] by the Kotlin default argument expression.
      */
     val label: String = "label-$id",
+)
+
+/**
+ * Smoke-test value class that depends on compiler-generated metadata.
+ */
+@JvmInline
+private value class GeneratedUserId(
+    /**
+     * Underlying user identifier.
+     */
+    val value: String,
 )
 
 /**
