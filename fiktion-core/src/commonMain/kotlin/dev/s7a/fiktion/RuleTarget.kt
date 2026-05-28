@@ -1,5 +1,6 @@
 package dev.s7a.fiktion
 
+import dev.s7a.fiktion.generators.oneOf
 import dev.s7a.fiktion.runtime.Generator
 import kotlin.jvm.JvmName
 import kotlin.reflect.KType
@@ -44,9 +45,7 @@ public infix fun RuleTarget<Long>.generatesIn(range: LongRange): GenerationSpec<
  */
 public infix fun <T> RuleTarget<T>.generatesOneOf(values: Iterable<T>): GenerationSpec<T> =
     generatesBy {
-        val list = values.toList()
-        require(list.isNotEmpty()) { "values must not be empty." }
-        list[random.nextInt(list.size)]
+        oneOf(values.toList())
     }
 
 /**

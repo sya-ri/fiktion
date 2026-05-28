@@ -206,9 +206,7 @@ val index = fake<SearchIndex> {
     SearchIndex::entries generatesKeys { string(8) }
     SearchIndex::entries generatesValues { fake<Entry>() }
 
-    SearchIndex::aliases
-        .generatesKeys { string(6) }
-        .andValues { oneOf(listOf("primary", "secondary")) }
+    SearchIndex::aliases generatesOneOf listOf("primary", "secondary")
 }
 ```
 
