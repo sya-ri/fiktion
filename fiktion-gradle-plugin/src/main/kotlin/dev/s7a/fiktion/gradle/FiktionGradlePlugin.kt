@@ -14,9 +14,12 @@ import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 public class FiktionGradlePlugin :
     Plugin<Project>,
     KotlinCompilerPluginSupportPlugin {
-    override fun apply(target: Project) = Unit
+    override fun apply(target: Project) {
+        target.extensions.create("fiktion", FiktionExtension::class.java)
+    }
 
-    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean = true
+    override fun isApplicable(kotlinCompilation: KotlinCompilation<*>): Boolean =
+        kotlinCompilation.fiktionExtension().isEnabledFor(kotlinCompilation.defaultSourceSet.name)
 
     override fun getCompilerPluginId(): String = "dev.s7a.fiktion"
 
@@ -28,5 +31,26 @@ public class FiktionGradlePlugin :
         )
 
     override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> =
-        kotlinCompilation.target.project.provider { emptyList() }
+        kotlinCompilation.target.project.provider {
+            listOf(SubpluginOption(key = "enabled", value = "true"))
+        }
+
+    /**
+     * Returns the Fiktion extension registered on the compilation project.
+     */
+    private fun KotlinCompilation<*>.fiktionExtension(): FiktionExtension =
+        target.project.extensions.getByType(FiktionExtension::class.java)
+
+    /**
+     * Returns whether Fiktion should be enabled for [sourceSetName].
+     */
+    private fun FiktionExtension.isEnabledFor(sourceSetName: String): Boolean {
+        sourceSets
+            .findByName(sourceSetName)
+            ?.enabled
+            ?.orNull
+            ?.let { enabled -> return enabled }
+        if (enabled.getOrElse(false)) return true
+        return testEnabled.getOrElse(true) && sourceSetName.endsWith("Test")
+    }
 }
