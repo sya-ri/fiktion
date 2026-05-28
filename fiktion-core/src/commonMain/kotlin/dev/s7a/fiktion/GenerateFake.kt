@@ -18,12 +18,23 @@ internal fun <T> generateFake(
     spec.configure()
     val rootSeed = spec.seed ?: seed ?: baseConfig.seed ?: Random.nextLong()
     val config =
-        baseConfig.overlaidBy(
-            other = FiktionConfig(rules = spec.rules),
-            rulePrecedence = RulePrecedence.PER_CALL,
-        )
+        baseConfig
+            .withAutomaticAddons()
+            .overlaidBy(
+                other = FiktionConfig(rules = spec.rules),
+                rulePrecedence = RulePrecedence.PER_CALL,
+            )
     val request = GenerationRequest(type = type)
     val value = generateValue(request = request, config = config, seed = rootSeed, depth = 0)
     @Suppress("UNCHECKED_CAST")
     return value as T
+}
+
+/**
+ * Returns [this] with the current automatic add-ons installed.
+ */
+private fun FiktionConfig.withAutomaticAddons(): FiktionConfig {
+    val builder = DefaultFiktionBuilder(config = this, installAutomaticAddons = false)
+    builder.installAutomaticAddons()
+    return builder.build()
 }

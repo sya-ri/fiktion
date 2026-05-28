@@ -78,6 +78,16 @@ internal data class FiktionConfig(
         )
 
     /**
+     * Returns rules used by `generates auto`, excluding explicit user rules to avoid recursively selecting itself.
+     */
+    fun effectiveAutomaticRules(): List<DefaultGenerationSpec<*>> =
+        mergeWithAddons(
+            builtIn = BUILT_IN_RULES,
+            addonValues = { addon -> addon.rules },
+            explicit = emptyList(),
+        ).filterNot { rule -> rule.automaticallyGenerates }
+
+    /**
      * Returns collection converters in lookup order from lowest to highest precedence.
      */
     fun effectiveCollectionConverters(): List<CollectionConverter> =

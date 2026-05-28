@@ -41,6 +41,7 @@ import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
+import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -66,11 +67,25 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Metadata candidates collected from the current module.
      */
     private val candidates: List<FiktionGeneratedMetadataCandidate>,
+    /**
+     * Add-on object classes to register before fake calls.
+     */
+    private val automaticAddons: List<String>,
 ) : IrElementTransformerVoidWithContext() {
     /**
      * Runtime symbols needed by generated registration calls.
      */
     private val symbols = FiktionRuntimeSymbols(pluginContext)
+
+    /**
+     * Add-on objects available on the current compilation classpath.
+     */
+    private val automaticAddonClasses: List<IrClassSymbol> =
+        automaticAddons.distinct().map { fqName ->
+            requireNotNull(pluginContext.referenceClass(classId(fqName))) {
+                "Fiktion automatic add-on class is not available on the compilation classpath: $fqName"
+            }
+        }
 
     /**
      * Inserts generated metadata registrations into [moduleFragment].
@@ -119,7 +134,7 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Adds the generated registrar function to this module.
      */
     private fun IrModuleFragment.generatedRegistrar(): IrSimpleFunction? {
-        if (candidates.isEmpty()) return null
+        if (candidates.isEmpty() && automaticAddonClasses.isEmpty()) return null
         val file = files.firstOrNull() ?: return null
         val function =
             pluginContext.irFactory.addFunction(file) {
@@ -138,6 +153,9 @@ internal class FiktionGeneratedMetadataRegistrar(
                     builder.irReturn(builder.irUnit()),
                 )
                 +builder.irSetField(null, initializedField, builder.irBoolean(true))
+                automaticAddonClasses.forEach { addonClass ->
+                    +builder.registerAutomaticAddon(addonClass)
+                }
                 candidates.forEach { candidate ->
                     candidate.arrayTypes().forEach { (arrayType, elementType) ->
                         +builder.registerGeneratedArray(
@@ -212,6 +230,15 @@ internal class FiktionGeneratedMetadataRegistrar(
             setTypeArgument(0, arrayType)
             setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
             setRegularArgument(0, arrayMetadata(arrayType = arrayType, elementType = elementType, constructor = constructor))
+        }
+
+    /**
+     * Returns an automatic add-on registration call.
+     */
+    private fun DeclarationIrBuilder.registerAutomaticAddon(addonClass: IrClassSymbol): IrExpression =
+        irCall(symbols.registerAutomaticAddon).apply {
+            setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
+            setRegularArgument(0, irGetObjectValue(addonClass.owner.defaultType, addonClass))
         }
 
     /**

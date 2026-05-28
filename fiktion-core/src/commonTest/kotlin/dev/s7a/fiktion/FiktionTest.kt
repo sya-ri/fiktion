@@ -135,6 +135,27 @@ class FiktionTest {
     }
 
     @Test
+    fun `registerAutomaticAddon applies to isolated instances created before registration`() {
+        val fiktion = Fiktion()
+
+        Fiktion.registerAutomaticAddon(AutomaticAddonTestAddon)
+
+        assertEquals(AutomaticAddonValue(id = "automatic-addon"), fiktion.fake<AutomaticAddonValue>())
+    }
+
+    @Test
+    fun `generates auto uses rules from automatic add-ons`() {
+        val fiktion =
+            Fiktion {
+                type<AutomaticAddonAutoValue>() generates auto
+            }
+
+        Fiktion.registerAutomaticAddon(AutomaticAddonAutoTestAddon)
+
+        assertEquals(AutomaticAddonAutoValue(id = "automatic-addon-auto"), fiktion.fake<AutomaticAddonAutoValue>())
+    }
+
+    @Test
     fun `snapshot restore returns false and does not overwrite a newer global configuration`() {
         val first =
             Fiktion.configure {
@@ -223,4 +244,32 @@ class FiktionTest {
         ) {
             construct()
         }
+}
+
+private data class AutomaticAddonValue(
+    val id: String,
+)
+
+private object AutomaticAddonTestAddon : FiktionAddon {
+    override val id: String = "automatic-addon-test"
+
+    override fun install(builder: FiktionAddonBuilder) {
+        with(builder) {
+            type<AutomaticAddonValue>() generates AutomaticAddonValue(id = "automatic-addon")
+        }
+    }
+}
+
+private data class AutomaticAddonAutoValue(
+    val id: String,
+)
+
+private object AutomaticAddonAutoTestAddon : FiktionAddon {
+    override val id: String = "automatic-addon-auto-test"
+
+    override fun install(builder: FiktionAddonBuilder) {
+        with(builder) {
+            type<AutomaticAddonAutoValue>() generates AutomaticAddonAutoValue(id = "automatic-addon-auto")
+        }
+    }
 }

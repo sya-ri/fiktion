@@ -55,6 +55,15 @@ internal class FiktionRuntimeSymbols(
             .symbol
 
     /**
+     * `Fiktion.registerAutomaticAddon` companion function.
+     */
+    val registerAutomaticAddon: IrSimpleFunctionSymbol =
+        fiktionCompanionClass.owner.declarations
+            .filterIsInstance<IrSimpleFunction>()
+            .single { function -> function.name == Name.identifier("registerAutomaticAddon") }
+            .symbol
+
+    /**
      * `generatedObjectArgumentValue` top-level function.
      */
     val generatedObjectArgumentValue: IrSimpleFunctionSymbol =

@@ -84,6 +84,7 @@ sealed interface dev.s7a.fiktion/Fiktion { // dev.s7a.fiktion/Fiktion|null[0]
         final fun <#A2: kotlin/Any?> registerGeneratedMetadata(dev.s7a.fiktion/FiktionTypeMetadata<#A2>) // dev.s7a.fiktion/Fiktion.Companion.registerGeneratedMetadata|registerGeneratedMetadata(dev.s7a.fiktion.FiktionTypeMetadata<0:0>){0§<kotlin.Any?>}[0]
         final fun configure(kotlin/Function1<dev.s7a.fiktion/FiktionConfigureBuilder, kotlin/Unit>): dev.s7a.fiktion/FiktionSnapshot // dev.s7a.fiktion/Fiktion.Companion.configure|configure(kotlin.Function1<dev.s7a.fiktion.FiktionConfigureBuilder,kotlin.Unit>){}[0]
         final fun invoke(kotlin/Function1<dev.s7a.fiktion/FiktionBuilder, kotlin/Unit> = ...): dev.s7a.fiktion/Fiktion // dev.s7a.fiktion/Fiktion.Companion.invoke|invoke(kotlin.Function1<dev.s7a.fiktion.FiktionBuilder,kotlin.Unit>){}[0]
+        final fun registerAutomaticAddon(dev.s7a.fiktion/FiktionAddon) // dev.s7a.fiktion/Fiktion.Companion.registerAutomaticAddon|registerAutomaticAddon(dev.s7a.fiktion.FiktionAddon){}[0]
     }
 }
 

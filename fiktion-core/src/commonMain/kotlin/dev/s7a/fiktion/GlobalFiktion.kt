@@ -13,7 +13,7 @@ internal object GlobalFiktion {
     /**
      * Atomic state for the current user-controlled global configuration.
      */
-    private val current = AtomicReference(GlobalFiktionState(version = 0, config = FiktionConfig()))
+    private val current = AtomicReference(GlobalFiktionState(version = 0, config = DefaultFiktionBuilder().build()))
 
     /**
      * Compiler-generated metadata that stays outside snapshot restore.

@@ -4,6 +4,7 @@ import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -736,9 +737,9 @@ private fun generatedRegistrarGuardField(): java.lang.reflect.Field =
  * Returns the global generated metadata reference.
  */
 @Suppress("UNCHECKED_CAST")
-private fun generatedMetadataReference(): java.util.concurrent.atomic.AtomicReference<Map<String, Any?>> =
+private fun generatedMetadataReference(): AtomicReference<Map<String, Any?>> =
     Class
         .forName("dev.s7a.fiktion.GlobalFiktion")
         .getDeclaredField("generatedMetadata")
         .also { field -> field.isAccessible = true }
-        .get(null) as java.util.concurrent.atomic.AtomicReference<Map<String, Any?>>
+        .get(null) as AtomicReference<Map<String, Any?>>

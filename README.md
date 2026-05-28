@@ -291,6 +291,34 @@ val user = fake<User> {
 
 Add-ons contribute reusable rules for external libraries or project-specific types.
 
+The Java standard library add-on provides rules for common JVM types such as `java.time`, `java.util`, `java.net`,
+`java.nio`, `java.sql`, and `java.util.concurrent` types.
+
+```kotlin
+dependencies {
+    testImplementation("dev.s7a:fiktion-addon-java:<version>")
+}
+```
+
+When the Fiktion compiler plugin is enabled for the source set, add-ons on the compilation classpath are registered
+automatically before `fake<T>()` calls:
+
+```kotlin
+import java.time.Instant
+import java.util.UUID
+
+val instant = fake<Instant>()
+val uuid = fake<UUID>()
+```
+
+Add-ons can still be installed explicitly when the compiler plugin is not enabled for that source set:
+
+```kotlin
+val fiktion = Fiktion {
+    install(JavaFiktionAddon)
+}
+```
+
 Custom add-ons can be implemented with `FiktionAddon`:
 
 ```kotlin
@@ -306,6 +334,13 @@ public object CustomFiktionAddon : FiktionAddon {
         }
     }
 }
+```
+
+To make a third-party add-on auto-registerable, include a resource file named `META-INF/fiktion/addons` in the add-on
+artifact. Each non-empty line should contain one add-on object class name:
+
+```text
+com.example.fiktion.ExampleFiktionAddon
 ```
 
 Installed add-ons sit below explicit per-call, instance, and global rules in precedence.

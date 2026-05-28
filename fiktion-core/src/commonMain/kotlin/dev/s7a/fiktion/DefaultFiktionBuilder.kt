@@ -14,12 +14,19 @@ internal class DefaultFiktionBuilder private constructor(
     /**
      * Creates an empty builder.
      */
-    constructor() : this(MutableFiktionConfig())
+    constructor(installAutomaticAddons: Boolean = true) : this(MutableFiktionConfig()) {
+        if (installAutomaticAddons) {
+            installAutomaticAddons()
+        }
+    }
 
     /**
      * Creates a builder initialized from [config].
      */
-    constructor(config: FiktionConfig) :
+    constructor(
+        config: FiktionConfig,
+        installAutomaticAddons: Boolean = true,
+    ) :
         this(
             MutableFiktionConfig(
                 seed = config.seed,
@@ -29,7 +36,11 @@ internal class DefaultFiktionBuilder private constructor(
                 mapConverters = config.mapConverters,
                 metadata = config.metadata,
             ),
-        )
+        ) {
+        if (installAutomaticAddons) {
+            installAutomaticAddons()
+        }
+    }
 
     /**
      * Builds an immutable configuration snapshot.
@@ -49,5 +60,9 @@ internal class DefaultFiktionBuilder private constructor(
     @ExperimentalFiktionApi
     override fun <T> register(metadata: FiktionTypeMetadata<T>) {
         config.register(metadata)
+    }
+
+    internal fun installAutomaticAddons() {
+        automaticAddons().forEach { addon -> install(addon) }
     }
 }

@@ -72,7 +72,7 @@ internal fun generateAutomaticValue(
         )
     }
 
-    BUILT_IN_RULES.selectRule(request)?.let { rule ->
+    config.effectiveAutomaticRules().selectRule(request)?.let { rule ->
         return generateFromRule(
             rule = rule,
             request = request,

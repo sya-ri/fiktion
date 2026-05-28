@@ -22,6 +22,13 @@ public class FiktionCommandLineProcessor : CommandLineProcessor {
                 required = false,
                 allowMultipleOccurrences = false,
             ),
+            CliOption(
+                optionName = AUTOMATIC_ADDON_OPTION,
+                valueDescription = "fully.qualified.AddonObjectName",
+                description = "Register the Fiktion add-on object automatically before fake calls.",
+                required = false,
+                allowMultipleOccurrences = true,
+            ),
         )
 
     override fun processOption(
@@ -30,8 +37,20 @@ public class FiktionCommandLineProcessor : CommandLineProcessor {
         configuration: CompilerConfiguration,
     ) {
         when (option.optionName) {
-            ENABLED_OPTION -> configuration.put(FiktionCompilerConfiguration.enabled, value.toBooleanStrict())
-            else -> error("Unknown Fiktion compiler plugin option: ${option.optionName}")
+            ENABLED_OPTION -> {
+                configuration.put(FiktionCompilerConfiguration.enabled, value.toBooleanStrict())
+            }
+
+            AUTOMATIC_ADDON_OPTION -> {
+                configuration.put(
+                    FiktionCompilerConfiguration.automaticAddons,
+                    configuration.get(FiktionCompilerConfiguration.automaticAddons, emptyList()) + value,
+                )
+            }
+
+            else -> {
+                error("Unknown Fiktion compiler plugin option: ${option.optionName}")
+            }
         }
     }
 }
@@ -40,3 +59,8 @@ public class FiktionCommandLineProcessor : CommandLineProcessor {
  * Command line option controlling whether generated metadata is emitted.
  */
 private const val ENABLED_OPTION = "enabled"
+
+/**
+ * Command line option listing an add-on object to register automatically.
+ */
+private const val AUTOMATIC_ADDON_OPTION = "automaticAddon"

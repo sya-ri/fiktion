@@ -16,6 +16,10 @@ public class FiktionCompilerPluginRegistrar : CompilerPluginRegistrar() {
 
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
         if (!configuration.get(FiktionCompilerConfiguration.enabled, true)) return
-        IrGenerationExtension.registerExtension(FiktionIrGenerationExtension())
+        IrGenerationExtension.registerExtension(
+            FiktionIrGenerationExtension(
+                automaticAddons = configuration.get(FiktionCompilerConfiguration.automaticAddons, emptyList()),
+            ),
+        )
     }
 }

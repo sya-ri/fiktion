@@ -7,12 +7,14 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 /**
  * IR generation extension that will emit Fiktion metadata declarations.
  */
-public class FiktionIrGenerationExtension : IrGenerationExtension {
+public class FiktionIrGenerationExtension(
+    private val automaticAddons: List<String> = emptyList(),
+) : IrGenerationExtension {
     override fun generate(
         moduleFragment: IrModuleFragment,
         pluginContext: IrPluginContext,
     ) {
         val candidates = FiktionGeneratedMetadataCollector().collect(moduleFragment)
-        FiktionGeneratedMetadataRegistrar(pluginContext, candidates).registerBeforeFakeCalls(moduleFragment)
+        FiktionGeneratedMetadataRegistrar(pluginContext, candidates, automaticAddons).registerBeforeFakeCalls(moduleFragment)
     }
 }

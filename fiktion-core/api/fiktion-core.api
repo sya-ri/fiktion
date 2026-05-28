@@ -131,6 +131,7 @@ public final class dev/s7a/fiktion/Fiktion$Companion {
 	public final fun configure (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/FiktionSnapshot;
 	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/Fiktion;
 	public static synthetic fun invoke$default (Ldev/s7a/fiktion/Fiktion$Companion;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/s7a/fiktion/Fiktion;
+	public final fun registerAutomaticAddon (Ldev/s7a/fiktion/FiktionAddon;)V
 	public final fun registerGeneratedMetadata (Ldev/s7a/fiktion/FiktionTypeMetadata;)V
 }
 

@@ -4,9 +4,12 @@ import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.zip.ZipEntry
+import java.util.zip.ZipOutputStream
 import kotlin.io.path.writeText
 import kotlin.test.Test
 import kotlin.test.assertContains
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 /**
@@ -58,6 +61,63 @@ class FiktionGradlePluginTest {
         assertEquals(SUCCESS, result.task(":printFiktionExtension")?.outcome)
         assertContains(result.output, "commonMain=false")
         assertContains(result.output, "commonTest=true")
+    }
+
+    @Test
+    fun `plugin reads automatic add-on indexes from class directories`() {
+        val directory = Files.createTempDirectory("fiktion-addon-index-directory")
+        directory
+            .resolve("META-INF")
+            .resolve("fiktion")
+            .also { path -> Files.createDirectories(path) }
+            .resolve("addons")
+            .writeText(
+                """
+                com.example.FirstAddon
+                # comment
+                com.example.SecondAddon # trailing comment
+                """.trimIndent(),
+            )
+
+        assertContentEquals(
+            listOf("com.example.FirstAddon", "com.example.SecondAddon"),
+            directory.toFile().fiktionAddonClassNames(),
+        )
+    }
+
+    @Test
+    fun `plugin reads automatic add-on indexes from jars`() {
+        val jar = Files.createTempFile("fiktion-addon-index", ".jar")
+        ZipOutputStream(Files.newOutputStream(jar)).use { zip ->
+            zip.putNextEntry(ZipEntry("META-INF/fiktion/addons"))
+            zip.write(
+                """
+                com.example.FirstAddon
+                com.example.SecondAddon
+                """.trimIndent().toByteArray(),
+            )
+            zip.closeEntry()
+        }
+
+        assertContentEquals(
+            listOf("com.example.FirstAddon", "com.example.SecondAddon"),
+            jar.toFile().fiktionAddonClassNames(),
+        )
+    }
+
+    @Test
+    fun `plugin reads automatic add-on indexes from klibs`() {
+        val klib = Files.createTempFile("fiktion-addon-index", ".klib")
+        ZipOutputStream(Files.newOutputStream(klib)).use { zip ->
+            zip.putNextEntry(ZipEntry("default/resources/META-INF/fiktion/addons"))
+            zip.write("com.example.CommonAddon".toByteArray())
+            zip.closeEntry()
+        }
+
+        assertContentEquals(
+            listOf("com.example.CommonAddon"),
+            klib.toFile().fiktionAddonClassNames(),
+        )
     }
 
     /**

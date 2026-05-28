@@ -76,7 +76,7 @@ import kotlin.uuid.Uuid
  * Configuration provided by Fiktion core.
  */
 private val BUILT_IN_CONFIG: FiktionConfig by lazy {
-    DefaultFiktionBuilder()
+    DefaultFiktionBuilder(installAutomaticAddons = false)
         .apply {
             configurePlatformBuiltIns()
             configureCollection<Collection<*>> { elements ->

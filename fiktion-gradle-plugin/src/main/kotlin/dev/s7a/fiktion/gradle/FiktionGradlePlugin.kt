@@ -7,6 +7,8 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilation
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
+import java.io.File
+import java.util.zip.ZipFile
 
 /**
  * Gradle plugin that wires the Fiktion compiler plugin into Kotlin compilations.
@@ -32,7 +34,8 @@ public class FiktionGradlePlugin :
 
     override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> =
         kotlinCompilation.target.project.provider {
-            listOf(SubpluginOption(key = "enabled", value = "true"))
+            listOf(SubpluginOption(key = "enabled", value = "true")) +
+                kotlinCompilation.automaticAddonOptions()
         }
 
     /**
@@ -40,4 +43,70 @@ public class FiktionGradlePlugin :
      */
     private fun KotlinCompilation<*>.fiktionExtension(): FiktionExtension =
         target.project.extensions.getByType(FiktionExtension::class.java)
+
+    /**
+     * Returns compiler options for add-ons listed in compilation dependencies.
+     */
+    private fun KotlinCompilation<*>.automaticAddonOptions(): List<SubpluginOption> =
+        compileDependencyFiles.files
+            .flatMap { file -> file.fiktionAddonClassNames() }
+            .distinct()
+            .map { className -> SubpluginOption(key = "automaticAddon", value = className) }
 }
+
+/**
+ * Fiktion add-on index paths inside dependency archives or class directories.
+ */
+private const val FIKTION_ADDON_INDEX_PATH: String = "META-INF/fiktion/addons"
+
+private val FIKTION_ADDON_INDEX_PATHS: List<String> =
+    listOf(
+        FIKTION_ADDON_INDEX_PATH,
+        "default/resources/$FIKTION_ADDON_INDEX_PATH",
+    )
+
+/**
+ * Returns Fiktion add-on class names declared by this dependency file.
+ */
+internal fun File.fiktionAddonClassNames(): List<String> =
+    when {
+        isDirectory -> readDirectoryAddonIndex()
+        isFile && extension in FIKTION_ADDON_INDEX_ARCHIVE_EXTENSIONS -> readArchiveAddonIndex()
+        else -> emptyList()
+    }
+
+private val FIKTION_ADDON_INDEX_ARCHIVE_EXTENSIONS: Set<String> = setOf("jar", "klib")
+
+/**
+ * Reads add-on class names from a directory index file.
+ */
+private fun File.readDirectoryAddonIndex(): List<String> =
+    FIKTION_ADDON_INDEX_PATHS
+        .firstNotNullOfOrNull { path -> resolve(path).takeIf { file -> file.isFile } }
+        .readAddonIndex()
+
+/**
+ * Reads add-on class names from a text index file.
+ */
+private fun File?.readAddonIndex(): List<String> = this?.readLines()?.addonClassNames() ?: emptyList()
+
+/**
+ * Reads add-on class names from an archive index entry.
+ */
+private fun File.readArchiveAddonIndex(): List<String> =
+    ZipFile(this).use { zip ->
+        val entry =
+            FIKTION_ADDON_INDEX_PATHS
+                .firstNotNullOfOrNull { path -> zip.getEntry(path) }
+                ?: return emptyList()
+        zip.getInputStream(entry).bufferedReader().use { reader ->
+            reader.readLines().addonClassNames()
+        }
+    }
+
+/**
+ * Parses add-on class names from index lines.
+ */
+private fun List<String>.addonClassNames(): List<String> =
+    map { line -> line.substringBefore('#').trim() }
+        .filter { line -> line.isNotEmpty() }
