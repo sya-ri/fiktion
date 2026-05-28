@@ -142,7 +142,8 @@ public sealed interface FiktionRuleBuilder {
     @Suppress("DEPRECATION_ERROR")
     public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesEach(
         generator: Generator<Pair<Key, Value>>,
-    ): MapEntrySpec<Key, Value, MapType> = property(this).generatesEach(generator)
+    ): MapEntrySpec<Key, Value, MapType> =
+        generatesMapEntries(target = property(this), keyType = null, valueType = null, generator = generator)
 
     /**
      * Generates map keys for this property by invoking [generator].
@@ -150,7 +151,7 @@ public sealed interface FiktionRuleBuilder {
     @Suppress("DEPRECATION_ERROR")
     public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesKeys(
         generator: Generator<Key>,
-    ): MapKeySpec<Key, Value, MapType> = property(this).generatesKeys(generator)
+    ): MapKeySpec<Key, Value, MapType> = generatesMapKeys(target = property(this), keyType = null, valueType = null, generator = generator)
 
     /**
      * Generates map values for this property by invoking [generator].
@@ -158,7 +159,8 @@ public sealed interface FiktionRuleBuilder {
     @Suppress("DEPRECATION_ERROR")
     public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesValues(
         generator: Generator<Value>,
-    ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
+    ): MapValueSpec<Key, Value, MapType> =
+        generatesMapValues(target = property(this), keyType = null, valueType = null, generator = generator)
 
     /**
      * Generates [value] for this nested property path.
@@ -189,21 +191,39 @@ public sealed interface FiktionRuleBuilder {
      */
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesEach(
         generator: Generator<Pair<Key, Value>>,
-    ): MapEntrySpec<Key, Value, MapType> = property(this).generatesEach(generator)
+    ): MapEntrySpec<Key, Value, MapType> =
+        generatesMapEntries(
+            target = property(this),
+            keyType = mapKeyType(),
+            valueType = mapValueType(),
+            generator = generator,
+        )
 
     /**
      * Generates map keys for this nested property path by invoking [generator].
      */
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesKeys(
         generator: Generator<Key>,
-    ): MapKeySpec<Key, Value, MapType> = property(this).generatesKeys(generator)
+    ): MapKeySpec<Key, Value, MapType> =
+        generatesMapKeys(
+            target = property(this),
+            keyType = mapKeyType(),
+            valueType = mapValueType(),
+            generator = generator,
+        )
 
     /**
      * Generates map values for this nested property path by invoking [generator].
      */
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesValues(
         generator: Generator<Value>,
-    ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
+    ): MapValueSpec<Key, Value, MapType> =
+        generatesMapValues(
+            target = property(this),
+            keyType = mapKeyType(),
+            valueType = mapValueType(),
+            generator = generator,
+        )
 }
 
 /**

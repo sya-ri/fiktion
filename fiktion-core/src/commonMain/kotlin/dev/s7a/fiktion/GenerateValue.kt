@@ -60,6 +60,14 @@ internal fun generateValue(
             )
         }
 
+        if (rule is DefaultMapGenerationSpec<*, *, *>) {
+            @Suppress("UNCHECKED_CAST")
+            return context.generateMap(
+                spec = rule as DefaultMapGenerationSpec<Any?, Any?, Map<Any?, Any?>>,
+                config = config,
+            )
+        }
+
         return rule.generator(context)
     }
 
@@ -75,7 +83,7 @@ internal fun generateValue(
 /**
  * Generates a value without applying the already selected explicit rule.
  */
-private fun generateAutomaticValue(
+internal fun generateAutomaticValue(
     request: GenerationRequest,
     config: FiktionConfig,
     seed: Long,

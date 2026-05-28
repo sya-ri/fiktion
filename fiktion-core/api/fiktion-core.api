@@ -31,15 +31,13 @@ public final class dev/s7a/fiktion/FakeSpec {
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesAutoCollectionPath (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/CollectionGenerationSpec;
+	public final fun generatesAutoMapPath (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/MapGenerationSpec;
 	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesEach (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public final fun generatesEach (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
 	public final fun generatesEach (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/CollectionGenerationSpec;
-	public final fun generatesEach (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
 	public final fun generatesKeys (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
-	public final fun generatesKeys (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
 	public final fun generatesValues (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
-	public final fun generatesValues (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 	public final fun invoke (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun invoke (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun name (Ljava/lang/String;)Ldev/s7a/fiktion/RuleNameTarget;
@@ -366,14 +364,15 @@ public final class dev/s7a/fiktion/RuleTargetKt {
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesAutoCollection (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/CollectionGenerationSpec;
+	public static final fun generatesAutoMap (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/MapGenerationSpec;
 	public static final fun generatesBy (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesEach (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/CollectionGenerationSpec;
-	public static final fun generatesEach (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
 	public static final fun generatesIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/LongRange;)Ldev/s7a/fiktion/GenerationSpec;
-	public static final fun generatesKeys (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
+	public static final fun generatesMapEntries (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
+	public static final fun generatesMapKeys (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
+	public static final fun generatesMapValues (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 	public static final fun generatesOneOf (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
-	public static final fun generatesValues (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 }
 
 public final class dev/s7a/fiktion/generators/FiktionCharset {

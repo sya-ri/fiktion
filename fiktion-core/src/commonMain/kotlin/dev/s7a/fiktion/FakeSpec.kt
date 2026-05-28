@@ -134,6 +134,24 @@ public class FakeSpec<Root> {
     ): CollectionGenerationSpec<Element, CollectionType> = property(this) generates auto
 
     /**
+     * Generates this map property by automatically generating each key and value.
+     */
+    @JvmName("generatesAutoMapProperty")
+    @Suppress("UNUSED_PARAMETER")
+    public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generates(
+        auto: Auto,
+    ): MapGenerationSpec<Key, Value, MapType> =
+        generatesAutoMap(
+            target =
+                propertyByValueType<MapType>(
+                    name = name,
+                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                ),
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+        )
+
+    /**
      * Generates each element for this collection property by invoking [generator].
      */
     @Suppress("DEPRECATION_ERROR")
@@ -144,26 +162,53 @@ public class FakeSpec<Root> {
     /**
      * Generates each entry for this map property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesEach(
-        generator: Generator<Pair<Key, Value>>,
-    ): MapEntrySpec<Key, Value, MapType> = property(this).generatesEach(generator)
+    public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesEach(
+        noinline generator: Generator<Pair<Key, Value>>,
+    ): MapEntrySpec<Key, Value, MapType> =
+        generatesMapEntries(
+            target =
+                propertyByValueType<MapType>(
+                    name = name,
+                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                ),
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+            generator = generator,
+        )
 
     /**
      * Generates map keys for this property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesKeys(
-        generator: Generator<Key>,
-    ): MapKeySpec<Key, Value, MapType> = property(this).generatesKeys(generator)
+    public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesKeys(
+        noinline generator: Generator<Key>,
+    ): MapKeySpec<Key, Value, MapType> =
+        generatesMapKeys(
+            target =
+                propertyByValueType<MapType>(
+                    name = name,
+                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                ),
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+            generator = generator,
+        )
 
     /**
      * Generates map values for this property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesValues(
-        generator: Generator<Value>,
-    ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
+    public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesValues(
+        noinline generator: Generator<Value>,
+    ): MapValueSpec<Key, Value, MapType> =
+        generatesMapValues(
+            target =
+                propertyByValueType<MapType>(
+                    name = name,
+                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+                ),
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+            generator = generator,
+        )
 
     /**
      * Applies nested per-call configuration to this property.
@@ -211,6 +256,16 @@ public class FakeSpec<Root> {
         generatesAutoCollection(target = property(this), elementType = collectionElementType())
 
     /**
+     * Generates this nested map property path by automatically generating each key and value.
+     */
+    @JvmName("generatesAutoMapPath")
+    @Suppress("UNUSED_PARAMETER")
+    public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generates(
+        auto: Auto,
+    ): MapGenerationSpec<Key, Value, MapType> =
+        generatesAutoMap(target = property(this), keyType = mapKeyType(), valueType = mapValueType())
+
+    /**
      * Generates each element for this nested collection property path by invoking [generator].
      */
     public infix fun <Element, CollectionType : Collection<Element>> PropertyPath<Root, CollectionType>.generatesEach(
@@ -222,21 +277,39 @@ public class FakeSpec<Root> {
      */
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesEach(
         generator: Generator<Pair<Key, Value>>,
-    ): MapEntrySpec<Key, Value, MapType> = property(this).generatesEach(generator)
+    ): MapEntrySpec<Key, Value, MapType> =
+        generatesMapEntries(
+            target = property(this),
+            keyType = mapKeyType(),
+            valueType = mapValueType(),
+            generator = generator,
+        )
 
     /**
      * Generates map keys for this nested property path by invoking [generator].
      */
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesKeys(
         generator: Generator<Key>,
-    ): MapKeySpec<Key, Value, MapType> = property(this).generatesKeys(generator)
+    ): MapKeySpec<Key, Value, MapType> =
+        generatesMapKeys(
+            target = property(this),
+            keyType = mapKeyType(),
+            valueType = mapValueType(),
+            generator = generator,
+        )
 
     /**
      * Generates map values for this nested property path by invoking [generator].
      */
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesValues(
         generator: Generator<Value>,
-    ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
+    ): MapValueSpec<Key, Value, MapType> =
+        generatesMapValues(
+            target = property(this),
+            keyType = mapKeyType(),
+            valueType = mapValueType(),
+            generator = generator,
+        )
 
     /**
      * Applies nested per-call configuration to this property path.

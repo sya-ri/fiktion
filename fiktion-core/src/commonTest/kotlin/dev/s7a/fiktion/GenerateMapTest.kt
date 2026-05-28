@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.CannotGenerateException
 import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
 import kotlin.reflect.typeOf
 import kotlin.test.Test
@@ -78,6 +77,51 @@ class GenerateMapTest {
     }
 
     @Test
+    fun `fake generates maps with automatic key and value rules`() {
+        val fiktion =
+            Fiktion {
+                type<String>() generatesBy { "key-$seed" }
+                type<Int>() generates 7
+                type<Map<String, Int>>() generates auto withSize 3
+            }
+
+        val value = fiktion.fake<Map<String, Int>>(seed = 123)
+
+        assertEquals(3, value.size)
+        assertTrue(value.keys.all { key -> key.startsWith("key-") })
+        assertEquals(setOf(7), value.values.toSet())
+    }
+
+    @Test
+    fun `fake generates maps with automatic values when only keys are configured`() {
+        val fiktion =
+            Fiktion {
+                type<Int>() generates 7
+                type<Map<String, Int>>() generatesKeys { "key-$seed" } withSize 3
+            }
+
+        val value = fiktion.fake<Map<String, Int>>(seed = 123)
+
+        assertEquals(3, value.size)
+        assertTrue(value.keys.all { key -> key.startsWith("key-") })
+        assertEquals(setOf(7), value.values.toSet())
+    }
+
+    @Test
+    fun `fake generates maps with automatic keys when only values are configured`() {
+        val fiktion =
+            Fiktion {
+                type<String>() generatesBy { "key-$seed" }
+                type<Map<String, Int>>() generatesValues { seed.toInt() } withSize 3
+            }
+
+        val value = fiktion.fake<Map<String, Int>>(seed = 123)
+
+        assertEquals(3, value.size)
+        assertTrue(value.keys.all { key -> key.startsWith("key-") })
+    }
+
+    @Test
     fun `split map rules share a size configured by the second declaration`() {
         val fiktion =
             Fiktion {
@@ -115,6 +159,24 @@ class GenerateMapTest {
     }
 
     @Test
+    fun `per-call map property rules automatically generate object map properties`() {
+        val fiktion =
+            Fiktion {
+                register(projectMetadata())
+                type<String>() generatesBy { "part-$seed" }
+            }
+
+        val project =
+            fiktion.fake<Project>(seed = 123) {
+                Project::labels generates auto withSize 2
+            }
+
+        assertEquals(2, project.labels.size)
+        assertTrue(project.labels.keys.all { key -> key.startsWith("part-") })
+        assertTrue(project.labels.values.all { value -> value.startsWith("part-") })
+    }
+
+    @Test
     fun `per-call map property rules generate object map properties`() {
         val fiktion =
             Fiktion {
@@ -128,18 +190,6 @@ class GenerateMapTest {
 
         assertEquals(2, project.labels.size)
         assertTrue(project.labels.keys.all { key -> key.startsWith("label-") })
-    }
-
-    @Test
-    fun `incomplete map rules fail with a clear message`() {
-        val fiktion =
-            Fiktion {
-                type<Map<String, Int>>() generatesKeys { "key-$seed" } withSize 1
-            }
-
-        val error = assertFailsWith<CannotGenerateException> { fiktion.fake<Map<String, Int>>(seed = 123) }
-
-        assertTrue(error.message.orEmpty().contains("map rule is incomplete"))
     }
 
     @Test

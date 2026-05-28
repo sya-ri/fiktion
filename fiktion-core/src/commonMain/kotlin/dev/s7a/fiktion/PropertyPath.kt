@@ -81,3 +81,17 @@ public inline operator fun <Root, reified Intermediate : Any, reified Value> Pro
 internal fun PropertyPath<*, *>.collectionElementType(): KType =
     valueType.arguments.firstOrNull()?.type
         ?: throw IllegalArgumentException("Cannot infer collection element type for property path.")
+
+/**
+ * Returns the map key type for this property path.
+ */
+internal fun PropertyPath<*, *>.mapKeyType(): KType =
+    valueType.arguments.getOrNull(0)?.type
+        ?: throw IllegalArgumentException("Cannot infer map key type for property path.")
+
+/**
+ * Returns the map value type for this property path.
+ */
+internal fun PropertyPath<*, *>.mapValueType(): KType =
+    valueType.arguments.getOrNull(1)?.type
+        ?: throw IllegalArgumentException("Cannot infer map value type for property path.")

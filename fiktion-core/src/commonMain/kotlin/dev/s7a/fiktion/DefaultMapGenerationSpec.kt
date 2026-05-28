@@ -1,6 +1,7 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.runtime.FakeContext
+import kotlin.reflect.KType
 
 /**
  * Mutable map generation configuration.
@@ -14,9 +15,14 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
      * Matcher used during generation.
      */
     override val matcher: RuleMatcher,
+    /**
+     * Precedence layer assigned while composing configurations.
+     */
+    override val precedence: RulePrecedence = RulePrecedence.GLOBAL,
 ) : DefaultGenerationSpec<MapType>(
         key = key,
         matcher = matcher,
+        precedence = precedence,
     ),
     MapGenerationSpec<Key, Value, MapType>,
     MapKeySpec<Key, Value, MapType>,
@@ -26,6 +32,16 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
      * Generated map size range.
      */
     var sizeRange: IntRange = DEFAULT_MAP_SIZE_RANGE
+
+    /**
+     * Type used to automatically generate keys when no explicit key generator is configured.
+     */
+    var keyType: KType? = null
+
+    /**
+     * Type used to automatically generate values when no explicit value generator is configured.
+     */
+    var valueType: KType? = null
 
     /**
      * Entry generator used when entries are generated as a pair.
@@ -41,10 +57,6 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
      * Value generator used when keys and values are generated separately.
      */
     var valueGenerator: (FakeContext.() -> Value)? = null
-
-    override val generator: FakeContext.() -> MapType = {
-        generateMap(this@DefaultMapGenerationSpec)
-    }
 
     override fun withSize(size: Int): MapGenerationSpec<Key, Value, MapType> {
         require(size >= 0) { "Map size must be 0 or greater, but was $size." }
@@ -63,24 +75,17 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
         DefaultMapGenerationSpec<Key, Value, MapType>(
             key = key,
             matcher = matcher,
+            precedence = precedence,
         ).also { spec ->
             spec.sizeRange = sizeRange
+            spec.keyType = keyType
+            spec.valueType = valueType
             spec.entryGenerator = entryGenerator
             spec.keyGenerator = keyGenerator
             spec.valueGenerator = valueGenerator
             spec.seed = seed
             spec.nullProbability = nullProbability
             spec.defaultProbability = defaultProbability
-        }.let { spec ->
-            DefaultGenerationSpec(
-                key = spec.key,
-                matcher = spec.matcher,
-                generator = spec.generator,
-                seed = spec.seed,
-                nullProbability = spec.nullProbability,
-                defaultProbability = spec.defaultProbability,
-                precedence = precedence,
-            )
         }
 }
 
