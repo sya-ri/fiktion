@@ -1,5 +1,9 @@
 # Fiktion
 
+[![CI](https://github.com/sya-ri/fiktion/actions/workflows/ci.yml/badge.svg)](https://github.com/sya-ri/fiktion/actions/workflows/ci.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/dev.s7a/fiktion-core?label=maven%20central)](https://central.sonatype.com/artifact/dev.s7a/fiktion-core)
+[![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/dev.s7a.fiktion?label=gradle%20plugin)](https://plugins.gradle.org/plugin/dev.s7a.fiktion)
+
 Fiktion is a Kotlin fake data library for tests that should read like intent, not fixture setup.
 
 It creates complete, realistic-enough object graphs from your Kotlin types, then lets each test override only the values
