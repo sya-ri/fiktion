@@ -6,6 +6,11 @@ import dev.s7a.fiktion.requireFiktionConfiguration
 /**
  * Chooses one value from [values].
  */
+public fun <T> FakeContext.oneOf(vararg values: T): T = oneOf(values.toList())
+
+/**
+ * Chooses one value from [values].
+ */
 public fun <T> FakeContext.oneOf(values: List<T>): T {
     requireFiktionConfiguration(values.isNotEmpty()) { "values must not be empty." }
     return values[random.nextInt(values.size)]

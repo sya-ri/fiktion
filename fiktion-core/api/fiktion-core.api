@@ -629,6 +629,7 @@ public final class dev/s7a/fiktion/generators/NumberFormatExceptionKt {
 
 public final class dev/s7a/fiktion/generators/OneOfKt {
 	public static final fun oneOf (Ldev/s7a/fiktion/FakeContext;Ljava/util/List;)Ljava/lang/Object;
+	public static final fun oneOf (Ldev/s7a/fiktion/FakeContext;[Ljava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class dev/s7a/fiktion/generators/PairKt {

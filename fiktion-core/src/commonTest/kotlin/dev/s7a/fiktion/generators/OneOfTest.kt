@@ -14,7 +14,7 @@ class OneOfTest {
         val fiktion =
             Fiktion {
                 type<String>() generatesBy {
-                    oneOf(listOf("primary", "secondary"))
+                    oneOf("primary", "secondary")
                 }
             }
 
