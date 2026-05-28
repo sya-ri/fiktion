@@ -1,9 +1,11 @@
 package dev.s7a.fiktion.compiler
 
 import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.runtime.CannotGenerateException
 import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 class GeneratedMetadataSmokeTest {
@@ -95,6 +97,28 @@ class GeneratedMetadataSmokeTest {
     @Test
     fun `compiler plugin registers generated metadata for singleton objects`() {
         assertEquals(GeneratedLoadingMessage, fake<GeneratedLoadingMessage>(seed = 123))
+    }
+
+    @Test
+    fun `compiler plugin generated registrar uses once guard`() {
+        val guard = generatedRegistrarGuardField()
+        val generatedMetadata = generatedMetadataReference()
+        val previous = guard.getBoolean(null)
+        val previousMetadata = generatedMetadata.get()
+        try {
+            generatedMetadata.set(emptyMap())
+            guard.setBoolean(null, true)
+            assertFailsWith<CannotGenerateException> {
+                fake<GeneratedGuardedUser>(seed = 123)
+            }
+
+            guard.setBoolean(null, false)
+            assertEquals(fake<GeneratedGuardedUser>(seed = 123), fake<GeneratedGuardedUser>(seed = 123))
+            assertTrue(guard.getBoolean(null))
+        } finally {
+            generatedMetadata.set(previousMetadata)
+            guard.setBoolean(null, previous)
+        }
     }
 }
 
@@ -287,6 +311,16 @@ private data class GeneratedEmailNotification(
 private data object GeneratedIdleNotification : GeneratedSystemNotification
 
 /**
+ * Smoke-test model used to verify the generated registrar guard.
+ */
+private data class GeneratedGuardedUser(
+    /**
+     * Generated guarded user identifier.
+     */
+    val id: String,
+)
+
+/**
  * Counter used to prove dynamic defaults are evaluated at construction time.
  */
 private var dynamicDefaultIndex: Int = 0
@@ -295,3 +329,24 @@ private var dynamicDefaultIndex: Int = 0
  * Returns a new dynamic default identifier.
  */
 private fun nextDynamicDefaultId(): String = "dynamic-id-${dynamicDefaultIndex++}"
+
+/**
+ * Returns the compiler-generated registrar guard field.
+ */
+private fun generatedRegistrarGuardField(): java.lang.reflect.Field =
+    Class
+        .forName("dev.s7a.fiktion.compiler.GeneratedMetadataSmokeTestKt")
+        .declaredFields
+        .single { field -> field.name.contains("fiktionGeneratedMetadataRegistered") }
+        .also { field -> field.isAccessible = true }
+
+/**
+ * Returns the global generated metadata reference.
+ */
+@Suppress("UNCHECKED_CAST")
+private fun generatedMetadataReference(): java.util.concurrent.atomic.AtomicReference<Map<String, Any?>> =
+    Class
+        .forName("dev.s7a.fiktion.GlobalFiktion")
+        .getDeclaredField("generatedMetadata")
+        .also { field -> field.isAccessible = true }
+        .get(null) as java.util.concurrent.atomic.AtomicReference<Map<String, Any?>>
