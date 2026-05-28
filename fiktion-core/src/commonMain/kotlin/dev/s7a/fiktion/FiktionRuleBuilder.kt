@@ -372,6 +372,42 @@ public sealed class FiktionRuleBuilder protected constructor() {
     public inline fun <reified T> typeFamily(): TypeFamilyRuleTarget<T> = typeFamily(typeOf<T>()) as TypeFamilyRuleTarget<T>
 
     /**
+     * Configures how generated elements are materialized as collection type [CollectionType].
+     */
+    public inline fun <reified CollectionType : Collection<*>> configureCollection(noinline convert: (List<Any?>) -> CollectionType) {
+        configureCollection(type = typeOf<CollectionType>(), convert = convert)
+    }
+
+    /**
+     * Configures how generated entries are materialized as map type [MapType].
+     */
+    public inline fun <reified MapType : Map<*, *>> configureMap(noinline convert: (List<Pair<Any?, Any?>>) -> MapType) {
+        configureMap(type = typeOf<MapType>(), convert = convert)
+    }
+
+    /**
+     * Registers a collection converter without exposing internal config to inline code.
+     */
+    @PublishedApi
+    internal fun configureCollection(
+        type: KType,
+        convert: (List<Any?>) -> Collection<*>,
+    ) {
+        config.add(CollectionConverter(classifier = type.classifier, convert = convert))
+    }
+
+    /**
+     * Registers a map converter without exposing internal config to inline code.
+     */
+    @PublishedApi
+    internal fun configureMap(
+        type: KType,
+        convert: (List<Pair<Any?, Any?>>) -> Map<*, *>,
+    ) {
+        config.add(MapConverter(classifier = type.classifier, convert = convert))
+    }
+
+    /**
      * Targets generated values of [Value] whose owner is [Owner], regardless of property name.
      */
     @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")

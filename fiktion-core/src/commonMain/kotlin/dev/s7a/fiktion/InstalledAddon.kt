@@ -12,6 +12,14 @@ internal data class InstalledAddon(
      * Rules contributed by this add-on.
      */
     val rules: List<DefaultGenerationSpec<*>>,
+    /**
+     * Collection converters contributed by this add-on.
+     */
+    val collectionConverters: List<CollectionConverter> = emptyList(),
+    /**
+     * Map converters contributed by this add-on.
+     */
+    val mapConverters: List<MapConverter> = emptyList(),
 ) {
     /**
      * Returns a detached copy whose rules can be stored in an immutable configuration snapshot.

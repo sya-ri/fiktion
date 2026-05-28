@@ -213,6 +213,8 @@ public final class dev/s7a/fiktion/FiktionObjectValue : dev/s7a/fiktion/FiktionO
 }
 
 public abstract class dev/s7a/fiktion/FiktionRuleBuilder {
+	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
+	public final fun configureMap (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;

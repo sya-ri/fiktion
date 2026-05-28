@@ -19,6 +19,14 @@ internal data class FiktionConfig(
      */
     val rules: List<DefaultGenerationSpec<*>> = emptyList(),
     /**
+     * Collection converters configured by users for a global, isolated, or per-call scope.
+     */
+    val collectionConverters: List<CollectionConverter> = emptyList(),
+    /**
+     * Map converters configured by users for a global, isolated, or per-call scope.
+     */
+    val mapConverters: List<MapConverter> = emptyList(),
+    /**
      * Type construction metadata keyed by stable type id.
      */
     val metadata: Map<String, FiktionTypeMetadata<*>> = emptyMap(),
@@ -41,6 +49,8 @@ internal data class FiktionConfig(
                     other.rules.map { rule ->
                         rule.snapshot(precedence = rulePrecedence)
                     },
+            collectionConverters = collectionConverters + other.collectionConverters,
+            mapConverters = mapConverters + other.mapConverters,
             metadata = metadata + other.metadata,
         )
 
@@ -52,11 +62,47 @@ internal data class FiktionConfig(
             seed = seed,
             addons = addons.map { addon -> addon.snapshot(precedence = RulePrecedence.ADDON) },
             rules = rules.map { rule -> rule.snapshot(precedence = RulePrecedence.GLOBAL) },
+            collectionConverters = collectionConverters,
+            mapConverters = mapConverters,
             metadata = metadata,
         )
 
     /**
      * Returns rules in lookup order from lowest to highest precedence.
      */
-    fun effectiveRules(): List<DefaultGenerationSpec<*>> = BUILT_IN_RULES + addons.flatMap { it.rules } + rules
+    fun effectiveRules(): List<DefaultGenerationSpec<*>> =
+        mergeWithAddons(
+            builtIn = BUILT_IN_RULES,
+            addonValues = { addon -> addon.rules },
+            explicit = rules,
+        )
+
+    /**
+     * Returns collection converters in lookup order from lowest to highest precedence.
+     */
+    fun effectiveCollectionConverters(): List<CollectionConverter> =
+        mergeWithAddons(
+            builtIn = BUILT_IN_COLLECTION_CONVERTERS,
+            addonValues = { addon -> addon.collectionConverters },
+            explicit = collectionConverters,
+        )
+
+    /**
+     * Returns map converters in lookup order from lowest to highest precedence.
+     */
+    fun effectiveMapConverters(): List<MapConverter> =
+        mergeWithAddons(
+            builtIn = BUILT_IN_MAP_CONVERTERS,
+            addonValues = { addon -> addon.mapConverters },
+            explicit = mapConverters,
+        )
+
+    /**
+     * Merges built-in, add-on, and explicit configuration layers from lowest to highest precedence.
+     */
+    private fun <T> mergeWithAddons(
+        builtIn: List<T>,
+        addonValues: (InstalledAddon) -> List<T>,
+        explicit: List<T>,
+    ): List<T> = builtIn + addons.flatMap(addonValues) + explicit
 }

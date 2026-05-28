@@ -75,6 +75,22 @@ class GenerateCollectionTest {
     }
 
     @Test
+    fun `fake generates configured concrete collection types`() {
+        val fiktion =
+            Fiktion {
+                configureCollection<CustomCollection<*>> { elements ->
+                    CustomCollection(elements)
+                }
+                type<CustomCollection<String>>() generatesEach { "item-$seed" } withSize 2
+            }
+
+        val value = fiktion.fake<CustomCollection<String>>(seed = 123)
+
+        assertEquals(2, value.size)
+        assertTrue(value.all { item -> item.startsWith("item-") })
+    }
+
+    @Test
     fun `generates auto returns a collection spec for collection targets`() {
         val fiktion =
             Fiktion {
@@ -181,3 +197,7 @@ class GenerateCollectionTest {
             Department(team = values[0].valueOrDefault(defaultValue = null) as Team)
         }
 }
+
+private class CustomCollection<T>(
+    private val values: List<T>,
+) : Collection<T> by values

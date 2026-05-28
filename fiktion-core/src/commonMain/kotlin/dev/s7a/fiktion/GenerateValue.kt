@@ -187,8 +187,18 @@ private fun generateFromRule(
     if (rule is DefaultMapGenerationSpec<*, *, *>) {
         @Suppress("UNCHECKED_CAST")
         return context.generateMap(
+            request = request,
             spec = rule as DefaultMapGenerationSpec<Any?, Any?, Map<Any?, Any?>>,
             config = config,
+        )
+    }
+
+    if (rule is DefaultCollectionGenerationSpec<*, *>) {
+        @Suppress("UNCHECKED_CAST")
+        return context.generateCollection(
+            request = request,
+            config = config,
+            spec = rule as DefaultCollectionGenerationSpec<Any?, Collection<Any?>>,
         )
     }
 

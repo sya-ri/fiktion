@@ -9,6 +9,8 @@ internal class MutableFiktionConfig(
     seed: Long? = null,
     addons: List<InstalledAddon> = emptyList(),
     rules: List<DefaultGenerationSpec<*>> = emptyList(),
+    collectionConverters: List<CollectionConverter> = emptyList(),
+    mapConverters: List<MapConverter> = emptyList(),
     metadata: Map<String, FiktionTypeMetadata<*>> = emptyMap(),
 ) {
     /**
@@ -27,6 +29,16 @@ internal class MutableFiktionConfig(
     private val rules: MutableList<DefaultGenerationSpec<*>> = rules.toMutableList()
 
     /**
+     * Explicit collection converter buffer.
+     */
+    private val collectionConverters: MutableList<CollectionConverter> = collectionConverters.toMutableList()
+
+    /**
+     * Explicit map converter buffer.
+     */
+    private val mapConverters: MutableList<MapConverter> = mapConverters.toMutableList()
+
+    /**
      * Type construction metadata keyed by stable type id.
      */
     private val metadata: MutableMap<String, FiktionTypeMetadata<*>> = metadata.toMutableMap()
@@ -42,12 +54,40 @@ internal class MutableFiktionConfig(
     private var installingAddonRules: MutableList<DefaultGenerationSpec<*>>? = null
 
     /**
+     * Collection converter buffer for the add-on currently being installed.
+     */
+    private var installingAddonCollectionConverters: MutableList<CollectionConverter>? = null
+
+    /**
+     * Map converter buffer for the add-on currently being installed.
+     */
+    private var installingAddonMapConverters: MutableList<MapConverter>? = null
+
+    /**
      * Adds [rule], replacing an existing rule with the same key within the current rule layer.
      */
     fun add(rule: DefaultGenerationSpec<*>) {
         val targetRules = installingAddonRules ?: rules
         targetRules.removeAll { it.key == rule.key }
         targetRules += rule
+    }
+
+    /**
+     * Adds [converter], replacing an existing collection converter with the same key within the current layer.
+     */
+    fun add(converter: CollectionConverter) {
+        val targetConverters = installingAddonCollectionConverters ?: collectionConverters
+        targetConverters.removeAll { it.classifier == converter.classifier }
+        targetConverters += converter
+    }
+
+    /**
+     * Adds [converter], replacing an existing map converter with the same key within the current layer.
+     */
+    fun add(converter: MapConverter) {
+        val targetConverters = installingAddonMapConverters ?: mapConverters
+        targetConverters.removeAll { it.classifier == converter.classifier }
+        targetConverters += converter
     }
 
     /**
@@ -75,15 +115,29 @@ internal class MutableFiktionConfig(
         install: () -> Unit,
     ) {
         val previousAddonRules = installingAddonRules
+        val previousAddonCollectionConverters = installingAddonCollectionConverters
+        val previousAddonMapConverters = installingAddonMapConverters
         val addonRules = mutableListOf<DefaultGenerationSpec<*>>()
+        val addonCollectionConverters = mutableListOf<CollectionConverter>()
+        val addonMapConverters = mutableListOf<MapConverter>()
         installingAddonRules = addonRules
+        installingAddonCollectionConverters = addonCollectionConverters
+        installingAddonMapConverters = addonMapConverters
         try {
             install()
         } finally {
             installingAddonRules = previousAddonRules
+            installingAddonCollectionConverters = previousAddonCollectionConverters
+            installingAddonMapConverters = previousAddonMapConverters
         }
         addons.removeAll { it.id == id }
-        addons += InstalledAddon(id = id, rules = addonRules.map { rule -> rule.snapshot() })
+        addons +=
+            InstalledAddon(
+                id = id,
+                rules = addonRules.map { rule -> rule.snapshot() },
+                collectionConverters = addonCollectionConverters,
+                mapConverters = addonMapConverters,
+            )
     }
 
     /**
@@ -94,6 +148,8 @@ internal class MutableFiktionConfig(
             seed = seed,
             addons = addons.map { addon -> addon.snapshot() },
             rules = rules.map { rule -> rule.snapshot() },
+            collectionConverters = collectionConverters,
+            mapConverters = mapConverters,
             metadata = metadata,
         ).normalized()
 }

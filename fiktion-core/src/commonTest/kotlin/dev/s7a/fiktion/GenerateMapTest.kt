@@ -159,6 +159,22 @@ class GenerateMapTest {
     }
 
     @Test
+    fun `fake generates configured concrete map types`() {
+        val fiktion =
+            Fiktion {
+                configureMap<CustomMap<*, *>> { entries ->
+                    CustomMap(entries.toMap())
+                }
+                type<CustomMap<String, Int>>() generatesKeys { "key-$seed" } andValues { seed.toInt() } withSize 2
+            }
+
+        val value = fiktion.fake<CustomMap<String, Int>>(seed = 123)
+
+        assertEquals(2, value.size)
+        assertTrue(value.keys.all { key -> key.startsWith("key-") })
+    }
+
+    @Test
     fun `per-call map property rules automatically generate object map properties`() {
         val fiktion =
             Fiktion {
@@ -326,3 +342,7 @@ class GenerateMapTest {
             Project(labels = labels)
         }
 }
+
+private class CustomMap<K, V>(
+    private val delegate: Map<K, V>,
+) : Map<K, V> by delegate

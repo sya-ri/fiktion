@@ -73,11 +73,35 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 /**
- * Rules provided by Fiktion core.
+ * Configuration provided by Fiktion core.
  */
-internal val BUILT_IN_RULES: List<DefaultGenerationSpec<*>> by lazy {
+private val BUILT_IN_CONFIG: FiktionConfig by lazy {
     DefaultFiktionBuilder()
         .apply {
+            configureCollection<Collection<*>> { elements ->
+                elements.toList()
+            }
+            configureCollection<MutableCollection<*>> { elements ->
+                elements.toMutableList()
+            }
+            configureCollection<List<*>> { elements ->
+                elements.toList()
+            }
+            configureCollection<MutableList<*>> { elements ->
+                elements.toMutableList()
+            }
+            configureCollection<Set<*>> { elements ->
+                elements.toSet()
+            }
+            configureCollection<MutableSet<*>> { elements ->
+                elements.toMutableSet()
+            }
+            configureMap<Map<*, *>> { entries ->
+                entries.toMap()
+            }
+            configureMap<MutableMap<*, *>> { entries ->
+                entries.toMap().toMutableMap()
+            }
             type<Unit>() generatesBy {
                 unit()
             }
@@ -288,6 +312,22 @@ internal val BUILT_IN_RULES: List<DefaultGenerationSpec<*>> by lazy {
                 }
             }
         }.build()
-        .rules
-        .map { rule -> rule.snapshot(precedence = RulePrecedence.BUILT_IN) }
 }
+
+/**
+ * Rules provided by Fiktion core.
+ */
+internal val BUILT_IN_RULES: List<DefaultGenerationSpec<*>>
+    get() = BUILT_IN_CONFIG.rules.map { rule -> rule.snapshot(precedence = RulePrecedence.BUILT_IN) }
+
+/**
+ * Collection converters provided by Fiktion core.
+ */
+internal val BUILT_IN_COLLECTION_CONVERTERS: List<CollectionConverter>
+    get() = BUILT_IN_CONFIG.collectionConverters
+
+/**
+ * Map converters provided by Fiktion core.
+ */
+internal val BUILT_IN_MAP_CONVERTERS: List<MapConverter>
+    get() = BUILT_IN_CONFIG.mapConverters

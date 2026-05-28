@@ -3,18 +3,19 @@ package dev.s7a.fiktion
 import kotlin.reflect.KType
 
 /**
- * Generates a collection using [elementGenerator] and [size].
+ * Generates a collection using [spec] and the converter configured for [request].
  */
 @Suppress("UNCHECKED_CAST", "DEPRECATION")
 internal fun <Element, CollectionType : Collection<Element>> FakeContext.generateCollection(
-    sizeRange: IntRange,
-    elementGenerator: FakeContext.() -> Element,
+    request: GenerationRequest,
+    config: FiktionConfig,
+    spec: DefaultCollectionGenerationSpec<Element, CollectionType>,
 ): CollectionType {
-    val count = sizeRange.random(random)
+    val count = spec.sizeRange.random(random)
     val elements =
         List(count) { index ->
             val elementSeed = seed.childSeed(index)
-            elementGenerator(
+            spec.elementGenerator(
                 DefaultFakeContext(
                     seed = elementSeed,
                     type = type,
@@ -25,10 +26,8 @@ internal fun <Element, CollectionType : Collection<Element>> FakeContext.generat
             )
         }
 
-    return when {
-        type.id.isSetTypeId() -> elements.toMutableSet()
-        else -> elements.toMutableList()
-    } as CollectionType
+    return config.selectCollectionConverter(request)?.convert?.invoke(elements) as? CollectionType
+        ?: missingCollectionConverter(request)
 }
 
 /**
@@ -55,19 +54,12 @@ internal fun generateAutomaticCollection(
             )
         }
 
-    return when {
-        request.type.classifier == Set::class || request.type.classifier == MutableSet::class -> elements.toMutableSet()
-        else -> elements.toMutableList()
-    }
+    return config.selectCollectionConverter(request)?.convert?.invoke(elements)
+        ?: missingCollectionConverter(request)
 }
 
 /**
- * Returns true when this type id represents a set-like collection.
+ * Reports that no collection converter was configured for [request].
  */
-private fun String.isSetTypeId(): Boolean =
-    startsWith("kotlin.collections.Set<") ||
-        startsWith("kotlin.collections.MutableSet<") ||
-        startsWith("java.util.Set<") ||
-        startsWith("java.util.MutableSet<") ||
-        startsWith("Set<") ||
-        startsWith("MutableSet<")
+private fun missingCollectionConverter(request: GenerationRequest): Nothing =
+    throw CannotGenerateException("Cannot generate ${request.type} because no collection converter is configured.")

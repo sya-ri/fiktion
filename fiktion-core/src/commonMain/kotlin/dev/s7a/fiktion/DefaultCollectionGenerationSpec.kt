@@ -15,18 +15,23 @@ internal class DefaultCollectionGenerationSpec<Element, CollectionType : Collect
     /**
      * Element generator used for each generated collection element.
      */
-    private val elementGenerator: FakeContext.() -> Element,
+    val elementGenerator: FakeContext.() -> Element,
     /**
      * Generated collection size range.
      */
     var sizeRange: IntRange = DEFAULT_COLLECTION_SIZE_RANGE,
+    /**
+     * Precedence layer assigned while composing configurations.
+     */
+    override val precedence: RulePrecedence = RulePrecedence.GLOBAL,
 ) : DefaultGenerationSpec<CollectionType>(
         key = key,
         matcher = matcher,
+        precedence = precedence,
     ),
     CollectionGenerationSpec<Element, CollectionType> {
     override val generator: FakeContext.() -> CollectionType = {
-        generateCollection(sizeRange = sizeRange, elementGenerator = elementGenerator)
+        error("Collection generation spec must be generated through generateCollection.")
     }
 
     override fun withSize(size: Int): CollectionGenerationSpec<Element, CollectionType> {
@@ -48,19 +53,10 @@ internal class DefaultCollectionGenerationSpec<Element, CollectionType : Collect
             matcher = matcher,
             elementGenerator = elementGenerator,
             sizeRange = sizeRange,
+            precedence = precedence,
         ).also { spec ->
             spec.seed = seed
             spec.nullProbability = nullProbability
             spec.defaultProbability = defaultProbability
-        }.let { spec ->
-            DefaultGenerationSpec(
-                key = spec.key,
-                matcher = spec.matcher,
-                generator = spec.generator,
-                seed = spec.seed,
-                nullProbability = spec.nullProbability,
-                defaultProbability = spec.defaultProbability,
-                precedence = precedence,
-            )
         }
 }

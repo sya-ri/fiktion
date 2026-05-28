@@ -7,6 +7,7 @@ import kotlin.reflect.KType
  */
 @Suppress("UNCHECKED_CAST")
 internal fun <Key, Value, MapType : Map<Key, Value>> FakeContext.generateMap(
+    request: GenerationRequest,
     spec: DefaultMapGenerationSpec<Key, Value, MapType>,
     config: FiktionConfig,
 ): MapType {
@@ -38,7 +39,8 @@ internal fun <Key, Value, MapType : Map<Key, Value>> FakeContext.generateMap(
             key to value
         }
 
-    return entries.toMap().toMutableMap() as MapType
+    return config.selectMapConverter(request)?.convert?.invoke(entries) as? MapType
+        ?: missingMapConverter(request)
 }
 
 /**
@@ -99,6 +101,12 @@ private fun missingMapPart(part: String): Nothing =
         "Cannot generate map $part because the map rule is incomplete. " +
             "Configure entries with generatesEach, or configure both generatesKeys and generatesValues.",
     )
+
+/**
+ * Reports that no map converter was configured for [request].
+ */
+private fun missingMapConverter(request: GenerationRequest): Nothing =
+    throw CannotGenerateException("Cannot generate ${request.type} because no map converter is configured.")
 
 /**
  * Generates a missing key or value by using the normal value generation pipeline.

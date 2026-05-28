@@ -25,6 +25,8 @@ internal class DefaultFiktionBuilder private constructor(
                 seed = config.seed,
                 addons = config.addons,
                 rules = config.rules,
+                collectionConverters = config.collectionConverters,
+                mapConverters = config.mapConverters,
                 metadata = config.metadata,
             ),
         )
