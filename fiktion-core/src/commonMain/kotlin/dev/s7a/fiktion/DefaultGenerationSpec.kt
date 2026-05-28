@@ -31,6 +31,10 @@ internal open class DefaultGenerationSpec<T>(
      */
     open var defaultProbability: Probability? = null,
     /**
+     * Whether this spec should use automatic generation instead of an explicit generator.
+     */
+    open val automaticallyGenerates: Boolean = false,
+    /**
      * Precedence layer assigned while composing configurations.
      */
     open val precedence: RulePrecedence = RulePrecedence.GLOBAL,
@@ -61,6 +65,7 @@ internal open class DefaultGenerationSpec<T>(
             seed = seed,
             nullProbability = nullProbability,
             defaultProbability = defaultProbability,
+            automaticallyGenerates = automaticallyGenerates,
             precedence = precedence,
         )
 }

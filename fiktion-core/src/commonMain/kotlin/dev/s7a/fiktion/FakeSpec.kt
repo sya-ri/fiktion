@@ -114,12 +114,10 @@ public class FakeSpec<Root> {
         ).generatesBy(generator)
 
     /**
-     * Planned API for generating this property using automatic generation.
-     *
-     * This is not implemented by the current runtime path.
+     * Generates this property using Fiktion's automatic generation.
      */
-    public fun <Value> KProperty1<Root, Value>.autoGenerates(): GenerationSpec<Value> =
-        throw NotImplementedError("Automatic property generation is not implemented yet.")
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Value> KProperty1<Root, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
 
     /**
      * Generates each element for this collection property by invoking [generator].
@@ -154,13 +152,23 @@ public class FakeSpec<Root> {
     ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
 
     /**
-     * Planned API for generating this property by applying nested per-call configuration to [Value].
-     *
-     * This is not implemented by the current runtime path.
+     * Applies nested per-call configuration to this property.
      */
-    public inline operator fun <reified Value> KProperty1<Root, Value>.invoke(
-        noinline configure: FakeSpec<Value>.() -> Unit,
-    ): GenerationSpec<Value> = throw NotImplementedError("Nested rule configuration is not implemented yet.")
+    @Suppress("DEPRECATION_ERROR")
+    public operator fun <Value> KProperty1<Root, Value>.invoke(configure: FakeSpec<Value>.() -> Unit): GenerationSpec<Value> {
+        configureNestedRules(
+            prefix =
+                listOf(
+                    PathRuleSegment(
+                        ownerId = null,
+                        name = name,
+                        valueId = null,
+                    ),
+                ),
+            configure = configure,
+        )
+        return property(this).autoGenerates()
+    }
 
     /**
      * Generates [value] for this nested property path.
@@ -174,12 +182,9 @@ public class FakeSpec<Root> {
         property(this).generatesBy(generator)
 
     /**
-     * Planned API for generating this nested property path using automatic generation.
-     *
-     * This is not implemented by the current runtime path.
+     * Generates this nested property path using Fiktion's automatic generation.
      */
-    public fun <Value> PropertyPath<Root, Value>.autoGenerates(): GenerationSpec<Value> =
-        throw NotImplementedError("Automatic property generation is not implemented yet.")
+    public fun <Value> PropertyPath<Root, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
 
     /**
      * Generates each element for this nested collection property path by invoking [generator].
@@ -210,13 +215,12 @@ public class FakeSpec<Root> {
     ): MapValueSpec<Key, Value, MapType> = property(this).generatesValues(generator)
 
     /**
-     * Planned API for generating this nested property path by applying nested per-call configuration to [Value].
-     *
-     * This is not implemented by the current runtime path.
+     * Applies nested per-call configuration to this property path.
      */
-    public inline operator fun <reified Value> PropertyPath<Root, Value>.invoke(
-        noinline configure: FakeSpec<Value>.() -> Unit,
-    ): GenerationSpec<Value> = throw NotImplementedError("Nested rule configuration is not implemented yet.")
+    public operator fun <Value> PropertyPath<Root, Value>.invoke(configure: FakeSpec<Value>.() -> Unit): GenerationSpec<Value> {
+        configureNestedRules(prefix = segments, configure = configure)
+        return property(this).autoGenerates()
+    }
 
     /**
      * Targets a property path represented as raw Kotlin properties.
@@ -232,6 +236,20 @@ public class FakeSpec<Root> {
         name: String,
         valueId: String?,
     ): RuleTarget<Value> = target(listOf(PathRuleSegment(ownerId = null, name = name, valueId = valueId)))
+
+    /**
+     * Registers rules from [configure] below a nested path [prefix].
+     */
+    private fun <Value> configureNestedRules(
+        prefix: List<PathRuleSegment>,
+        configure: FakeSpec<Value>.() -> Unit,
+    ) {
+        val nestedSpec = FakeSpec<Value>()
+        nestedSpec.configure()
+        nestedSpec.rules.forEach { rule ->
+            config.add(rule.prefixedBy(prefix))
+        }
+    }
 
     /**
      * Registers a rule target using [key] for replacement and [matcher] for lookup.

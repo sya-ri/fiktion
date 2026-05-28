@@ -29,6 +29,8 @@ public final class dev/s7a/fiktion/FakeSpec {
 	public final fun generatesKeys (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapKeySpec;
 	public final fun generatesValues (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 	public final fun generatesValues (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
+	public final fun invoke (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun invoke (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun name (Ljava/lang/String;)Ldev/s7a/fiktion/RuleNameTarget;
 	public final fun name (Ljava/lang/String;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/RuleTarget;
 	public final fun name (Lkotlin/text/Regex;)Ldev/s7a/fiktion/RuleNameTarget;

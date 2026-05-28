@@ -47,11 +47,9 @@ public infix fun <T> RuleTarget<T>.generatesOneOf(values: Iterable<T>): Generati
     }
 
 /**
- * Planned API for using automatic generation for this rule target.
- *
- * This is not implemented by the current runtime path.
+ * Uses Fiktion's automatic generation for this rule target.
  */
-public fun <T> RuleTarget<T>.autoGenerates(): GenerationSpec<T> = throw NotImplementedError("Rule configuration is not implemented yet.")
+public fun <T> RuleTarget<T>.autoGenerates(): GenerationSpec<T> = (this as DefaultRuleTarget<T>).autoGenerates()
 
 /**
  * Generates each element for this collection rule target by invoking [generator].

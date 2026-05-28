@@ -122,6 +122,54 @@ class GenerateObjectTest {
     }
 
     @Test
+    fun `per-call nested property blocks configure generated nested object properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithProfile())
+                register(profileMetadata())
+                type<String>() generates "generated"
+            }
+
+        val user =
+            fiktion.fake<User>(seed = 123) {
+                User::profile {
+                    Profile::nickname generates "nick"
+                }
+            }
+
+        assertEquals(
+            User(
+                id = "generated",
+                profile = Profile(nickname = "nick"),
+            ),
+            user,
+        )
+    }
+
+    @Test
+    fun `autoGenerates uses automatic generation for a property`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadata())
+                type<String>() generates "configured"
+            }
+
+        val user =
+            fiktion.fake<User>(seed = 123) {
+                User::id.autoGenerates()
+            }
+
+        assertTrue(user.id.isNotBlank())
+        assertTrue(user.id != "configured")
+        assertEquals(
+            user,
+            fiktion.fake<User>(seed = 123) {
+                User::id.autoGenerates()
+            },
+        )
+    }
+
+    @Test
     fun `fake constructs nullable object properties from non-null metadata`() {
         val fiktion =
             Fiktion {

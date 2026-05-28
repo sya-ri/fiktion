@@ -38,9 +38,38 @@ internal fun generateValue(
             if (context.random.nextDouble() < nullProbability) return null
         }
 
+        if (rule.automaticallyGenerates) {
+            return generateAutomaticValue(
+                request = request,
+                config = config,
+                seed = contextSeed,
+                depth = depth,
+                context = context,
+            )
+        }
+
         return rule.generator(context)
     }
 
+    return generateAutomaticValue(
+        request = request,
+        config = config,
+        seed = seed,
+        depth = depth,
+        context = context,
+    )
+}
+
+/**
+ * Generates a value without applying the already selected explicit rule.
+ */
+private fun generateAutomaticValue(
+    request: GenerationRequest,
+    config: FiktionConfig,
+    seed: Long,
+    depth: Int,
+    context: FakeContext,
+): Any? {
     when (val metadata = config.metadata[request.type.nonNullTypeId()]) {
         is FiktionObjectMetadata<*> -> {
             return generateObject(

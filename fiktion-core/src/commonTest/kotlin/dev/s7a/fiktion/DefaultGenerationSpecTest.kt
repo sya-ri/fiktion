@@ -3,8 +3,10 @@ package dev.s7a.fiktion
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotSame
 import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
 class DefaultGenerationSpecTest {
     @Test
@@ -48,6 +50,21 @@ class DefaultGenerationSpecTest {
         assertNotSame(spec, snapshot)
         assertEquals(123, snapshot.seed)
         assertEquals(456, spec.seed)
+    }
+
+    @Test
+    fun `snapshot preserves automatic generation`() {
+        val spec =
+            DefaultGenerationSpec<String>(
+                key = RuleKey.Type(typeOf<String>()),
+                matcher = RuleMatcher.Type(typeOf<String>()),
+                automaticallyGenerates = true,
+            )
+
+        val snapshot = spec.snapshot()
+
+        assertTrue(snapshot.automaticallyGenerates)
+        assertFalse(stringSpec().snapshot().automaticallyGenerates)
     }
 
     /**
