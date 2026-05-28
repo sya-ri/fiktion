@@ -70,6 +70,17 @@ internal fun generateValue(
             )
         }
 
+        is FiktionSealedMetadata<*> -> {
+            return generateSealed(
+                request = request,
+                config = config,
+                seed = seed,
+                depth = depth,
+                context = context,
+                metadata = metadata,
+            )
+        }
+
         null -> {
             Unit
         }

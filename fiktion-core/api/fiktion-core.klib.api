@@ -147,6 +147,15 @@ final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionObjectMetadata : dev.s7a.fi
     final fun construct(kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>): #A // dev.s7a.fiktion/FiktionObjectMetadata.construct|construct(kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>){}[0]
 }
 
+final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionSealedMetadata : dev.s7a.fiktion/FiktionTypeMetadata<#A> { // dev.s7a.fiktion/FiktionSealedMetadata|null[0]
+    constructor <init>(kotlin.reflect/KType, kotlin.collections/List<kotlin.reflect/KType>) // dev.s7a.fiktion/FiktionSealedMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.collections.List<kotlin.reflect.KType>){}[0]
+
+    final val subtypes // dev.s7a.fiktion/FiktionSealedMetadata.subtypes|{}subtypes[0]
+        final fun <get-subtypes>(): kotlin.collections/List<kotlin.reflect/KType> // dev.s7a.fiktion/FiktionSealedMetadata.subtypes.<get-subtypes>|<get-subtypes>(){}[0]
+    final val type // dev.s7a.fiktion/FiktionSealedMetadata.type|{}type[0]
+        final fun <get-type>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionSealedMetadata.type.<get-type>|<get-type>(){}[0]
+}
+
 final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionValueMetadata : dev.s7a.fiktion/FiktionTypeMetadata<#A> { // dev.s7a.fiktion/FiktionValueMetadata|null[0]
     constructor <init>(kotlin.reflect/KType, kotlin.reflect/KType, kotlin/Function1<kotlin/Any?, #A>) // dev.s7a.fiktion/FiktionValueMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.reflect.KType;kotlin.Function1<kotlin.Any?,1:0>){}[0]
 

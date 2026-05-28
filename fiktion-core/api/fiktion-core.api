@@ -211,6 +211,12 @@ public final class dev/s7a/fiktion/FiktionRuleBuilder$DefaultImpls {
 	public static fun generatesValues (Ldev/s7a/fiktion/FiktionRuleBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 }
 
+public final class dev/s7a/fiktion/FiktionSealedMetadata : dev/s7a/fiktion/FiktionTypeMetadata {
+	public fun <init> (Lkotlin/reflect/KType;Ljava/util/List;)V
+	public final fun getSubtypes ()Ljava/util/List;
+	public fun getType ()Lkotlin/reflect/KType;
+}
+
 public abstract interface class dev/s7a/fiktion/FiktionSnapshot {
 	public abstract fun restore (Z)Z
 	public static synthetic fun restore$default (Ldev/s7a/fiktion/FiktionSnapshot;ZILjava/lang/Object;)Z
