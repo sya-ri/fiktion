@@ -9,7 +9,9 @@ import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.ir.builders.constFalse
 import org.jetbrains.kotlin.ir.builders.constTrue
+import org.jetbrains.kotlin.ir.builders.declarations.addFunction
 import org.jetbrains.kotlin.ir.builders.declarations.addValueParameter
+import org.jetbrains.kotlin.ir.builders.declarations.buildField
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.irAs
 import org.jetbrains.kotlin.ir.builders.irBlock
@@ -17,14 +19,20 @@ import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irCallConstructor
 import org.jetbrains.kotlin.ir.builders.irGet
+import org.jetbrains.kotlin.ir.builders.irGetField
 import org.jetbrains.kotlin.ir.builders.irGetObjectValue
+import org.jetbrains.kotlin.ir.builders.irIfThen
 import org.jetbrains.kotlin.ir.builders.irIfThenElse
 import org.jetbrains.kotlin.ir.builders.irInt
 import org.jetbrains.kotlin.ir.builders.irReturn
+import org.jetbrains.kotlin.ir.builders.irSetField
 import org.jetbrains.kotlin.ir.builders.irString
+import org.jetbrains.kotlin.ir.builders.irUnit
 import org.jetbrains.kotlin.ir.builders.irVararg
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
+import org.jetbrains.kotlin.ir.declarations.IrField
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -70,8 +78,15 @@ internal class FiktionGeneratedMetadataRegistrar(
      */
     fun registerBeforeFakeCalls(moduleFragment: IrModuleFragment) {
         if (candidates.isEmpty()) return
+        val registrar = moduleFragment.generatedRegistrar() ?: return
+        generatedRegistrar = registrar.symbol
         moduleFragment.transformChildrenVoid(this)
     }
+
+    /**
+     * Generated registrar function called before Fiktion fake calls.
+     */
+    private lateinit var generatedRegistrar: IrSimpleFunctionSymbol
 
     override fun visitCall(expression: IrCall): IrExpression {
         expression.transformChildrenVoid(this)
@@ -85,11 +100,62 @@ internal class FiktionGeneratedMetadataRegistrar(
             origin = null,
             resultType = expression.type,
         ) {
-            candidates.forEach { candidate ->
-                +builder.registerGenerated(candidate, builder.metadata(candidate))
-            }
+            +builder.irCall(generatedRegistrar)
             +expression
         }
+    }
+
+    /**
+     * Adds the generated registrar function to this module.
+     */
+    private fun IrModuleFragment.generatedRegistrar(): IrSimpleFunction? {
+        val file = files.firstOrNull() ?: return null
+        val function =
+            pluginContext.irFactory.addFunction(file) {
+                name = Name.identifier(FIKTION_GENERATED_REGISTRAR_NAME)
+                origin = IrDeclarationOrigin.DEFINED
+                visibility = DescriptorVisibilities.PRIVATE
+                returnType = pluginContext.irBuiltIns.unitType
+            }
+        val builder = DeclarationIrBuilder(pluginContext, function.symbol)
+        val initializedField = file.generatedInitializedField(builder)
+        function.body =
+            builder.irBlockBody {
+                +builder.irIfThen(
+                    pluginContext.irBuiltIns.unitType,
+                    builder.irGetField(null, initializedField),
+                    builder.irReturn(builder.irUnit()),
+                )
+                +builder.irSetField(null, initializedField, builder.irBoolean(true))
+                candidates.forEach { candidate ->
+                    +builder.registerGenerated(candidate, builder.metadata(candidate, function))
+                }
+            }
+        return function
+    }
+
+    /**
+     * Adds the generated registrar initialized field to this file.
+     */
+    private fun org.jetbrains.kotlin.ir.declarations.IrFile.generatedInitializedField(builder: DeclarationIrBuilder): IrField {
+        val field =
+            pluginContext.irFactory.buildField {
+                name = Name.identifier(FIKTION_GENERATED_REGISTRAR_FIELD_NAME)
+                origin = IrDeclarationOrigin.DEFINED
+                visibility = DescriptorVisibilities.PRIVATE
+                type = pluginContext.irBuiltIns.booleanType
+                isFinal = false
+                isStatic = true
+            }
+        field.parent = this
+        field.initializer =
+            pluginContext.irFactory.createExpressionBody(
+                builder.startOffset,
+                builder.endOffset,
+                builder.irBoolean(false),
+            )
+        declarations.add(0, field)
+        return field
     }
 
     /**
@@ -113,13 +179,36 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns generated type metadata for [candidate].
      */
-    private fun DeclarationIrBuilder.metadata(candidate: FiktionGeneratedMetadataCandidate): IrExpression =
+    private fun DeclarationIrBuilder.metadata(
+        candidate: FiktionGeneratedMetadataCandidate,
+        lambdaParent: IrDeclarationParent,
+    ): IrExpression =
         when (candidate) {
-            is FiktionGeneratedEnumMetadataCandidate -> enumMetadata(candidate)
-            is FiktionGeneratedObjectMetadataCandidate -> objectMetadata(candidate, objectConstructorLambda(candidate).reference)
-            is FiktionGeneratedSealedMetadataCandidate -> sealedMetadata(candidate)
-            is FiktionGeneratedSingletonMetadataCandidate -> objectMetadata(candidate, singletonConstructorLambda(candidate).reference)
-            is FiktionGeneratedValueMetadataCandidate -> valueMetadata(candidate, valueConstructorLambda(candidate).reference)
+            is FiktionGeneratedEnumMetadataCandidate -> {
+                enumMetadata(candidate)
+            }
+
+            is FiktionGeneratedObjectMetadataCandidate -> {
+                objectMetadata(
+                    candidate,
+                    objectConstructorLambda(candidate, lambdaParent).reference,
+                )
+            }
+
+            is FiktionGeneratedSealedMetadataCandidate -> {
+                sealedMetadata(candidate)
+            }
+
+            is FiktionGeneratedSingletonMetadataCandidate -> {
+                objectMetadata(
+                    candidate,
+                    singletonConstructorLambda(candidate, lambdaParent).reference,
+                )
+            }
+
+            is FiktionGeneratedValueMetadataCandidate -> {
+                valueMetadata(candidate, valueConstructorLambda(candidate, lambdaParent).reference)
+            }
         }
 
     /**
@@ -264,7 +353,10 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns the generated constructor lambda used by `FiktionObjectMetadata`.
      */
-    private fun DeclarationIrBuilder.objectConstructorLambda(candidate: FiktionGeneratedObjectMetadataCandidate): ConstructorLambda {
+    private fun DeclarationIrBuilder.objectConstructorLambda(
+        candidate: FiktionGeneratedObjectMetadataCandidate,
+        parent: IrDeclarationParent,
+    ): ConstructorLambda {
         val classType = candidate.irClass.defaultType
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
@@ -275,7 +367,7 @@ internal class FiktionGeneratedMetadataRegistrar(
                 visibility = DescriptorVisibilities.LOCAL
                 returnType = classType
             }
-        function.parent = requireNotNull(currentDeclarationParent)
+        function.parent = parent
         val arguments = function.addValueParameter("values", argumentsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -291,7 +383,10 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns the generated constructor lambda used by singleton `FiktionObjectMetadata`.
      */
-    private fun DeclarationIrBuilder.singletonConstructorLambda(candidate: FiktionGeneratedSingletonMetadataCandidate): ConstructorLambda {
+    private fun DeclarationIrBuilder.singletonConstructorLambda(
+        candidate: FiktionGeneratedSingletonMetadataCandidate,
+        parent: IrDeclarationParent,
+    ): ConstructorLambda {
         val classType = candidate.irClass.defaultType
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
@@ -302,7 +397,7 @@ internal class FiktionGeneratedMetadataRegistrar(
                 visibility = DescriptorVisibilities.LOCAL
                 returnType = classType
             }
-        function.parent = requireNotNull(currentDeclarationParent)
+        function.parent = parent
         function.addValueParameter("values", argumentsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -318,7 +413,10 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns the generated constructor lambda used by `FiktionValueMetadata`.
      */
-    private fun DeclarationIrBuilder.valueConstructorLambda(candidate: FiktionGeneratedValueMetadataCandidate): ConstructorLambda {
+    private fun DeclarationIrBuilder.valueConstructorLambda(
+        candidate: FiktionGeneratedValueMetadataCandidate,
+        parent: IrDeclarationParent,
+    ): ConstructorLambda {
         val classType = candidate.irClass.defaultType
         val valueType = pluginContext.irBuiltIns.anyNType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(valueType, classType)
@@ -329,7 +427,7 @@ internal class FiktionGeneratedMetadataRegistrar(
                 visibility = DescriptorVisibilities.LOCAL
                 returnType = classType
             }
-        function.parent = requireNotNull(currentDeclarationParent)
+        function.parent = parent
         val value = function.addValueParameter("value", valueType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -620,6 +718,16 @@ private const val FIKTION_PACKAGE = "dev.s7a.fiktion"
  * Fully qualified name for top-level fake functions.
  */
 private const val FIKTION_FAKE_FUNCTION = "$FIKTION_PACKAGE.fake"
+
+/**
+ * Generated top-level registrar function name.
+ */
+private const val FIKTION_GENERATED_REGISTRAR_NAME = "\$fiktionRegisterGeneratedMetadata"
+
+/**
+ * Generated top-level registrar initialized field name.
+ */
+private const val FIKTION_GENERATED_REGISTRAR_FIELD_NAME = "\$fiktionGeneratedMetadataRegistered"
 
 /**
  * Returns a top-level callable id.
