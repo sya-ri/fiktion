@@ -9,6 +9,11 @@ public final class dev/s7a/fiktion/AutoKt {
 	public static final fun getAuto ()Ldev/s7a/fiktion/Auto;
 }
 
+public final class dev/s7a/fiktion/CannotGenerateException : java/lang/RuntimeException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
 public abstract interface class dev/s7a/fiktion/CollectionGenerationSpec : dev/s7a/fiktion/GenerationSpec {
 	public abstract fun withSize (I)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public abstract fun withSize (Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/CollectionGenerationSpec;
@@ -17,6 +22,9 @@ public abstract interface class dev/s7a/fiktion/CollectionGenerationSpec : dev/s
 public final class dev/s7a/fiktion/CollectionGenerationSpec$DefaultImpls {
 	public static fun orDefaultAt (Ldev/s7a/fiktion/CollectionGenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun orNullAt (Ldev/s7a/fiktion/CollectionGenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public abstract interface annotation class dev/s7a/fiktion/ExperimentalFiktionApi : java/lang/annotation/Annotation {
 }
 
 public final class dev/s7a/fiktion/FakeKt {
@@ -73,6 +81,11 @@ public abstract class dev/s7a/fiktion/FiktionBuilder : dev/s7a/fiktion/FiktionRu
 	public abstract fun install (Ldev/s7a/fiktion/FiktionAddon;)V
 	public abstract fun register (Ldev/s7a/fiktion/FiktionTypeMetadata;)V
 	public abstract fun withSeed (J)V
+}
+
+public final class dev/s7a/fiktion/FiktionConfigurationException : java/lang/IllegalArgumentException {
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
 public abstract class dev/s7a/fiktion/FiktionConfigureBuilder : dev/s7a/fiktion/FiktionBuilder {

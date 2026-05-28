@@ -1,6 +1,6 @@
 package dev.s7a.fiktion.generators
 
-import dev.s7a.fiktion.runtime.FakeContext
+import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Default string length range used by [string].
@@ -14,7 +14,7 @@ public fun FakeContext.string(
     length: IntRange = DefaultStringLength,
     charset: FiktionCharset = FiktionCharset.AlphaNumeric,
 ): String {
-    require(!length.isEmpty()) { "length must not be empty." }
+    requireFiktionConfiguration(!length.isEmpty()) { "length must not be empty." }
     return string(length = length.random(random), charset = charset)
 }
 
@@ -25,10 +25,10 @@ public fun FakeContext.string(
     length: Int,
     charset: FiktionCharset = FiktionCharset.AlphaNumeric,
 ): String {
-    require(length >= 0) { "length must be greater than or equal to 0." }
+    requireFiktionConfiguration(length >= 0) { "length must be greater than or equal to 0." }
     val chars = charset.chars
     val charCount = chars.length
-    require(charCount > 0) { "charset must not be empty." }
+    requireFiktionConfiguration(charCount > 0) { "charset must not be empty." }
     return buildString {
         repeat(length) {
             append(chars[random.nextInt(charCount)])

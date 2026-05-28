@@ -1,4 +1,4 @@
-package dev.s7a.fiktion.runtime
+package dev.s7a.fiktion
 
 /**
  * Marks APIs that are expected to evolve before Fiktion reaches 1.0.

@@ -1,6 +1,6 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
+import dev.s7a.fiktion.ExperimentalFiktionApi
 
 /**
  * Returns whether the generated constructor argument at [index] asks Kotlin to use the property's default value.

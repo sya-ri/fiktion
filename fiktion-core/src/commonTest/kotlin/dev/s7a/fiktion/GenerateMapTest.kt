@@ -1,6 +1,6 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
+import dev.s7a.fiktion.ExperimentalFiktionApi
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -211,7 +211,7 @@ class GenerateMapTest {
     @Test
     fun `duplicate map key rules fail immediately`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesKeys { "first-$seed" }
                     type<Map<String, Int>>() generatesKeys { "second-$seed" }
@@ -224,7 +224,7 @@ class GenerateMapTest {
     @Test
     fun `duplicate map value rules fail immediately`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesValues { seed.toInt() }
                     type<Map<String, Int>>() generatesValues { seed.toInt() + 1 }
@@ -237,7 +237,7 @@ class GenerateMapTest {
     @Test
     fun `duplicate map entry rules fail immediately`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesEach { "first-$seed" to seed.toInt() }
                     type<Map<String, Int>>() generatesEach { "second-$seed" to seed.toInt() }
@@ -250,7 +250,7 @@ class GenerateMapTest {
     @Test
     fun `map entry rules cannot be combined with key rules`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesKeys { "key-$seed" }
                     type<Map<String, Int>>() generatesEach { "entry-$seed" to seed.toInt() }
@@ -263,7 +263,7 @@ class GenerateMapTest {
     @Test
     fun `map key rules cannot be combined with entry rules`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesEach { "entry-$seed" to seed.toInt() }
                     type<Map<String, Int>>() generatesKeys { "key-$seed" }
@@ -276,7 +276,7 @@ class GenerateMapTest {
     @Test
     fun `map sizes cannot be negative`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesEach { "key-$seed" to seed.toInt() } withSize -1
                 }
@@ -288,7 +288,7 @@ class GenerateMapTest {
     @Test
     fun `map size ranges cannot be empty`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesEach { "key-$seed" to seed.toInt() } withSize IntRange.EMPTY
                 }
@@ -300,7 +300,7 @@ class GenerateMapTest {
     @Test
     fun `map size ranges cannot start below zero`() {
         val error =
-            assertFailsWith<IllegalArgumentException> {
+            assertFailsWith<FiktionConfigurationException> {
                 Fiktion {
                     type<Map<String, Int>>() generatesEach { "key-$seed" to seed.toInt() } withSize -1..1
                 }

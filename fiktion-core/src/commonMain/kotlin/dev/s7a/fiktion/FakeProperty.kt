@@ -1,4 +1,4 @@
-package dev.s7a.fiktion.runtime
+package dev.s7a.fiktion
 
 /**
  * Runtime description of a generated property.

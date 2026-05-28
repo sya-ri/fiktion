@@ -1,4 +1,4 @@
-@file:OptIn(dev.s7a.fiktion.runtime.ExperimentalFiktionApi::class)
+@file:OptIn(dev.s7a.fiktion.ExperimentalFiktionApi::class)
 
 package dev.s7a.fiktion
 

@@ -1,9 +1,7 @@
-@file:OptIn(dev.s7a.fiktion.runtime.ExperimentalFiktionApi::class)
+@file:OptIn(dev.s7a.fiktion.ExperimentalFiktionApi::class)
 
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.CannotGenerateException
-import dev.s7a.fiktion.runtime.FakeContext
 
 /**
  * Generates an enum value from registered [metadata].

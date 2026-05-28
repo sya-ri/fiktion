@@ -1,8 +1,6 @@
-@file:OptIn(dev.s7a.fiktion.runtime.ExperimentalFiktionApi::class)
+@file:OptIn(dev.s7a.fiktion.ExperimentalFiktionApi::class)
 
 package dev.s7a.fiktion
-
-import dev.s7a.fiktion.runtime.CannotGenerateException
 
 /**
  * Generates a value-like type from registered construction [metadata].

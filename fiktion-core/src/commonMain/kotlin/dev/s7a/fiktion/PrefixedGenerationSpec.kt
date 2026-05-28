@@ -47,4 +47,4 @@ private fun RuleMatcher.prefixedBy(prefix: List<PathRuleSegment>): RuleMatcher =
  * Reports that a rule cannot be safely scoped by nested DSL.
  */
 private fun unsupportedNestedRule(target: String): Nothing =
-    throw IllegalArgumentException("Nested Fiktion configuration does not support $target rules.")
+    throw FiktionConfigurationException("Nested Fiktion configuration does not support $target rules.")

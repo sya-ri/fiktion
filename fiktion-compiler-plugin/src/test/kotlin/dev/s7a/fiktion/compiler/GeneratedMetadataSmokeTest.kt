@@ -1,10 +1,9 @@
 package dev.s7a.fiktion.compiler
 
+import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
-import dev.s7a.fiktion.runtime.CannotGenerateException
-import dev.s7a.fiktion.type
 import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals

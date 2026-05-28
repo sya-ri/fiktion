@@ -1,4 +1,4 @@
-package dev.s7a.fiktion.runtime
+package dev.s7a.fiktion
 
 /**
  * Custom value generator executed with a [FakeContext].

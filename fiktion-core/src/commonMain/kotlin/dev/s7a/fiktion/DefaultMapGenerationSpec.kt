@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.FakeContext
 import kotlin.reflect.KType
 
 /**
@@ -59,14 +58,14 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
     var valueGenerator: (FakeContext.() -> Value)? = null
 
     override fun withSize(size: Int): MapGenerationSpec<Key, Value, MapType> {
-        require(size >= 0) { "Map size must be 0 or greater, but was $size." }
+        requireFiktionConfiguration(size >= 0) { "Map size must be 0 or greater, but was $size." }
         sizeRange = size..size
         return this
     }
 
     override fun withSize(range: IntRange): MapGenerationSpec<Key, Value, MapType> {
-        require(!range.isEmpty()) { "Map size range must not be empty." }
-        require(range.first >= 0) { "Map size range must start at 0 or greater, but was $range." }
+        requireFiktionConfiguration(!range.isEmpty()) { "Map size range must not be empty." }
+        requireFiktionConfiguration(range.first >= 0) { "Map size range must start at 0 or greater, but was $range." }
         sizeRange = range
         return this
     }

@@ -13,7 +13,7 @@ public value class Probability public constructor(
     public val value: Double,
 ) {
     init {
-        require(value in 0.0..1.0) {
+        requireFiktionConfiguration(value in 0.0..1.0) {
             "Probability must be between 0.0 and 1.0, but was $value."
         }
     }

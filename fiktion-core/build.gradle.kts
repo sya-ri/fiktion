@@ -22,11 +22,6 @@ kotlin {
     iosSimulatorArm64()
 
     sourceSets {
-        commonMain {
-            dependencies {
-                api(project(":fiktion-runtime"))
-            }
-        }
         commonTest {
             dependencies {
                 implementation(kotlin("test"))

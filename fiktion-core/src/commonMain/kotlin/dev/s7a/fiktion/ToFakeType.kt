@@ -1,9 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.FakeNullability
-import dev.s7a.fiktion.runtime.FakePath
-import dev.s7a.fiktion.runtime.FakeProperty
-import dev.s7a.fiktion.runtime.FakeType
 import kotlin.reflect.KType
 
 /**

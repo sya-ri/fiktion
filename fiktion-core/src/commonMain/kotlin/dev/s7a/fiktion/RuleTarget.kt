@@ -1,7 +1,6 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.generators.oneOf
-import dev.s7a.fiktion.runtime.Generator
 import kotlin.jvm.JvmName
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -27,7 +26,7 @@ public infix fun <T> RuleTarget<T>.generatesBy(generator: Generator<T>): Generat
  */
 public infix fun RuleTarget<Int>.generatesIn(range: IntRange): GenerationSpec<Int> =
     generatesBy {
-        require(!range.isEmpty()) { "range must not be empty." }
+        requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
         range.random(random)
     }
 
@@ -36,7 +35,7 @@ public infix fun RuleTarget<Int>.generatesIn(range: IntRange): GenerationSpec<In
  */
 public infix fun RuleTarget<Long>.generatesIn(range: LongRange): GenerationSpec<Long> =
     generatesBy {
-        require(!range.isEmpty()) { "range must not be empty." }
+        requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
         range.random(random)
     }
 
@@ -151,7 +150,7 @@ internal fun <Key, Value, MapType : Map<Key, Value>> generatesMapKeys(
     spec.keyType = keyType
     spec.valueType = valueType
     spec.ensureNoEntryGenerator()
-    require(spec.keyGenerator == null) { "Map keys are already configured for this rule target." }
+    requireFiktionConfiguration(spec.keyGenerator == null) { "Map keys are already configured for this rule target." }
     spec.keyGenerator = generator
     return spec
 }
@@ -178,7 +177,7 @@ internal fun <Key, Value, MapType : Map<Key, Value>> generatesMapValues(
     spec.keyType = keyType
     spec.valueType = valueType
     spec.ensureNoEntryGenerator()
-    require(spec.valueGenerator == null) { "Map values are already configured for this rule target." }
+    requireFiktionConfiguration(spec.valueGenerator == null) { "Map values are already configured for this rule target." }
     spec.valueGenerator = generator
     return spec
 }
@@ -197,14 +196,14 @@ private fun <
  * Fails when entry generation has already been configured.
  */
 private fun <Key, Value, MapType : Map<Key, Value>> DefaultMapGenerationSpec<Key, Value, MapType>.ensureNoEntryGenerator() {
-    require(entryGenerator == null) { "Map entries are already configured for this rule target." }
+    requireFiktionConfiguration(entryGenerator == null) { "Map entries are already configured for this rule target." }
 }
 
 /**
  * Fails when any map entry part has already been configured.
  */
 private fun <Key, Value, MapType : Map<Key, Value>> DefaultMapGenerationSpec<Key, Value, MapType>.ensureNoMapParts() {
-    require(entryGenerator == null) { "Map entries are already configured for this rule target." }
-    require(keyGenerator == null) { "Map keys are already configured for this rule target." }
-    require(valueGenerator == null) { "Map values are already configured for this rule target." }
+    requireFiktionConfiguration(entryGenerator == null) { "Map entries are already configured for this rule target." }
+    requireFiktionConfiguration(keyGenerator == null) { "Map keys are already configured for this rule target." }
+    requireFiktionConfiguration(valueGenerator == null) { "Map values are already configured for this rule target." }
 }

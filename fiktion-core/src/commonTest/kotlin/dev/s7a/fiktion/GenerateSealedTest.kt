@@ -1,7 +1,6 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.CannotGenerateException
-import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
+import dev.s7a.fiktion.ExperimentalFiktionApi
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 import kotlin.test.Test

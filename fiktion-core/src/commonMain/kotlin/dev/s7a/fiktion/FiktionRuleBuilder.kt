@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.Generator
 import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType

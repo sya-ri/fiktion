@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionConfigurationException
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generatesBy
 import kotlin.test.Test
@@ -29,7 +30,7 @@ class OneOfTest {
                 }
             }
 
-        assertFailsWith<IllegalArgumentException> {
+        assertFailsWith<FiktionConfigurationException> {
             fiktion.fake<String>(seed = 1)
         }
     }

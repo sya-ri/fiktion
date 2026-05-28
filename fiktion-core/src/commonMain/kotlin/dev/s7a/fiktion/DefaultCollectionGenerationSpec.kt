@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.FakeContext
 
 /**
  * Mutable collection generation configuration.
@@ -32,14 +31,14 @@ internal class DefaultCollectionGenerationSpec<Element, CollectionType : Collect
     }
 
     override fun withSize(size: Int): CollectionGenerationSpec<Element, CollectionType> {
-        require(size >= 0) { "Collection size must be 0 or greater, but was $size." }
+        requireFiktionConfiguration(size >= 0) { "Collection size must be 0 or greater, but was $size." }
         sizeRange = size..size
         return this
     }
 
     override fun withSize(range: IntRange): CollectionGenerationSpec<Element, CollectionType> {
-        require(!range.isEmpty()) { "Collection size range must not be empty." }
-        require(range.first >= 0) { "Collection size range must start at 0 or greater, but was $range." }
+        requireFiktionConfiguration(!range.isEmpty()) { "Collection size range must not be empty." }
+        requireFiktionConfiguration(range.first >= 0) { "Collection size range must start at 0 or greater, but was $range." }
         sizeRange = range
         return this
     }
