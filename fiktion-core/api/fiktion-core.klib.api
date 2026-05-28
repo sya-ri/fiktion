@@ -158,6 +158,15 @@ final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionValueMetadata : dev.s7a.fik
     final fun construct(kotlin/Any?): #A // dev.s7a.fiktion/FiktionValueMetadata.construct|construct(kotlin.Any?){}[0]
 }
 
+final class <#A: kotlin/Enum<#A>> dev.s7a.fiktion/FiktionEnumMetadata : dev.s7a.fiktion/FiktionTypeMetadata<#A> { // dev.s7a.fiktion/FiktionEnumMetadata|null[0]
+    constructor <init>(kotlin.reflect/KType, kotlin.collections/List<#A>) // dev.s7a.fiktion/FiktionEnumMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.collections.List<1:0>){}[0]
+
+    final val entries // dev.s7a.fiktion/FiktionEnumMetadata.entries|{}entries[0]
+        final fun <get-entries>(): kotlin.collections/List<#A> // dev.s7a.fiktion/FiktionEnumMetadata.entries.<get-entries>|<get-entries>(){}[0]
+    final val type // dev.s7a.fiktion/FiktionEnumMetadata.type|{}type[0]
+        final fun <get-type>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionEnumMetadata.type.<get-type>|<get-type>(){}[0]
+}
+
 final class dev.s7a.fiktion.generators/FiktionCharset { // dev.s7a.fiktion.generators/FiktionCharset|null[0]
     constructor <init>(kotlin.collections/Iterable<kotlin/Char>) // dev.s7a.fiktion.generators/FiktionCharset.<init>|<init>(kotlin.collections.Iterable<kotlin.Char>){}[0]
     constructor <init>(kotlin/String) // dev.s7a.fiktion.generators/FiktionCharset.<init>|<init>(kotlin.String){}[0]

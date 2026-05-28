@@ -117,6 +117,12 @@ public final class dev/s7a/fiktion/FiktionConfigureBuilder$DefaultImpls {
 	public static fun generatesValues (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapValueSpec;
 }
 
+public final class dev/s7a/fiktion/FiktionEnumMetadata : dev/s7a/fiktion/FiktionTypeMetadata {
+	public fun <init> (Lkotlin/reflect/KType;Ljava/util/List;)V
+	public final fun getEntries ()Ljava/util/List;
+	public fun getType ()Lkotlin/reflect/KType;
+}
+
 public abstract interface class dev/s7a/fiktion/FiktionObjectArgument {
 }
 

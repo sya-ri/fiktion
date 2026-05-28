@@ -62,6 +62,14 @@ internal fun generateValue(
             )
         }
 
+        is FiktionEnumMetadata<*> -> {
+            return generateEnum(
+                request = request,
+                context = context,
+                metadata = metadata,
+            )
+        }
+
         null -> {
             Unit
         }
