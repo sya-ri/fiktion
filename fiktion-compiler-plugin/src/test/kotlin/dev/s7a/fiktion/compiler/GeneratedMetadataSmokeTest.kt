@@ -226,6 +226,66 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata for arrays`() {
+        val strings = fake<Array<String>>(seed = 123)
+        val users = fake<Array<GeneratedRegularUser>>(seed = 123)
+
+        assertEquals(fake<Array<String>>(seed = 123).toList(), strings.toList())
+        assertEquals(fake<Array<GeneratedRegularUser>>(seed = 123).map { user -> user.id }, users.map { user -> user.id })
+        assertTrue(strings.isNotEmpty())
+        assertTrue(users.isNotEmpty())
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for nested arrays`() {
+        val strings = fake<Array<Array<String>>>(seed = 123)
+        val users = fake<Array<Array<GeneratedRegularUser>>>(seed = 123)
+
+        assertEquals(fake<Array<Array<String>>>(seed = 123).map { value -> value.toList() }, strings.map { value -> value.toList() })
+        assertEquals(
+            fake<Array<Array<GeneratedRegularUser>>>(seed = 123).map { value -> value.map { user -> user.id } },
+            users.map { value -> value.map { user -> user.id } },
+        )
+        assertTrue(strings.isNotEmpty())
+        assertTrue(strings.all { value -> value.isNotEmpty() })
+        assertTrue(users.isNotEmpty())
+        assertTrue(users.all { value -> value.isNotEmpty() })
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for arrays inside generic types`() {
+        val list = fake<List<Array<String>>>(seed = 123)
+        val map = fake<Map<String, Array<Int>>>(seed = 123)
+        val pair = fake<Pair<Array<String>, Int>>(seed = 123)
+
+        assertTrue(list.isNotEmpty())
+        assertTrue(list.all { value -> value.isNotEmpty() })
+        assertTrue(map.isNotEmpty())
+        assertTrue(map.values.all { value -> value.isNotEmpty() })
+        assertTrue(pair.first.isNotEmpty())
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for array constructor properties`() {
+        val user = fake<GeneratedArrayPropertyUser>(seed = 123)
+        val nestedUser = fake<GeneratedNestedArrayPropertyUser>(seed = 123)
+
+        assertTrue(user.ids.isNotEmpty())
+        assertTrue(nestedUser.ids.isNotEmpty())
+        assertTrue(nestedUser.ids.all { ids -> ids.isNotEmpty() })
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for arrays inside generic constructor properties`() {
+        val user = fake<GeneratedGenericArrayPropertyUser>(seed = 123)
+
+        assertTrue(user.ids.isNotEmpty())
+        assertTrue(user.ids.all { ids -> ids.isNotEmpty() })
+        assertTrue(user.scores.isNotEmpty())
+        assertTrue(user.scores.values.all { scores -> scores.isNotEmpty() })
+    }
+
+    @Test
     fun `compiler plugin generated registrar uses once guard`() {
         val guard = generatedRegistrarGuardField()
         val generatedMetadata = generatedMetadataReference()
@@ -256,6 +316,40 @@ private data class GeneratedUser(
      * User identifier generated from built-in String generation.
      */
     val id: String,
+)
+
+/**
+ * Smoke-test model with an array constructor property.
+ */
+private data class GeneratedArrayPropertyUser(
+    /**
+     * Generated user identifiers.
+     */
+    val ids: Array<String>,
+)
+
+/**
+ * Smoke-test model with a nested array constructor property.
+ */
+private data class GeneratedNestedArrayPropertyUser(
+    /**
+     * Generated nested user identifiers.
+     */
+    val ids: Array<Array<String>>,
+)
+
+/**
+ * Smoke-test model with array constructor properties inside generic types.
+ */
+private data class GeneratedGenericArrayPropertyUser(
+    /**
+     * Generated user identifiers.
+     */
+    val ids: List<Array<String>>,
+    /**
+     * Generated user scores.
+     */
+    val scores: Map<String, Array<Int>>,
 )
 
 /**

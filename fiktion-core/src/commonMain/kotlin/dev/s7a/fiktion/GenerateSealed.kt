@@ -2,7 +2,6 @@
 
 package dev.s7a.fiktion
 
-
 /**
  * Generates a sealed subtype value from registered [metadata].
  */

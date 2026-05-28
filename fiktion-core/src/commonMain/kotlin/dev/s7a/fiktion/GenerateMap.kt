@@ -42,6 +42,41 @@ internal fun <Key, Value, MapType : Map<Key, Value>> FakeContext.generateMap(
 }
 
 /**
+ * Generates a map by automatically generating keys and values.
+ */
+internal fun generateAutomaticMap(
+    config: FiktionConfig,
+    seed: Long,
+    depth: Int,
+    context: FakeContext,
+    keyType: KType,
+    valueType: KType,
+    sizeRange: IntRange,
+): Any {
+    val count = sizeRange.random(context.random)
+    val entries =
+        List(count) { index ->
+            val key =
+                generateValue(
+                    request = GenerationRequest(type = keyType),
+                    config = config,
+                    seed = seed.childSeed(index * MAP_ENTRY_PARTS),
+                    depth = depth + 1,
+                )
+            val value =
+                generateValue(
+                    request = GenerationRequest(type = valueType),
+                    config = config,
+                    seed = seed.childSeed(index * MAP_ENTRY_PARTS + 1),
+                    depth = depth + 1,
+                )
+            key to value
+        }
+
+    return entries.toMap().toMutableMap()
+}
+
+/**
  * Creates a child context for a generated map entry part.
  */
 @Suppress("DEPRECATION")

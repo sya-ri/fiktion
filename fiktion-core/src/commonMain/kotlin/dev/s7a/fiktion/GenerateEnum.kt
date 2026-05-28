@@ -2,7 +2,6 @@
 
 package dev.s7a.fiktion
 
-
 /**
  * Generates an enum value from registered [metadata].
  */

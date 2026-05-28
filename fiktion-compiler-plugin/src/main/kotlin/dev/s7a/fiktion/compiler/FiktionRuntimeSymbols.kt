@@ -66,6 +66,12 @@ internal class FiktionRuntimeSymbols(
         pluginContext.referenceFunctions(callableId(FIKTION_PACKAGE, "generatedObjectArgumentUsesDefault")).single()
 
     /**
+     * `generatedArray` top-level function.
+     */
+    val generatedArray: IrSimpleFunctionSymbol =
+        pluginContext.referenceFunctions(callableId(FIKTION_PACKAGE, "generatedArray")).single()
+
+    /**
      * `typeOf` top-level function.
      */
     val typeOf: IrSimpleFunctionSymbol = pluginContext.referenceFunctions(callableId("kotlin.reflect", "typeOf")).single()
@@ -87,6 +93,12 @@ internal class FiktionRuntimeSymbols(
      */
     val objectMetadataConstructor: IrConstructorSymbol =
         pluginContext.referenceConstructors(classId("$FIKTION_PACKAGE.FiktionObjectMetadata")).single()
+
+    /**
+     * `FiktionArrayMetadata` constructor.
+     */
+    val arrayMetadataConstructor: IrConstructorSymbol =
+        pluginContext.referenceConstructors(classId("$FIKTION_PACKAGE.FiktionArrayMetadata")).single()
 
     /**
      * `FiktionValueMetadata` constructor.
@@ -134,4 +146,9 @@ internal class FiktionRuntimeSymbols(
      * `List<FiktionObjectArgument>` type used by constructor lambdas.
      */
     val objectArgumentListType: IrType = pluginContext.irBuiltIns.listClass.typeWith(objectArgumentType)
+
+    /**
+     * `List<Any?>` type used by array constructor lambdas.
+     */
+    val anyListType: IrType = pluginContext.irBuiltIns.listClass.typeWith(pluginContext.irBuiltIns.anyNType)
 }

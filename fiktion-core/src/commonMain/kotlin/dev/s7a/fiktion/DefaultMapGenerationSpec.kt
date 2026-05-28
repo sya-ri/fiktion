@@ -91,4 +91,4 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
 /**
  * Default generated map size range.
  */
-private val DEFAULT_MAP_SIZE_RANGE: IntRange = 1..3
+internal val DEFAULT_MAP_SIZE_RANGE: IntRange = 1..3

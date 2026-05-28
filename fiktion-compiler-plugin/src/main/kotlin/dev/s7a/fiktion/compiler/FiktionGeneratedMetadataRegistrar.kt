@@ -44,7 +44,10 @@ import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.types.typeOrNull
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
@@ -72,16 +75,14 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Inserts generated metadata registrations into [moduleFragment].
      */
     fun registerBeforeFakeCalls(moduleFragment: IrModuleFragment) {
-        if (candidates.isEmpty()) return
-        val registrar = moduleFragment.generatedRegistrar() ?: return
-        generatedRegistrar = registrar.symbol
+        generatedRegistrar = moduleFragment.generatedRegistrar()?.symbol
         moduleFragment.transformChildrenVoid(this)
     }
 
     /**
      * Generated registrar function called before Fiktion fake calls.
      */
-    private lateinit var generatedRegistrar: IrSimpleFunctionSymbol
+    private var generatedRegistrar: IrSimpleFunctionSymbol? = null
 
     override fun visitCall(expression: IrCall): IrExpression {
         expression.transformChildrenVoid(this)
@@ -95,7 +96,20 @@ internal class FiktionGeneratedMetadataRegistrar(
             origin = null,
             resultType = expression.type,
         ) {
-            +builder.irCall(generatedRegistrar)
+            generatedRegistrar?.let { registrar ->
+                +builder.irCall(registrar)
+            }
+            expression.type.arrayTypes().forEach { (arrayType, elementType) ->
+                val parent = currentScope!!.scope.scopeOwnerSymbol.owner as IrDeclarationParent
+                val constructor =
+                    builder
+                        .arrayConstructorLambda(
+                            arrayType = arrayType,
+                            elementType = elementType,
+                            parent = parent,
+                        ).reference
+                +builder.registerGeneratedArray(arrayType = arrayType, elementType = elementType, constructor = constructor)
+            }
             +expression
         }
     }
@@ -104,6 +118,7 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Adds the generated registrar function to this module.
      */
     private fun IrModuleFragment.generatedRegistrar(): IrSimpleFunction? {
+        if (candidates.isEmpty()) return null
         val file = files.firstOrNull() ?: return null
         val function =
             pluginContext.irFactory.addFunction(file) {
@@ -123,6 +138,19 @@ internal class FiktionGeneratedMetadataRegistrar(
                 )
                 +builder.irSetField(null, initializedField, builder.irBoolean(true))
                 candidates.forEach { candidate ->
+                    candidate.arrayTypes().forEach { (arrayType, elementType) ->
+                        +builder.registerGeneratedArray(
+                            arrayType = arrayType,
+                            elementType = elementType,
+                            constructor =
+                                builder
+                                    .arrayConstructorLambda(
+                                        arrayType = arrayType,
+                                        elementType = elementType,
+                                        parent = function,
+                                    ).reference,
+                        )
+                    }
                     +builder.registerGenerated(candidate, builder.metadata(candidate, function))
                 }
             }
@@ -169,6 +197,20 @@ internal class FiktionGeneratedMetadataRegistrar(
             setTypeArgument(0, candidate.irClass.defaultType)
             setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
             setRegularArgument(0, metadata)
+        }
+
+    /**
+     * Returns a generated array metadata registration call.
+     */
+    private fun DeclarationIrBuilder.registerGeneratedArray(
+        arrayType: IrType,
+        elementType: IrType,
+        constructor: IrExpression,
+    ): IrExpression =
+        irCall(symbols.registerGeneratedMetadata).apply {
+            setTypeArgument(0, arrayType)
+            setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
+            setRegularArgument(0, arrayMetadata(arrayType = arrayType, elementType = elementType, constructor = constructor))
         }
 
     /**
@@ -234,6 +276,20 @@ internal class FiktionGeneratedMetadataRegistrar(
         irCallConstructor(symbols.valueMetadataConstructor, listOf(candidate.irClass.defaultType)).apply {
             setRegularArgument(0, typeOf(candidate.irClass.defaultType))
             setRegularArgument(1, typeOf(candidate.property.parameter.type))
+            setRegularArgument(2, constructor)
+        }
+
+    /**
+     * Returns a `FiktionArrayMetadata<T>` expression for [arrayType].
+     */
+    private fun DeclarationIrBuilder.arrayMetadata(
+        arrayType: IrType,
+        elementType: IrType,
+        constructor: IrExpression,
+    ): IrExpression =
+        irCallConstructor(symbols.arrayMetadataConstructor, listOf(arrayType)).apply {
+            setRegularArgument(0, typeOf(arrayType))
+            setRegularArgument(1, typeOf(elementType))
             setRegularArgument(2, constructor)
         }
 
@@ -436,6 +492,41 @@ internal class FiktionGeneratedMetadataRegistrar(
     }
 
     /**
+     * Returns the generated constructor lambda used by `FiktionArrayMetadata`.
+     */
+    private fun DeclarationIrBuilder.arrayConstructorLambda(
+        arrayType: IrType,
+        elementType: IrType,
+        parent: IrDeclarationParent,
+    ): ConstructorLambda {
+        val elementsType = symbols.anyListType
+        val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(elementsType, arrayType)
+        val function =
+            pluginContext.irFactory.buildFun {
+                name = Name.special("<anonymous>")
+                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+                visibility = DescriptorVisibilities.LOCAL
+                returnType = arrayType
+            }
+        function.parent = parent
+        val elements = function.addValueParameter("elements", elementsType)
+        function.body =
+            DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
+                +irReturn(
+                    irCall(symbols.generatedArray).apply {
+                        setTypeArgument(0, elementType)
+                        setRegularArgument(0, irGet(elements))
+                    },
+                )
+            }
+
+        return ConstructorLambda(
+            function = function,
+            reference = functionExpression(functionType, function),
+        )
+    }
+
+    /**
      * Returns an IR function expression for [function].
      */
     private fun DeclarationIrBuilder.functionExpression(
@@ -616,6 +707,38 @@ private fun IrMemberAccessExpression<*>.setRegularArgument(
 ) {
     arguments[regularParameters[index]] = expression
 }
+
+/**
+ * Returns array metadata types needed by this type and its type arguments.
+ */
+private fun IrType.arrayTypes(): List<Pair<IrType, IrType>> {
+    val typeArgumentArrays =
+        (this as? IrSimpleType)
+            ?.arguments
+            ?.mapNotNull { argument -> argument.typeOrNull }
+            ?.flatMap { argumentType -> argumentType.arrayTypes() }
+            .orEmpty()
+    val elementType = arrayElementTypeOrNull() ?: return typeArgumentArrays
+    return typeArgumentArrays + (this to elementType)
+}
+
+/**
+ * Returns the element type when this type is `Array<T>`.
+ */
+private fun IrType.arrayElementTypeOrNull(): IrType? {
+    if (classOrNull?.owner?.fqNameWhenAvailable?.asString() != "kotlin.Array") return null
+    return (this as? IrSimpleType)?.arguments?.singleOrNull()?.typeOrNull
+}
+
+/**
+ * Returns array metadata types needed by this generated metadata candidate.
+ */
+private fun FiktionGeneratedMetadataCandidate.arrayTypes(): List<Pair<IrType, IrType>> =
+    when (this) {
+        is FiktionGeneratedObjectMetadataCandidate -> properties.flatMap { property -> property.parameter.type.arrayTypes() }
+        is FiktionGeneratedValueMetadataCandidate -> property.parameter.type.arrayTypes()
+        else -> emptyList()
+    }
 
 /**
  * Sets the dispatch receiver value.

@@ -56,7 +56,7 @@ internal fun generateAutomaticCollection(
         }
 
     return when {
-        request.type.nonNullTypeId().isSetTypeId() -> elements.toMutableSet()
+        request.type.classifier == Set::class || request.type.classifier == MutableSet::class -> elements.toMutableSet()
         else -> elements.toMutableList()
     }
 }
@@ -64,4 +64,10 @@ internal fun generateAutomaticCollection(
 /**
  * Returns true when this type id represents a set-like collection.
  */
-private fun String.isSetTypeId(): Boolean = contains("Set<")
+private fun String.isSetTypeId(): Boolean =
+    startsWith("kotlin.collections.Set<") ||
+    startsWith("kotlin.collections.MutableSet<") ||
+        startsWith("java.util.Set<") ||
+        startsWith("java.util.MutableSet<") ||
+        startsWith("Set<") ||
+        startsWith("MutableSet<")

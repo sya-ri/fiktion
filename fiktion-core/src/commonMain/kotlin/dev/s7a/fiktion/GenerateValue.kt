@@ -88,10 +88,23 @@ internal fun generateAutomaticValue(
     depth: Int,
     context: FakeContext,
 ): Any? {
+    generateContainer(type = request.type, context = context, config = config)?.let { value ->
+        return value
+    }
+
     when (val metadata = config.metadata[request.type.nonNullTypeId()]) {
         is FiktionObjectMetadata<*> -> {
             return generateObject(
                 request = request,
+                config = config,
+                seed = seed,
+                depth = depth,
+                metadata = metadata,
+            )
+        }
+
+        is FiktionArrayMetadata<*> -> {
+            return generateArray(
                 config = config,
                 seed = seed,
                 depth = depth,

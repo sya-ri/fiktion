@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-
 /**
  * Mutable collection generation configuration.
  */

@@ -1,38 +1,65 @@
-@file:OptIn(kotlin.time.ExperimentalTime::class, kotlin.uuid.ExperimentalUuidApi::class)
+@file:OptIn(ExperimentalUnsignedTypes::class, kotlin.time.ExperimentalTime::class, kotlin.uuid.ExperimentalUuidApi::class)
 
 package dev.s7a.fiktion
 
+import dev.s7a.fiktion.generators.arithmeticException
+import dev.s7a.fiktion.generators.assertionError
 import dev.s7a.fiktion.generators.boolean
+import dev.s7a.fiktion.generators.booleanArray
 import dev.s7a.fiktion.generators.byte
+import dev.s7a.fiktion.generators.byteArray
 import dev.s7a.fiktion.generators.char
+import dev.s7a.fiktion.generators.charArray
 import dev.s7a.fiktion.generators.charProgression
 import dev.s7a.fiktion.generators.charRange
+import dev.s7a.fiktion.generators.classCastException
+import dev.s7a.fiktion.generators.concurrentModificationException
 import dev.s7a.fiktion.generators.double
+import dev.s7a.fiktion.generators.doubleArray
 import dev.s7a.fiktion.generators.duration
 import dev.s7a.fiktion.generators.durationUnit
+import dev.s7a.fiktion.generators.error
+import dev.s7a.fiktion.generators.exception
 import dev.s7a.fiktion.generators.float
+import dev.s7a.fiktion.generators.floatArray
+import dev.s7a.fiktion.generators.illegalArgumentException
+import dev.s7a.fiktion.generators.illegalStateException
+import dev.s7a.fiktion.generators.indexOutOfBoundsException
 import dev.s7a.fiktion.generators.instant
 import dev.s7a.fiktion.generators.int
+import dev.s7a.fiktion.generators.intArray
 import dev.s7a.fiktion.generators.intProgression
 import dev.s7a.fiktion.generators.intRange
 import dev.s7a.fiktion.generators.long
+import dev.s7a.fiktion.generators.longArray
 import dev.s7a.fiktion.generators.longProgression
 import dev.s7a.fiktion.generators.longRange
+import dev.s7a.fiktion.generators.noSuchElementException
+import dev.s7a.fiktion.generators.nullPointerException
+import dev.s7a.fiktion.generators.numberFormatException
 import dev.s7a.fiktion.generators.pair
 import dev.s7a.fiktion.generators.regex
 import dev.s7a.fiktion.generators.result
+import dev.s7a.fiktion.generators.runtimeException
 import dev.s7a.fiktion.generators.short
+import dev.s7a.fiktion.generators.shortArray
 import dev.s7a.fiktion.generators.string
+import dev.s7a.fiktion.generators.throwable
 import dev.s7a.fiktion.generators.triple
 import dev.s7a.fiktion.generators.ubyte
+import dev.s7a.fiktion.generators.ubyteArray
 import dev.s7a.fiktion.generators.uint
+import dev.s7a.fiktion.generators.uintArray
 import dev.s7a.fiktion.generators.uintProgression
 import dev.s7a.fiktion.generators.uintRange
 import dev.s7a.fiktion.generators.ulong
+import dev.s7a.fiktion.generators.ulongArray
 import dev.s7a.fiktion.generators.ulongProgression
 import dev.s7a.fiktion.generators.ulongRange
 import dev.s7a.fiktion.generators.unit
+import dev.s7a.fiktion.generators.unsupportedOperationException
 import dev.s7a.fiktion.generators.ushort
+import dev.s7a.fiktion.generators.ushortArray
 import dev.s7a.fiktion.generators.uuid
 import kotlin.reflect.KType
 import kotlin.time.Duration
@@ -87,6 +114,54 @@ internal fun generateBuiltIn(
 
         Char::class -> {
             context.char()
+        }
+
+        ByteArray::class -> {
+            context.byteArray()
+        }
+
+        ShortArray::class -> {
+            context.shortArray()
+        }
+
+        IntArray::class -> {
+            context.intArray()
+        }
+
+        LongArray::class -> {
+            context.longArray()
+        }
+
+        FloatArray::class -> {
+            context.floatArray()
+        }
+
+        DoubleArray::class -> {
+            context.doubleArray()
+        }
+
+        BooleanArray::class -> {
+            context.booleanArray()
+        }
+
+        CharArray::class -> {
+            context.charArray()
+        }
+
+        UByteArray::class -> {
+            context.ubyteArray()
+        }
+
+        UShortArray::class -> {
+            context.ushortArray()
+        }
+
+        UIntArray::class -> {
+            context.uintArray()
+        }
+
+        ULongArray::class -> {
+            context.ulongArray()
         }
 
         IntRange::class -> {
@@ -163,6 +238,66 @@ internal fun generateBuiltIn(
 
         Uuid::class -> {
             context.uuid()
+        }
+
+        Throwable::class -> {
+            context.throwable()
+        }
+
+        Error::class -> {
+            context.error()
+        }
+
+        Exception::class -> {
+            context.exception()
+        }
+
+        RuntimeException::class -> {
+            context.runtimeException()
+        }
+
+        IllegalStateException::class -> {
+            context.illegalStateException()
+        }
+
+        IllegalArgumentException::class -> {
+            context.illegalArgumentException()
+        }
+
+        IndexOutOfBoundsException::class -> {
+            context.indexOutOfBoundsException()
+        }
+
+        ConcurrentModificationException::class -> {
+            context.concurrentModificationException()
+        }
+
+        UnsupportedOperationException::class -> {
+            context.unsupportedOperationException()
+        }
+
+        NumberFormatException::class -> {
+            context.numberFormatException()
+        }
+
+        NullPointerException::class -> {
+            context.nullPointerException()
+        }
+
+        ClassCastException::class -> {
+            context.classCastException()
+        }
+
+        AssertionError::class -> {
+            context.assertionError()
+        }
+
+        NoSuchElementException::class -> {
+            context.noSuchElementException()
+        }
+
+        ArithmeticException::class -> {
+            context.arithmeticException()
         }
 
         Pair::class -> {
