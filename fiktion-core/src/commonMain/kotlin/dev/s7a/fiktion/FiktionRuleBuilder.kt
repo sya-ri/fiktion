@@ -9,7 +9,12 @@ import kotlin.reflect.typeOf
 /**
  * Shared rule registration surface exposed by Fiktion builders.
  */
-public sealed interface FiktionRuleBuilder {
+public sealed class FiktionRuleBuilder protected constructor() {
+    /**
+     * Mutable configuration receiving rules registered through this builder.
+     */
+    internal abstract val config: MutableFiktionConfig
+
     /**
      * Targets every generated value of [type].
      *
@@ -17,7 +22,7 @@ public sealed interface FiktionRuleBuilder {
      * the generator value type consistent.
      */
     @Deprecated("Use the reified type<T>() overload.", level = DeprecationLevel.ERROR)
-    public fun type(type: KType): RuleTarget<*>
+    public fun type(type: KType): RuleTarget<*> = target<Any?>(RuleKey.Type(type), RuleMatcher.Type(type))
 
     /**
      * Targets generated values of [value] whose owner is [owner], regardless of property name.
@@ -29,7 +34,7 @@ public sealed interface FiktionRuleBuilder {
     public fun property(
         owner: KType,
         value: KType,
-    ): RuleTarget<*>
+    ): RuleTarget<*> = target<Any?>(RuleKey.OwnedType(owner, value), RuleMatcher.OwnedType(owner, value))
 
     /**
      * Targets values generated for [property].
@@ -38,12 +43,13 @@ public sealed interface FiktionRuleBuilder {
      * infix functions or `property<Owner, Value>(name)` when type-safe matching is required.
      */
     @Deprecated("Use property<Owner, Value>(property.name) or the infix KProperty generates API.", level = DeprecationLevel.ERROR)
-    public fun <Owner, Value> property(property: KProperty1<Owner, Value>): RuleTarget<Value>
+    public fun <Owner, Value> property(property: KProperty1<Owner, Value>): RuleTarget<Value> =
+        target(listOf(PathRuleSegment(ownerId = null, name = property.name, valueId = null)))
 
     /**
      * Targets values generated for [path].
      */
-    public fun <Root, Value> property(path: PropertyPath<Root, Value>): RuleTarget<Value>
+    public fun <Root, Value> property(path: PropertyPath<Root, Value>): RuleTarget<Value> = target(path.segments)
 
     /**
      * Targets generated values of [value] whose owner is [owner] and property name is [name].
@@ -56,7 +62,7 @@ public sealed interface FiktionRuleBuilder {
         owner: KType,
         name: String,
         value: KType,
-    ): RuleTarget<*>
+    ): RuleTarget<*> = target<Any?>(RuleKey.Property(owner, name, value), RuleMatcher.Property(owner, name, value))
 
     /**
      * Targets generated values of [value] whose owner is [owner] and property name matches [regex].
@@ -69,7 +75,11 @@ public sealed interface FiktionRuleBuilder {
         owner: KType,
         regex: Regex,
         value: KType,
-    ): RuleTarget<*>
+    ): RuleTarget<*> =
+        target<Any?>(
+            RuleKey.OwnedRegexName(owner, regex.pattern, regex.options, value),
+            RuleMatcher.OwnedRegexName(owner, regex, value),
+        )
 
     /**
      * Targets generated values of [value] whose property name is [name], regardless of owner.
@@ -81,7 +91,7 @@ public sealed interface FiktionRuleBuilder {
     public fun name(
         name: String,
         value: KType,
-    ): RuleTarget<*>
+    ): RuleTarget<*> = target<Any?>(RuleKey.Name(name, value), RuleMatcher.Name(name, value))
 
     /**
      * Targets generated values of [value] whose property name matches [regex], regardless of owner.
@@ -93,74 +103,189 @@ public sealed interface FiktionRuleBuilder {
     public fun name(
         regex: Regex,
         value: KType,
-    ): RuleTarget<*>
+    ): RuleTarget<*> = target<Any?>(RuleKey.RegexName(regex.pattern, regex.options, value), RuleMatcher.RegexName(regex, value))
 
     /**
      * Targets generated values whose property name is [name], inferring the value type from the generator.
      */
-    public fun name(name: String): RuleNameTarget
+    public fun name(name: String): RuleNameTarget =
+        DefaultRuleNameTarget(
+            key = { type -> RuleKey.Name(name, type) },
+            matcher = { type -> RuleMatcher.Name(name, type) },
+            register = config::add,
+        )
 
     /**
      * Targets generated values whose property name matches [regex], inferring the value type from the generator.
      */
-    public fun name(regex: Regex): RuleNameTarget
+    public fun name(regex: Regex): RuleNameTarget =
+        DefaultRuleNameTarget(
+            key = { type -> RuleKey.RegexName(regex.pattern, regex.options, type) },
+            matcher = { type -> RuleMatcher.RegexName(regex, type) },
+            register = config::add,
+        )
 
     /**
      * Generates [value] for this property.
      */
-    @Deprecated("Use property<Owner, Value>(property.name) for type-safe global rules.", level = DeprecationLevel.ERROR)
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Owner, Value> KProperty1<Owner, Value>.generates(value: Value): GenerationSpec<Value> =
-        property(this).generates(value)
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline infix fun <reified Owner, reified Value> KProperty1<Owner, Value>.generates(value: Value): GenerationSpec<Value> =
+        (property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>)
+            .generates(value)
 
     /**
      * Generates this property by invoking [generator].
      */
-    @Deprecated("Use property<Owner, Value>(property.name) for type-safe global rules.", level = DeprecationLevel.ERROR)
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Owner, Value> KProperty1<Owner, Value>.generatesBy(generator: Generator<Value>): GenerationSpec<Value> =
-        property(this).generatesBy(generator)
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline infix fun <reified Owner, reified Value> KProperty1<Owner, Value>.generatesBy(
+        noinline generator: Generator<Value>,
+    ): GenerationSpec<Value> =
+        (property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>)
+            .generatesBy(generator)
 
     /**
      * Generates this property using Fiktion's automatic generation.
      */
-    @Deprecated("Use property<Owner, Value>(property.name) generates auto for type-safe global rules.", level = DeprecationLevel.ERROR)
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Owner, Value> KProperty1<Owner, Value>.generates(auto: Auto): GenerationSpec<Value> = property(this) generates auto
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    public inline infix fun <reified Owner, reified Value> KProperty1<Owner, Value>.generates(auto: Auto): GenerationSpec<Value> =
+        (property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>) generates auto
+
+    /**
+     * Generates this collection property by automatically generating each element.
+     */
+    @JvmName("generatesAutoCollectionProperty")
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    public inline infix fun <
+        reified Owner,
+        reified Element,
+        reified CollectionType : Collection<Element>,
+    > KProperty1<Owner, CollectionType>.generates(
+        auto: Auto,
+    ): CollectionGenerationSpec<Element, CollectionType> =
+        generatesAutoCollection(
+            target =
+                property(
+                    owner = typeOf<Owner>(),
+                    name = name,
+                    value = typeOf<CollectionType>(),
+                ) as RuleTarget<CollectionType>,
+            elementType = typeOf<Element>(),
+        )
+
+    /**
+     * Generates this map property by automatically generating each key and value.
+     */
+    @JvmName("generatesAutoMapProperty")
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    public inline infix fun <
+        reified Owner,
+        reified Key,
+        reified Value,
+        reified MapType : Map<Key, Value>,
+    > KProperty1<Owner, MapType>.generates(
+        auto: Auto,
+    ): MapGenerationSpec<Key, Value, MapType> =
+        generatesAutoMap(
+            target =
+                property(
+                    owner = typeOf<Owner>(),
+                    name = name,
+                    value = typeOf<MapType>(),
+                ) as RuleTarget<MapType>,
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+        )
 
     /**
      * Generates each element for this collection property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Owner, Element, CollectionType : Collection<Element>> KProperty1<Owner, CollectionType>.generatesEach(
-        generator: Generator<Element>,
-    ): CollectionGenerationSpec<Element, CollectionType> = property(this).generatesEach(generator)
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline infix fun <
+        reified Owner,
+        reified Element,
+        reified CollectionType : Collection<Element>,
+    > KProperty1<Owner, CollectionType>.generatesEach(
+        noinline generator: Generator<Element>,
+    ): CollectionGenerationSpec<Element, CollectionType> =
+        (
+            property(
+                owner = typeOf<Owner>(),
+                name = name,
+                value = typeOf<CollectionType>(),
+            ) as RuleTarget<CollectionType>
+        ).generatesEach(generator)
 
     /**
      * Generates each entry for this map property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesEach(
-        generator: Generator<Pair<Key, Value>>,
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline infix fun <
+        reified Owner,
+        reified Key,
+        reified Value,
+        reified MapType : Map<Key, Value>,
+    > KProperty1<Owner, MapType>.generatesEach(
+        noinline generator: Generator<Pair<Key, Value>>,
     ): MapEntrySpec<Key, Value, MapType> =
-        generatesMapEntries(target = property(this), keyType = null, valueType = null, generator = generator)
+        generatesMapEntries(
+            target =
+                property(
+                    owner = typeOf<Owner>(),
+                    name = name,
+                    value = typeOf<MapType>(),
+                ) as RuleTarget<MapType>,
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+            generator = generator,
+        )
 
     /**
      * Generates map keys for this property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesKeys(
-        generator: Generator<Key>,
-    ): MapKeySpec<Key, Value, MapType> = generatesMapKeys(target = property(this), keyType = null, valueType = null, generator = generator)
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline infix fun <
+        reified Owner,
+        reified Key,
+        reified Value,
+        reified MapType : Map<Key, Value>,
+    > KProperty1<Owner, MapType>.generatesKeys(
+        noinline generator: Generator<Key>,
+    ): MapKeySpec<Key, Value, MapType> =
+        generatesMapKeys(
+            target =
+                property(
+                    owner = typeOf<Owner>(),
+                    name = name,
+                    value = typeOf<MapType>(),
+                ) as RuleTarget<MapType>,
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+            generator = generator,
+        )
 
     /**
      * Generates map values for this property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR")
-    public infix fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesValues(
-        generator: Generator<Value>,
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline infix fun <
+        reified Owner,
+        reified Key,
+        reified Value,
+        reified MapType : Map<Key, Value>,
+    > KProperty1<Owner, MapType>.generatesValues(
+        noinline generator: Generator<Value>,
     ): MapValueSpec<Key, Value, MapType> =
-        generatesMapValues(target = property(this), keyType = null, valueType = null, generator = generator)
+        generatesMapValues(
+            target =
+                property(
+                    owner = typeOf<Owner>(),
+                    name = name,
+                    value = typeOf<MapType>(),
+                ) as RuleTarget<MapType>,
+            keyType = typeOf<Key>(),
+            valueType = typeOf<Value>(),
+            generator = generator,
+        )
 
     /**
      * Generates [value] for this nested property path.
@@ -224,50 +349,63 @@ public sealed interface FiktionRuleBuilder {
             valueType = mapValueType(),
             generator = generator,
         )
+
+    /**
+     * Targets every generated value of [T].
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline fun <reified T> type(): RuleTarget<T> = type(typeOf<T>()) as RuleTarget<T>
+
+    /**
+     * Targets generated values of [Value] whose owner is [Owner], regardless of property name.
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline fun <reified Owner, reified Value> property(): RuleTarget<Value> =
+        property(owner = typeOf<Owner>(), value = typeOf<Value>()) as RuleTarget<Value>
+
+    /**
+     * Targets generated values of [Value] whose owner is [Owner] and property name is [name].
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline fun <reified Owner, reified Value> property(name: String): RuleTarget<Value> =
+        property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>
+
+    /**
+     * Targets generated values of [Value] whose owner is [Owner] and property name matches [regex].
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline fun <reified Owner, reified Value> property(regex: Regex): RuleTarget<Value> =
+        property(owner = typeOf<Owner>(), regex = regex, value = typeOf<Value>()) as RuleTarget<Value>
+
+    /**
+     * Targets generated values of [Value] whose property name is [name], regardless of owner.
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    public inline fun <reified Value> name(
+        name: String,
+        typed: Unit = Unit,
+    ): RuleTarget<Value> = name(name = name, value = typeOf<Value>()) as RuleTarget<Value>
+
+    /**
+     * Targets generated values of [Value] whose property name matches [regex], regardless of owner.
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    public inline fun <reified Value> name(
+        regex: Regex,
+        typed: Unit = Unit,
+    ): RuleTarget<Value> = name(regex = regex, value = typeOf<Value>()) as RuleTarget<Value>
+
+    /**
+     * Targets a nested property path represented as raw path segments.
+     */
+    private fun <Value> target(segments: List<PathRuleSegment>): RuleTarget<Value> =
+        target(RuleKey.Path(segments), RuleMatcher.Path(segments))
+
+    /**
+     * Creates a rule target using [key] for replacement and [matcher] for lookup.
+     */
+    private fun <Value> target(
+        key: RuleKey,
+        matcher: RuleMatcher,
+    ): RuleTarget<Value> = DefaultRuleTarget(config, key, matcher)
 }
-
-/**
- * Targets every generated value of [T].
- */
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified T> FiktionRuleBuilder.type(): RuleTarget<T> = type(typeOf<T>()) as RuleTarget<T>
-
-/**
- * Targets generated values of [Value] whose owner is [Owner], regardless of property name.
- */
-@JvmName("propertyOwnedBy")
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified Owner, reified Value> FiktionRuleBuilder.property(): RuleTarget<Value> =
-    property(owner = typeOf<Owner>(), value = typeOf<Value>()) as RuleTarget<Value>
-
-/**
- * Targets generated values of [Value] whose owner is [Owner] and property name is [name].
- */
-@JvmName("propertyOwnedByName")
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified Owner, reified Value> FiktionRuleBuilder.property(name: String): RuleTarget<Value> =
-    property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>
-
-/**
- * Targets generated values of [Value] whose owner is [Owner] and property name matches [regex].
- */
-@JvmName("propertyOwnedByRegex")
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified Owner, reified Value> FiktionRuleBuilder.property(regex: Regex): RuleTarget<Value> =
-    property(owner = typeOf<Owner>(), regex = regex, value = typeOf<Value>()) as RuleTarget<Value>
-
-/**
- * Targets generated values of [Value] whose property name is [name], regardless of owner.
- */
-@JvmName("nameByValue")
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified Value> FiktionRuleBuilder.name(name: String): RuleTarget<Value> =
-    name(name = name, value = typeOf<Value>()) as RuleTarget<Value>
-
-/**
- * Targets generated values of [Value] whose property name matches [regex], regardless of owner.
- */
-@JvmName("regexNameByValue")
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified Value> FiktionRuleBuilder.name(regex: Regex): RuleTarget<Value> =
-    name(regex = regex, value = typeOf<Value>()) as RuleTarget<Value>

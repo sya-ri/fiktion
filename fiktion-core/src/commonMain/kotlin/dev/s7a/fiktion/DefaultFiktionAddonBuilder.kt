@@ -7,6 +7,5 @@ internal class DefaultFiktionAddonBuilder(
     /**
      * Mutable configuration receiving add-on rules.
      */
-    config: MutableFiktionConfig,
-) : DefaultFiktionRuleBuilder(config),
-    FiktionAddonBuilder
+    override val config: MutableFiktionConfig,
+) : FiktionAddonBuilder()

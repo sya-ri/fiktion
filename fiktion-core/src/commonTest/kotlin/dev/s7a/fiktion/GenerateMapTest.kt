@@ -177,6 +177,22 @@ class GenerateMapTest {
     }
 
     @Test
+    fun `global map property rules automatically generate object map properties`() {
+        val fiktion =
+            Fiktion {
+                register(projectMetadata())
+                type<String>() generatesBy { "part-$seed" }
+                Project::labels generates auto withSize 2
+            }
+
+        val project = fiktion.fake<Project>(seed = 123)
+
+        assertEquals(2, project.labels.size)
+        assertTrue(project.labels.keys.all { key -> key.startsWith("part-") })
+        assertTrue(project.labels.values.all { value -> value.startsWith("part-") })
+    }
+
+    @Test
     fun `per-call map property rules generate object map properties`() {
         val fiktion =
             Fiktion {

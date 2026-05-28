@@ -5,20 +5,20 @@ import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
 /**
  * Builder exposed when creating isolated Fiktion instances.
  */
-public sealed interface FiktionBuilder : FiktionRuleBuilder {
+public sealed class FiktionBuilder protected constructor() : FiktionRuleBuilder() {
     /**
      * Sets the root seed used by generated values.
      */
-    public infix fun withSeed(seed: Long)
+    public abstract infix fun withSeed(seed: Long)
 
     /**
      * Installs reusable rules from [addon].
      */
-    public fun install(addon: FiktionAddon)
+    public abstract fun install(addon: FiktionAddon)
 
     /**
      * Registers type construction [metadata].
      */
     @ExperimentalFiktionApi
-    public fun <T> register(metadata: FiktionTypeMetadata<T>)
+    public abstract fun <T> register(metadata: FiktionTypeMetadata<T>)
 }

@@ -9,9 +9,8 @@ internal class DefaultFiktionBuilder private constructor(
     /**
      * Mutable configuration being built.
      */
-    config: MutableFiktionConfig,
-) : DefaultFiktionRuleBuilder(config),
-    FiktionConfigureBuilder {
+    override val config: MutableFiktionConfig,
+) : FiktionConfigureBuilder() {
     /**
      * Creates an empty builder.
      */
