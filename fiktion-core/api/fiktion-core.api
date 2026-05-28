@@ -47,6 +47,7 @@ public final class dev/s7a/fiktion/Fiktion$Companion {
 	public final fun configure (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/FiktionSnapshot;
 	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/Fiktion;
 	public static synthetic fun invoke$default (Ldev/s7a/fiktion/Fiktion$Companion;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/s7a/fiktion/Fiktion;
+	public final fun registerGeneratedMetadata (Ldev/s7a/fiktion/FiktionTypeMetadata;)V
 }
 
 public abstract interface class dev/s7a/fiktion/FiktionAddon {
@@ -235,6 +236,10 @@ public final class dev/s7a/fiktion/FiktionValueMetadata : dev/s7a/fiktion/Fiktio
 	public final fun construct (Ljava/lang/Object;)Ljava/lang/Object;
 	public fun getType ()Lkotlin/reflect/KType;
 	public final fun getUnderlyingType ()Lkotlin/reflect/KType;
+}
+
+public final class dev/s7a/fiktion/GeneratedObjectArgumentValueKt {
+	public static final fun generatedObjectArgumentValue (Ljava/util/List;I)Ljava/lang/Object;
 }
 
 public abstract interface class dev/s7a/fiktion/GenerationSpec {

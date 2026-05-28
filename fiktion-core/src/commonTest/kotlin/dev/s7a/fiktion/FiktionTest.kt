@@ -111,6 +111,31 @@ class FiktionTest {
     }
 
     @Test
+    fun `registerGeneratedMetadata registers metadata for top-level fake calls`() {
+        Fiktion.registerGeneratedMetadata(constantMetadata { GeneratedUser(id = "generated-user") })
+
+        assertEquals(GeneratedUser(id = "generated-user"), fake<GeneratedUser>())
+    }
+
+    @Test
+    fun `snapshot restore does not remove generated metadata`() {
+        Fiktion.registerGeneratedMetadata(constantMetadata { RestoredGeneratedUser(id = "generated-user") })
+
+        val snapshot =
+            Fiktion.configure {
+                register(constantMetadata { RestoredGeneratedUser(id = "configured-user") })
+            }
+
+        try {
+            assertEquals(RestoredGeneratedUser(id = "configured-user"), fake<RestoredGeneratedUser>())
+        } finally {
+            assertTrue(snapshot.restore(force = true))
+        }
+
+        assertEquals(RestoredGeneratedUser(id = "generated-user"), fake<RestoredGeneratedUser>())
+    }
+
+    @Test
     fun `snapshot restore returns false and does not overwrite a newer global configuration`() {
         val first =
             Fiktion.configure {
@@ -187,5 +212,16 @@ class FiktionTest {
                 ),
         ) { values ->
             User(id = values[0].valueOrDefault(defaultValue = null) as String)
+        }
+
+    /**
+     * Returns metadata for constructing a constant object of [T].
+     */
+    private inline fun <reified T> constantMetadata(noinline construct: () -> T): FiktionObjectMetadata<T> =
+        FiktionObjectMetadata(
+            type = typeOf<T>(),
+            properties = emptyList(),
+        ) {
+            construct()
         }
 }

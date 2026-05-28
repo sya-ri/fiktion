@@ -11,15 +11,24 @@ import kotlin.concurrent.atomics.ExperimentalAtomicApi
 @OptIn(ExperimentalAtomicApi::class)
 internal object GlobalFiktion {
     /**
-     * Atomic state for the current global configuration.
+     * Atomic state for the current user-controlled global configuration.
      */
     private val current = AtomicReference(GlobalFiktionState(version = 0, config = FiktionConfig()))
 
     /**
-     * Current global configuration snapshot.
+     * Compiler-generated metadata that stays outside snapshot restore.
+     */
+    private val generatedMetadata = AtomicReference<Map<String, FiktionTypeMetadata<*>>>(emptyMap())
+
+    /**
+     * Current effective global configuration snapshot.
      */
     val config: FiktionConfig
-        get() = current.load().config
+        get() =
+            FiktionConfig(metadata = generatedMetadata.load()).overlaidBy(
+                other = current.load().config,
+                rulePrecedence = RulePrecedence.GLOBAL,
+            )
 
     /**
      * Applies [configure] as an atomic global configuration update.
@@ -33,6 +42,17 @@ internal object GlobalFiktion {
             if (current.compareAndSet(previous, next)) {
                 return DefaultFiktionSnapshot(previous = previous, installed = next)
             }
+        }
+    }
+
+    /**
+     * Registers compiler-generated [metadata] without making it part of restorable user configuration.
+     */
+    fun registerGenerated(metadata: FiktionTypeMetadata<*>) {
+        while (true) {
+            val previous = generatedMetadata.load()
+            val next = previous + (metadata.type.nonNullTypeId() to metadata)
+            if (generatedMetadata.compareAndSet(previous, next)) return
         }
     }
 
