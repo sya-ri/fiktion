@@ -10,5 +10,10 @@ internal fun FiktionExtension.isEnabledFor(sourceSetName: String): Boolean {
         ?.orNull
         ?.let { enabled -> return enabled }
     if (enabled.getOrElse(false)) return true
-    return testEnabled.getOrElse(true) && sourceSetName.endsWith("Test")
+    return testEnabled.getOrElse(true) && sourceSetName.isTestSourceSetName()
 }
+
+/**
+ * Returns whether this source set name conventionally represents tests.
+ */
+private fun String.isTestSourceSetName(): Boolean = this == "test" || endsWith("Test")

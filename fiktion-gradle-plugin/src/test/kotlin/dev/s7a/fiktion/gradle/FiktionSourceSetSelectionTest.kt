@@ -13,6 +13,7 @@ class FiktionSourceSetSelectionTest {
     fun `test source sets are enabled by default`() {
         val extension = fiktionExtension()
 
+        assertTrue(extension.isEnabledFor("test"))
         assertTrue(extension.isEnabledFor("commonTest"))
         assertTrue(extension.isEnabledFor("jvmTest"))
     }
@@ -41,6 +42,7 @@ class FiktionSourceSetSelectionTest {
 
         extension.testEnabled.set(false)
 
+        assertFalse(extension.isEnabledFor("test"))
         assertFalse(extension.isEnabledFor("commonTest"))
         assertFalse(extension.isEnabledFor("jvmTest"))
     }
