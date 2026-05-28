@@ -1,12 +1,11 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.runtime.FakeContext
-import kotlin.random.Random
 
 /**
  * Generates a collection using [elementGenerator] and [size].
  */
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 internal fun <Element, CollectionType : Collection<Element>> FakeContext.generateCollection(
     sizeRange: IntRange,
     elementGenerator: FakeContext.() -> Element,
@@ -16,9 +15,8 @@ internal fun <Element, CollectionType : Collection<Element>> FakeContext.generat
         List(count) { index ->
             val elementSeed = seed.childSeed(index)
             elementGenerator(
-                DefaultFakeContext(
+                FakeContext(
                     seed = elementSeed,
-                    random = Random(elementSeed),
                     type = type,
                     property = property,
                     path = path,

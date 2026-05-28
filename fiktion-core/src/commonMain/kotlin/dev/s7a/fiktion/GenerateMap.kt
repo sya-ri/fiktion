@@ -2,7 +2,6 @@ package dev.s7a.fiktion
 
 import dev.s7a.fiktion.runtime.CannotGenerateException
 import dev.s7a.fiktion.runtime.FakeContext
-import kotlin.random.Random
 
 /**
  * Generates a map using [state].
@@ -31,11 +30,11 @@ internal fun <Key, Value, MapType : Map<Key, Value>> FakeContext.generateMap(
 /**
  * Creates a child context for a generated map entry part.
  */
+@Suppress("DEPRECATION")
 private fun FakeContext.childContext(index: Int): FakeContext {
     val childSeed = seed.childSeed(index)
-    return DefaultFakeContext(
+    return FakeContext(
         seed = childSeed,
-        random = Random(childSeed),
         type = type,
         property = property,
         path = path,

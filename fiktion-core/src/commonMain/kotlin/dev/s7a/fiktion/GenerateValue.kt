@@ -2,7 +2,7 @@
 
 package dev.s7a.fiktion
 
-import kotlin.random.Random
+import dev.s7a.fiktion.runtime.FakeContext
 
 /**
  * Null probability used when a nullable rule does not declare one explicitly.
@@ -12,6 +12,7 @@ private const val DEFAULT_NULL_PROBABILITY = 0.5
 /**
  * Generates a single value for [request] using [config].
  */
+@Suppress("DEPRECATION")
 internal fun generateValue(
     request: GenerationRequest,
     config: FiktionConfig,
@@ -23,9 +24,8 @@ internal fun generateValue(
     val contextSeed = rule?.seed ?: seed
     val path = request.toFakePath()
     val context =
-        DefaultFakeContext(
+        FakeContext(
             seed = contextSeed,
-            random = Random(contextSeed),
             type = request.type.toFakeType(),
             property = path.segments.lastOrNull(),
             path = path,

@@ -5,7 +5,7 @@ import dev.s7a.fiktion.runtime.ExperimentalFiktionApi
 /**
  * Builder exposed when creating isolated Fiktion instances.
  */
-public interface FiktionBuilder : FiktionRuleBuilder {
+public sealed interface FiktionBuilder : FiktionRuleBuilder {
     /**
      * Sets the root seed used by generated values.
      */

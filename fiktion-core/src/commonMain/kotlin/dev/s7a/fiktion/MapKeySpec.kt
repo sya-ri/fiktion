@@ -5,7 +5,7 @@ import dev.s7a.fiktion.runtime.Generator
 /**
  * Partially configured map rule that defines key generation.
  */
-public interface MapKeySpec<Key, Value, MapType : Map<Key, Value>> : MapGenerationSpec<Key, Value, MapType>
+public sealed interface MapKeySpec<Key, Value, MapType : Map<Key, Value>> : MapGenerationSpec<Key, Value, MapType>
 
 /**
  * Completes this map rule by generating values with [generator].

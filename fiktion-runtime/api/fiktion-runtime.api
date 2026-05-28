@@ -11,13 +11,24 @@ public final class dev/s7a/fiktion/runtime/CannotGenerateException : dev/s7a/fik
 public abstract interface annotation class dev/s7a/fiktion/runtime/ExperimentalFiktionApi : java/lang/annotation/Annotation {
 }
 
-public abstract interface class dev/s7a/fiktion/runtime/FakeContext {
-	public abstract fun getDepth ()I
-	public abstract fun getPath ()Ldev/s7a/fiktion/runtime/FakePath;
-	public abstract fun getProperty ()Ldev/s7a/fiktion/runtime/FakeProperty;
-	public abstract fun getRandom ()Lkotlin/random/Random;
-	public abstract fun getSeed ()J
-	public abstract fun getType ()Ldev/s7a/fiktion/runtime/FakeType;
+public final class dev/s7a/fiktion/runtime/FakeContext {
+	public fun <init> (JLdev/s7a/fiktion/runtime/FakeType;Ldev/s7a/fiktion/runtime/FakeProperty;Ldev/s7a/fiktion/runtime/FakePath;I)V
+	public final fun component1 ()J
+	public final fun component2 ()Ldev/s7a/fiktion/runtime/FakeType;
+	public final fun component3 ()Ldev/s7a/fiktion/runtime/FakeProperty;
+	public final fun component4 ()Ldev/s7a/fiktion/runtime/FakePath;
+	public final fun component5 ()I
+	public final fun copy (JLdev/s7a/fiktion/runtime/FakeType;Ldev/s7a/fiktion/runtime/FakeProperty;Ldev/s7a/fiktion/runtime/FakePath;I)Ldev/s7a/fiktion/runtime/FakeContext;
+	public static synthetic fun copy$default (Ldev/s7a/fiktion/runtime/FakeContext;JLdev/s7a/fiktion/runtime/FakeType;Ldev/s7a/fiktion/runtime/FakeProperty;Ldev/s7a/fiktion/runtime/FakePath;IILjava/lang/Object;)Ldev/s7a/fiktion/runtime/FakeContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDepth ()I
+	public final fun getPath ()Ldev/s7a/fiktion/runtime/FakePath;
+	public final fun getProperty ()Ldev/s7a/fiktion/runtime/FakeProperty;
+	public final fun getRandom ()Lkotlin/random/Random;
+	public final fun getSeed ()J
+	public final fun getType ()Ldev/s7a/fiktion/runtime/FakeType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class dev/s7a/fiktion/runtime/FakeNullability : java/lang/Enum {
