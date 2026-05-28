@@ -77,21 +77,50 @@ class GenerateSealedTest {
                 register(messageMetadata(subtypes = emptyList()))
             }
 
-        assertFailsWith<CannotGenerateException> {
-            fiktion.fake<Message>(seed = 123)
-        }
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                fiktion.fake<Message>(seed = 123)
+            }
+
+        assertTrue(error.message.orEmpty().contains("registered sealed metadata has no subtypes"))
     }
 
     @Test
-    fun `fake fails when selected sealed subtype has no generation metadata`() {
+    fun `fake reports selected sealed subtype when subtype metadata is missing`() {
         val fiktion =
             Fiktion {
                 register(messageMetadata(subtypes = listOf(typeOf<TextMessage>())))
             }
 
-        assertFailsWith<CannotGenerateException> {
-            fiktion.fake<Message>(seed = 123)
-        }
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                fiktion.fake<Message>(seed = 123)
+            }
+
+        assertTrue(error.message.orEmpty().contains("TextMessage"))
+        assertTrue(error.message.orEmpty().contains("no generation rule or metadata is registered"))
+    }
+
+    @Test
+    fun `fake reports missing metadata for unregistered object types`() {
+        val fiktion = Fiktion()
+
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                fiktion.fake<TextMessage>(seed = 123)
+            }
+
+        assertTrue(error.message.orEmpty().contains("TextMessage"))
+        assertTrue(error.message.orEmpty().contains("Register metadata"))
+    }
+
+    @Test
+    fun `fake keeps built-in generation available without metadata`() {
+        val fiktion = Fiktion()
+
+        val value = fiktion.fake<String>(seed = 123)
+
+        assertTrue(value.isNotEmpty())
     }
 
     /**

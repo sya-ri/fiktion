@@ -36,7 +36,8 @@ internal fun generateBuiltIn(
 
         else -> {
             throw CannotGenerateException(
-                "Cannot generate $type. Add an explicit rule, for example: type<$type>() generatesBy { ... }.",
+                "Cannot generate $type because no generation rule or metadata is registered for this type. " +
+                    "Register metadata for $type, or add an explicit rule: type<$type>() generatesBy { ... }.",
             )
         }
     }
