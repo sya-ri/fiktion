@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irString
 import org.jetbrains.kotlin.ir.builders.irVararg
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
+import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -85,13 +86,7 @@ internal class FiktionGeneratedMetadataRegistrar(
             resultType = expression.type,
         ) {
             candidates.forEach { candidate ->
-                val lambda =
-                    if (candidate.isValueClass) {
-                        builder.valueConstructorLambda(candidate)
-                    } else {
-                        builder.objectConstructorLambda(candidate)
-                    }
-                +builder.registerGenerated(candidate, builder.metadata(candidate, lambda.reference))
+                +builder.registerGenerated(candidate, builder.metadata(candidate))
             }
             +expression
         }
@@ -118,26 +113,32 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns generated type metadata for [candidate].
      */
-    private fun DeclarationIrBuilder.metadata(
-        candidate: FiktionGeneratedMetadataCandidate,
-        constructor: IrExpression,
-    ): IrExpression =
-        if (candidate.isValueClass) {
-            valueMetadata(candidate, constructor)
-        } else {
-            objectMetadata(candidate, constructor)
+    private fun DeclarationIrBuilder.metadata(candidate: FiktionGeneratedMetadataCandidate): IrExpression =
+        when (candidate) {
+            is FiktionGeneratedEnumMetadataCandidate -> enumMetadata(candidate)
+            is FiktionGeneratedObjectMetadataCandidate -> objectMetadata(candidate, objectConstructorLambda(candidate).reference)
+            is FiktionGeneratedValueMetadataCandidate -> valueMetadata(candidate, valueConstructorLambda(candidate).reference)
+        }
+
+    /**
+     * Returns a `FiktionEnumMetadata<T>` expression for [candidate].
+     */
+    private fun DeclarationIrBuilder.enumMetadata(candidate: FiktionGeneratedEnumMetadataCandidate): IrExpression =
+        irCallConstructor(symbols.enumMetadataConstructor, listOf(candidate.irClass.defaultType)).apply {
+            setRegularArgument(0, typeOf(candidate.irClass.defaultType))
+            setRegularArgument(1, enumEntryList(candidate))
         }
 
     /**
      * Returns a `FiktionValueMetadata<T>` expression for [candidate].
      */
     private fun DeclarationIrBuilder.valueMetadata(
-        candidate: FiktionGeneratedMetadataCandidate,
+        candidate: FiktionGeneratedValueMetadataCandidate,
         constructor: IrExpression,
     ): IrExpression =
         irCallConstructor(symbols.valueMetadataConstructor, listOf(candidate.irClass.defaultType)).apply {
             setRegularArgument(0, typeOf(candidate.irClass.defaultType))
-            setRegularArgument(1, typeOf(candidate.singleProperty.parameter.type))
+            setRegularArgument(1, typeOf(candidate.property.parameter.type))
             setRegularArgument(2, constructor)
         }
 
@@ -145,7 +146,7 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Returns a `FiktionObjectMetadata<T>` expression for [candidate].
      */
     private fun DeclarationIrBuilder.objectMetadata(
-        candidate: FiktionGeneratedMetadataCandidate,
+        candidate: FiktionGeneratedObjectMetadataCandidate,
         constructor: IrExpression,
     ): IrExpression =
         irCallConstructor(symbols.objectMetadataConstructor, listOf(candidate.irClass.defaultType)).apply {
@@ -165,7 +166,7 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns a list of generated `FiktionObjectProperty` values for [candidate].
      */
-    private fun DeclarationIrBuilder.propertyList(candidate: FiktionGeneratedMetadataCandidate): IrExpression {
+    private fun DeclarationIrBuilder.propertyList(candidate: FiktionGeneratedObjectMetadataCandidate): IrExpression {
         val propertyType = symbols.objectPropertyType
         val properties =
             candidate.properties.map { property ->
@@ -183,9 +184,39 @@ internal class FiktionGeneratedMetadataRegistrar(
     }
 
     /**
+     * Returns a list of generated enum entries for [candidate].
+     */
+    private fun DeclarationIrBuilder.enumEntryList(candidate: FiktionGeneratedEnumMetadataCandidate): IrExpression =
+        irCall(symbols.listOf).apply {
+            setTypeArgument(0, candidate.irClass.defaultType)
+            setRegularArgument(
+                0,
+                irVararg(
+                    candidate.irClass.defaultType,
+                    candidate.entries.map { entry -> enumEntry(entry, candidate.irClass.defaultType) },
+                ),
+            )
+        }
+
+    /**
+     * Returns an enum entry expression.
+     */
+    private fun DeclarationIrBuilder.enumEntry(
+        entry: IrEnumEntry,
+        type: IrType,
+    ): IrExpression =
+        irGetEnumValueConstructor.newInstance(
+            irElementConstructorIndicator,
+            startOffset,
+            endOffset,
+            type,
+            entry.symbol,
+        ) as IrExpression
+
+    /**
      * Returns the generated constructor lambda used by `FiktionObjectMetadata`.
      */
-    private fun DeclarationIrBuilder.objectConstructorLambda(candidate: FiktionGeneratedMetadataCandidate): ConstructorLambda {
+    private fun DeclarationIrBuilder.objectConstructorLambda(candidate: FiktionGeneratedObjectMetadataCandidate): ConstructorLambda {
         val classType = candidate.irClass.defaultType
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
@@ -212,7 +243,7 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns the generated constructor lambda used by `FiktionValueMetadata`.
      */
-    private fun DeclarationIrBuilder.valueConstructorLambda(candidate: FiktionGeneratedMetadataCandidate): ConstructorLambda {
+    private fun DeclarationIrBuilder.valueConstructorLambda(candidate: FiktionGeneratedValueMetadataCandidate): ConstructorLambda {
         val classType = candidate.irClass.defaultType
         val valueType = pluginContext.irBuiltIns.anyNType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(valueType, classType)
@@ -256,7 +287,7 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Returns a constructor call for [candidate] reading generated values from [arguments].
      */
     private fun DeclarationIrBuilder.constructorCall(
-        candidate: FiktionGeneratedMetadataCandidate,
+        candidate: FiktionGeneratedObjectMetadataCandidate,
         arguments: IrValueParameter,
     ): IrExpression =
         constructorCall(
@@ -272,7 +303,7 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Returns a constructor call expression with branches for remaining defaultable parameters.
      */
     private fun DeclarationIrBuilder.constructorCall(
-        candidate: FiktionGeneratedMetadataCandidate,
+        candidate: FiktionGeneratedObjectMetadataCandidate,
         arguments: IrValueParameter,
         defaultParameterIndexes: Set<Int>,
         pendingDefaultParameterIndexes: List<Int>,
@@ -309,7 +340,7 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Returns a constructor call for a resolved default argument combination.
      */
     private fun DeclarationIrBuilder.constructorCall(
-        candidate: FiktionGeneratedMetadataCandidate,
+        candidate: FiktionGeneratedObjectMetadataCandidate,
         arguments: IrValueParameter,
         defaultParameterIndexes: Set<Int>,
     ): IrExpression =
@@ -325,11 +356,11 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Returns a value-class constructor call reading the generated underlying [value].
      */
     private fun DeclarationIrBuilder.valueConstructorCall(
-        candidate: FiktionGeneratedMetadataCandidate,
+        candidate: FiktionGeneratedValueMetadataCandidate,
         value: IrValueParameter,
     ): IrExpression =
         irCallConstructor(candidate.constructor.symbol, emptyList()).apply {
-            setRegularArgument(0, irAs(irGet(value), candidate.singleProperty.parameter.type))
+            setRegularArgument(0, irAs(irGet(value), candidate.property.parameter.type))
         }
 
     /**
@@ -449,6 +480,12 @@ internal class FiktionGeneratedMetadataRegistrar(
             pluginContext.referenceConstructors(classId("$FIKTION_PACKAGE.FiktionValueMetadata")).single()
 
         /**
+         * `FiktionEnumMetadata` constructor.
+         */
+        val enumMetadataConstructor: IrConstructorSymbol =
+            pluginContext.referenceConstructors(classId("$FIKTION_PACKAGE.FiktionEnumMetadata")).single()
+
+        /**
          * `FiktionObjectProperty` constructor.
          */
         val objectPropertyConstructor: IrConstructorSymbol =
@@ -486,12 +523,6 @@ internal class FiktionGeneratedMetadataRegistrar(
         val reference: IrExpression,
     )
 }
-
-/**
- * Single constructor property of a value-class candidate.
- */
-private val FiktionGeneratedMetadataCandidate.singleProperty: FiktionGeneratedMetadataPropertyCandidate
-    get() = properties.single()
 
 /**
  * Fiktion runtime package name.
@@ -533,6 +564,15 @@ private val irFunctionExpressionConstructor =
         .forName("org.jetbrains.kotlin.ir.expressions.impl.IrFunctionExpressionImpl")
         .constructors
         .single { constructor -> constructor.parameterCount == 6 }
+
+/**
+ * Constructor for `IrGetEnumValueImpl`.
+ */
+private val irGetEnumValueConstructor =
+    Class
+        .forName("org.jetbrains.kotlin.ir.expressions.impl.IrGetEnumValueImpl")
+        .constructors
+        .single { constructor -> constructor.parameterCount == 5 }
 
 /**
  * Sets the type argument at [index].

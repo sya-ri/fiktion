@@ -61,6 +61,12 @@ class GeneratedMetadataSmokeTest {
         assertEquals(fake<GeneratedUserId>(seed = 123), fake<GeneratedUserId>(seed = 123))
         assertTrue(fake<GeneratedUserId>(seed = 123).value.isNotBlank())
     }
+
+    @Test
+    fun `compiler plugin registers generated metadata for enum classes`() {
+        assertEquals(fake<GeneratedStatus>(seed = 123), fake<GeneratedStatus>(seed = 123))
+        assertTrue(fake<GeneratedStatus>(seed = 123) in GeneratedStatus.entries)
+    }
 }
 
 /**
@@ -155,6 +161,21 @@ private value class GeneratedUserId(
      */
     val value: String,
 )
+
+/**
+ * Smoke-test enum that depends on compiler-generated metadata.
+ */
+private enum class GeneratedStatus {
+    /**
+     * Active generated status.
+     */
+    ACTIVE,
+
+    /**
+     * Deleted generated status.
+     */
+    DELETED,
+}
 
 /**
  * Counter used to prove dynamic defaults are evaluated at construction time.

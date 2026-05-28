@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
+import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
@@ -43,29 +44,48 @@ internal class FiktionGeneratedMetadataCollector {
      */
     @OptIn(UnsafeDuringIrConstructionAPI::class)
     private fun IrClass.toCandidate(): FiktionGeneratedMetadataCandidate? {
-        if (kind != ClassKind.CLASS || isExpect || isInner) return null
+        if (isExpect || isInner) return null
+        val className = fqNameWhenAvailable?.asString().orEmpty()
+        if (className.isBlank()) return null
+
+        if (kind == ClassKind.ENUM_CLASS) {
+            return FiktionGeneratedEnumMetadataCandidate(
+                irClass = this,
+                className = className,
+                entries = declarations.filterIsInstance<IrEnumEntry>(),
+            )
+        }
+
+        if (kind != ClassKind.CLASS) return null
         val valueClass = isValue || valueClassRepresentation != null
         if (!isData && !valueClass) return null
         val constructor = declarations.filterIsInstance<IrConstructor>().firstOrNull { constructor -> constructor.isPrimary } ?: return null
-        val className = fqNameWhenAvailable?.asString().orEmpty()
-        if (className.isBlank()) return null
         val parameters = constructor.parameters.filter { parameter -> parameter.kind == IrParameterKind.Regular }
         if (valueClass && parameters.size != 1) return null
+        val properties =
+            parameters.map { parameter ->
+                FiktionGeneratedMetadataPropertyCandidate(
+                    parameter = parameter,
+                    name = parameter.name.asString(),
+                    type = parameter.type.render(),
+                    hasDefault = parameter.defaultValue != null,
+                )
+            }
 
-        return FiktionGeneratedMetadataCandidate(
-            irClass = this,
-            constructor = constructor,
-            className = className,
-            isValueClass = valueClass,
-            properties =
-                parameters.map { parameter ->
-                    FiktionGeneratedMetadataPropertyCandidate(
-                        parameter = parameter,
-                        name = parameter.name.asString(),
-                        type = parameter.type.render(),
-                        hasDefault = parameter.defaultValue != null,
-                    )
-                },
-        )
+        return if (valueClass) {
+            FiktionGeneratedValueMetadataCandidate(
+                irClass = this,
+                constructor = constructor,
+                className = className,
+                property = properties.single(),
+            )
+        } else {
+            FiktionGeneratedObjectMetadataCandidate(
+                irClass = this,
+                constructor = constructor,
+                className = className,
+                properties = properties,
+            )
+        }
     }
 }
