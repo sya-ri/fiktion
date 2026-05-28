@@ -1,7 +1,10 @@
 package dev.s7a.fiktion.compiler
 
+import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.generates
 import dev.s7a.fiktion.runtime.CannotGenerateException
+import dev.s7a.fiktion.type
 import kotlin.jvm.JvmInline
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -69,6 +72,23 @@ class GeneratedMetadataSmokeTest {
         assertFailsWith<CannotGenerateException> {
             fake<GeneratedLocalUser>(seed = 123)
         }
+    }
+
+    @Test
+    fun `compiler plugin skips private constructors by default`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedPrivateConstructorUser>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `explicit rules can generate classes with private constructors`() {
+        val fiktion =
+            Fiktion {
+                type<GeneratedPrivateConstructorUser>() generates GeneratedPrivateConstructorUser.create(id = "configured")
+            }
+
+        assertEquals("configured", fiktion.fake<GeneratedPrivateConstructorUser>(seed = 123).id)
     }
 
     @Test
@@ -269,6 +289,26 @@ private class GeneratedOuterUser {
          */
         val id: String,
     )
+}
+
+/**
+ * Smoke-test class whose private constructor should not receive generated metadata.
+ */
+private class GeneratedPrivateConstructorUser private constructor(
+    /**
+     * Private-constructor user identifier.
+     */
+    val id: String,
+) {
+    /**
+     * Factory for tests that explicitly define how to create this type.
+     */
+    companion object {
+        /**
+         * Creates a private-constructor user for explicit rule tests.
+         */
+        fun create(id: String): GeneratedPrivateConstructorUser = GeneratedPrivateConstructorUser(id)
+    }
 }
 
 /**

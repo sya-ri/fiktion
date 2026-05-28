@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.compiler
 
 import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
 import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrClass
@@ -76,6 +77,7 @@ internal class FiktionGeneratedMetadataCollector {
         if (kind != ClassKind.CLASS || modality == Modality.ABSTRACT) return null
         val valueClass = isValue || valueClassRepresentation != null
         val constructor = declarations.filterIsInstance<IrConstructor>().firstOrNull { constructor -> constructor.isPrimary } ?: return null
+        if (constructor.isPrivate()) return null
         val parameters = constructor.parameters.filter { parameter -> parameter.kind == IrParameterKind.Regular }
         if (valueClass && parameters.size != 1) return null
         val properties =
@@ -123,4 +125,9 @@ internal class FiktionGeneratedMetadataCollector {
      * Returns whether this class is declared in a local scope.
      */
     private fun IrClass.isLocalClass(): Boolean = parent !is IrFile && parent !is IrClass
+
+    /**
+     * Returns whether this constructor is private.
+     */
+    private fun IrConstructor.isPrivate(): Boolean = visibility == DescriptorVisibilities.PRIVATE
 }
