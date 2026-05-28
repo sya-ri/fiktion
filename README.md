@@ -1,43 +1,78 @@
-# fiktion
+# Fiktion
 
-Fiktion is a Kotlin Multiplatform fake data library for tests.
+Fiktion is a Kotlin fake data library for tests that should read like intent, not fixture setup.
 
-It is designed for tests that need complete object graphs quickly, while still letting the test pin the values that matter.
+It creates complete, realistic-enough object graphs from your Kotlin types, then lets each test override only the values
+that matter. No annotations in production code. No builders for every model. No fixture files drifting away from the
+domain.
 
 ```kotlin
-// Generate a complete fake value.
-val anyUser = fake<User>()
+@Test
+fun `paid orders are shipped`() {
+    val order = fake<Order> {
+        Order::status generates OrderStatus.Paid
+        (Order::customer / Customer::email) generates "buyer@example.test"
+        Order::items generates auto withSize 3
+    }
 
-// Override only the value this test cares about.
+    shippingService.ship(order)
+
+    assertEquals(ShipmentStatus.Created, shipmentRepository.findByOrderId(order.id).status)
+}
+```
+
+Fiktion is built for the common testing problem where the object shape matters, but most individual values do not:
+
+```kotlin
 val user = fake<User> {
     User::id generates "user-1"
 }
 ```
 
-The code under test does not need Fiktion annotations or helper functions. Fiktion is configured from the test side, with generated metadata supplied by the compiler plugin.
+You get:
 
-## Current Status
+- object graph generation for ordinary Kotlin classes
+- scoped overrides for the fields a test actually asserts
+- deterministic output with seeds
+- collection, map, nullable, default-value, enum, sealed, object, class, data class, and value class support
+- add-ons for external libraries, including common Java/JVM standard library types
 
-This repository contains the core runtime, compiler plugin, and Gradle plugin skeleton for Fiktion.
+## Status
 
-Implemented pieces include:
+Fiktion is pre-release. The core behavior is usable, but API names and compiler-generated metadata internals may change
+before 1.0.
 
-- primitive built-in generation for common scalar types
-- per-call, isolated instance, global, and add-on rule precedence
-- deterministic seeds and rule-level seed overrides
-- object graph generation from registered or compiler-generated metadata
-- constructor default and nullable probabilities
-- collection and map generation rules
-- enum, sealed, object, class, data class, and value class metadata generation
-- Gradle source-set controls for enabling the compiler plugin
+The repository currently contains:
 
-The project is still pre-release. API names and generated metadata internals may change before 1.0.
+- `fiktion-core`: runtime APIs and built-in generators
+- `fiktion-compiler-plugin`: Kotlin compiler plugin for generated type metadata
+- `fiktion-gradle-plugin`: Gradle wiring for test source sets
+- `fiktion-addon-java`: rules for common Java/JVM standard library types
 
-Local `./gradlew build` skips browser test execution unless `-Pfiktion.enableBrowserTests=true` is provided. CI enables browser tests and installs Chrome before running Gradle.
+## Install
+
+Apply the Gradle plugin and add the runtime to your test dependencies:
+
+```kotlin
+plugins {
+    kotlin("jvm") version "2.3.21"
+    id("dev.s7a.fiktion") version "0.1.0"
+}
+
+dependencies {
+    testImplementation("dev.s7a:fiktion-core:0.1.0")
+
+    // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
+    testImplementation("dev.s7a:fiktion-addon-java:0.1.0")
+}
+```
+
+Fiktion is enabled for test source sets by default, including JVM `test` and Multiplatform source sets such as
+`commonTest` and `jvmTest`.
 
 ## Basic Usage
 
-Generate fake data with the top-level `fake<T>()` function:
+Generate a value with `fake<T>()`:
 
 ```kotlin
 val text = fake<String>()
@@ -45,7 +80,7 @@ val count = fake<Int>()
 val user = fake<User>()
 ```
 
-Each call produces fresh fake data by default. Pass a seed when a test needs deterministic values:
+Use a seed when a test needs repeatable data:
 
 ```kotlin
 val first = fake<User>(seed = 123)
@@ -54,9 +89,7 @@ val second = fake<User>(seed = 123)
 check(first == second)
 ```
 
-## Per-Call Rules
-
-Use the `fake<T> { ... }` block to override generation for one call:
+Override only what the test cares about:
 
 ```kotlin
 val user = fake<User> {
@@ -65,9 +98,12 @@ val user = fake<User> {
 }
 ```
 
-Per-call rules are scoped to the generated root type. This prevents `fake<User> { ... }` from accidentally configuring unrelated models.
+Rules inside `fake<T> { ... }` apply to that generated object graph only, so one test does not accidentally configure
+another model.
 
-Nested values can be configured directly:
+## Nested Properties
+
+Nested objects can be configured inline:
 
 ```kotlin
 val user = fake<User> {
@@ -77,7 +113,7 @@ val user = fake<User> {
 }
 ```
 
-Specific nested properties can also be targeted with `/`:
+You can also target a nested path directly:
 
 ```kotlin
 val user = fake<User> {
@@ -85,7 +121,7 @@ val user = fake<User> {
 }
 ```
 
-Property-name matching is available inside the generated graph:
+Name rules are useful when the same convention appears across several types:
 
 ```kotlin
 val user = fake<User> {
@@ -94,73 +130,40 @@ val user = fake<User> {
 }
 ```
 
-## Global Rules
+## Collections And Maps
 
-Use `Fiktion.configure` to update the global configuration and receive a snapshot that can restore the previous configuration.
+Collections can generate each element automatically:
 
 ```kotlin
-val snapshot = Fiktion.configure {
-    type<User>() generatesBy {
-        User(id = "user-${random.nextLong()}")
-    }
-
-    // Applies to String properties named "email".
-    name<String>("email") generatesBy {
-        "test-${random.nextInt()}@example.test"
-    }
-}
-
-try {
-    val user = fake<User>()
-} finally {
-    check(snapshot.restore())
+val catalog = fake<Catalog> {
+    Catalog::items generates auto withSize 3
 }
 ```
 
-Use `snapshot.restore(force = true)` only when the previous configuration must be restored even if another configuration was installed after this snapshot.
-
-## Isolated Fiktion Instances
-
-Create an isolated Fiktion instance when a test suite needs a local rule set instead of changing global configuration:
+Or you can provide element rules:
 
 ```kotlin
-val fiktion = Fiktion {
-    type<User>() generatesBy {
-        User(id = "api-user-${random.nextLong()}")
-    }
+val catalog = fake<Catalog> {
+    Catalog::tags generatesEach {
+        string(length = 8)
+    } withSize (1..5)
 }
-
-val user = fiktion.fake<User>()
 ```
 
-## Rule Targets
-
-Configuration scopes support type, owner-qualified property, path, and name targets:
+Maps support key, value, and entry generation:
 
 ```kotlin
-type<User>() generatesBy { /* any User */ }
-property<User, String>() generatesBy { /* any String property owned by User */ }
-property<User, String>("id") generates "user-1"
-name<String>("id") generates "shared-id"
-name("email") generatesBy { "test-${random.nextInt()}@example.test" }
-property(User::profile / Profile::nickname) generates "example"
+val index = fake<SearchIndex> {
+    SearchIndex::entries generatesKeys { string(length = 8) }
+    SearchIndex::entries generatesValues { fake<Entry>() }
+
+    SearchIndex::aliases generatesOneOf listOf("primary", "secondary")
+}
 ```
 
-Bare property-reference rules such as `User::id generates "user-1"` are intentionally unavailable in global and isolated configuration scopes because Kotlin common code cannot recover the owner and value type from the reference alone. Use `property<User, String>("id")` there.
+## Nulls And Defaults
 
-Rule precedence is:
-
-1. Per-call rules
-2. Fiktion instance rules
-3. Global rules
-4. Add-on rules
-5. Built-in primitive rules
-
-Within the same precedence level, more specific targets win before registration order. When two matching rules have the same specificity, the later registration wins.
-
-## Defaults And Nulls
-
-Rules can opt into null generation with probabilities when the requested value type is nullable:
+Nullable values can be generated by probability:
 
 ```kotlin
 val user = fake<User> {
@@ -168,7 +171,7 @@ val user = fake<User> {
 }
 ```
 
-Constructor defaults can also be selected by probability when metadata says the property has a default:
+Constructor defaults can also be selected when Fiktion has metadata for the type:
 
 ```kotlin
 val user = fake<User> {
@@ -185,34 +188,71 @@ name<String?>("nickname") generates null
 name<String?>("nickname") generatesBy { null }
 ```
 
-## Collections And Maps
+## Reusable Configuration
 
-Collection and map sizes are configured separately from element generation:
+Use `Fiktion { ... }` when a test suite needs a local generator configuration:
 
 ```kotlin
-val catalog = fake<Catalog> {
-    Catalog::items generates auto withSize 3
+val fiktion = Fiktion {
+    type<User>() generatesBy {
+        User(id = "api-user-${random.nextLong()}")
+    }
+}
 
-    Catalog::tags generatesEach {
-        string(8)
-    } withSize (1..5)
+val user = fiktion.fake<User>()
+```
+
+Use `Fiktion.configure` for process-wide test configuration. It returns a snapshot so the previous configuration can be
+restored:
+
+```kotlin
+val snapshot = Fiktion.configure {
+    name<String>("email") generatesBy {
+        "test-${random.nextInt()}@example.test"
+    }
+}
+
+try {
+    val user = fake<User>()
+} finally {
+    check(snapshot.restore())
 }
 ```
 
-Map key and value generation can be configured separately or completed as an entry rule:
+Rule precedence is:
+
+1. Per-call rules
+2. Fiktion instance rules
+3. Global rules
+4. Add-on rules
+5. Built-in rules
+
+Within the same precedence level, more specific targets win before registration order. When two matching rules have the
+same specificity, the later registration wins.
+
+## Rule Targets
+
+Configuration scopes support type, property, path, and name targets:
 
 ```kotlin
-val index = fake<SearchIndex> {
-    SearchIndex::entries generatesKeys { string(8) }
-    SearchIndex::entries generatesValues { fake<Entry>() }
-
-    SearchIndex::aliases generatesOneOf listOf("primary", "secondary")
-}
+type<User>() generatesBy { /* any User */ }
+property<User, String>() generatesBy { /* any String property owned by User */ }
+property<User, String>("id") generates "user-1"
+name<String>("id") generates "shared-id"
+name("email") generatesBy { "test-${random.nextInt()}@example.test" }
+property(User::profile / Profile::nickname) generates "example"
 ```
+
+Bare property-reference rules such as `User::id generates "user-1"` are intentionally unavailable in global and isolated
+configuration scopes because Kotlin common code cannot recover the owner and value type from the reference alone. Use
+`property<User, String>("id")` there.
 
 ## Compiler Plugin
 
-The compiler plugin generates runtime metadata for supported Kotlin types in enabled source sets. It currently supports:
+The compiler plugin generates runtime metadata for Kotlin types in enabled source sets. This is what lets Fiktion create
+objects without annotations.
+
+Supported shapes include:
 
 - regular classes and data classes with supported primary constructors
 - value classes with one constructor value
@@ -220,7 +260,7 @@ The compiler plugin generates runtime metadata for supported Kotlin types in ena
 - sealed classes and sealed interfaces
 - singleton objects and companion objects
 
-It intentionally skips shapes that should be configured explicitly:
+Shapes that should be configured explicitly are skipped:
 
 - abstract classes and interfaces
 - fun interfaces and annotation classes
@@ -237,22 +277,14 @@ val fiktion = Fiktion {
 }
 ```
 
-## Gradle
+## Gradle Configuration
 
-Apply the Gradle plugin to wire the compiler plugin into Kotlin compilations:
-
-```kotlin
-plugins {
-    id("dev.s7a.fiktion")
-}
-```
-
-Fiktion is enabled for test source sets by default. Main/runtime source sets are opt-in:
+Test source sets are enabled by default. Main/runtime source sets are opt-in:
 
 ```kotlin
 fiktion {
     sourceSet("commonMain") {
-        enabled = true
+        enabled.set(true)
     }
 }
 ```
@@ -262,46 +294,30 @@ Project-wide controls are also available:
 ```kotlin
 fiktion {
     // Enable every Kotlin source set.
-    enabled = true
+    enabled.set(true)
 
     // Disable the default test-source-set behavior.
-    testEnabled = false
+    testEnabled.set(false)
 
     sourceSet("jvmTest") {
-        enabled = true
+        enabled.set(true)
     }
 }
 ```
 
-## Realistic Data
+## Java Add-On
 
-Fiktion core focuses on object graph generation, rule resolution, and Kotlin metadata. Strict domain data such as names, email addresses, postal addresses, or localized text is expected to come from custom rules, add-ons, or libraries such as Datafaker.
-
-```kotlin
-val faker = Faker()
-
-val user = fake<User> {
-    User::email generatesBy {
-        faker.internet().emailAddress()
-    }
-}
-```
-
-## Add-Ons
-
-Add-ons contribute reusable rules for external libraries or project-specific types.
-
-The Java standard library add-on provides rules for common JVM types such as `java.time`, `java.util`, `java.net`,
-`java.nio`, `java.sql`, and `java.util.concurrent` types.
+Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `java.util`, `java.net`, `java.nio`,
+`java.sql`, or `java.util.concurrent` types:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:<version>")
+    testImplementation("dev.s7a:fiktion-addon-java:0.1.0")
 }
 ```
 
-When the Fiktion compiler plugin is enabled for the source set, add-ons on the compilation classpath are registered
-automatically before `fake<T>()` calls:
+With the Gradle plugin enabled, add-ons on the compilation classpath are registered automatically before `fake<T>()`
+calls:
 
 ```kotlin
 import java.time.Instant
@@ -319,7 +335,9 @@ val fiktion = Fiktion {
 }
 ```
 
-Custom add-ons can be implemented with `FiktionAddon`:
+## Custom Add-Ons
+
+Add-ons are reusable bundles of rules:
 
 ```kotlin
 public object CustomFiktionAddon : FiktionAddon {
@@ -327,9 +345,8 @@ public object CustomFiktionAddon : FiktionAddon {
 
     override fun install(builder: FiktionAddonBuilder) {
         with(builder) {
-            type<...>() generatesBy {
-                // Add-on-provided generation rule.
-                TODO()
+            type<Token>() generatesBy {
+                Token(value = string(length = 32))
             }
         }
     }
@@ -344,3 +361,23 @@ com.example.fiktion.ExampleFiktionAddon
 ```
 
 Installed add-ons sit below explicit per-call, instance, and global rules in precedence.
+
+## Realistic Data
+
+Fiktion core focuses on object graph generation, rule resolution, and Kotlin metadata. Strict domain data such as names,
+email addresses, postal addresses, or localized text can come from custom rules, add-ons, or libraries such as Datafaker.
+
+```kotlin
+val faker = Faker()
+
+val user = fake<User> {
+    User::email generatesBy {
+        faker.internet().emailAddress()
+    }
+}
+```
+
+## Development
+
+Local `./gradlew build` skips browser test execution unless `-Pfiktion.enableBrowserTests=true` is provided. CI enables
+browser tests and installs Chrome before running Gradle.
