@@ -32,6 +32,11 @@ public interface FakeContext {
     public val depth: Int
 
     /**
+     * Index of this value within the parent generator.
+     */
+    public val index: Int
+
+    /**
      * Random instance derived from [seed].
      */
     public val random: Random
@@ -46,6 +51,7 @@ internal data class DefaultFakeContext(
     override val property: FakeProperty?,
     override val path: FakePath,
     override val depth: Int,
+    override val index: Int,
 ) : FakeContext {
     override val random: Random = Random(seed)
 }

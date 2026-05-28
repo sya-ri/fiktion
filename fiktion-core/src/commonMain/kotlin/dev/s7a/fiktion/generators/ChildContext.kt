@@ -15,4 +15,5 @@ internal fun FakeContext.childContext(index: Int): FakeContext =
         property = property,
         path = path,
         depth = depth + 1,
+        index = index,
     )

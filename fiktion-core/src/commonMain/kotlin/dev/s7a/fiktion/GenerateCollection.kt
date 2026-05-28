@@ -22,6 +22,7 @@ internal fun <Element, CollectionType : Collection<Element>> FakeContext.generat
                     property = property,
                     path = path,
                     depth = depth + 1,
+                    index = index,
                 ),
             )
         }

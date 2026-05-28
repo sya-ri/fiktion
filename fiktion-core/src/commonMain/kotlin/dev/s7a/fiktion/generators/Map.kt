@@ -13,7 +13,7 @@ public fun <K, V> FakeContext.map(
     value: FakeContext.() -> V,
 ): Map<K, V> =
     List(size) { index ->
-        key(childContext(index = index * MAP_ENTRY_PARTS)) to value(childContext(index = index * MAP_ENTRY_PARTS + 1))
+        key(childContext(index = index * 2)) to value(childContext(index = index * 2 + 1))
     }.toMap()
 
 /**
@@ -29,14 +29,17 @@ public fun <K, V> FakeContext.mutableMap(
  * Generates a map from the first and second requested type arguments.
  */
 internal fun TypeFamilyGenerationContext.map(): Map<Any?, Any?> =
-    List(DEFAULT_MAP_SIZE_RANGE.random(random)) { index ->
-        fake(argumentIndex = 0, seedIndex = index * MAP_ENTRY_PARTS) to
-            fake(argumentIndex = 1, seedIndex = index * MAP_ENTRY_PARTS + 1)
-    }.toMap()
+    map(
+        size = DEFAULT_MAP_SIZE_RANGE.random(random),
+        key = {
+            fake(argumentIndex = 0, seedIndex = index)
+        },
+        value = {
+            fake(argumentIndex = 1, seedIndex = index)
+        },
+    )
 
 /**
  * Generates a mutable map from the first and second requested type arguments.
  */
 internal fun TypeFamilyGenerationContext.mutableMap(): MutableMap<Any?, Any?> = map().toMutableMap()
-
-private const val MAP_ENTRY_PARTS = 2

@@ -19,21 +19,21 @@ internal fun <Key, Value, MapType : Map<Key, Value>> FakeContext.generateMap(
             }
 
             val key =
-                spec.keyGenerator?.invoke(childContext(index = index * MAP_ENTRY_PARTS))
+                spec.keyGenerator?.invoke(childContext(index = index * 2))
                     ?: generateAutomaticMapPart(
                         part = "keys",
                         type = spec.keyType,
                         config = config,
-                        seed = seed.childSeed(index * MAP_ENTRY_PARTS),
+                        seed = seed.childSeed(index * 2),
                         depth = depth + 1,
                     )
             val value =
-                spec.valueGenerator?.invoke(childContext(index = index * MAP_ENTRY_PARTS + 1))
+                spec.valueGenerator?.invoke(childContext(index = index * 2 + 1))
                     ?: generateAutomaticMapPart(
                         part = "values",
                         type = spec.valueType,
                         config = config,
-                        seed = seed.childSeed(index * MAP_ENTRY_PARTS + 1),
+                        seed = seed.childSeed(index * 2 + 1),
                         depth = depth + 1,
                     )
             key to value
@@ -62,14 +62,14 @@ internal fun generateAutomaticMap(
                 generateValue(
                     request = GenerationRequest(type = keyType),
                     config = config,
-                    seed = seed.childSeed(index * MAP_ENTRY_PARTS),
+                    seed = seed.childSeed(index * 2),
                     depth = depth + 1,
                 )
             val value =
                 generateValue(
                     request = GenerationRequest(type = valueType),
                     config = config,
-                    seed = seed.childSeed(index * MAP_ENTRY_PARTS + 1),
+                    seed = seed.childSeed(index * 2 + 1),
                     depth = depth + 1,
                 )
             key to value
@@ -90,6 +90,7 @@ private fun FakeContext.childContext(index: Int): FakeContext {
         property = property,
         path = path,
         depth = depth + 1,
+        index = index,
     )
 }
 
@@ -126,8 +127,3 @@ private fun generateAutomaticMapPart(
         depth = depth,
     )
 }
-
-/**
- * Number of generated parts in a key/value map entry.
- */
-internal const val MAP_ENTRY_PARTS: Int = 2

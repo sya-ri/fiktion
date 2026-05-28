@@ -11,7 +11,13 @@ class MapTest {
     fun `map generates configured entries`() {
         val fiktion =
             Fiktion {
-                type<Map<String, Int>>() generatesBy { map(size = 3, key = { string() }, value = { int(1, 9) }) }
+                type<Map<String, Int>>() generatesBy {
+                    map(
+                        size = 3,
+                        key = { string() },
+                        value = { int(1, 9) },
+                    )
+                }
             }
 
         assertTrue(fiktion.fake<Map<String, Int>>(seed = 1).isNotEmpty())

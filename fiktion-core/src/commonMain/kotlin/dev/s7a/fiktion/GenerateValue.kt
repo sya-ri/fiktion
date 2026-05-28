@@ -28,6 +28,7 @@ internal fun generateValue(
             property = path.segments.lastOrNull(),
             path = path,
             depth = depth,
+            index = 0,
         )
 
     if (rule != null) {
