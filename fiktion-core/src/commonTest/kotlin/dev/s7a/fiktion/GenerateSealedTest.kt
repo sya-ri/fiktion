@@ -98,7 +98,9 @@ class GenerateSealedTest {
             }
 
         assertTrue(error.message.orEmpty().contains("TextMessage"))
+        assertTrue(error.message.orEmpty().contains("sealed metadata selected subtype"))
         assertTrue(error.message.orEmpty().contains("no generation rule or metadata is registered"))
+        assertTrue(error.cause is CannotGenerateException)
     }
 
     @Test

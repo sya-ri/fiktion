@@ -24,13 +24,21 @@ internal fun generateSealed(
     }
 
     val subtype = metadata.subtypes[context.random.nextInt(metadata.subtypes.size)]
-    return generateValue(
-        request =
-            request.copy(
-                type = subtype,
-            ),
-        config = config,
-        seed = seed.childSeed(index = 0),
-        depth = depth + 1,
-    )
+    try {
+        return generateValue(
+            request =
+                request.copy(
+                    type = subtype,
+                ),
+            config = config,
+            seed = seed.childSeed(index = 0),
+            depth = depth + 1,
+        )
+    } catch (cause: CannotGenerateException) {
+        throw CannotGenerateException(
+            "Cannot generate ${request.type} because sealed metadata selected subtype $subtype, " +
+                "but that subtype could not be generated. ${cause.message}",
+            cause = cause,
+        )
+    }
 }
