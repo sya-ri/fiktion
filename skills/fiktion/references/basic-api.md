@@ -1,0 +1,451 @@
+# Fiktion Basic API
+
+## Install
+
+Typical JVM test setup:
+
+```kotlin
+plugins {
+    kotlin("jvm") version "2.3.21"
+    id("dev.s7a.fiktion") version "0.1.0"
+}
+
+dependencies {
+    testImplementation("dev.s7a:fiktion-core:0.1.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.1.0") // optional JVM add-on
+}
+```
+
+The Gradle plugin enables Fiktion for test source sets by default, including JVM `test` and Multiplatform `commonTest` / `jvmTest`.
+
+Opt in main source sets explicitly:
+
+```kotlin
+fiktion {
+    sourceSet("commonMain") {
+        enabled.set(true)
+    }
+}
+```
+
+Project-wide knobs:
+
+```kotlin
+fiktion {
+    enabled.set(true)      // every Kotlin source set
+    testEnabled.set(false) // disable default test-source-set behavior
+    sourceSet("jvmTest") {
+        enabled.set(true)
+    }
+}
+```
+
+## Generate Values
+
+```kotlin
+val text = fake<String>()
+val count = fake<Int>()
+val user = fake<User>()
+val deterministic = fake<User>(seed = 123)
+```
+
+Per-call overrides apply only to that generated graph:
+
+```kotlin
+val user = fake<User> {
+    withSeed 123
+    User::id generates "user-1"
+    User::displayName generatesBy { "User ${int(1, 999)}" }
+}
+```
+
+Use an isolated generator when a suite needs shared local rules:
+
+```kotlin
+val fiktion = Fiktion {
+    type<User>() generatesBy {
+        User(id = "api-user-${random.nextLong()}")
+    }
+}
+
+val user = fiktion.fake<User>()
+```
+
+The same `fake<T>(seed = ...)` and `fake<T> { ... }` forms exist on isolated instances:
+
+```kotlin
+val user = fiktion.fake<User>(seed = 123) {
+    User::id generates "user-1"
+}
+```
+
+Use global configuration sparingly and restore it:
+
+```kotlin
+val snapshot = Fiktion.configure {
+    name<String>("email") generatesBy {
+        "test-${random.nextInt()}@example.test"
+    }
+}
+
+try {
+    fake<User>()
+} finally {
+    check(snapshot.restore())
+}
+```
+
+## Rule Targets
+
+Per-call blocks can use property references:
+
+```kotlin
+fake<User> {
+    User::id generates "user-1"
+    User::age generatesIn 18..99
+    User::status generatesOneOf listOf(Status.Active, Status.Pending)
+}
+```
+
+Nested object configuration can be block-based or path-based:
+
+```kotlin
+fake<User> {
+    User::profile {
+        Profile::nickname generates "example"
+        Profile::avatar {
+            Avatar::url generates "https://example.test/avatar.png"
+        }
+    }
+
+    (User::profile / Profile::nickname) generates "example"
+    (User::profile / Profile::roles) generates auto withSize 2
+}
+```
+
+You can also target an explicit path object:
+
+```kotlin
+fake<User> {
+    property(User::profile / Profile::nickname) generates "example"
+}
+```
+
+Global, isolated, and add-on scopes can use KProperty infix functions or reified targets:
+
+```kotlin
+Fiktion {
+    type<User>() generatesBy { User(id = string()) }
+    User::id generates "user-1"
+    property<User, String>("id") generates "user-1"
+    property<User, String>() generatesBy { string(length = 8) }
+    property<User, String>(".*Name".toRegex()) generatesBy { string() }
+    property(User::profile / Profile::nickname) generates "example"
+    name<String>("email") generatesBy { "test@example.test" }
+    name("id") generatesBy { "id-${int(1, 999)}" } // value type inferred from generator
+}
+```
+
+Prefer reified targets in shared configuration when they make the owner/value type obvious, especially for name rules or regex rules.
+
+Type-family targets are for generic families:
+
+```kotlin
+Fiktion {
+    typeFamily<Box<*>>() generatesBy {
+        Box(fake(argumentIndex = 0))
+    }
+}
+```
+
+## Rule Values
+
+Common rule forms:
+
+```kotlin
+target generates value
+target generatesBy { /* FakeContext receiver */ }
+target generates auto
+target generatesIn 1..10
+target generatesOneOf listOf("a", "b")
+target generates value withSeed 123
+target generates value orNullAt 0.3
+target generates value orDefaultAt 30.percent
+```
+
+`Double` probabilities use `0.0..1.0`; `percent` helpers are available.
+
+`withSeed` exists at two levels:
+
+```kotlin
+fake<User> {
+    withSeed 123
+    User::id generatesBy { "user-$seed" } withSeed 456
+}
+```
+
+When intentionally generating null for a name rule, make the value type explicit:
+
+```kotlin
+name<String?>("nickname") generates null
+name<String?>("nickname") generatesBy { null }
+```
+
+## Equivalent And Related Forms
+
+Fiktion intentionally offers several ways to express the same or nearby intent. Prefer the narrowest target that still
+matches the test's intent.
+
+### Fixed Value
+
+Per-call root property forms. The property-reference form targets only `User.id`; name forms match any generated
+property named `id` in the current graph whose value type matches the rule:
+
+```kotlin
+fake<User> {
+    User::id generates "user-1"
+    name<String>("id") generates "user-1"
+    name("id") generates "user-1"
+}
+```
+
+Shared configuration forms. `User::id` and `property<User, String>("id")` are equivalent in target breadth; name forms
+are broader because they are not owner-specific:
+
+```kotlin
+Fiktion {
+    User::id generates "user-1"
+    property<User, String>("id") generates "user-1"
+    name<String>("id") generates "user-1"
+    name("id") generates "user-1"
+}
+```
+
+Use the property-reference form when possible. Use `property<User, String>("id")` when owner and value type should both
+be explicit. Use `name<String>("id")` when the convention should intentionally apply across owners.
+
+### Generator Function
+
+Per-call root property forms. As with fixed values, property-reference targets are owner-specific and name targets are
+broader:
+
+```kotlin
+fake<User> {
+    User::id generatesBy { "user-${int(1, 999)}" }
+    name<String>("id") generatesBy { "user-${int(1, 999)}" }
+    name("id") generatesBy { "user-${int(1, 999)}" }
+}
+```
+
+Shared configuration forms:
+
+```kotlin
+Fiktion {
+    User::id generatesBy { "user-${int(1, 999)}" }
+    property<User, String>("id") generatesBy { "user-${int(1, 999)}" }
+    name<String>("id") generatesBy { "user-${int(1, 999)}" }
+    name("id") generatesBy { "user-${int(1, 999)}" }
+}
+```
+
+### Nested Property
+
+These both target `User.profile.nickname`:
+
+```kotlin
+fake<User> {
+    User::profile {
+        Profile::nickname generates "example"
+    }
+
+    (User::profile / Profile::nickname) generates "example"
+}
+```
+
+The block style is easier when configuring several properties under the same object. The path style is terser for one
+leaf.
+
+### Automatic Collection Generation
+
+Per-call property form:
+
+```kotlin
+fake<Team> {
+    Team::names generates auto withSize 3
+}
+```
+
+Shared configuration equivalents:
+
+```kotlin
+Fiktion {
+    Team::names generates auto withSize 3
+    property<Team, List<String>>("names") generates auto withSize 3
+}
+```
+
+For nested collections:
+
+```kotlin
+fake<Department> {
+    Department::team {
+        Team::names generates auto withSize 3
+    }
+
+    (Department::team / Team::names) generates auto withSize 3
+}
+```
+
+### Map Keys And Values
+
+These are equivalent:
+
+```kotlin
+fake<SearchIndex> {
+    SearchIndex::entries generatesKeys { string(length = 8) } andValues { Entry(id = string(length = 8)) }
+}
+
+fake<SearchIndex> {
+    SearchIndex::entries generatesKeys { string(length = 8) }
+    SearchIndex::entries generatesValues { Entry(id = string(length = 8)) }
+}
+```
+
+The chained form is compact. The split form is useful when key and value rules are declared in different places.
+
+### Scoped Configuration
+
+These use the same rule language at different precedence levels:
+
+```kotlin
+val user = fake<User> {
+    User::id generates "user-1"
+}
+
+val fiktion = Fiktion {
+    User::id generates "user-1"
+}
+val userFromInstance = fiktion.fake<User>()
+
+val snapshot = Fiktion.configure {
+    User::id generates "user-1"
+}
+```
+
+Prefer per-call rules for test-specific intent, isolated `Fiktion { ... }` for reusable suite-local policy, and global
+configuration only for process-wide test defaults.
+
+## Collections And Maps
+
+Collections:
+
+```kotlin
+fake<Catalog> {
+    Catalog::items generates auto withSize 3
+    Catalog::tags generatesEach { string(length = 8) } withSize (1..5)
+}
+```
+
+Maps:
+
+```kotlin
+fake<SearchIndex> {
+    SearchIndex::entries generates auto withSize 2
+    SearchIndex::entries generatesKeys { string(length = 8) } andValues { Entry(id = string(length = 8)) }
+    SearchIndex::weights generatesValues { int(1, 100) } andKeys { string(length = 8) }
+    SearchIndex::aliases generatesEach { string(length = 4) to string(length = 8) }
+}
+```
+
+Map entry generation and key/value generation cannot be mixed for the same target.
+
+Split map key/value rules can also be registered separately for the same target:
+
+```kotlin
+fake<SearchIndex> {
+    SearchIndex::entries generatesKeys { string(length = 8) }
+    SearchIndex::entries generatesValues { Entry(id = string(length = 8)) }
+}
+```
+
+For custom collection/map concrete types, configure conversion once:
+
+```kotlin
+Fiktion {
+    configureCollection<CustomCollection<*>> { elements ->
+        CustomCollection(elements)
+    }
+    configureMap<CustomMap<*, *>> { entries ->
+        CustomMap(entries.toMap())
+    }
+}
+```
+
+## Metadata And Compiler Plugin
+
+The compiler plugin generates metadata for Kotlin types so Fiktion can construct objects without annotations.
+
+Supported shapes include:
+
+- regular classes and data classes with supported primary constructors
+- value classes with one constructor value
+- enum classes
+- sealed classes and sealed interfaces
+- singleton objects and companion objects
+
+Skipped shapes should be configured explicitly:
+
+- abstract classes and interfaces
+- fun interfaces and annotation classes
+- inner classes and local classes
+- classes without a primary constructor
+- private or protected primary constructors
+- vararg or unsupported constructor parameters
+
+Explicit rule example:
+
+```kotlin
+Fiktion {
+    type<PrivateUser>() generatesBy {
+        PrivateUser.create("user-1")
+    }
+}
+```
+
+Manual metadata registration exists for advanced tests and compiler-plugin work:
+
+```kotlin
+Fiktion {
+    register(userMetadata())
+}
+```
+
+`register(...)`, `FiktionObjectMetadata`, `FiktionValueMetadata`, `FiktionEnumMetadata`, `FiktionSealedMetadata`,
+`FiktionArrayMetadata`, and `generatedArray(...)` are experimental APIs. Prefer compiler-generated metadata in normal
+user code.
+
+## Coverage Notes
+
+This reference documents the normal public, non-deprecated DSL styles:
+
+- top-level and instance `fake`
+- `Fiktion { ... }` and `Fiktion.configure`
+- per-call `FakeSpec`
+- type, type-family, property, path, and name targets
+- fixed, generator, auto, range, one-of, nullable, default, seed, collection, and map rules
+- add-on converters and installation
+
+It intentionally does not recommend deprecated low-level `KType` overloads. Use them only when maintaining legacy code or
+when an existing call site already carries a `KType`; otherwise use the reified overloads.
+
+## Precedence
+
+Highest to lowest:
+
+1. Per-call rules
+2. Fiktion instance rules
+3. Global rules
+4. Add-on rules
+5. Built-in rules
+
+Within the same layer, more specific matchers win; when specificity is equal, later registration wins.
