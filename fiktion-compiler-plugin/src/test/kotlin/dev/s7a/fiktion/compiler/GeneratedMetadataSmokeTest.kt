@@ -67,6 +67,35 @@ class GeneratedMetadataSmokeTest {
         assertEquals(fake<GeneratedStatus>(seed = 123), fake<GeneratedStatus>(seed = 123))
         assertTrue(fake<GeneratedStatus>(seed = 123) in GeneratedStatus.entries)
     }
+
+    @Test
+    fun `compiler plugin registers generated metadata for sealed classes`() {
+        val message = fake<GeneratedMessage>(seed = 123)
+
+        assertEquals(message, fake<GeneratedMessage>(seed = 123))
+        assertTrue(message is GeneratedTextMessage || message is GeneratedImageMessage || message is GeneratedLoadingMessage)
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for sealed interfaces`() {
+        val event = fake<GeneratedEvent>(seed = 123)
+
+        assertEquals(event, fake<GeneratedEvent>(seed = 123))
+        assertTrue(event is GeneratedCreatedEvent || event is GeneratedDeletedEvent)
+    }
+
+    @Test
+    fun `compiler plugin flattens nested sealed metadata leaves`() {
+        val notification = fake<GeneratedNotification>(seed = 123)
+
+        assertEquals(notification, fake<GeneratedNotification>(seed = 123))
+        assertTrue(notification is GeneratedEmailNotification || notification is GeneratedIdleNotification)
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for singleton objects`() {
+        assertEquals(GeneratedLoadingMessage, fake<GeneratedLoadingMessage>(seed = 123))
+    }
 }
 
 /**
@@ -176,6 +205,86 @@ private enum class GeneratedStatus {
      */
     DELETED,
 }
+
+/**
+ * Smoke-test sealed type that depends on compiler-generated metadata.
+ */
+private sealed class GeneratedMessage
+
+/**
+ * Smoke-test sealed subtype containing text.
+ */
+private data class GeneratedTextMessage(
+    /**
+     * Generated text.
+     */
+    val text: String,
+) : GeneratedMessage()
+
+/**
+ * Smoke-test sealed subtype containing a URL.
+ */
+private data class GeneratedImageMessage(
+    /**
+     * Generated image URL.
+     */
+    val url: String,
+) : GeneratedMessage()
+
+/**
+ * Smoke-test sealed singleton subtype.
+ */
+private data object GeneratedLoadingMessage : GeneratedMessage()
+
+/**
+ * Smoke-test sealed interface that depends on compiler-generated metadata.
+ */
+private sealed interface GeneratedEvent
+
+/**
+ * Smoke-test sealed interface subtype for creation.
+ */
+private data class GeneratedCreatedEvent(
+    /**
+     * Generated creation identifier.
+     */
+    val id: String,
+) : GeneratedEvent
+
+/**
+ * Smoke-test sealed interface subtype for deletion.
+ */
+private data class GeneratedDeletedEvent(
+    /**
+     * Generated deletion identifier.
+     */
+    val id: String,
+) : GeneratedEvent
+
+/**
+ * Smoke-test nested sealed interface root.
+ */
+private sealed interface GeneratedNotification
+
+/**
+ * Smoke-test nested sealed interface branch.
+ */
+private sealed interface GeneratedSystemNotification : GeneratedNotification
+
+/**
+ * Smoke-test nested sealed data leaf.
+ */
+private data class GeneratedEmailNotification(
+    /**
+     * Generated email subject.
+     */
+    val subject: String,
+) : GeneratedSystemNotification
+
+/**
+ * Smoke-test nested sealed singleton leaf.
+ */
+private data object GeneratedIdleNotification : GeneratedSystemNotification
 
 /**
  * Counter used to prove dynamic defaults are evaluated at construction time.

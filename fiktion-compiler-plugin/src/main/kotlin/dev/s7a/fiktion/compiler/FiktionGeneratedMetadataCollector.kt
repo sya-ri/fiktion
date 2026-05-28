@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.compiler
 
 import org.jetbrains.kotlin.descriptors.ClassKind
+import org.jetbrains.kotlin.descriptors.Modality
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
@@ -48,11 +49,26 @@ internal class FiktionGeneratedMetadataCollector {
         val className = fqNameWhenAvailable?.asString().orEmpty()
         if (className.isBlank()) return null
 
+        if (modality == Modality.SEALED) {
+            return FiktionGeneratedSealedMetadataCandidate(
+                irClass = this,
+                className = className,
+                subtypes = concreteSealedSubtypes(),
+            )
+        }
+
         if (kind == ClassKind.ENUM_CLASS) {
             return FiktionGeneratedEnumMetadataCandidate(
                 irClass = this,
                 className = className,
                 entries = declarations.filterIsInstance<IrEnumEntry>(),
+            )
+        }
+
+        if (kind == ClassKind.OBJECT) {
+            return FiktionGeneratedSingletonMetadataCandidate(
+                irClass = this,
+                className = className,
             )
         }
 
@@ -88,4 +104,18 @@ internal class FiktionGeneratedMetadataCollector {
             )
         }
     }
+
+    /**
+     * Returns concrete sealed subtype leaves for this class.
+     */
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrClass.concreteSealedSubtypes(): List<IrClass> =
+        sealedSubclasses.flatMap { symbol ->
+            val subtype = symbol.owner
+            if (subtype.modality == Modality.SEALED) {
+                subtype.concreteSealedSubtypes()
+            } else {
+                listOf(subtype)
+            }
+        }
 }
