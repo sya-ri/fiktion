@@ -2,6 +2,7 @@ import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.dokka)
     alias(libs.plugins.gradle.plugin.publish)
 }
 

@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlinter) apply false
     alias(libs.plugins.detekt) apply false
-    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.dokka)
     alias(libs.plugins.dokka.javadoc) apply false
     alias(libs.plugins.maven.publish) apply false
     alias(libs.plugins.gradle.plugin.publish) apply false
@@ -13,6 +13,13 @@ plugins {
 
 group = "dev.s7a"
 version = "0.1.0"
+
+dependencies {
+    dokka(project(":fiktion-addon-java"))
+    dokka(project(":fiktion-compiler-plugin"))
+    dokka(project(":fiktion-core"))
+    dokka(project(":fiktion-gradle-plugin"))
+}
 
 subprojects {
     group = rootProject.group
