@@ -39,6 +39,18 @@ internal fun generateValue(
         }
 
         if (rule.automaticallyGenerates) {
+            rule.autoCollectionElementType?.let { elementType ->
+                return generateAutomaticCollection(
+                    request = request,
+                    config = config,
+                    seed = contextSeed,
+                    depth = depth,
+                    context = context,
+                    elementType = elementType,
+                    sizeRange = rule.autoCollectionSizeRange,
+                )
+            }
+
             return generateAutomaticValue(
                 request = request,
                 config = config,

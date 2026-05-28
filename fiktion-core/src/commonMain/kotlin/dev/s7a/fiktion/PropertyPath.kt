@@ -1,6 +1,7 @@
 package dev.s7a.fiktion
 
 import kotlin.reflect.KProperty1
+import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
 /**
@@ -16,6 +17,11 @@ public class PropertyPath<Root, out Value>
          * Properties that make up this path.
          */
         public val properties: List<KProperty1<*, *>>,
+        /**
+         * Type reached by this path.
+         */
+        @PublishedApi
+        internal val valueType: KType,
         /**
          * Typed rule segments for matching this path.
          */
@@ -33,6 +39,7 @@ public inline operator fun <reified Root, reified Intermediate : Any, reified Va
 ): PropertyPath<Root, Value> =
     PropertyPath(
         properties = listOf(this, next),
+        valueType = typeOf<Value>(),
         segments =
             listOf(
                 PathRuleSegment(
@@ -58,6 +65,7 @@ public inline operator fun <Root, reified Intermediate : Any, reified Value> Pro
 ): PropertyPath<Root, Value> =
     PropertyPath(
         properties = properties + next,
+        valueType = typeOf<Value>(),
         segments =
             segments +
                 PathRuleSegment(
@@ -66,3 +74,10 @@ public inline operator fun <Root, reified Intermediate : Any, reified Value> Pro
                     valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
                 ),
     )
+
+/**
+ * Returns the collection element type for this property path.
+ */
+internal fun PropertyPath<*, *>.collectionElementType(): KType =
+    valueType.arguments.firstOrNull()?.type
+        ?: throw IllegalArgumentException("Cannot infer collection element type for property path.")

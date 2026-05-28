@@ -1,6 +1,9 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.runtime.Generator
+import kotlin.jvm.JvmName
+import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 
 /**
  * Target selected by a rule declaration.
@@ -50,6 +53,24 @@ public infix fun <T> RuleTarget<T>.generatesOneOf(values: Iterable<T>): Generati
  * Uses Fiktion's automatic generation for this rule target.
  */
 public fun <T> RuleTarget<T>.autoGenerates(): GenerationSpec<T> = (this as DefaultRuleTarget<T>).autoGenerates()
+
+/**
+ * Uses Fiktion's automatic generation for each element of this collection rule target.
+ */
+@JvmName("autoGeneratesCollection")
+public inline fun <reified Element, reified CollectionType : Collection<Element>> RuleTarget<CollectionType>.autoGenerates():
+    CollectionGenerationSpec<Element, CollectionType> =
+    autoGeneratesCollection(target = this, elementType = typeOf<Element>())
+
+/**
+ * Registers automatic collection generation without exposing the internal target implementation to inline code.
+ */
+@PublishedApi
+internal fun <Element, CollectionType : Collection<Element>> autoGeneratesCollection(
+    target: RuleTarget<CollectionType>,
+    elementType: KType,
+): CollectionGenerationSpec<Element, CollectionType> =
+    (target as DefaultRuleTarget<CollectionType>).autoGeneratesCollection(elementType = elementType)
 
 /**
  * Generates each element for this collection rule target by invoking [generator].

@@ -1,11 +1,11 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.runtime.FakeContext
+import kotlin.reflect.KType
 
 /**
- * Mutable collection generation configuration.
+ * Mutable collection generation configuration that automatically generates each element.
  */
-internal class DefaultCollectionGenerationSpec<Element, CollectionType : Collection<Element>>(
+internal class DefaultAutoCollectionGenerationSpec<Element, CollectionType : Collection<Element>>(
     /**
      * Stable key used for replacement within the same layer.
      */
@@ -15,41 +15,40 @@ internal class DefaultCollectionGenerationSpec<Element, CollectionType : Collect
      */
     override val matcher: RuleMatcher,
     /**
-     * Element generator used for each generated collection element.
+     * Type generated for each collection element.
      */
-    private val elementGenerator: FakeContext.() -> Element,
+    override val autoCollectionElementType: KType,
     /**
      * Generated collection size range.
      */
-    var sizeRange: IntRange = DEFAULT_COLLECTION_SIZE_RANGE,
+    override var autoCollectionSizeRange: IntRange = DEFAULT_COLLECTION_SIZE_RANGE,
 ) : DefaultGenerationSpec<CollectionType>(
         key = key,
         matcher = matcher,
+        automaticallyGenerates = true,
+        autoCollectionElementType = autoCollectionElementType,
+        autoCollectionSizeRange = autoCollectionSizeRange,
     ),
     CollectionGenerationSpec<Element, CollectionType> {
-    override val generator: FakeContext.() -> CollectionType = {
-        generateCollection(sizeRange = sizeRange, elementGenerator = elementGenerator)
-    }
-
     override fun withSize(size: Int): CollectionGenerationSpec<Element, CollectionType> {
         require(size >= 0) { "Collection size must be 0 or greater, but was $size." }
-        sizeRange = size..size
+        autoCollectionSizeRange = size..size
         return this
     }
 
     override fun withSize(range: IntRange): CollectionGenerationSpec<Element, CollectionType> {
         require(!range.isEmpty()) { "Collection size range must not be empty." }
         require(range.first >= 0) { "Collection size range must start at 0 or greater, but was $range." }
-        sizeRange = range
+        autoCollectionSizeRange = range
         return this
     }
 
     override fun snapshot(precedence: RulePrecedence): DefaultGenerationSpec<CollectionType> =
-        DefaultCollectionGenerationSpec<Element, CollectionType>(
+        DefaultAutoCollectionGenerationSpec<Element, CollectionType>(
             key = key,
             matcher = matcher,
-            elementGenerator = elementGenerator,
-            sizeRange = sizeRange,
+            autoCollectionElementType = autoCollectionElementType,
+            autoCollectionSizeRange = autoCollectionSizeRange,
         ).also { spec ->
             spec.seed = seed
             spec.nullProbability = nullProbability
@@ -58,11 +57,18 @@ internal class DefaultCollectionGenerationSpec<Element, CollectionType : Collect
             DefaultGenerationSpec(
                 key = spec.key,
                 matcher = spec.matcher,
-                generator = spec.generator,
                 seed = spec.seed,
                 nullProbability = spec.nullProbability,
                 defaultProbability = spec.defaultProbability,
+                automaticallyGenerates = spec.automaticallyGenerates,
+                autoCollectionElementType = spec.autoCollectionElementType,
+                autoCollectionSizeRange = spec.autoCollectionSizeRange,
                 precedence = precedence,
             )
         }
 }
+
+/**
+ * Default generated collection size range.
+ */
+internal val DEFAULT_COLLECTION_SIZE_RANGE: IntRange = 1..3

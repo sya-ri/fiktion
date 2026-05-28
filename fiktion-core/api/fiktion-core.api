@@ -19,6 +19,7 @@ public final class dev/s7a/fiktion/FakeSpec {
 	public fun <init> ()V
 	public final fun autoGenerates (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun autoGenerates (Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun autoGeneratesCollectionPath (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesEach (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/CollectionGenerationSpec;
@@ -338,9 +339,10 @@ public final class dev/s7a/fiktion/ProbabilityKt {
 }
 
 public final class dev/s7a/fiktion/PropertyPath {
-	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public fun <init> (Ljava/util/List;Lkotlin/reflect/KType;Ljava/util/List;)V
 	public final fun getProperties ()Ljava/util/List;
 	public final fun getSegments ()Ljava/util/List;
+	public final fun getValueType ()Lkotlin/reflect/KType;
 }
 
 public abstract interface class dev/s7a/fiktion/RuleNameTarget {
@@ -352,6 +354,7 @@ public abstract interface class dev/s7a/fiktion/RuleTarget {
 
 public final class dev/s7a/fiktion/RuleTargetKt {
 	public static final fun autoGenerates (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun autoGeneratesCollection (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesBy (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesEach (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/CollectionGenerationSpec;

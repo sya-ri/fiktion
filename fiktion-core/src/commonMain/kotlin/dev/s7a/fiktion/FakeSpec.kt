@@ -3,6 +3,7 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.runtime.Generator
+import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -120,6 +121,15 @@ public class FakeSpec<Root> {
     public fun <Value> KProperty1<Root, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
 
     /**
+     * Generates this collection property by automatically generating each element.
+     */
+    @JvmName("autoGeneratesCollectionProperty")
+    @Suppress("DEPRECATION_ERROR")
+    public inline fun <reified Element, reified CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.autoGenerates():
+        CollectionGenerationSpec<Element, CollectionType> =
+        property(this).autoGenerates()
+
+    /**
      * Generates each element for this collection property by invoking [generator].
      */
     @Suppress("DEPRECATION_ERROR")
@@ -185,6 +195,14 @@ public class FakeSpec<Root> {
      * Generates this nested property path using Fiktion's automatic generation.
      */
     public fun <Value> PropertyPath<Root, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
+
+    /**
+     * Generates this nested collection property path by automatically generating each element.
+     */
+    @JvmName("autoGeneratesCollectionPath")
+    public fun <Element, CollectionType : Collection<Element>> PropertyPath<Root, CollectionType>.autoGenerates():
+        CollectionGenerationSpec<Element, CollectionType> =
+        autoGeneratesCollection(target = property(this), elementType = collectionElementType())
 
     /**
      * Generates each element for this nested collection property path by invoking [generator].

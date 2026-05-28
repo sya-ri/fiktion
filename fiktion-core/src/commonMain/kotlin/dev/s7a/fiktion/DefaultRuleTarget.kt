@@ -1,6 +1,7 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.runtime.FakeContext
+import kotlin.reflect.KType
 
 /**
  * Default mutable rule target implementation.
@@ -33,6 +34,22 @@ internal class DefaultRuleTarget<T>(
      */
     fun autoGenerates(): DefaultGenerationSpec<T> {
         val spec = DefaultGenerationSpec<T>(key = key, matcher = matcher, automaticallyGenerates = true)
+        config.add(spec)
+        return spec
+    }
+
+    /**
+     * Registers automatic collection generation for this target.
+     */
+    fun <Element, CollectionType : Collection<Element>> autoGeneratesCollection(
+        elementType: KType,
+    ): DefaultAutoCollectionGenerationSpec<Element, CollectionType> {
+        val spec =
+            DefaultAutoCollectionGenerationSpec<Element, CollectionType>(
+                key = key,
+                matcher = matcher,
+                autoCollectionElementType = elementType,
+            )
         config.add(spec)
         return spec
     }
