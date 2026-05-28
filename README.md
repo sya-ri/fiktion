@@ -241,11 +241,11 @@ property<User, String>("id") generates "user-1"
 name<String>("id") generates "shared-id"
 name("email") generatesBy { "test-${random.nextInt()}@example.test" }
 property(User::profile / Profile::nickname) generates "example"
+User::id generates "user-1"
 ```
 
-Bare property-reference rules such as `User::id generates "user-1"` are intentionally unavailable in global and isolated
-configuration scopes because Kotlin common code cannot recover the owner and value type from the reference alone. Use
-`property<User, String>("id")` there.
+Property references such as `User::id generates "user-1"` are the concise form for owner-specific property rules.
+`property<User, String>("id")` is the equivalent explicit form when the owner and value type should be spelled out.
 
 ## Compiler Plugin
 

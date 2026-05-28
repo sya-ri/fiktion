@@ -140,7 +140,7 @@ internal class FiktionGeneratedMetadataRegistrar(
             pluginContext.irFactory.addFunction(file) {
                 name = Name.identifier(FIKTION_GENERATED_REGISTRAR_NAME)
                 origin = IrDeclarationOrigin.DEFINED
-                visibility = DescriptorVisibilities.PRIVATE
+                visibility = DescriptorVisibilities.INTERNAL
                 returnType = pluginContext.irBuiltIns.unitType
             }
         val builder = DeclarationIrBuilder(pluginContext, function.symbol)
