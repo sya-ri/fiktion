@@ -40,17 +40,4 @@ public class FiktionGradlePlugin :
      */
     private fun KotlinCompilation<*>.fiktionExtension(): FiktionExtension =
         target.project.extensions.getByType(FiktionExtension::class.java)
-
-    /**
-     * Returns whether Fiktion should be enabled for [sourceSetName].
-     */
-    private fun FiktionExtension.isEnabledFor(sourceSetName: String): Boolean {
-        sourceSets
-            .findByName(sourceSetName)
-            ?.enabled
-            ?.orNull
-            ?.let { enabled -> return enabled }
-        if (enabled.getOrElse(false)) return true
-        return testEnabled.getOrElse(true) && sourceSetName.endsWith("Test")
-    }
 }

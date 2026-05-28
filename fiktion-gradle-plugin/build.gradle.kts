@@ -1,3 +1,5 @@
+import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.java.gradle.plugin)
@@ -5,10 +7,16 @@ plugins {
 
 dependencies {
     compileOnly(kotlin("gradle-plugin-api"))
+    testImplementation(kotlin("test"))
+    testImplementation(gradleTestKit())
 }
 
 kotlin {
     jvmToolchain(25)
+}
+
+tasks.named<PluginUnderTestMetadata>("pluginUnderTestMetadata") {
+    pluginClasspath.from(configurations.compileClasspath)
 }
 
 gradlePlugin {
