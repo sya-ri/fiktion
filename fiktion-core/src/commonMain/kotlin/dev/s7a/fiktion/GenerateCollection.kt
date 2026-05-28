@@ -66,7 +66,7 @@ internal fun generateAutomaticCollection(
  */
 private fun String.isSetTypeId(): Boolean =
     startsWith("kotlin.collections.Set<") ||
-    startsWith("kotlin.collections.MutableSet<") ||
+        startsWith("kotlin.collections.MutableSet<") ||
         startsWith("java.util.Set<") ||
         startsWith("java.util.MutableSet<") ||
         startsWith("Set<") ||

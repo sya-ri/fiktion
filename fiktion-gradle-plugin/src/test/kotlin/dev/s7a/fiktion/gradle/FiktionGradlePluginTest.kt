@@ -68,12 +68,14 @@ class FiktionGradlePluginTest {
         directory.resolve("settings.gradle.kts").writeText("""rootProject.name = "fiktion-test"""")
         directory.resolve("build.gradle.kts").writeText(
             """
+            import dev.s7a.fiktion.gradle.FiktionExtension
+
             $buildScript
 
             fun registerPrintExtensionTask() {
                 tasks.register("printFiktionExtension") {
                     doLast {
-                        val extension = project.extensions.getByType(dev.s7a.fiktion.gradle.FiktionExtension::class.java)
+                        val extension = project.extensions.getByType(FiktionExtension::class.java)
                         println("enabled=${'$'}{extension.enabled.get()}")
                         println("testEnabled=${'$'}{extension.testEnabled.get()}")
                         extension.sourceSets.forEach { sourceSet ->

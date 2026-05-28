@@ -1,10 +1,11 @@
-@file:OptIn(kotlin.time.ExperimentalTime::class)
+@file:OptIn(ExperimentalTime::class)
 
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
 private const val DEFAULT_MAX_DURATION_MILLIS = 3_153_600_000_000L

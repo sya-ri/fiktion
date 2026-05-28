@@ -49,7 +49,9 @@ internal fun generateContainer(
             )
         }
 
-        else -> null
+        else -> {
+            null
+        }
     }
 
 /**

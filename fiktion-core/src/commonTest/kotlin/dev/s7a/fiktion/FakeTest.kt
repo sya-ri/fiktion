@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalUnsignedTypes::class, kotlin.time.ExperimentalTime::class, kotlin.uuid.ExperimentalUuidApi::class)
+@file:OptIn(ExperimentalUnsignedTypes::class, ExperimentalTime::class, ExperimentalUuidApi::class)
 
 package dev.s7a.fiktion
 
@@ -11,7 +11,9 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class FakeTest {

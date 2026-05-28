@@ -1,4 +1,4 @@
-@file:OptIn(kotlin.uuid.ExperimentalUuidApi::class)
+@file:OptIn(ExperimentalUuidApi::class)
 
 package dev.s7a.fiktion.generators
 
@@ -7,6 +7,7 @@ import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generatesBy
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class UuidTest {

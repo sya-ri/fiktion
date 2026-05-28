@@ -1,4 +1,4 @@
-@file:OptIn(dev.s7a.fiktion.ExperimentalFiktionApi::class)
+@file:OptIn(ExperimentalFiktionApi::class)
 
 package dev.s7a.fiktion
 
@@ -8,8 +8,7 @@ import kotlin.random.Random
  * Creates a typed array from compiler-generated array metadata.
  */
 @ExperimentalFiktionApi
-public inline fun <reified T> generatedArray(elements: List<Any?>): Array<T> =
-    Array(elements.size) { index -> elements[index] as T }
+public inline fun <reified T> generatedArray(elements: List<Any?>): Array<T> = Array(elements.size) { index -> elements[index] as T }
 
 /**
  * Generates an array from registered construction [metadata].

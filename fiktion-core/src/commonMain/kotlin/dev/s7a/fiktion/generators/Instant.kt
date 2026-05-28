@@ -1,8 +1,9 @@
-@file:OptIn(kotlin.time.ExperimentalTime::class)
+@file:OptIn(ExperimentalTime::class)
 
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 private const val DEFAULT_MIN_EPOCH_SECOND = 946_684_800L

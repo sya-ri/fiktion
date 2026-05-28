@@ -1,4 +1,4 @@
-@file:OptIn(kotlin.time.ExperimentalTime::class)
+@file:OptIn(ExperimentalTime::class)
 
 package dev.s7a.fiktion.generators
 
@@ -8,6 +8,7 @@ import dev.s7a.fiktion.generatesBy
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 class DurationTest {
     @Test
