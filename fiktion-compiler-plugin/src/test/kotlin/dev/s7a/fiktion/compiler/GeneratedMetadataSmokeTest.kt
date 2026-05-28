@@ -40,6 +40,13 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin skips vararg primary constructors`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedVarargConstructorUser>(seed = 123)
+        }
+    }
+
+    @Test
     fun `compiler plugin skips abstract classes`() {
         assertFailsWith<CannotGenerateException> {
             fake<GeneratedAbstractUser>(seed = 123)
@@ -298,6 +305,16 @@ private class GeneratedRegularUserWithoutPrimaryConstructor {
         this.id = id
     }
 }
+
+/**
+ * Smoke-test regular class with a vararg primary constructor.
+ */
+private class GeneratedVarargConstructorUser(
+    /**
+     * Vararg user tags.
+     */
+    vararg val tags: String,
+)
 
 /**
  * Smoke-test abstract class that generated metadata should not target.

@@ -78,7 +78,8 @@ internal class FiktionGeneratedMetadataCollector {
         val valueClass = isValue || valueClassRepresentation != null
         val constructor = declarations.filterIsInstance<IrConstructor>().firstOrNull { constructor -> constructor.isPrimary } ?: return null
         if (constructor.isHiddenConstructor()) return null
-        val parameters = constructor.parameters.filter { parameter -> parameter.kind == IrParameterKind.Regular }
+        if (constructor.hasUnsupportedParameters()) return null
+        val parameters = constructor.parameters
         if (valueClass && parameters.size != 1) return null
         val properties =
             parameters.map { parameter ->
@@ -131,4 +132,12 @@ internal class FiktionGeneratedMetadataCollector {
      */
     private fun IrConstructor.isHiddenConstructor(): Boolean =
         visibility == DescriptorVisibilities.PRIVATE || visibility == DescriptorVisibilities.PROTECTED
+
+    /**
+     * Returns whether this constructor contains parameters generated metadata cannot call safely.
+     */
+    private fun IrConstructor.hasUnsupportedParameters(): Boolean =
+        parameters.any { parameter ->
+            parameter.kind != IrParameterKind.Regular || parameter.varargElementType != null
+        }
 }
