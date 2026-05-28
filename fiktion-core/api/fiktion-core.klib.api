@@ -52,6 +52,8 @@ sealed interface <#A: kotlin/Any?> dev.s7a.fiktion/FiktionTypeMetadata { // dev.
 
 sealed interface <#A: kotlin/Any?> dev.s7a.fiktion/RuleTarget // dev.s7a.fiktion/RuleTarget|null[0]
 
+sealed interface <#A: kotlin/Any?> dev.s7a.fiktion/TypeFamilyRuleTarget // dev.s7a.fiktion/TypeFamilyRuleTarget|null[0]
+
 sealed interface <#A: out kotlin/Any?> dev.s7a.fiktion/GenerationSpec { // dev.s7a.fiktion/GenerationSpec|null[0]
     abstract fun orDefaultAt(dev.s7a.fiktion/Probability): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/GenerationSpec.orDefaultAt|orDefaultAt(dev.s7a.fiktion.Probability){}[0]
     abstract fun orNullAt(dev.s7a.fiktion/Probability): dev.s7a.fiktion/GenerationSpec<#A?> // dev.s7a.fiktion/GenerationSpec.orNullAt|orNullAt(dev.s7a.fiktion.Probability){}[0]
@@ -345,6 +347,15 @@ final class dev.s7a.fiktion/PathRuleSegment { // dev.s7a.fiktion/PathRuleSegment
     final fun toString(): kotlin/String // dev.s7a.fiktion/PathRuleSegment.toString|toString(){}[0]
 }
 
+final class dev.s7a.fiktion/TypeFamilyGenerationContext { // dev.s7a.fiktion/TypeFamilyGenerationContext|null[0]
+    final val context // dev.s7a.fiktion/TypeFamilyGenerationContext.context|{}context[0]
+        final fun <get-context>(): dev.s7a.fiktion/FakeContext // dev.s7a.fiktion/TypeFamilyGenerationContext.context.<get-context>|<get-context>(){}[0]
+
+    final fun argumentType(kotlin/Int): kotlin.reflect/KType // dev.s7a.fiktion/TypeFamilyGenerationContext.argumentType|argumentType(kotlin.Int){}[0]
+    final fun fake(kotlin/Int): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fake|fake(kotlin.Int){}[0]
+    final fun fake(kotlin/Int, kotlin/Int): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fake|fake(kotlin.Int;kotlin.Int){}[0]
+}
+
 final value class dev.s7a.fiktion/Probability { // dev.s7a.fiktion/Probability|null[0]
     constructor <init>(kotlin/Double) // dev.s7a.fiktion/Probability.<init>|<init>(kotlin.Double){}[0]
 
@@ -384,6 +395,7 @@ sealed class dev.s7a.fiktion/FiktionRuleBuilder { // dev.s7a.fiktion/FiktionRule
     final fun property(kotlin.reflect/KType, kotlin.text/Regex, kotlin.reflect/KType): dev.s7a.fiktion/RuleTarget<*> // dev.s7a.fiktion/FiktionRuleBuilder.property|property(kotlin.reflect.KType;kotlin.text.Regex;kotlin.reflect.KType){}[0]
     final fun property(kotlin.reflect/KType, kotlin/String, kotlin.reflect/KType): dev.s7a.fiktion/RuleTarget<*> // dev.s7a.fiktion/FiktionRuleBuilder.property|property(kotlin.reflect.KType;kotlin.String;kotlin.reflect.KType){}[0]
     final fun type(kotlin.reflect/KType): dev.s7a.fiktion/RuleTarget<*> // dev.s7a.fiktion/FiktionRuleBuilder.type|type(kotlin.reflect.KType){}[0]
+    final fun typeFamily(kotlin.reflect/KType): dev.s7a.fiktion/TypeFamilyRuleTarget<*> // dev.s7a.fiktion/FiktionRuleBuilder.typeFamily|typeFamily(kotlin.reflect.KType){}[0]
     final inline fun <#A1: reified kotlin/Any?, #B1: reified kotlin/Any?, #C1: reified kotlin.collections/Collection<#B1>> (kotlin.reflect/KProperty1<#A1, #C1>).generates(dev.s7a.fiktion/Auto): dev.s7a.fiktion/CollectionGenerationSpec<#B1, #C1> // dev.s7a.fiktion/FiktionRuleBuilder.generates|generates@kotlin.reflect.KProperty1<0:0,0:2>(dev.s7a.fiktion.Auto){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Collection<0:1>>}[0]
     final inline fun <#A1: reified kotlin/Any?, #B1: reified kotlin/Any?, #C1: reified kotlin.collections/Collection<#B1>> (kotlin.reflect/KProperty1<#A1, #C1>).generatesEach(noinline kotlin/Function1<dev.s7a.fiktion/FakeContext, #B1>): dev.s7a.fiktion/CollectionGenerationSpec<#B1, #C1> // dev.s7a.fiktion/FiktionRuleBuilder.generatesEach|generatesEach@kotlin.reflect.KProperty1<0:0,0:2>(kotlin.Function1<dev.s7a.fiktion.FakeContext,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Collection<0:1>>}[0]
     final inline fun <#A1: reified kotlin/Any?, #B1: reified kotlin/Any?, #C1: reified kotlin/Any?, #D1: reified kotlin.collections/Map<#B1, #C1>> (kotlin.reflect/KProperty1<#A1, #D1>).generates(dev.s7a.fiktion/Auto): dev.s7a.fiktion/MapGenerationSpec<#B1, #C1, #D1> // dev.s7a.fiktion/FiktionRuleBuilder.generates|generates@kotlin.reflect.KProperty1<0:0,0:3>(dev.s7a.fiktion.Auto){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.Any?>;3§<kotlin.collections.Map<0:1,0:2>>}[0]
@@ -399,6 +411,7 @@ sealed class dev.s7a.fiktion/FiktionRuleBuilder { // dev.s7a.fiktion/FiktionRule
     final inline fun <#A1: reified kotlin/Any?> name(kotlin.text/Regex, kotlin/Unit = ...): dev.s7a.fiktion/RuleTarget<#A1> // dev.s7a.fiktion/FiktionRuleBuilder.name|name(kotlin.text.Regex;kotlin.Unit){0§<kotlin.Any?>}[0]
     final inline fun <#A1: reified kotlin/Any?> name(kotlin/String, kotlin/Unit = ...): dev.s7a.fiktion/RuleTarget<#A1> // dev.s7a.fiktion/FiktionRuleBuilder.name|name(kotlin.String;kotlin.Unit){0§<kotlin.Any?>}[0]
     final inline fun <#A1: reified kotlin/Any?> type(): dev.s7a.fiktion/RuleTarget<#A1> // dev.s7a.fiktion/FiktionRuleBuilder.type|type(){0§<kotlin.Any?>}[0]
+    final inline fun <#A1: reified kotlin/Any?> typeFamily(): dev.s7a.fiktion/TypeFamilyRuleTarget<#A1> // dev.s7a.fiktion/FiktionRuleBuilder.typeFamily|typeFamily(){0§<kotlin.Any?>}[0]
 }
 
 final object dev.s7a.fiktion/Auto { // dev.s7a.fiktion/Auto|null[0]
@@ -542,6 +555,7 @@ final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/gen
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/generates(dev.s7a.fiktion/Auto): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generates|generates@dev.s7a.fiktion.RuleTarget<0:0>(dev.s7a.fiktion.Auto){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/generatesBy(kotlin/Function1<dev.s7a.fiktion/FakeContext, #A>): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generatesBy|generatesBy@dev.s7a.fiktion.RuleTarget<0:0>(kotlin.Function1<dev.s7a.fiktion.FakeContext,0:0>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/generatesOneOf(kotlin.collections/Iterable<#A>): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generatesOneOf|generatesOneOf@dev.s7a.fiktion.RuleTarget<0:0>(kotlin.collections.Iterable<0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (dev.s7a.fiktion/TypeFamilyRuleTarget<#A>).dev.s7a.fiktion/generatesBy(kotlin/Function1<dev.s7a.fiktion/TypeFamilyGenerationContext, #A>): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generatesBy|generatesBy@dev.s7a.fiktion.TypeFamilyRuleTarget<0:0>(kotlin.Function1<dev.s7a.fiktion.TypeFamilyGenerationContext,0:0>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> dev.s7a.fiktion/fake(kotlin.reflect/KType, kotlin/Long? = ..., kotlin/Function1<dev.s7a.fiktion/FakeSpec<#A>, kotlin/Unit> = ...): #A // dev.s7a.fiktion/fake|fake(kotlin.reflect.KType;kotlin.Long?;kotlin.Function1<dev.s7a.fiktion.FakeSpec<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
 final fun dev.s7a.fiktion/generatedObjectArgumentUsesDefault(kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>, kotlin/Int): kotlin/Boolean // dev.s7a.fiktion/generatedObjectArgumentUsesDefault|generatedObjectArgumentUsesDefault(kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>;kotlin.Int){}[0]
 final fun dev.s7a.fiktion/generatedObjectArgumentValue(kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>, kotlin/Int): kotlin/Any? // dev.s7a.fiktion/generatedObjectArgumentValue|generatedObjectArgumentValue(kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>;kotlin.Int){}[0]

@@ -241,6 +241,7 @@ public abstract class dev/s7a/fiktion/FiktionRuleBuilder {
 	public final fun property (Lkotlin/reflect/KType;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/RuleTarget;
 	public final fun property (Lkotlin/reflect/KType;Lkotlin/text/Regex;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/RuleTarget;
 	public final fun type (Lkotlin/reflect/KType;)Ldev/s7a/fiktion/RuleTarget;
+	public final fun typeFamily (Lkotlin/reflect/KType;)Ldev/s7a/fiktion/TypeFamilyRuleTarget;
 }
 
 public final class dev/s7a/fiktion/FiktionSealedMetadata : dev/s7a/fiktion/FiktionTypeMetadata {
@@ -402,6 +403,20 @@ public final class dev/s7a/fiktion/RuleTargetKt {
 	public static final fun generatesShortIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesUByteIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/UIntRange;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesUShortIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/UIntRange;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/TypeFamilyGenerationContext {
+	public final fun argumentType (I)Lkotlin/reflect/KType;
+	public final fun fake (I)Ljava/lang/Object;
+	public final fun fake (II)Ljava/lang/Object;
+	public final fun getContext ()Ldev/s7a/fiktion/FakeContext;
+}
+
+public abstract interface class dev/s7a/fiktion/TypeFamilyRuleTarget {
+}
+
+public final class dev/s7a/fiktion/TypeFamilyRuleTargetKt {
+	public static final fun generatesBy (Ldev/s7a/fiktion/TypeFamilyRuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 }
 
 public final class dev/s7a/fiktion/generators/BooleanArrayKt {

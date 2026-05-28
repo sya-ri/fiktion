@@ -24,6 +24,16 @@ public sealed class FiktionRuleBuilder protected constructor() {
     public fun type(type: KType): RuleTarget<*> = target<Any?>(RuleKey.Type(type), RuleMatcher.Type(type))
 
     /**
+     * Targets every generated value whose type belongs to [type]'s type family.
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [type] and
+     * the generator value type consistent.
+     */
+    @Deprecated("Use the reified typeFamily<T>() overload.", level = DeprecationLevel.ERROR)
+    public fun typeFamily(type: KType): TypeFamilyRuleTarget<*> =
+        typeFamilyTarget<Any?>(RuleKey.TypeFamily(type), RuleMatcher.TypeFamily(type))
+
+    /**
      * Targets generated values of [value] whose owner is [owner], regardless of property name.
      *
      * This low-level overload is intended for callers that already carry [KType] values. The caller must keep [value]
@@ -356,6 +366,12 @@ public sealed class FiktionRuleBuilder protected constructor() {
     public inline fun <reified T> type(): RuleTarget<T> = type(typeOf<T>()) as RuleTarget<T>
 
     /**
+     * Targets every generated value whose type belongs to [T]'s type family.
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    public inline fun <reified T> typeFamily(): TypeFamilyRuleTarget<T> = typeFamily(typeOf<T>()) as TypeFamilyRuleTarget<T>
+
+    /**
      * Targets generated values of [Value] whose owner is [Owner], regardless of property name.
      */
     @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
@@ -407,4 +423,12 @@ public sealed class FiktionRuleBuilder protected constructor() {
         key: RuleKey,
         matcher: RuleMatcher,
     ): RuleTarget<Value> = DefaultRuleTarget(config, key, matcher)
+
+    /**
+     * Creates a type-family rule target using [key] for replacement and [matcher] for lookup.
+     */
+    private fun <Value> typeFamilyTarget(
+        key: RuleKey,
+        matcher: RuleMatcher,
+    ): TypeFamilyRuleTarget<Value> = DefaultTypeFamilyRuleTarget(config, key, matcher)
 }

@@ -5,6 +5,11 @@ package dev.s7a.fiktion
  */
 internal enum class RuleSpecificity {
     /**
+     * Matches by generated value type classifier.
+     */
+    TYPE_FAMILY,
+
+    /**
      * Matches only by generated value type.
      */
     TYPE,

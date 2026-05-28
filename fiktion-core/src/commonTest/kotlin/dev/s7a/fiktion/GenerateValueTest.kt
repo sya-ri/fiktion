@@ -59,6 +59,32 @@ class GenerateValueTest {
     }
 
     @Test
+    fun `generateValue uses type family rule for requested type arguments`() {
+        val fiktion =
+            Fiktion {
+                type<Int>() generates 42
+                typeFamily<GenericBox<*>>() generatesBy {
+                    GenericBox(fake(0))
+                }
+            }
+
+        assertEquals(GenericBox(42), fiktion.fake<GenericBox<Int>>(seed = 123))
+    }
+
+    @Test
+    fun `generateValue prefers exact type rule over type family rule`() {
+        val fiktion =
+            Fiktion {
+                typeFamily<GenericBox<*>>() generatesBy {
+                    GenericBox(fake(0))
+                }
+                type<GenericBox<Int>>() generates GenericBox(42)
+            }
+
+        assertEquals(GenericBox(42), fiktion.fake<GenericBox<Int>>(seed = 123))
+    }
+
+    @Test
     fun `generateValue prefers a higher precedence layer before specificity`() {
         val base =
             FiktionConfig(
@@ -304,3 +330,7 @@ class GenerateValueTest {
             ) == null
         }
 }
+
+private data class GenericBox<T>(
+    val value: T,
+)

@@ -18,6 +18,24 @@ internal sealed interface RuleMatcher {
     fun matches(request: GenerationRequest): Boolean
 
     /**
+     * Matches by generated type classifier.
+     */
+    data class TypeFamily(
+        /**
+         * Matched generated type family.
+         */
+        val type: KType,
+    ) : RuleMatcher {
+        override val specificity: RuleSpecificity = RuleSpecificity.TYPE_FAMILY
+
+        /**
+         * Returns true when the requested type belongs to the same type family as [type].
+         */
+        override fun matches(request: GenerationRequest): Boolean =
+            request.type.classifier == type.classifier && request.type.isMarkedNullable == type.isMarkedNullable
+    }
+
+    /**
      * Matches by generated type.
      */
     data class Type(

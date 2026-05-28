@@ -66,6 +66,16 @@ internal fun generateValue(
             )
         }
 
+        if (rule is DefaultTypeFamilyGenerationSpec<*>) {
+            return rule.generate(
+                TypeFamilyGenerationContext(
+                    context = context,
+                    type = request.type,
+                    config = config,
+                ),
+            )
+        }
+
         return rule.generator(context)
     }
 

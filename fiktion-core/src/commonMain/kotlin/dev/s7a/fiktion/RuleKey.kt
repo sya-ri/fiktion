@@ -7,6 +7,16 @@ import kotlin.reflect.KType
  */
 internal sealed interface RuleKey {
     /**
+     * Key for a type-family rule.
+     */
+    data class TypeFamily(
+        /**
+         * Matched generated type family.
+         */
+        val type: KType,
+    ) : RuleKey
+
+    /**
      * Key for a type-wide rule.
      */
     data class Type(
