@@ -26,7 +26,7 @@ gradlePlugin {
         create("fiktion") {
             id = "dev.s7a.fiktion"
             displayName = "Fiktion Gradle Plugin"
-            description = "Wires the Fiktion Kotlin compiler plugin into Kotlin test source sets."
+            description = "Kotlin fake data for tests that should read like intent, not fixture setup."
             tags.set(listOf("kotlin", "testing", "fake-data"))
             implementationClass = "dev.s7a.fiktion.gradle.FiktionGradlePlugin"
         }

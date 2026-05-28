@@ -30,7 +30,7 @@ mavenPublishing {
     )
     pom {
         name.set("fiktion-addon-java")
-        description.set("Fiktion add-on with generation rules for Java standard library types.")
+        description.set("Kotlin fake data for tests that should read like intent, not fixture setup.")
         inceptionYear.set("2026")
         url.set("https://github.com/sya-ri/fiktion")
         licenses {

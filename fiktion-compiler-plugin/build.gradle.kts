@@ -44,7 +44,7 @@ mavenPublishing {
     )
     pom {
         name.set("fiktion-compiler-plugin")
-        description.set("Kotlin compiler plugin that generates Fiktion metadata.")
+        description.set("Kotlin fake data for tests that should read like intent, not fixture setup.")
         inceptionYear.set("2026")
         url.set("https://github.com/sya-ri/fiktion")
         licenses {
