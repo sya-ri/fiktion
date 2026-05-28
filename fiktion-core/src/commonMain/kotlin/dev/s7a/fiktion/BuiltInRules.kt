@@ -78,6 +78,7 @@ import kotlin.uuid.Uuid
 private val BUILT_IN_CONFIG: FiktionConfig by lazy {
     DefaultFiktionBuilder()
         .apply {
+            configurePlatformBuiltIns()
             configureCollection<Collection<*>> { elements ->
                 elements.toList()
             }
@@ -331,3 +332,8 @@ internal val BUILT_IN_COLLECTION_CONVERTERS: List<CollectionConverter>
  */
 internal val BUILT_IN_MAP_CONVERTERS: List<MapConverter>
     get() = BUILT_IN_CONFIG.mapConverters
+
+/**
+ * Configures built-ins that are only available on the current platform.
+ */
+internal expect fun DefaultFiktionBuilder.configurePlatformBuiltIns()
