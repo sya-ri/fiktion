@@ -2,7 +2,7 @@ import org.gradle.plugin.devel.tasks.PluginUnderTestMetadata
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.java.gradle.plugin)
+    alias(libs.plugins.gradle.plugin.publish)
 }
 
 dependencies {
@@ -20,9 +20,14 @@ tasks.named<PluginUnderTestMetadata>("pluginUnderTestMetadata") {
 }
 
 gradlePlugin {
+    website.set("https://github.com/sya-ri/fiktion")
+    vcsUrl.set("https://github.com/sya-ri/fiktion")
     plugins {
         create("fiktion") {
             id = "dev.s7a.fiktion"
+            displayName = "Fiktion Gradle Plugin"
+            description = "Wires the Fiktion Kotlin compiler plugin into Kotlin test source sets."
+            tags.set(listOf("kotlin", "testing", "fake-data"))
             implementationClass = "dev.s7a.fiktion.gradle.FiktionGradlePlugin"
         }
     }

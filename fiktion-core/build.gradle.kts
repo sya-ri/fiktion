@@ -3,8 +3,13 @@
     org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation::class,
 )
 
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
+import com.vanniktech.maven.publish.SourcesJar
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.maven.publish)
 }
 
 kotlin {
@@ -31,5 +36,39 @@ kotlin {
 
     abiValidation {
         enabled.set(true)
+    }
+}
+
+mavenPublishing {
+    publishToMavenCentral()
+    signAllPublications()
+    coordinates("dev.s7a", "fiktion-core", version.toString())
+    configure(
+        KotlinMultiplatform(
+            javadocJar = JavadocJar.Empty(),
+            sourcesJar = SourcesJar.Sources(),
+        ),
+    )
+    pom {
+        name.set("fiktion-core")
+        description.set("Kotlin Multiplatform fake data generation library for tests.")
+        inceptionYear.set("2026")
+        url.set("https://github.com/sya-ri/fiktion")
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://github.com/sya-ri/fiktion/blob/main/LICENSE")
+            }
+        }
+        developers {
+            developer {
+                id.set("sya-ri")
+                name.set("sya-ri")
+                email.set("contact@s7a.dev")
+            }
+        }
+        scm {
+            url.set("https://github.com/sya-ri/fiktion")
+        }
     }
 }

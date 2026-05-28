@@ -27,7 +27,7 @@ public class FiktionGradlePlugin :
         SubpluginArtifact(
             groupId = "dev.s7a",
             artifactId = "fiktion-compiler-plugin",
-            version = "0.1.0-SNAPSHOT",
+            version = "0.1.0",
         )
 
     override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> =

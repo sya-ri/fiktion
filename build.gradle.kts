@@ -5,10 +5,14 @@ plugins {
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlinter) apply false
     alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.dokka.javadoc) apply false
+    alias(libs.plugins.maven.publish) apply false
+    alias(libs.plugins.gradle.plugin.publish) apply false
 }
 
 group = "dev.s7a"
-version = "0.1.0-SNAPSHOT"
+version = "0.1.0"
 
 subprojects {
     group = rootProject.group
