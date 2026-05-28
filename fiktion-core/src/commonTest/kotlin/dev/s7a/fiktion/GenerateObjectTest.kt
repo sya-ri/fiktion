@@ -147,6 +147,20 @@ class GenerateObjectTest {
         assertNullDefaultProfileCount(defaultProbability = 1.0, expectedRange = 1_000..1_000)
     }
 
+    @Test
+    fun `fake replaces a nullable default value with null`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultOptionalProfile(defaultValue = Profile(nickname = "default")))
+                type<String>() generates "id"
+                val spec = property<User, Profile?>("optionalProfile") generates Profile(nickname = "generated")
+                spec orDefaultAt 0.0
+                spec orNullAt 1.0
+            }
+
+        assertEquals(User(id = "id", optionalProfile = null), fiktion.fake<User>(seed = 123))
+    }
+
     /**
      * Returns metadata for constructing [User] from generated arguments.
      */

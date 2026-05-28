@@ -7,6 +7,8 @@ import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.lower.DeclarationIrBuilder
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
+import org.jetbrains.kotlin.ir.builders.constFalse
+import org.jetbrains.kotlin.ir.builders.constTrue
 import org.jetbrains.kotlin.ir.builders.declarations.addValueParameter
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.builders.irAs
@@ -16,6 +18,7 @@ import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irCallConstructor
 import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.builders.irGetObjectValue
+import org.jetbrains.kotlin.ir.builders.irIfThenElse
 import org.jetbrains.kotlin.ir.builders.irInt
 import org.jetbrains.kotlin.ir.builders.irReturn
 import org.jetbrains.kotlin.ir.builders.irString
@@ -65,7 +68,7 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Inserts generated metadata registrations into [moduleFragment].
      */
     fun registerBeforeFakeCalls(moduleFragment: IrModuleFragment) {
-        if (candidates.none { candidate -> candidate.canGenerateInitialMetadata }) return
+        if (candidates.isEmpty()) return
         moduleFragment.transformChildrenVoid(this)
     }
 
@@ -81,7 +84,7 @@ internal class FiktionGeneratedMetadataRegistrar(
             origin = null,
             resultType = expression.type,
         ) {
-            candidates.filter { candidate -> candidate.canGenerateInitialMetadata }.forEach { candidate ->
+            candidates.forEach { candidate ->
                 val lambda = builder.constructorLambda(candidate)
                 +builder.registerGenerated(candidate, lambda.reference)
             }
@@ -138,6 +141,7 @@ internal class FiktionGeneratedMetadataRegistrar(
                 irCallConstructor(symbols.objectPropertyConstructor, emptyList()).apply {
                     setRegularArgument(0, irString(property.name))
                     setRegularArgument(1, typeOf(property.parameter.type))
+                    setRegularArgument(2, irBoolean(property.hasDefault))
                 }
             }
 
@@ -197,10 +201,78 @@ internal class FiktionGeneratedMetadataRegistrar(
         candidate: FiktionObjectMetadataCandidate,
         arguments: IrValueParameter,
     ): IrExpression =
+        constructorCall(
+            candidate = candidate,
+            arguments = arguments,
+            defaultParameterIndexes = emptySet(),
+            pendingDefaultParameterIndexes =
+                candidate.properties
+                    .mapIndexedNotNull { index, property -> index.takeIf { property.hasDefault } },
+        )
+
+    /**
+     * Returns a constructor call expression with branches for remaining defaultable parameters.
+     */
+    private fun DeclarationIrBuilder.constructorCall(
+        candidate: FiktionObjectMetadataCandidate,
+        arguments: IrValueParameter,
+        defaultParameterIndexes: Set<Int>,
+        pendingDefaultParameterIndexes: List<Int>,
+    ): IrExpression {
+        val parameterIndex =
+            pendingDefaultParameterIndexes.firstOrNull() ?: return constructorCall(
+                candidate = candidate,
+                arguments = arguments,
+                defaultParameterIndexes = defaultParameterIndexes,
+            )
+
+        val remaining = pendingDefaultParameterIndexes.drop(1)
+        return irIfThenElse(
+            type = candidate.irClass.defaultType,
+            condition = generatedArgumentUsesDefault(arguments, parameterIndex),
+            thenPart =
+                constructorCall(
+                    candidate = candidate,
+                    arguments = arguments,
+                    defaultParameterIndexes = defaultParameterIndexes + parameterIndex,
+                    pendingDefaultParameterIndexes = remaining,
+                ),
+            elsePart =
+                constructorCall(
+                    candidate = candidate,
+                    arguments = arguments,
+                    defaultParameterIndexes = defaultParameterIndexes,
+                    pendingDefaultParameterIndexes = remaining,
+                ),
+        )
+    }
+
+    /**
+     * Returns a constructor call for a resolved default argument combination.
+     */
+    private fun DeclarationIrBuilder.constructorCall(
+        candidate: FiktionObjectMetadataCandidate,
+        arguments: IrValueParameter,
+        defaultParameterIndexes: Set<Int>,
+    ): IrExpression =
         irCallConstructor(candidate.constructor.symbol, emptyList()).apply {
             candidate.properties.forEachIndexed { index, property ->
-                setRegularArgument(index, generatedArgument(arguments, index, property.parameter.type))
+                if (index !in defaultParameterIndexes) {
+                    setRegularArgument(index, generatedArgument(arguments, index, property.parameter.type))
+                }
             }
+        }
+
+    /**
+     * Returns whether generated constructor argument at [index] asks to use the Kotlin default value.
+     */
+    private fun DeclarationIrBuilder.generatedArgumentUsesDefault(
+        arguments: IrValueParameter,
+        index: Int,
+    ): IrExpression =
+        irCall(symbols.generatedObjectArgumentUsesDefault).apply {
+            setRegularArgument(0, irGet(arguments))
+            setRegularArgument(1, irInt(index))
         }
 
     /**
@@ -220,10 +292,14 @@ internal class FiktionGeneratedMetadataRegistrar(
     }
 
     /**
-     * Returns whether initial generated metadata can be emitted for this candidate.
+     * Returns a boolean constant.
      */
-    private val FiktionObjectMetadataCandidate.canGenerateInitialMetadata: Boolean
-        get() = properties.none { property -> property.hasDefault }
+    private fun DeclarationIrBuilder.irBoolean(value: Boolean): IrExpression =
+        if (value) {
+            context.constTrue(startOffset, endOffset)
+        } else {
+            context.constFalse(startOffset, endOffset)
+        }
 
     /**
      * Runtime symbol references used by the registrar.
@@ -267,6 +343,12 @@ internal class FiktionGeneratedMetadataRegistrar(
          */
         val generatedObjectArgumentValue: IrSimpleFunctionSymbol =
             pluginContext.referenceFunctions(callableId(FIKTION_PACKAGE, "generatedObjectArgumentValue")).single()
+
+        /**
+         * `generatedObjectArgumentUsesDefault` top-level function.
+         */
+        val generatedObjectArgumentUsesDefault: IrSimpleFunctionSymbol =
+            pluginContext.referenceFunctions(callableId(FIKTION_PACKAGE, "generatedObjectArgumentUsesDefault")).single()
 
         /**
          * `typeOf` top-level function.

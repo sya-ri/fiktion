@@ -238,6 +238,10 @@ public final class dev/s7a/fiktion/FiktionValueMetadata : dev/s7a/fiktion/Fiktio
 	public final fun getUnderlyingType ()Lkotlin/reflect/KType;
 }
 
+public final class dev/s7a/fiktion/GeneratedObjectArgumentUsesDefaultKt {
+	public static final fun generatedObjectArgumentUsesDefault (Ljava/util/List;I)Z
+}
+
 public final class dev/s7a/fiktion/GeneratedObjectArgumentValueKt {
 	public static final fun generatedObjectArgumentValue (Ljava/util/List;I)Ljava/lang/Object;
 }
