@@ -2,7 +2,6 @@
 
 package dev.s7a.fiktion
 
-
 /**
  * Null probability used when a nullable rule does not declare one explicitly.
  */
@@ -134,5 +133,9 @@ internal fun generateAutomaticValue(
         }
     }
 
-    return generateBuiltIn(request.type, context)
+    return generateBuiltIn(
+        type = request.type,
+        context = context,
+        config = config,
+    )
 }

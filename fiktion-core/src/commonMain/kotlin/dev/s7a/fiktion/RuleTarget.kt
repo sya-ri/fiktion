@@ -1,6 +1,17 @@
 package dev.s7a.fiktion
 
+import dev.s7a.fiktion.generators.byte
+import dev.s7a.fiktion.generators.char
+import dev.s7a.fiktion.generators.double
+import dev.s7a.fiktion.generators.float
+import dev.s7a.fiktion.generators.int
+import dev.s7a.fiktion.generators.long
 import dev.s7a.fiktion.generators.oneOf
+import dev.s7a.fiktion.generators.short
+import dev.s7a.fiktion.generators.ubyte
+import dev.s7a.fiktion.generators.uint
+import dev.s7a.fiktion.generators.ulong
+import dev.s7a.fiktion.generators.ushort
 import kotlin.jvm.JvmName
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -26,8 +37,25 @@ public infix fun <T> RuleTarget<T>.generatesBy(generator: Generator<T>): Generat
  */
 public infix fun RuleTarget<Int>.generatesIn(range: IntRange): GenerationSpec<Int> =
     generatesBy {
-        requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
-        range.random(random)
+        int(range)
+    }
+
+/**
+ * Generates byte values within [range].
+ */
+@JvmName("generatesByteIn")
+public infix fun RuleTarget<Byte>.generatesIn(range: IntRange): GenerationSpec<Byte> =
+    generatesBy {
+        byte(range)
+    }
+
+/**
+ * Generates short values within [range].
+ */
+@JvmName("generatesShortIn")
+public infix fun RuleTarget<Short>.generatesIn(range: IntRange): GenerationSpec<Short> =
+    generatesBy {
+        short(range)
     }
 
 /**
@@ -35,8 +63,67 @@ public infix fun RuleTarget<Int>.generatesIn(range: IntRange): GenerationSpec<In
  */
 public infix fun RuleTarget<Long>.generatesIn(range: LongRange): GenerationSpec<Long> =
     generatesBy {
-        requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
-        range.random(random)
+        long(range)
+    }
+
+/**
+ * Generates float values within [range].
+ */
+@JvmName("generatesFloatIn")
+public infix fun RuleTarget<Float>.generatesIn(range: ClosedFloatingPointRange<Float>): GenerationSpec<Float> =
+    generatesBy {
+        float(range)
+    }
+
+/**
+ * Generates double values within [range].
+ */
+@JvmName("generatesDoubleIn")
+public infix fun RuleTarget<Double>.generatesIn(range: ClosedFloatingPointRange<Double>): GenerationSpec<Double> =
+    generatesBy {
+        double(range)
+    }
+
+/**
+ * Generates character values within [range].
+ */
+public infix fun RuleTarget<Char>.generatesIn(range: CharRange): GenerationSpec<Char> =
+    generatesBy {
+        char(range)
+    }
+
+/**
+ * Generates unsigned byte values within [range].
+ */
+@JvmName("generatesUByteIn")
+public infix fun RuleTarget<UByte>.generatesIn(range: UIntRange): GenerationSpec<UByte> =
+    generatesBy {
+        ubyte(range)
+    }
+
+/**
+ * Generates unsigned short values within [range].
+ */
+@JvmName("generatesUShortIn")
+public infix fun RuleTarget<UShort>.generatesIn(range: UIntRange): GenerationSpec<UShort> =
+    generatesBy {
+        ushort(range)
+    }
+
+/**
+ * Generates unsigned integer values within [range].
+ */
+public infix fun RuleTarget<UInt>.generatesIn(range: UIntRange): GenerationSpec<UInt> =
+    generatesBy {
+        uint(range)
+    }
+
+/**
+ * Generates unsigned long values within [range].
+ */
+public infix fun RuleTarget<ULong>.generatesIn(range: ULongRange): GenerationSpec<ULong> =
+    generatesBy {
+        ulong(range)
     }
 
 /**

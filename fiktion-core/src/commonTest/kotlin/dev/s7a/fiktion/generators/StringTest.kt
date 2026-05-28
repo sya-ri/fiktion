@@ -7,7 +7,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class StringsTest {
+class StringTest {
     @Test
     fun `string generates values with the requested length and charset`() {
         val fiktion =

@@ -156,11 +156,29 @@ class FiktionBuilderTest {
     fun `range rules generate primitive values inside the configured ranges`() {
         val fiktion =
             Fiktion {
+                type<Byte>() generatesIn 10..20
+                type<Short>() generatesIn 100..200
                 type<Int>() generatesIn 10..20
                 type<Long>() generatesIn 100L..200L
+                type<Float>() generatesIn 1.5f..2.5f
+                type<Double>() generatesIn 1.5..2.5
+                type<Char>() generatesIn 'a'..'f'
+                type<UByte>() generatesIn 10u..20u
+                type<UShort>() generatesIn 100u..200u
+                type<UInt>() generatesIn 1000u..2000u
+                type<ULong>() generatesIn 1000uL..2000uL
             }
 
+        assertTrue(fiktion.fake<Byte>(seed = 1) in 10..20)
+        assertTrue(fiktion.fake<Short>(seed = 1) in 100..200)
         assertTrue(fiktion.fake<Int>(seed = 1) in 10..20)
         assertTrue(fiktion.fake<Long>(seed = 1) in 100L..200L)
+        assertTrue(fiktion.fake<Float>(seed = 1) in 1.5f..2.5f)
+        assertTrue(fiktion.fake<Double>(seed = 1) in 1.5..2.5)
+        assertTrue(fiktion.fake<Char>(seed = 1) in 'a'..'f')
+        assertTrue(fiktion.fake<UByte>(seed = 1) in 10u..20u)
+        assertTrue(fiktion.fake<UShort>(seed = 1) in 100u..200u)
+        assertTrue(fiktion.fake<UInt>(seed = 1) in 1000u..2000u)
+        assertTrue(fiktion.fake<ULong>(seed = 1) in 1000uL..2000uL)
     }
 }
