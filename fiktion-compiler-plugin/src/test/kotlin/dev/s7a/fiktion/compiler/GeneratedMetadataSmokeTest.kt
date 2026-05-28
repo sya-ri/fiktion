@@ -15,6 +15,28 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata for regular classes`() {
+        val user = fake<GeneratedRegularUser>(seed = 123)
+
+        assertEquals(fake<GeneratedRegularUser>(seed = 123).id, user.id)
+    }
+
+    @Test
+    fun `compiler plugin uses primary constructors for regular classes`() {
+        val user = fake<GeneratedRegularUserWithSecondaryConstructor>(seed = 123)
+
+        assertEquals(fake<GeneratedRegularUserWithSecondaryConstructor>(seed = 123).id, user.id)
+        assertEquals("primary", user.source)
+    }
+
+    @Test
+    fun `compiler plugin skips regular classes without primary constructors`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<GeneratedRegularUserWithoutPrimaryConstructor>(seed = 123)
+        }
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for nested fake calls`() {
         assertEquals(fake<GeneratedUserWrapper>(seed = 123), fake<GeneratedUserWrapper>(seed = 123))
     }
@@ -131,6 +153,53 @@ private data class GeneratedUser(
      */
     val id: String,
 )
+
+/**
+ * Smoke-test regular class that depends on compiler-generated metadata.
+ */
+private class GeneratedRegularUser(
+    /**
+     * Regular user identifier generated from built-in String generation.
+     */
+    val id: String,
+)
+
+/**
+ * Smoke-test regular class whose primary constructor should be selected over secondary constructors.
+ */
+private class GeneratedRegularUserWithSecondaryConstructor(
+    /**
+     * Regular user identifier generated from built-in String generation.
+     */
+    val id: String,
+) {
+    /**
+     * Marker showing which constructor initialized this instance.
+     */
+    val source: String = "primary"
+
+    /**
+     * Secondary constructor that should not be used by generated metadata.
+     */
+    constructor() : this("secondary")
+}
+
+/**
+ * Smoke-test regular class that has no primary constructor.
+ */
+private class GeneratedRegularUserWithoutPrimaryConstructor {
+    /**
+     * Regular user identifier initialized by a secondary constructor.
+     */
+    val id: String
+
+    /**
+     * Secondary constructor that generated metadata should not target.
+     */
+    constructor(id: String) {
+        this.id = id
+    }
+}
 
 /**
  * Smoke-test model that depends on nested compiler-generated metadata.
