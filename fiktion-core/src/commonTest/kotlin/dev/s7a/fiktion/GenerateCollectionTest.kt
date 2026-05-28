@@ -75,11 +75,11 @@ class GenerateCollectionTest {
     }
 
     @Test
-    fun `autoGenerates returns a collection spec for collection targets`() {
+    fun `generates auto returns a collection spec for collection targets`() {
         val fiktion =
             Fiktion {
                 type<String>() generatesBy { "item-$seed" }
-                type<List<String>>().autoGenerates() withSize 3
+                type<List<String>>() generates auto withSize 3
             }
 
         val value = fiktion.fake<List<String>>(seed = 123)
@@ -89,7 +89,7 @@ class GenerateCollectionTest {
     }
 
     @Test
-    fun `autoGenerates returns a collection spec for collection property targets`() {
+    fun `generates auto returns a collection spec for collection property targets`() {
         val fiktion =
             Fiktion {
                 register(teamMetadata())
@@ -98,7 +98,7 @@ class GenerateCollectionTest {
 
         val team =
             fiktion.fake<Team>(seed = 123) {
-                Team::names.autoGenerates() withSize 2
+                Team::names generates auto withSize 2
             }
 
         assertEquals(2, team.names.size)
@@ -106,11 +106,11 @@ class GenerateCollectionTest {
     }
 
     @Test
-    fun `autoGenerates returns a collection spec with a configurable size range`() {
+    fun `generates auto returns a collection spec with a configurable size range`() {
         val fiktion =
             Fiktion {
                 type<String>() generatesBy { "item-$seed" }
-                type<List<String>>().autoGenerates() withSize 2..4
+                type<List<String>>() generates auto withSize 2..4
             }
 
         val value = fiktion.fake<List<String>>(seed = 123)
@@ -119,13 +119,13 @@ class GenerateCollectionTest {
     }
 
     @Test
-    fun `autoGenerates returns a collection spec for nested collection paths`() {
+    fun `generates auto returns a collection spec for nested collection paths`() {
         val fiktion =
             Fiktion {
                 register(departmentMetadata())
                 register(teamMetadata())
                 type<String>() generatesBy { "member-$seed" }
-                property(Department::team / Team::names).autoGenerates() withSize 2
+                property(Department::team / Team::names) generates auto withSize 2
             }
 
         val department = fiktion.fake<Department>(seed = 123)

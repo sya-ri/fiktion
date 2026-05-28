@@ -52,25 +52,27 @@ public infix fun <T> RuleTarget<T>.generatesOneOf(values: Iterable<T>): Generati
 /**
  * Uses Fiktion's automatic generation for this rule target.
  */
-public fun <T> RuleTarget<T>.autoGenerates(): GenerationSpec<T> = (this as DefaultRuleTarget<T>).autoGenerates()
+@Suppress("UNUSED_PARAMETER")
+public infix fun <T> RuleTarget<T>.generates(auto: Auto): GenerationSpec<T> = (this as DefaultRuleTarget<T>).generatesAutomatically()
 
 /**
  * Uses Fiktion's automatic generation for each element of this collection rule target.
  */
-@JvmName("autoGeneratesCollection")
-public inline fun <reified Element, reified CollectionType : Collection<Element>> RuleTarget<CollectionType>.autoGenerates():
-    CollectionGenerationSpec<Element, CollectionType> =
-    autoGeneratesCollection(target = this, elementType = typeOf<Element>())
+@JvmName("generatesAutoCollection")
+@Suppress("UNUSED_PARAMETER")
+public inline infix fun <reified Element, reified CollectionType : Collection<Element>> RuleTarget<CollectionType>.generates(
+    auto: Auto,
+): CollectionGenerationSpec<Element, CollectionType> = generatesAutoCollection(target = this, elementType = typeOf<Element>())
 
 /**
  * Registers automatic collection generation without exposing the internal target implementation to inline code.
  */
 @PublishedApi
-internal fun <Element, CollectionType : Collection<Element>> autoGeneratesCollection(
+internal fun <Element, CollectionType : Collection<Element>> generatesAutoCollection(
     target: RuleTarget<CollectionType>,
     elementType: KType,
 ): CollectionGenerationSpec<Element, CollectionType> =
-    (target as DefaultRuleTarget<CollectionType>).autoGeneratesCollection(elementType = elementType)
+    (target as DefaultRuleTarget<CollectionType>).generatesAutomaticCollection(elementType = elementType)
 
 /**
  * Generates each element for this collection rule target by invoking [generator].

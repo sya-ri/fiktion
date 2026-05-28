@@ -1,3 +1,14 @@
+public final class dev/s7a/fiktion/Auto {
+	public static final field INSTANCE Ldev/s7a/fiktion/Auto;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/s7a/fiktion/AutoKt {
+	public static final fun getAuto ()Ldev/s7a/fiktion/Auto;
+}
+
 public abstract interface class dev/s7a/fiktion/CollectionGenerationSpec : dev/s7a/fiktion/GenerationSpec {
 	public abstract fun withSize (I)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public abstract fun withSize (Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/CollectionGenerationSpec;
@@ -17,10 +28,9 @@ public final class dev/s7a/fiktion/FakeKt {
 
 public final class dev/s7a/fiktion/FakeSpec {
 	public fun <init> ()V
-	public final fun autoGenerates (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
-	public final fun autoGenerates (Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
-	public final fun autoGeneratesCollectionPath (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/CollectionGenerationSpec;
+	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generatesAutoCollectionPath (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesEach (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public final fun generatesEach (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
@@ -62,9 +72,9 @@ public abstract interface class dev/s7a/fiktion/FiktionAddonBuilder : dev/s7a/fi
 }
 
 public final class dev/s7a/fiktion/FiktionAddonBuilder$DefaultImpls {
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionAddonBuilder;Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionAddonBuilder;Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionAddonBuilder;Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionAddonBuilder;Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionAddonBuilder;Lkotlin/reflect/KProperty1;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionAddonBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionAddonBuilder;Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionAddonBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
@@ -85,9 +95,9 @@ public abstract interface class dev/s7a/fiktion/FiktionBuilder : dev/s7a/fiktion
 }
 
 public final class dev/s7a/fiktion/FiktionBuilder$DefaultImpls {
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionBuilder;Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionBuilder;Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionBuilder;Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionBuilder;Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionBuilder;Lkotlin/reflect/KProperty1;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionBuilder;Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
@@ -105,9 +115,9 @@ public abstract interface class dev/s7a/fiktion/FiktionConfigureBuilder : dev/s7
 }
 
 public final class dev/s7a/fiktion/FiktionConfigureBuilder$DefaultImpls {
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionConfigureBuilder;Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionConfigureBuilder;Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionConfigureBuilder;Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionConfigureBuilder;Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionConfigureBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
@@ -172,9 +182,9 @@ public final class dev/s7a/fiktion/FiktionObjectValue : dev/s7a/fiktion/FiktionO
 }
 
 public abstract interface class dev/s7a/fiktion/FiktionRuleBuilder {
-	public fun autoGenerates (Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
-	public fun autoGenerates (Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public fun generates (Lkotlin/reflect/KProperty1;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public fun generates (Lkotlin/reflect/KProperty1;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public fun generatesBy (Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
@@ -199,9 +209,9 @@ public abstract interface class dev/s7a/fiktion/FiktionRuleBuilder {
 }
 
 public final class dev/s7a/fiktion/FiktionRuleBuilder$DefaultImpls {
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionRuleBuilder;Ldev/s7a/fiktion/PropertyPath;)Ldev/s7a/fiktion/GenerationSpec;
-	public static fun autoGenerates (Ldev/s7a/fiktion/FiktionRuleBuilder;Lkotlin/reflect/KProperty1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionRuleBuilder;Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionRuleBuilder;Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public static fun generates (Ldev/s7a/fiktion/FiktionRuleBuilder;Lkotlin/reflect/KProperty1;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generates (Ldev/s7a/fiktion/FiktionRuleBuilder;Lkotlin/reflect/KProperty1;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionRuleBuilder;Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun generatesBy (Ldev/s7a/fiktion/FiktionRuleBuilder;Lkotlin/reflect/KProperty1;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
@@ -353,9 +363,9 @@ public abstract interface class dev/s7a/fiktion/RuleTarget {
 }
 
 public final class dev/s7a/fiktion/RuleTargetKt {
-	public static final fun autoGenerates (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/GenerationSpec;
-	public static final fun autoGeneratesCollection (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/CollectionGenerationSpec;
+	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generatesAutoCollection (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public static final fun generatesBy (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesEach (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public static final fun generatesEach (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;

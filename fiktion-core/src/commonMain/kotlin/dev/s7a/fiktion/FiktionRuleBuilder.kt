@@ -124,9 +124,9 @@ public sealed interface FiktionRuleBuilder {
     /**
      * Generates this property using Fiktion's automatic generation.
      */
-    @Deprecated("Use property<Owner, Value>(property.name).autoGenerates() for type-safe global rules.", level = DeprecationLevel.ERROR)
+    @Deprecated("Use property<Owner, Value>(property.name) generates auto for type-safe global rules.", level = DeprecationLevel.ERROR)
     @Suppress("DEPRECATION_ERROR")
-    public fun <Owner, Value> KProperty1<Owner, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
+    public infix fun <Owner, Value> KProperty1<Owner, Value>.generates(auto: Auto): GenerationSpec<Value> = property(this) generates auto
 
     /**
      * Generates each element for this collection property by invoking [generator].
@@ -175,7 +175,7 @@ public sealed interface FiktionRuleBuilder {
     /**
      * Generates this nested property path using Fiktion's automatic generation.
      */
-    public fun <Root, Value> PropertyPath<Root, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
+    public infix fun <Root, Value> PropertyPath<Root, Value>.generates(auto: Auto): GenerationSpec<Value> = property(this) generates auto
 
     /**
      * Generates each element for this nested collection property path by invoking [generator].

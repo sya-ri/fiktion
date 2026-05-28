@@ -32,7 +32,7 @@ internal class DefaultRuleTarget<T>(
     /**
      * Registers automatic generation for this target.
      */
-    fun autoGenerates(): DefaultGenerationSpec<T> {
+    fun generatesAutomatically(): DefaultGenerationSpec<T> {
         val spec = DefaultGenerationSpec<T>(key = key, matcher = matcher, automaticallyGenerates = true)
         config.add(spec)
         return spec
@@ -41,7 +41,7 @@ internal class DefaultRuleTarget<T>(
     /**
      * Registers automatic collection generation for this target.
      */
-    fun <Element, CollectionType : Collection<Element>> autoGeneratesCollection(
+    fun <Element, CollectionType : Collection<Element>> generatesAutomaticCollection(
         elementType: KType,
     ): DefaultAutoCollectionGenerationSpec<Element, CollectionType> {
         val spec =

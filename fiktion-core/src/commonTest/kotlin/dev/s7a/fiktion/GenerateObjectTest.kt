@@ -147,7 +147,7 @@ class GenerateObjectTest {
     }
 
     @Test
-    fun `autoGenerates uses automatic generation for a property`() {
+    fun `generates auto uses automatic generation for a property`() {
         val fiktion =
             Fiktion {
                 register(userMetadata())
@@ -156,7 +156,7 @@ class GenerateObjectTest {
 
         val user =
             fiktion.fake<User>(seed = 123) {
-                User::id.autoGenerates()
+                User::id generates auto
             }
 
         assertTrue(user.id.isNotBlank())
@@ -164,7 +164,7 @@ class GenerateObjectTest {
         assertEquals(
             user,
             fiktion.fake<User>(seed = 123) {
-                User::id.autoGenerates()
+                User::id generates auto
             },
         )
     }

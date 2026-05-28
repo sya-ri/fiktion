@@ -117,17 +117,21 @@ public class FakeSpec<Root> {
     /**
      * Generates this property using Fiktion's automatic generation.
      */
-    @Suppress("DEPRECATION_ERROR")
-    public fun <Value> KProperty1<Root, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
+    @Suppress("UNUSED_PARAMETER")
+    public inline infix fun <reified Value> KProperty1<Root, Value>.generates(auto: Auto): GenerationSpec<Value> =
+        propertyByValueType<Value>(
+            name = name,
+            valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
+        ).generates(auto)
 
     /**
      * Generates this collection property by automatically generating each element.
      */
-    @JvmName("autoGeneratesCollectionProperty")
+    @JvmName("generatesAutoCollectionProperty")
     @Suppress("DEPRECATION_ERROR")
-    public inline fun <reified Element, reified CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.autoGenerates():
-        CollectionGenerationSpec<Element, CollectionType> =
-        property(this).autoGenerates()
+    public inline infix fun <reified Element, reified CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.generates(
+        auto: Auto,
+    ): CollectionGenerationSpec<Element, CollectionType> = property(this) generates auto
 
     /**
      * Generates each element for this collection property by invoking [generator].
@@ -177,7 +181,7 @@ public class FakeSpec<Root> {
                 ),
             configure = configure,
         )
-        return property(this).autoGenerates()
+        return property(this) generates auto
     }
 
     /**
@@ -194,15 +198,17 @@ public class FakeSpec<Root> {
     /**
      * Generates this nested property path using Fiktion's automatic generation.
      */
-    public fun <Value> PropertyPath<Root, Value>.autoGenerates(): GenerationSpec<Value> = property(this).autoGenerates()
+    public infix fun <Value> PropertyPath<Root, Value>.generates(auto: Auto): GenerationSpec<Value> = property(this) generates auto
 
     /**
      * Generates this nested collection property path by automatically generating each element.
      */
-    @JvmName("autoGeneratesCollectionPath")
-    public fun <Element, CollectionType : Collection<Element>> PropertyPath<Root, CollectionType>.autoGenerates():
-        CollectionGenerationSpec<Element, CollectionType> =
-        autoGeneratesCollection(target = property(this), elementType = collectionElementType())
+    @JvmName("generatesAutoCollectionPath")
+    @Suppress("UNUSED_PARAMETER")
+    public infix fun <Element, CollectionType : Collection<Element>> PropertyPath<Root, CollectionType>.generates(
+        auto: Auto,
+    ): CollectionGenerationSpec<Element, CollectionType> =
+        generatesAutoCollection(target = property(this), elementType = collectionElementType())
 
     /**
      * Generates each element for this nested collection property path by invoking [generator].
@@ -237,7 +243,7 @@ public class FakeSpec<Root> {
      */
     public operator fun <Value> PropertyPath<Root, Value>.invoke(configure: FakeSpec<Value>.() -> Unit): GenerationSpec<Value> {
         configureNestedRules(prefix = segments, configure = configure)
-        return property(this).autoGenerates()
+        return property(this) generates auto
     }
 
     /**

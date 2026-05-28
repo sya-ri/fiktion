@@ -191,9 +191,7 @@ Collection and map sizes are configured separately from element generation:
 
 ```kotlin
 val catalog = fake<Catalog> {
-    Catalog::items generatesEach {
-        fake<Item>()
-    } withSize 3
+    Catalog::items generates auto withSize 3
 
     Catalog::tags generatesEach {
         string(8)
