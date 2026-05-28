@@ -291,13 +291,15 @@ val user = fake<User> {
 
 Add-ons contribute reusable rules for external libraries or project-specific types.
 
+Custom add-ons can be implemented with `FiktionAddon`:
+
 ```kotlin
-public object KotlinxDatetimeFiktion : FiktionAddon {
-    override val id: String = "dev.s7a.fiktion.kotlinx-datetime"
+public object CustomFiktionAddon : FiktionAddon {
+    override val id: String = "custom"
 
     override fun install(builder: FiktionAddonBuilder) {
         with(builder) {
-            type<Instant>() generatesBy {
+            type<...>() generatesBy {
                 // Add-on-provided generation rule.
                 TODO()
             }
