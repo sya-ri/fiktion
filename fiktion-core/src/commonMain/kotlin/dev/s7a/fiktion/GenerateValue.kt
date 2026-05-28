@@ -31,52 +31,14 @@ internal fun generateValue(
         )
 
     if (rule != null) {
-        if (request.type.isMarkedNullable) {
-            val nullProbability = rule.nullProbability?.value ?: DEFAULT_NULL_PROBABILITY
-            if (context.random.nextDouble() < nullProbability) return null
-        }
-
-        if (rule.automaticallyGenerates) {
-            rule.autoCollectionElementType?.let { elementType ->
-                return generateAutomaticCollection(
-                    request = request,
-                    config = config,
-                    seed = contextSeed,
-                    depth = depth,
-                    context = context,
-                    elementType = elementType,
-                    sizeRange = rule.autoCollectionSizeRange,
-                )
-            }
-
-            return generateAutomaticValue(
-                request = request,
-                config = config,
-                seed = contextSeed,
-                depth = depth,
-                context = context,
-            )
-        }
-
-        if (rule is DefaultMapGenerationSpec<*, *, *>) {
-            @Suppress("UNCHECKED_CAST")
-            return context.generateMap(
-                spec = rule as DefaultMapGenerationSpec<Any?, Any?, Map<Any?, Any?>>,
-                config = config,
-            )
-        }
-
-        if (rule is DefaultTypeFamilyGenerationSpec<*>) {
-            return rule.generate(
-                TypeFamilyGenerationContext(
-                    context = context,
-                    requestedType = request.type,
-                    config = config,
-                ),
-            )
-        }
-
-        return rule.generator(context)
+        return generateFromRule(
+            rule = rule,
+            request = request,
+            config = config,
+            contextSeed = contextSeed,
+            depth = depth,
+            context = context,
+        )
     }
 
     return generateAutomaticValue(
@@ -98,13 +60,45 @@ internal fun generateAutomaticValue(
     depth: Int,
     context: FakeContext,
 ): Any? {
-    generateContainer(type = request.type, context = context, config = config)?.let { value ->
-        return value
+    config.metadata[request.type.nonNullTypeId()]?.let { metadata ->
+        return generateFromMetadata(
+            metadata = metadata,
+            request = request,
+            config = config,
+            seed = seed,
+            depth = depth,
+            context = context,
+        )
     }
 
-    when (val metadata = config.metadata[request.type.nonNullTypeId()]) {
+    BUILT_IN_RULES.selectRule(request)?.let { rule ->
+        return generateFromRule(
+            rule = rule,
+            request = request,
+            config = config,
+            contextSeed = seed,
+            depth = depth,
+            context = context,
+        )
+    }
+
+    throw CannotGenerateException(missingGenerationMessage(request.type))
+}
+
+/**
+ * Generates a value from registered construction [metadata].
+ */
+private fun generateFromMetadata(
+    metadata: FiktionTypeMetadata<*>,
+    request: GenerationRequest,
+    config: FiktionConfig,
+    seed: Long,
+    depth: Int,
+    context: FakeContext,
+): Any? =
+    when (metadata) {
         is FiktionObjectMetadata<*> -> {
-            return generateObject(
+            generateObject(
                 request = request,
                 config = config,
                 seed = seed,
@@ -114,7 +108,7 @@ internal fun generateAutomaticValue(
         }
 
         is FiktionArrayMetadata<*> -> {
-            return generateArray(
+            generateArray(
                 config = config,
                 seed = seed,
                 depth = depth,
@@ -123,7 +117,7 @@ internal fun generateAutomaticValue(
         }
 
         is FiktionValueMetadata<*> -> {
-            return generateValueClass(
+            generateValueClass(
                 request = request,
                 config = config,
                 seed = seed,
@@ -133,7 +127,7 @@ internal fun generateAutomaticValue(
         }
 
         is FiktionEnumMetadata<*> -> {
-            return generateEnum(
+            generateEnum(
                 request = request,
                 context = context,
                 metadata = metadata,
@@ -141,7 +135,7 @@ internal fun generateAutomaticValue(
         }
 
         is FiktionSealedMetadata<*> -> {
-            return generateSealed(
+            generateSealed(
                 request = request,
                 config = config,
                 seed = seed,
@@ -150,15 +144,63 @@ internal fun generateAutomaticValue(
                 metadata = metadata,
             )
         }
-
-        null -> {
-            Unit
-        }
     }
 
-    return generateBuiltIn(
-        type = request.type,
-        context = context,
-        config = config,
-    )
+/**
+ * Generates a value from an already selected [rule].
+ */
+private fun generateFromRule(
+    rule: DefaultGenerationSpec<*>,
+    request: GenerationRequest,
+    config: FiktionConfig,
+    contextSeed: Long,
+    depth: Int,
+    context: FakeContext,
+): Any? {
+    if (request.type.isMarkedNullable) {
+        val nullProbability = rule.nullProbability?.value ?: DEFAULT_NULL_PROBABILITY
+        if (context.random.nextDouble() < nullProbability) return null
+    }
+
+    if (rule.automaticallyGenerates) {
+        rule.autoCollectionElementType?.let { elementType ->
+            return generateAutomaticCollection(
+                request = request,
+                config = config,
+                seed = contextSeed,
+                depth = depth,
+                context = context,
+                elementType = elementType,
+                sizeRange = rule.autoCollectionSizeRange,
+            )
+        }
+
+        return generateAutomaticValue(
+            request = request,
+            config = config,
+            seed = contextSeed,
+            depth = depth,
+            context = context,
+        )
+    }
+
+    if (rule is DefaultMapGenerationSpec<*, *, *>) {
+        @Suppress("UNCHECKED_CAST")
+        return context.generateMap(
+            spec = rule as DefaultMapGenerationSpec<Any?, Any?, Map<Any?, Any?>>,
+            config = config,
+        )
+    }
+
+    if (rule is DefaultTypeFamilyGenerationSpec<*>) {
+        return rule.generate(
+            TypeFamilyGenerationContext(
+                context = context,
+                requestedType = request.type,
+                config = config,
+            ),
+        )
+    }
+
+    return rule.generator(context)
 }

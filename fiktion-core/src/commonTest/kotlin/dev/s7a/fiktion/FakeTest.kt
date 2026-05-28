@@ -5,6 +5,7 @@ package dev.s7a.fiktion
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNull
@@ -93,73 +94,26 @@ class FakeTest {
     }
 
     @Test
-    fun `fake generates nullable built-in Kotlin values without configuration`() {
-        assertIs<String>(fake<String?>())
-        assertIs<Unit>(fake<Unit?>())
-        assertIs<Byte>(fake<Byte?>())
-        assertIs<Short>(fake<Short?>())
-        assertIs<Int>(fake<Int?>())
-        assertIs<Long>(fake<Long?>())
-        assertIs<Float>(fake<Float?>())
-        assertIs<Double>(fake<Double?>())
-        assertIs<Boolean>(fake<Boolean?>())
-        assertIs<Char>(fake<Char?>())
-        assertIs<List<*>>(fake<List<Int>?>())
-        assertIs<MutableList<*>>(fake<MutableList<Int>?>())
-        assertIs<Set<*>>(fake<Set<Int>?>())
-        assertIs<MutableSet<*>>(fake<MutableSet<Int>?>())
-        assertIs<Map<*, *>>(fake<Map<String, Int>?>())
-        assertIs<MutableMap<*, *>>(fake<MutableMap<String, Int>?>())
-        assertIs<ByteArray>(fake<ByteArray?>())
-        assertIs<ShortArray>(fake<ShortArray?>())
-        assertIs<IntArray>(fake<IntArray?>())
-        assertIs<LongArray>(fake<LongArray?>())
-        assertIs<FloatArray>(fake<FloatArray?>())
-        assertIs<DoubleArray>(fake<DoubleArray?>())
-        assertIs<BooleanArray>(fake<BooleanArray?>())
-        assertIs<CharArray>(fake<CharArray?>())
-        assertIs<UByteArray>(fake<UByteArray?>())
-        assertIs<UShortArray>(fake<UShortArray?>())
-        assertIs<UIntArray>(fake<UIntArray?>())
-        assertIs<ULongArray>(fake<ULongArray?>())
-        assertIs<Sequence<*>>(fake<Sequence<Int>?>())
-        assertIs<IntRange>(fake<IntRange?>())
-        assertIs<LongRange>(fake<LongRange?>())
-        assertIs<CharRange>(fake<CharRange?>())
-        assertIs<UIntRange>(fake<UIntRange?>())
-        assertIs<ULongRange>(fake<ULongRange?>())
-        assertIs<IntProgression>(fake<IntProgression?>())
-        assertIs<LongProgression>(fake<LongProgression?>())
-        assertIs<CharProgression>(fake<CharProgression?>())
-        assertIs<UIntProgression>(fake<UIntProgression?>())
-        assertIs<ULongProgression>(fake<ULongProgression?>())
-        assertIs<Regex>(fake<Regex?>())
-        assertIs<Duration>(fake<Duration?>())
-        assertIs<DurationUnit>(fake<DurationUnit?>())
-        assertIs<Instant>(fake<Instant?>())
-        assertIs<UByte>(fake<UByte?>())
-        assertIs<UShort>(fake<UShort?>())
-        assertIs<UInt>(fake<UInt?>())
-        assertIs<ULong>(fake<ULong?>())
-        assertIs<Uuid>(fake<Uuid?>())
-        assertIs<Throwable>(fake<Throwable?>())
-        assertIs<Error>(fake<Error?>())
-        assertIs<Exception>(fake<Exception?>())
-        assertIs<RuntimeException>(fake<RuntimeException?>())
-        assertIs<IllegalStateException>(fake<IllegalStateException?>())
-        assertIs<IllegalArgumentException>(fake<IllegalArgumentException?>())
-        assertIs<IndexOutOfBoundsException>(fake<IndexOutOfBoundsException?>())
-        assertIs<ConcurrentModificationException>(fake<ConcurrentModificationException?>())
-        assertIs<UnsupportedOperationException>(fake<UnsupportedOperationException?>())
-        assertIs<NumberFormatException>(fake<NumberFormatException?>())
-        assertIs<NullPointerException>(fake<NullPointerException?>())
-        assertIs<ClassCastException>(fake<ClassCastException?>())
-        assertIs<AssertionError>(fake<AssertionError?>())
-        assertIs<NoSuchElementException>(fake<NoSuchElementException?>())
-        assertIs<ArithmeticException>(fake<ArithmeticException?>())
-        assertIs<String>(fake<Pair<String, Int>?>()?.first)
-        assertIs<String>(fake<Triple<String, Int, Boolean>?>()?.first)
-        assertTrue(fake<Result<String>?>()?.let { it.isSuccess || it.isFailure } == true)
+    fun `fake does not generate nullable built-in Kotlin scalar values without configuration`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<String?>()
+        }
+        assertFailsWith<CannotGenerateException> {
+            fake<Int?>()
+        }
+    }
+
+    @Test
+    fun `fake does not generate nullable built-in Kotlin container values without configuration`() {
+        assertFailsWith<CannotGenerateException> {
+            fake<List<Int>?>()
+        }
+        assertFailsWith<CannotGenerateException> {
+            fake<Map<String, Int>?>()
+        }
+        assertFailsWith<CannotGenerateException> {
+            fake<Sequence<Int>?>()
+        }
     }
 
     @Test

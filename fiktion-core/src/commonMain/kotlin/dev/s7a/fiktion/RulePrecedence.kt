@@ -5,6 +5,11 @@ package dev.s7a.fiktion
  */
 internal enum class RulePrecedence {
     /**
+     * Rules provided by Fiktion core.
+     */
+    BUILT_IN,
+
+    /**
      * Rules contributed by installed add-ons.
      */
     ADDON,

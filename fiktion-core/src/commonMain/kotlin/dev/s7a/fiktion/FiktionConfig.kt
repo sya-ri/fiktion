@@ -58,5 +58,5 @@ internal data class FiktionConfig(
     /**
      * Returns rules in lookup order from lowest to highest precedence.
      */
-    fun effectiveRules(): List<DefaultGenerationSpec<*>> = addons.flatMap { it.rules } + rules
+    fun effectiveRules(): List<DefaultGenerationSpec<*>> = BUILT_IN_RULES + addons.flatMap { it.rules } + rules
 }

@@ -122,4 +122,4 @@ private fun generateAutomaticMapPart(
 /**
  * Number of generated parts in a key/value map entry.
  */
-private const val MAP_ENTRY_PARTS = 2
+internal const val MAP_ENTRY_PARTS: Int = 2
