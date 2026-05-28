@@ -95,6 +95,24 @@ public class FakeSpec<Root> {
         )
 
     /**
+     * Targets properties generated while building the current root whose value type is [Value] and name is [name].
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    public inline fun <reified Value> name(
+        name: String,
+        typed: Unit = Unit,
+    ): RuleTarget<Value> = name(name, typeOf<Value>()) as RuleTarget<Value>
+
+    /**
+     * Targets properties generated while building the current root whose value type is [Value] and name matches [regex].
+     */
+    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    public inline fun <reified Value> name(
+        regex: Regex,
+        typed: Unit = Unit,
+    ): RuleTarget<Value> = name(regex, typeOf<Value>()) as RuleTarget<Value>
+
+    /**
      * Generates [value] for this property.
      */
     public inline infix fun <reified Value> KProperty1<Root, Value>.generates(value: Value): GenerationSpec<Value> =
@@ -361,15 +379,3 @@ public class FakeSpec<Root> {
             matcher = matcher,
         )
 }
-
-/**
- * Targets properties generated while building the current root whose value type is [Value] and name is [name].
- */
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified Value> FakeSpec<*>.name(name: String): RuleTarget<Value> = name(name, typeOf<Value>()) as RuleTarget<Value>
-
-/**
- * Targets properties generated while building the current root whose value type is [Value] and name matches [regex].
- */
-@Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
-public inline fun <reified Value> FakeSpec<*>.name(regex: Regex): RuleTarget<Value> = name(regex, typeOf<Value>()) as RuleTarget<Value>
