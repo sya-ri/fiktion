@@ -7,6 +7,9 @@ kover = "0.9.8"
 kotlinter = "5.5.0"
 mavenPublish = "0.36.0"
 
+[libraries]
+dokka-versioning-plugin = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka" }
+
 [plugins]
 detekt = { id = "dev.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
