@@ -98,16 +98,7 @@ sealed interface dev.s7a.fiktion/RuleNameTarget { // dev.s7a.fiktion/RuleNameTar
     abstract fun generates(kotlin.reflect/KType, kotlin/Function1<dev.s7a.fiktion/FakeContext, kotlin/Any?>): dev.s7a.fiktion/GenerationSpec<*> // dev.s7a.fiktion/RuleNameTarget.generates|generates(kotlin.reflect.KType;kotlin.Function1<dev.s7a.fiktion.FakeContext,kotlin.Any?>){}[0]
 }
 
-final class <#A: kotlin/Any?, #B: out kotlin/Any?> dev.s7a.fiktion/PropertyPath { // dev.s7a.fiktion/PropertyPath|null[0]
-    constructor <init>(kotlin.collections/List<kotlin.reflect/KProperty1<*, *>>, kotlin.reflect/KType, kotlin.collections/List<dev.s7a.fiktion/PathRuleSegment>) // dev.s7a.fiktion/PropertyPath.<init>|<init>(kotlin.collections.List<kotlin.reflect.KProperty1<*,*>>;kotlin.reflect.KType;kotlin.collections.List<dev.s7a.fiktion.PathRuleSegment>){}[0]
-
-    final val properties // dev.s7a.fiktion/PropertyPath.properties|{}properties[0]
-        final fun <get-properties>(): kotlin.collections/List<kotlin.reflect/KProperty1<*, *>> // dev.s7a.fiktion/PropertyPath.properties.<get-properties>|<get-properties>(){}[0]
-    final val segments // dev.s7a.fiktion/PropertyPath.segments|{}segments[0]
-        final fun <get-segments>(): kotlin.collections/List<dev.s7a.fiktion/PathRuleSegment> // dev.s7a.fiktion/PropertyPath.segments.<get-segments>|<get-segments>(){}[0]
-    final val valueType // dev.s7a.fiktion/PropertyPath.valueType|{}valueType[0]
-        final fun <get-valueType>(): kotlin.reflect/KType // dev.s7a.fiktion/PropertyPath.valueType.<get-valueType>|<get-valueType>(){}[0]
-}
+final class <#A: kotlin/Any?, #B: out kotlin/Any?> dev.s7a.fiktion/PropertyPath // dev.s7a.fiktion/PropertyPath|null[0]
 
 final class <#A: kotlin/Any?> dev.s7a.fiktion/FakeSpec { // dev.s7a.fiktion/FakeSpec|null[0]
     constructor <init>() // dev.s7a.fiktion/FakeSpec.<init>|<init>(){}[0]
@@ -324,25 +315,6 @@ final class dev.s7a.fiktion/FiktionObjectValue : dev.s7a.fiktion/FiktionObjectAr
     final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion/FiktionObjectValue.equals|equals(kotlin.Any?){}[0]
     final fun hashCode(): kotlin/Int // dev.s7a.fiktion/FiktionObjectValue.hashCode|hashCode(){}[0]
     final fun toString(): kotlin/String // dev.s7a.fiktion/FiktionObjectValue.toString|toString(){}[0]
-}
-
-final class dev.s7a.fiktion/PathRuleSegment { // dev.s7a.fiktion/PathRuleSegment|null[0]
-    constructor <init>(kotlin/String?, kotlin/String, kotlin/String?) // dev.s7a.fiktion/PathRuleSegment.<init>|<init>(kotlin.String?;kotlin.String;kotlin.String?){}[0]
-
-    final val name // dev.s7a.fiktion/PathRuleSegment.name|{}name[0]
-        final fun <get-name>(): kotlin/String // dev.s7a.fiktion/PathRuleSegment.name.<get-name>|<get-name>(){}[0]
-    final val ownerId // dev.s7a.fiktion/PathRuleSegment.ownerId|{}ownerId[0]
-        final fun <get-ownerId>(): kotlin/String? // dev.s7a.fiktion/PathRuleSegment.ownerId.<get-ownerId>|<get-ownerId>(){}[0]
-    final val valueId // dev.s7a.fiktion/PathRuleSegment.valueId|{}valueId[0]
-        final fun <get-valueId>(): kotlin/String? // dev.s7a.fiktion/PathRuleSegment.valueId.<get-valueId>|<get-valueId>(){}[0]
-
-    final fun component1(): kotlin/String? // dev.s7a.fiktion/PathRuleSegment.component1|component1(){}[0]
-    final fun component2(): kotlin/String // dev.s7a.fiktion/PathRuleSegment.component2|component2(){}[0]
-    final fun component3(): kotlin/String? // dev.s7a.fiktion/PathRuleSegment.component3|component3(){}[0]
-    final fun copy(kotlin/String? = ..., kotlin/String = ..., kotlin/String? = ...): dev.s7a.fiktion/PathRuleSegment // dev.s7a.fiktion/PathRuleSegment.copy|copy(kotlin.String?;kotlin.String;kotlin.String?){}[0]
-    final fun equals(kotlin/Any?): kotlin/Boolean // dev.s7a.fiktion/PathRuleSegment.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // dev.s7a.fiktion/PathRuleSegment.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // dev.s7a.fiktion/PathRuleSegment.toString|toString(){}[0]
 }
 
 final class dev.s7a.fiktion/TypeFamilyGenerationContext : dev.s7a.fiktion/FakeContext { // dev.s7a.fiktion/TypeFamilyGenerationContext|null[0]

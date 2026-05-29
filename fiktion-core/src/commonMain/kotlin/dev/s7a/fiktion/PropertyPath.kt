@@ -11,21 +11,18 @@ import kotlin.reflect.typeOf
  * matching the object shape rather than the nullability state at a particular step.
  */
 public class PropertyPath<Root, out Value>
-    @PublishedApi
     internal constructor(
         /**
          * Properties that make up this path.
          */
-        public val properties: List<KProperty1<*, *>>,
+        internal val properties: List<KProperty1<*, *>>,
         /**
          * Type reached by this path.
          */
-        @PublishedApi
         internal val valueType: KType,
         /**
          * Typed rule segments for matching this path.
          */
-        @PublishedApi
         internal val segments: List<PathRuleSegment>,
     )
 

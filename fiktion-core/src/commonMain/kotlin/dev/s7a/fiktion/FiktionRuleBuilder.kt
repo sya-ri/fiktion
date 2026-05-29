@@ -448,6 +448,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Configures how generated elements are materialized as collection type [CollectionType].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline fun <reified CollectionType : Collection<*>> configureCollection(noinline convert: (List<Any?>) -> CollectionType) {
         configureCollection(type = typeOf<CollectionType>(), convert = convert)
     }
@@ -455,15 +456,19 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Configures how generated entries are materialized as map type [MapType].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline fun <reified MapType : Map<*, *>> configureMap(noinline convert: (List<Pair<Any?, Any?>>) -> MapType) {
         configureMap(type = typeOf<MapType>(), convert = convert)
     }
 
     /**
-     * Registers a collection converter without exposing internal config to inline code.
+     * Configures how generated elements are materialized as collection type [type].
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [type] and
+     * the converter type consistent.
      */
-    @PublishedApi
-    internal fun configureCollection(
+    @Deprecated("Use the reified configureCollection<CollectionType>(convert) overload.", level = DeprecationLevel.ERROR)
+    public fun configureCollection(
         type: KType,
         convert: (List<Any?>) -> Collection<*>,
     ) {
@@ -471,10 +476,13 @@ public sealed class FiktionRuleBuilder protected constructor() {
     }
 
     /**
-     * Registers a map converter without exposing internal config to inline code.
+     * Configures how generated entries are materialized as map type [type].
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [type] and
+     * the converter type consistent.
      */
-    @PublishedApi
-    internal fun configureMap(
+    @Deprecated("Use the reified configureMap<MapType>(convert) overload.", level = DeprecationLevel.ERROR)
+    public fun configureMap(
         type: KType,
         convert: (List<Pair<Any?, Any?>>) -> Map<*, *>,
     ) {

@@ -336,21 +336,6 @@ public final class dev/s7a/fiktion/MapValueSpecKt {
 	public static final fun andKeys (Ldev/s7a/fiktion/MapValueSpec;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/MapEntrySpec;
 }
 
-public final class dev/s7a/fiktion/PathRuleSegment {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
-	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()Ljava/lang/String;
-	public final fun component3 ()Ljava/lang/String;
-	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ldev/s7a/fiktion/PathRuleSegment;
-	public static synthetic fun copy$default (Ldev/s7a/fiktion/PathRuleSegment;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ldev/s7a/fiktion/PathRuleSegment;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getName ()Ljava/lang/String;
-	public final fun getOwnerId ()Ljava/lang/String;
-	public final fun getValueId ()Ljava/lang/String;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public final class dev/s7a/fiktion/Probability {
 	public static final synthetic fun box-impl (D)Ldev/s7a/fiktion/Probability;
 	public static fun constructor-impl (D)D
@@ -371,10 +356,6 @@ public final class dev/s7a/fiktion/ProbabilityKt {
 }
 
 public final class dev/s7a/fiktion/PropertyPath {
-	public fun <init> (Ljava/util/List;Lkotlin/reflect/KType;Ljava/util/List;)V
-	public final fun getProperties ()Ljava/util/List;
-	public final fun getSegments ()Ljava/util/List;
-	public final fun getValueType ()Lkotlin/reflect/KType;
 }
 
 public final class dev/s7a/fiktion/PropertyPathKt {
