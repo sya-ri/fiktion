@@ -225,6 +225,25 @@ try {
 }
 ```
 
+`Fiktion.configure` is useful when the same defaults should apply to top-level `fake<T>()` calls across a test project
+or framework-managed test context:
+
+```kotlin
+val snapshot = Fiktion.configure {
+    name<String>("email") generatesBy {
+        "user-${random.nextLong()}@example.test"
+    }
+    name<String>("id") generatesBy {
+        "id-${random.nextLong()}"
+    }
+}
+```
+
+Because the configuration is global, prefer `fake<T> { ... }` or `Fiktion { ... }` for rules that only one test needs.
+When global configuration is installed by a test hook, restore the snapshot in the matching teardown hook. `restore()`
+returns `false` if another `Fiktion.configure` call has installed a newer global configuration; use `restore(force =
+true)` only from cleanup code that owns the whole test process or project-level configuration.
+
 Rule precedence is:
 
 1. Per-call rules
@@ -235,6 +254,161 @@ Rule precedence is:
 
 Within the same precedence level, more specific targets win before registration order. When two matching rules have the
 same specificity, the later registration wins.
+
+## Test Framework Integration
+
+With `kotlin.test`, prefer an isolated `Fiktion { ... }` instance from `@BeforeTest` when each test should start from
+the same defaults. Use `Fiktion.configure` with `@BeforeTest` / `@AfterTest` only when the test intentionally needs
+top-level `fake<T>()` calls to see global rules:
+
+```kotlin
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.fake
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+
+class UserServiceTest {
+    private lateinit var fiktion: Fiktion
+
+    @BeforeTest
+    fun configureFiktion() {
+        fiktion = Fiktion {
+            name<String>("email") generatesBy {
+                "user-${random.nextLong()}@example.test"
+            }
+        }
+    }
+
+    @Test
+    fun `creates a user`() {
+        val user = fiktion.fake<User>()
+
+        // test body
+    }
+}
+```
+
+With JUnit 5, `@TestInstance(TestInstance.Lifecycle.PER_CLASS)` only shares one test class instance across methods in
+that class. Prefer an isolated instance for class-scoped defaults:
+
+```kotlin
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.generators.string
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class UserRepositoryTest {
+    private lateinit var fiktion: Fiktion
+
+    @BeforeAll
+    fun configureFiktion() {
+        fiktion = Fiktion {
+            name<String>("email") generatesBy {
+                "${string(length = 12)}@example.test"
+            }
+        }
+    }
+
+    @Test
+    fun `finds user by email`() {
+        val user = fiktion.fake<User>()
+
+        // test body
+    }
+}
+```
+
+Use `Fiktion.configure` when the rules intentionally need to affect global `fake<T>()` calls, for example project-wide
+test helpers or framework hooks that do not receive a `Fiktion` instance. Since this mutates process-wide state, keep it
+at project-level setup when tests may run in parallel.
+
+For JUnit 5, put process-wide defaults in an extension and store the snapshot in the root extension store:
+
+```kotlin
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionSnapshot
+import org.junit.jupiter.api.extension.BeforeAllCallback
+import org.junit.jupiter.api.extension.ExtensionContext
+
+class FiktionExtension : BeforeAllCallback {
+    override fun beforeAll(context: ExtensionContext) {
+        context.root
+            .getStore(ExtensionContext.Namespace.GLOBAL)
+            .getOrComputeIfAbsent(FiktionResource::class.java) {
+                FiktionResource()
+            }
+    }
+
+    private class FiktionResource : AutoCloseable {
+        private val snapshot: FiktionSnapshot =
+            Fiktion.configure {
+                name<String>("email") generatesBy {
+                    "user-${random.nextLong()}@example.test"
+                }
+            }
+
+        override fun close() {
+            check(snapshot.restore(force = true))
+        }
+    }
+}
+```
+
+With Kotest, prefer an isolated instance for spec-scoped defaults. Kotest specs are `SingleInstance` by default, so a
+property initialized in the spec body is shared by tests in that spec:
+
+The same pattern works with other Kotest spec styles such as `FunSpec`, `DescribeSpec`, `FreeSpec`, `ShouldSpec`, and
+`BehaviorSpec`; keep the `Fiktion { ... }` instance at the spec scope and call `fiktion.fake<T>()` from tests.
+
+```kotlin
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.fake
+import io.kotest.core.spec.style.StringSpec
+
+class UserRepositorySpec : StringSpec({
+    val fiktion = Fiktion {
+        name<String>("email") generatesBy {
+            "user-${random.nextLong()}@example.test"
+        }
+    }
+
+    "finds user by email" {
+        val user = fiktion.fake<User>()
+
+        // test body
+    }
+})
+```
+
+Kotest project configuration is useful only when global defaults should affect top-level `fake<T>()` across the whole
+test project:
+
+```kotlin
+package io.kotest.provided
+
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionSnapshot
+import io.kotest.core.config.AbstractProjectConfig
+
+class ProjectConfig : AbstractProjectConfig() {
+    private lateinit var fiktionSnapshot: FiktionSnapshot
+
+    override suspend fun beforeProject() {
+        fiktionSnapshot = Fiktion.configure {
+            name<String>("email") generatesBy {
+                "user-${random.nextLong()}@example.test"
+            }
+        }
+    }
+
+    override suspend fun afterProject() {
+        check(fiktionSnapshot.restore(force = true))
+    }
+}
+```
 
 ## Rule Targets
 

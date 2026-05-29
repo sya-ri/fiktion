@@ -32,6 +32,9 @@ Read only the file needed for the task:
 ## Working Conventions
 
 - Prefer `fake<T> { ... }` per-call rules in tests unless repeated setup justifies `Fiktion { ... }` or `Fiktion.configure`.
+- Prefer `Fiktion { ... }` for `kotlin.test` `@BeforeTest`, JUnit class-scoped setup, and Kotest spec-scoped defaults.
+- Use `Fiktion.configure` only for process-wide defaults needed by top-level `fake<T>()` calls; pair every call with
+  snapshot restoration in the matching project-level teardown hook when tests may run in parallel.
 - Prefer property references in per-call rules: `User::id generates "user-1"`.
 - Prefer reified targets in global/instance/add-on rules: `property<User, String>("id")`, `type<User>()`, `typeFamily<Optional<*>>()`.
 - KProperty infix rules also exist in global/instance/add-on scopes; use reified targets when ambiguity or readability is a concern.
