@@ -3,6 +3,7 @@ detekt = "2.0.0-alpha.3"
 dokka = "2.2.0"
 gradlePluginPublish = "2.1.1"
 kotlin = "2.3.21"
+kover = "0.9.8"
 kotlinter = "5.5.0"
 mavenPublish = "0.36.0"
 
@@ -13,5 +14,6 @@ dokka-javadoc = { id = "org.jetbrains.dokka-javadoc", version.ref = "dokka" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradlePluginPublish" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
