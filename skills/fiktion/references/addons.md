@@ -8,7 +8,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.1.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.1")
 }
 ```
 
@@ -110,4 +110,3 @@ The compiler plugin reads this resource from the compilation classpath and regis
 - Test direct generator functions and `fake<T>()` default generation.
 - Test generic nesting such as `fake<Optional<List<Int>>>()` or `fake<ArrayList<Optional<String>>>()` when supported.
 - Add `META-INF/fiktion/addons` for automatic registration.
-

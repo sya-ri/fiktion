@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.2.1
+
+- Changed compiler-plugin metadata collection to register metadata for types reached from `fake<T>()` calls instead of
+  pre-collecting every supported class in the source set.
+- Added metadata collection for constructor property types and their type arguments when they are reached from a
+  generated root type.
+- Note that wrapper functions around `fake<T>()` are not metadata collection entry points; call `fake<T>()` or
+  `Fiktion.fake<T>()` directly when compiler-generated metadata is needed.
+
 ## v0.2.0
 
 - Added reified `KProperty1` rule APIs backed by KType-aware overloads.

@@ -7,10 +7,14 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
-import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
+import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.typeOrNull
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrVisitorVoid
@@ -31,23 +35,97 @@ internal class FiktionGeneratedMetadataCollector {
                     element.acceptChildren(this, null)
                 }
 
-                override fun visitClass(declaration: IrClass) {
-                    declaration.toCandidate()?.let(candidates::add)
-                    super.visitClass(declaration)
+                @OptIn(UnsafeDuringIrConstructionAPI::class)
+                override fun visitCall(expression: IrCall) {
+                    expression
+                        .takeIf { call -> call.isFiktionFakeCall() }
+                        ?.type
+                        ?.addCandidates(candidates, visited = mutableSetOf())
+                    super.visitCall(expression)
                 }
             },
             null,
         )
 
-        return candidates
+        return candidates.distinctBy { candidate -> candidate.className }
     }
+
+    /**
+     * Adds this type and type arguments when they map to supported classes.
+     */
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrType.addCandidates(
+        candidates: MutableList<FiktionGeneratedMetadataCandidate>,
+        visited: MutableSet<String>,
+    ) {
+        classOrNull?.owner?.addCandidate(candidates, visited)
+        (this as? IrSimpleType)
+            ?.arguments
+            ?.mapNotNull { argument -> argument.typeOrNull }
+            ?.forEach { type -> type.addCandidates(candidates, visited) }
+    }
+
+    /**
+     * Adds this class and sealed subtype leaves when they are supported.
+     */
+    private fun IrClass.addCandidate(
+        candidates: MutableList<FiktionGeneratedMetadataCandidate>,
+        visited: MutableSet<String>,
+    ) {
+        val candidate = toCandidate() ?: return
+        if (!visited.add(candidate.className)) return
+        candidates.add(candidate)
+        candidate.referencedClasses().forEach { irClass ->
+            irClass.addCandidate(candidates, visited)
+        }
+    }
+
+    /**
+     * Returns classes that generated metadata for this candidate needs at runtime.
+     */
+    private fun FiktionGeneratedMetadataCandidate.referencedClasses(): List<IrClass> =
+        when (this) {
+            is FiktionGeneratedObjectMetadataCandidate -> {
+                properties.flatMap { property ->
+                    property.parameter.type.referencedClasses()
+                }
+            }
+
+            is FiktionGeneratedValueMetadataCandidate -> {
+                property.parameter.type.referencedClasses()
+            }
+
+            is FiktionGeneratedSealedMetadataCandidate -> {
+                subtypes
+            }
+
+            is FiktionGeneratedEnumMetadataCandidate,
+            is FiktionGeneratedSingletonMetadataCandidate,
+            -> {
+                emptyList()
+            }
+        }
+
+    /**
+     * Returns classes referenced by this type and type arguments.
+     */
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrType.referencedClasses(): List<IrClass> =
+        listOfNotNull(classOrNull?.owner) +
+            (
+                (this as? IrSimpleType)
+                    ?.arguments
+                    ?.mapNotNull { argument -> argument.typeOrNull }
+                    ?.flatMap { type -> type.referencedClasses() }
+                    ?: emptyList()
+            )
 
     /**
      * Returns a generated metadata candidate for this class, or `null` when the class is outside the supported shape.
      */
     @OptIn(UnsafeDuringIrConstructionAPI::class)
     private fun IrClass.toCandidate(): FiktionGeneratedMetadataCandidate? {
-        if (isExpect || isInner || isLocalClass()) return null
+        if (isExpect || isInner) return null
         val className = fqNameWhenAvailable?.asString().orEmpty()
         if (className.isBlank()) return null
 
@@ -123,11 +201,6 @@ internal class FiktionGeneratedMetadataCollector {
         }
 
     /**
-     * Returns whether this class is declared in a local scope.
-     */
-    private fun IrClass.isLocalClass(): Boolean = parent !is IrFile && parent !is IrClass
-
-    /**
      * Returns whether this constructor should stay hidden from generated metadata.
      */
     private fun IrConstructor.isHiddenConstructor(): Boolean =
@@ -140,4 +213,10 @@ internal class FiktionGeneratedMetadataCollector {
         parameters.any { parameter ->
             parameter.kind != IrParameterKind.Regular || parameter.varargElementType != null
         }
+
+    /**
+     * Returns whether this call targets a Fiktion fake entry point.
+     */
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrCall.isFiktionFakeCall(): Boolean = symbol.owner.fqNameWhenAvailable?.asString() == FIKTION_FAKE_FUNCTION
 }
