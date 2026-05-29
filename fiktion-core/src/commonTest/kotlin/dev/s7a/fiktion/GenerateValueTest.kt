@@ -85,6 +85,40 @@ class GenerateValueTest {
     }
 
     @Test
+    fun `generateValue generates function0 return values from the return type argument`() {
+        val callback = fake<() -> String>(seed = 123)
+
+        assertEquals(fake<String>(seed = 123L.childSeed(0)), callback())
+    }
+
+    @Test
+    fun `generateValue generates function2 return values from the last type argument`() {
+        val callback = fake<(Int, String) -> Boolean>(seed = 123)
+
+        assertEquals(fake<Boolean>(seed = 123L.childSeed(2)), callback(1, "ignored"))
+    }
+
+    @Test
+    fun `generateValue generates function22 return values from the last type argument`() {
+        val callback = fake<TwentyTwoArgFunction>(seed = 123)
+
+        assertEquals(
+            fake<String>(seed = 123L.childSeed(22)),
+            callback(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22),
+        )
+    }
+
+    @Test
+    fun `generateValue prefers exact function rule over built-in type family rule`() {
+        val fiktion =
+            Fiktion {
+                type<() -> String>() generates { "configured" }
+            }
+
+        assertEquals("configured", fiktion.fake<() -> String>(seed = 123)())
+    }
+
+    @Test
     fun `generateValue prefers a higher precedence layer before specificity`() {
         val base =
             FiktionConfig(
@@ -334,3 +368,28 @@ class GenerateValueTest {
 private data class GenericBox<T>(
     val value: T,
 )
+
+private typealias TwentyTwoArgFunction = (
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+    Int,
+) -> String

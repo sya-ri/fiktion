@@ -148,6 +148,18 @@ import java.util.concurrent.atomic.DoubleAccumulator
 import java.util.concurrent.atomic.DoubleAdder
 import java.util.concurrent.atomic.LongAccumulator
 import java.util.concurrent.atomic.LongAdder
+import java.util.function.BiConsumer
+import java.util.function.BiFunction
+import java.util.function.BiPredicate
+import java.util.function.BinaryOperator
+import java.util.function.BooleanSupplier
+import java.util.function.Consumer
+import java.util.function.DoubleSupplier
+import java.util.function.IntSupplier
+import java.util.function.LongSupplier
+import java.util.function.Predicate
+import java.util.function.Supplier
+import java.util.function.UnaryOperator
 import java.util.logging.Level
 import java.util.regex.Pattern
 import java.util.zip.ZipEntry
@@ -158,6 +170,7 @@ import kotlin.test.assertTrue
 import java.sql.Date as SqlDate
 import java.sql.Time as SqlTime
 import java.sql.Timestamp as SqlTimestamp
+import java.util.function.Function as JavaFunction
 
 class JavaFiktionAddonTest {
     @Test
@@ -388,6 +401,38 @@ class JavaFiktionAddonTest {
         assertEquals(fiktion.fake<OptionalDouble>(seed = 123), fiktion.fake<OptionalDouble>(seed = 123))
         assertEquals(fiktion.fake<Optional<String>>(seed = 123), fiktion.fake<Optional<String>>(seed = 123))
         assertEquals(fiktion.fake<Optional<Int>>(seed = 123), fiktion.fake<Optional<Int>>(seed = 123))
+        fiktion.fake<Runnable>(seed = 123).run()
+        assertEquals(fiktion.fake<Supplier<String>>(seed = 123).get(), fiktion.fake<Supplier<String>>(seed = 123).get())
+        fiktion.fake<Consumer<String>>(seed = 123).accept("ignored")
+        fiktion.fake<BiConsumer<String, Int>>(seed = 123).accept("ignored", 1)
+        assertEquals(
+            fiktion.fake<JavaFunction<String, Int>>(seed = 123).apply("ignored"),
+            fiktion.fake<JavaFunction<String, Int>>(seed = 123).apply("ignored"),
+        )
+        assertEquals(
+            fiktion.fake<BiFunction<String, Int, Long>>(seed = 123).apply("ignored", 1),
+            fiktion.fake<BiFunction<String, Int, Long>>(seed = 123).apply("ignored", 1),
+        )
+        assertEquals(
+            fiktion.fake<Predicate<String>>(seed = 123).test("ignored"),
+            fiktion.fake<Predicate<String>>(seed = 123).test("ignored"),
+        )
+        assertEquals(
+            fiktion.fake<BiPredicate<String, Int>>(seed = 123).test("ignored", 1),
+            fiktion.fake<BiPredicate<String, Int>>(seed = 123).test("ignored", 1),
+        )
+        assertEquals(
+            fiktion.fake<UnaryOperator<String>>(seed = 123).apply("ignored"),
+            fiktion.fake<UnaryOperator<String>>(seed = 123).apply("ignored"),
+        )
+        assertEquals(
+            fiktion.fake<BinaryOperator<String>>(seed = 123).apply("ignored", "ignored"),
+            fiktion.fake<BinaryOperator<String>>(seed = 123).apply("ignored", "ignored"),
+        )
+        assertEquals(fiktion.fake<BooleanSupplier>(seed = 123).asBoolean, fiktion.fake<BooleanSupplier>(seed = 123).asBoolean)
+        assertEquals(fiktion.fake<IntSupplier>(seed = 123).asInt, fiktion.fake<IntSupplier>(seed = 123).asInt)
+        assertEquals(fiktion.fake<LongSupplier>(seed = 123).asLong, fiktion.fake<LongSupplier>(seed = 123).asLong)
+        assertEquals(fiktion.fake<DoubleSupplier>(seed = 123).asDouble, fiktion.fake<DoubleSupplier>(seed = 123).asDouble)
         assertTrue(
             fiktion
                 .fake<SQLException>(seed = 123)
@@ -429,6 +474,19 @@ class JavaFiktionAddonTest {
             }
 
         assertEquals(fixed, fiktion.fake<Instant>(seed = 123))
+    }
+
+    @Test
+    fun `exact java functional interface rules replace add-on type family rules`() {
+        val fiktion =
+            Fiktion {
+                install(JavaFiktionAddon)
+                type<Supplier<String>>() generates Supplier { "configured" }
+                type<JavaFunction<String, Int>>() generates JavaFunction { 42 }
+            }
+
+        assertEquals("configured", fiktion.fake<Supplier<String>>(seed = 123).get())
+        assertEquals(42, fiktion.fake<JavaFunction<String, Int>>(seed = 123).apply("ignored"))
     }
 
     @Test

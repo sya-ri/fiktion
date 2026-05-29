@@ -142,6 +142,13 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata for function constructor properties`() {
+        val user = fake<GeneratedFunctionPropertyUser>(seed = 123)
+
+        assertTrue(user.callback(1, "ignored").isNotBlank())
+    }
+
+    @Test
     fun `compiler plugin uses static constructor defaults and generated values`() {
         assertEquals(GeneratedUserWithStaticDefault(id = "static-id"), fake<GeneratedUserWithStaticDefault>(seed = 0))
         assertTrue(fake<GeneratedUserWithStaticDefault>(seed = 3).id != "static-id")
@@ -523,6 +530,16 @@ private data class GeneratedUserWrapper(
      * Generated user value.
      */
     val user: GeneratedUser,
+)
+
+/**
+ * Smoke-test model with a function constructor property.
+ */
+private data class GeneratedFunctionPropertyUser(
+    /**
+     * Generated callback function.
+     */
+    val callback: (Int, String) -> String,
 )
 
 /**

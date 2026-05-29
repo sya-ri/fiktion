@@ -127,6 +127,10 @@ import dev.s7a.fiktion.addon.java.generators.zoneId
 import dev.s7a.fiktion.addon.java.generators.zoneOffset
 import dev.s7a.fiktion.addon.java.generators.zonedDateTime
 import dev.s7a.fiktion.generatesBy
+import dev.s7a.fiktion.generators.boolean
+import dev.s7a.fiktion.generators.double
+import dev.s7a.fiktion.generators.int
+import dev.s7a.fiktion.generators.long
 import java.io.EOFException
 import java.io.File
 import java.io.FileNotFoundException
@@ -243,6 +247,49 @@ import java.util.concurrent.atomic.DoubleAccumulator
 import java.util.concurrent.atomic.DoubleAdder
 import java.util.concurrent.atomic.LongAccumulator
 import java.util.concurrent.atomic.LongAdder
+import java.util.function.BiConsumer
+import java.util.function.BiFunction
+import java.util.function.BiPredicate
+import java.util.function.BinaryOperator
+import java.util.function.BooleanSupplier
+import java.util.function.Consumer
+import java.util.function.DoubleBinaryOperator
+import java.util.function.DoubleConsumer
+import java.util.function.DoubleFunction
+import java.util.function.DoublePredicate
+import java.util.function.DoubleSupplier
+import java.util.function.DoubleToIntFunction
+import java.util.function.DoubleToLongFunction
+import java.util.function.DoubleUnaryOperator
+import java.util.function.Function
+import java.util.function.IntBinaryOperator
+import java.util.function.IntConsumer
+import java.util.function.IntFunction
+import java.util.function.IntPredicate
+import java.util.function.IntSupplier
+import java.util.function.IntToDoubleFunction
+import java.util.function.IntToLongFunction
+import java.util.function.IntUnaryOperator
+import java.util.function.LongBinaryOperator
+import java.util.function.LongConsumer
+import java.util.function.LongFunction
+import java.util.function.LongPredicate
+import java.util.function.LongSupplier
+import java.util.function.LongToDoubleFunction
+import java.util.function.LongToIntFunction
+import java.util.function.LongUnaryOperator
+import java.util.function.ObjDoubleConsumer
+import java.util.function.ObjIntConsumer
+import java.util.function.ObjLongConsumer
+import java.util.function.Predicate
+import java.util.function.Supplier
+import java.util.function.ToDoubleBiFunction
+import java.util.function.ToDoubleFunction
+import java.util.function.ToIntBiFunction
+import java.util.function.ToIntFunction
+import java.util.function.ToLongBiFunction
+import java.util.function.ToLongFunction
+import java.util.function.UnaryOperator
 import java.util.logging.Level
 import java.util.regex.Pattern
 import java.util.zip.ZipEntry
@@ -574,6 +621,156 @@ public object JavaFiktionAddon : FiktionAddon {
             }
             typeFamily<EnumMap<*, *>>() generatesBy {
                 enumMap()
+            }
+
+            // java.lang
+            type<Runnable>() generatesBy {
+                Runnable {}
+            }
+
+            // java.util.function
+            typeFamily<Supplier<*>>() generatesBy {
+                Supplier { fake(0) }
+            }
+            typeFamily<Consumer<*>>() generatesBy {
+                Consumer<Any?> {}
+            }
+            typeFamily<BiConsumer<*, *>>() generatesBy {
+                BiConsumer<Any?, Any?> { _, _ -> }
+            }
+            typeFamily<Function<*, *>>() generatesBy {
+                Function<Any?, Any?> { _ ->
+                    fake(1)
+                }
+            }
+            typeFamily<BiFunction<*, *, *>>() generatesBy {
+                BiFunction<Any?, Any?, Any?> { _, _ ->
+                    fake(2)
+                }
+            }
+            typeFamily<Predicate<*>>() generatesBy {
+                Predicate<Any?> { boolean() }
+            }
+            typeFamily<BiPredicate<*, *>>() generatesBy {
+                BiPredicate<Any?, Any?> { _, _ -> boolean() }
+            }
+            typeFamily<UnaryOperator<*>>() generatesBy {
+                UnaryOperator<Any?> { _ ->
+                    fake(0)
+                }
+            }
+            typeFamily<BinaryOperator<*>>() generatesBy {
+                BinaryOperator<Any?> { _, _ ->
+                    fake(0)
+                }
+            }
+            type<BooleanSupplier>() generatesBy {
+                BooleanSupplier { boolean() }
+            }
+            type<IntSupplier>() generatesBy {
+                IntSupplier { int() }
+            }
+            type<LongSupplier>() generatesBy {
+                LongSupplier { long() }
+            }
+            type<DoubleSupplier>() generatesBy {
+                DoubleSupplier { double() }
+            }
+            type<IntConsumer>() generatesBy {
+                IntConsumer {}
+            }
+            type<LongConsumer>() generatesBy {
+                LongConsumer {}
+            }
+            type<DoubleConsumer>() generatesBy {
+                DoubleConsumer {}
+            }
+            typeFamily<ObjIntConsumer<*>>() generatesBy {
+                ObjIntConsumer<Any?> { _, _ -> }
+            }
+            typeFamily<ObjLongConsumer<*>>() generatesBy {
+                ObjLongConsumer<Any?> { _, _ -> }
+            }
+            typeFamily<ObjDoubleConsumer<*>>() generatesBy {
+                ObjDoubleConsumer<Any?> { _, _ -> }
+            }
+            typeFamily<IntFunction<*>>() generatesBy {
+                IntFunction<Any?> { _ ->
+                    fake(0)
+                }
+            }
+            typeFamily<LongFunction<*>>() generatesBy {
+                LongFunction<Any?> { _ ->
+                    fake(0)
+                }
+            }
+            typeFamily<DoubleFunction<*>>() generatesBy {
+                DoubleFunction<Any?> { _ ->
+                    fake(0)
+                }
+            }
+            typeFamily<ToIntFunction<*>>() generatesBy {
+                ToIntFunction<Any?> { int() }
+            }
+            typeFamily<ToLongFunction<*>>() generatesBy {
+                ToLongFunction<Any?> { long() }
+            }
+            typeFamily<ToDoubleFunction<*>>() generatesBy {
+                ToDoubleFunction<Any?> { double() }
+            }
+            typeFamily<ToIntBiFunction<*, *>>() generatesBy {
+                ToIntBiFunction<Any?, Any?> { _, _ -> int() }
+            }
+            typeFamily<ToLongBiFunction<*, *>>() generatesBy {
+                ToLongBiFunction<Any?, Any?> { _, _ -> long() }
+            }
+            typeFamily<ToDoubleBiFunction<*, *>>() generatesBy {
+                ToDoubleBiFunction<Any?, Any?> { _, _ -> double() }
+            }
+            type<IntPredicate>() generatesBy {
+                IntPredicate { boolean() }
+            }
+            type<LongPredicate>() generatesBy {
+                LongPredicate { boolean() }
+            }
+            type<DoublePredicate>() generatesBy {
+                DoublePredicate { boolean() }
+            }
+            type<IntUnaryOperator>() generatesBy {
+                IntUnaryOperator { int() }
+            }
+            type<LongUnaryOperator>() generatesBy {
+                LongUnaryOperator { long() }
+            }
+            type<DoubleUnaryOperator>() generatesBy {
+                DoubleUnaryOperator { double() }
+            }
+            type<IntBinaryOperator>() generatesBy {
+                IntBinaryOperator { _, _ -> int() }
+            }
+            type<LongBinaryOperator>() generatesBy {
+                LongBinaryOperator { _, _ -> long() }
+            }
+            type<DoubleBinaryOperator>() generatesBy {
+                DoubleBinaryOperator { _, _ -> double() }
+            }
+            type<IntToLongFunction>() generatesBy {
+                IntToLongFunction { long() }
+            }
+            type<IntToDoubleFunction>() generatesBy {
+                IntToDoubleFunction { double() }
+            }
+            type<LongToIntFunction>() generatesBy {
+                LongToIntFunction { int() }
+            }
+            type<LongToDoubleFunction>() generatesBy {
+                LongToDoubleFunction { double() }
+            }
+            type<DoubleToIntFunction>() generatesBy {
+                DoubleToIntFunction { int() }
+            }
+            type<DoubleToLongFunction>() generatesBy {
+                DoubleToLongFunction { long() }
             }
 
             // java.text
