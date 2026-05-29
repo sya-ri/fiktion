@@ -36,13 +36,22 @@ public class FakeSpec<Root> {
 
     /**
      * Targets [property] on [Root].
-     *
-     * Kotlin common code cannot read the value type from a bare [KProperty1]. Use the property reference infix
-     * functions when type-safe matching is required.
      */
-    @Deprecated("Use the infix KProperty generates API.", level = DeprecationLevel.ERROR)
-    public fun <Value> property(property: KProperty1<Root, Value>): RuleTarget<Value> =
-        target(listOf(PathRuleSegment(ownerId = null, name = property.name, valueId = null)))
+    @Suppress("DEPRECATION_ERROR")
+    public inline fun <reified Value> property(property: KProperty1<Root, Value>): RuleTarget<Value> =
+        property(property = property, value = typeOf<Value>())
+
+    /**
+     * Targets [property] on [Root].
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [value] and
+     * the generator value type consistent.
+     */
+    @Deprecated("Use the reified property(property) overload.", level = DeprecationLevel.ERROR)
+    public fun <Value> property(
+        property: KProperty1<Root, Value>,
+        value: KType,
+    ): RuleTarget<Value> = target(listOf(PathRuleSegment(ownerId = null, name = property.name, valueId = value.nonNullTypeId())))
 
     /**
      * Targets a nested [path] starting from [Root].
@@ -99,6 +108,7 @@ public class FakeSpec<Root> {
     @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
     public inline fun <reified Value> name(
         name: String,
+        // Keeps this overload distinct from name(name: String), which returns RuleNameTarget.
         typed: Unit = Unit,
     ): RuleTarget<Value> = name(name, typeOf<Value>()) as RuleTarget<Value>
 
@@ -108,142 +118,211 @@ public class FakeSpec<Root> {
     @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
     public inline fun <reified Value> name(
         regex: Regex,
+        // Keeps this overload distinct from name(regex: Regex), which returns RuleNameTarget.
         typed: Unit = Unit,
     ): RuleTarget<Value> = name(regex, typeOf<Value>()) as RuleTarget<Value>
 
     /**
      * Generates [value] for this property.
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <reified Value> KProperty1<Root, Value>.generates(value: Value): GenerationSpec<Value> =
-        propertyByValueType<Value>(
-            name = name,
-            valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
-        ).generates(value)
+        property(property = this, value = typeOf<Value>()).generates(value)
 
     /**
      * Generates this property by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <reified Value> KProperty1<Root, Value>.generatesBy(
         noinline generator: Generator<Value>,
-    ): GenerationSpec<Value> =
-        propertyByValueType<Value>(
-            name = name,
-            valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
-        ).generatesBy(generator)
+    ): GenerationSpec<Value> = property(property = this, value = typeOf<Value>()).generatesBy(generator)
 
     /**
      * Generates this property using Fiktion's automatic generation.
      */
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public inline infix fun <reified Value> KProperty1<Root, Value>.generates(auto: Auto): GenerationSpec<Value> =
-        propertyByValueType<Value>(
-            name = name,
-            valueId = typeOf<Value>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
-        ).generates(auto)
+        property(property = this, value = typeOf<Value>()).generates(auto)
 
     /**
      * Generates this collection property by automatically generating each element.
      */
     @JvmName("generatesAutoCollectionProperty")
-    @Suppress("DEPRECATION_ERROR")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public inline infix fun <reified Element, reified CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.generates(
         auto: Auto,
-    ): CollectionGenerationSpec<Element, CollectionType> = property(this) generates auto
+    ): CollectionGenerationSpec<Element, CollectionType> =
+        generates(auto = auto, collectionType = typeOf<CollectionType>(), elementType = typeOf<Element>())
+
+    /**
+     * Generates this collection property by automatically generating each element.
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified collection property generates(auto) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
+    public fun <Element, CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.generates(
+        auto: Auto,
+        collectionType: KType,
+        elementType: KType,
+    ): CollectionGenerationSpec<Element, CollectionType> =
+        property(property = this, value = collectionType).generates(auto = auto, elementType = elementType)
 
     /**
      * Generates this map property by automatically generating each key and value.
      */
     @JvmName("generatesAutoMapProperty")
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generates(
         auto: Auto,
     ): MapGenerationSpec<Key, Value, MapType> =
-        generatesAutoMap(
-            target =
-                propertyByValueType<MapType>(
-                    name = name,
-                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
-                ),
-            keyType = typeOf<Key>(),
-            valueType = typeOf<Value>(),
-        )
+        generates(auto = auto, mapType = typeOf<MapType>(), keyType = typeOf<Key>(), valueType = typeOf<Value>())
+
+    /**
+     * Generates this map property by automatically generating each key and value.
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified map property generates(auto) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
+    public fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generates(
+        auto: Auto,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapGenerationSpec<Key, Value, MapType> =
+        property(property = this, value = mapType).generates(auto = auto, keyType = keyType, valueType = valueType)
 
     /**
      * Generates each element for this collection property by invoking [generator].
      */
     @Suppress("DEPRECATION_ERROR")
-    public infix fun <Element, CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.generatesEach(
+    public inline infix fun <reified Element, reified CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.generatesEach(
+        noinline generator: Generator<Element>,
+    ): CollectionGenerationSpec<Element, CollectionType> = generatesEach(generator = generator, collectionType = typeOf<CollectionType>())
+
+    /**
+     * Generates each element for this collection property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep
+     * [collectionType] and the generator collection type consistent.
+     */
+    @Deprecated("Use the reified collection property generatesEach(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Element, CollectionType : Collection<Element>> KProperty1<Root, CollectionType>.generatesEach(
         generator: Generator<Element>,
-    ): CollectionGenerationSpec<Element, CollectionType> = property(this).generatesEach(generator)
+        collectionType: KType,
+    ): CollectionGenerationSpec<Element, CollectionType> = property(property = this, value = collectionType).generatesEach(generator)
 
     /**
      * Generates each entry for this map property by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesEach(
         noinline generator: Generator<Pair<Key, Value>>,
     ): MapEntrySpec<Key, Value, MapType> =
-        generatesMapEntries(
-            target =
-                propertyByValueType<MapType>(
-                    name = name,
-                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
-                ),
-            keyType = typeOf<Key>(),
-            valueType = typeOf<Value>(),
-            generator = generator,
-        )
+        generatesEach(generator = generator, mapType = typeOf<MapType>(), keyType = typeOf<Key>(), valueType = typeOf<Value>())
+
+    /**
+     * Generates each entry for this map property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified map property generatesEach(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesEach(
+        generator: Generator<Pair<Key, Value>>,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapEntrySpec<Key, Value, MapType> =
+        property(property = this, value = mapType).generatesEach(generator = generator, keyType = keyType, valueType = valueType)
 
     /**
      * Generates map keys for this property by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesKeys(
         noinline generator: Generator<Key>,
     ): MapKeySpec<Key, Value, MapType> =
-        generatesMapKeys(
-            target =
-                propertyByValueType<MapType>(
-                    name = name,
-                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
-                ),
-            keyType = typeOf<Key>(),
-            valueType = typeOf<Value>(),
-            generator = generator,
-        )
+        generatesKeys(generator = generator, mapType = typeOf<MapType>(), keyType = typeOf<Key>(), valueType = typeOf<Value>())
+
+    /**
+     * Generates map keys for this property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified property generatesKeys(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesKeys(
+        generator: Generator<Key>,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapKeySpec<Key, Value, MapType> =
+        property(property = this, value = mapType).generatesKeys(generator = generator, keyType = keyType, valueType = valueType)
 
     /**
      * Generates map values for this property by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesValues(
         noinline generator: Generator<Value>,
     ): MapValueSpec<Key, Value, MapType> =
-        generatesMapValues(
-            target =
-                propertyByValueType<MapType>(
-                    name = name,
-                    valueId = typeOf<MapType>().toString().removeSuffix(" (Kotlin reflection is not available)").removeSuffix("?"),
-                ),
-            keyType = typeOf<Key>(),
-            valueType = typeOf<Value>(),
-            generator = generator,
-        )
+        generatesValues(generator = generator, mapType = typeOf<MapType>(), keyType = typeOf<Key>(), valueType = typeOf<Value>())
+
+    /**
+     * Generates map values for this property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified property generatesValues(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Key, Value, MapType : Map<Key, Value>> KProperty1<Root, MapType>.generatesValues(
+        generator: Generator<Value>,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapValueSpec<Key, Value, MapType> =
+        property(property = this, value = mapType).generatesValues(generator = generator, keyType = keyType, valueType = valueType)
 
     /**
      * Applies nested per-call configuration to this property.
      */
     @Suppress("DEPRECATION_ERROR")
-    public operator fun <Value> KProperty1<Root, Value>.invoke(configure: FakeSpec<Value>.() -> Unit): GenerationSpec<Value> {
+    public inline operator fun <reified Value> KProperty1<Root, Value>.invoke(
+        noinline configure: FakeSpec<Value>.() -> Unit,
+    ): GenerationSpec<Value> = invoke(configure = configure, value = typeOf<Value>())
+
+    /**
+     * Applies nested per-call configuration to this property.
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [value] and
+     * the generator value type consistent.
+     */
+    @Deprecated("Use the reified property invoke overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public operator fun <Value> KProperty1<Root, Value>.invoke(
+        configure: FakeSpec<Value>.() -> Unit,
+        value: KType,
+    ): GenerationSpec<Value> {
         configureNestedRules(
             prefix =
                 listOf(
                     PathRuleSegment(
                         ownerId = null,
                         name = name,
-                        valueId = null,
+                        valueId = value.nonNullTypeId(),
                     ),
                 ),
             configure = configure,
         )
-        return property(this) generates auto
+        return property(property = this, value = value) generates auto
     }
 
     /**
@@ -266,21 +345,19 @@ public class FakeSpec<Root> {
      * Generates this nested collection property path by automatically generating each element.
      */
     @JvmName("generatesAutoCollectionPath")
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public infix fun <Element, CollectionType : Collection<Element>> PropertyPath<Root, CollectionType>.generates(
         auto: Auto,
-    ): CollectionGenerationSpec<Element, CollectionType> =
-        generatesAutoCollection(target = property(this), elementType = collectionElementType())
+    ): CollectionGenerationSpec<Element, CollectionType> = property(this).generates(auto = auto, elementType = collectionElementType())
 
     /**
      * Generates this nested map property path by automatically generating each key and value.
      */
     @JvmName("generatesAutoMapPath")
-    @Suppress("UNUSED_PARAMETER")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generates(
         auto: Auto,
-    ): MapGenerationSpec<Key, Value, MapType> =
-        generatesAutoMap(target = property(this), keyType = mapKeyType(), valueType = mapValueType())
+    ): MapGenerationSpec<Key, Value, MapType> = property(this).generates(auto = auto, keyType = mapKeyType(), valueType = mapValueType())
 
     /**
      * Generates each element for this nested collection property path by invoking [generator].
@@ -292,40 +369,40 @@ public class FakeSpec<Root> {
     /**
      * Generates each entry for this nested map property path by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesEach(
         generator: Generator<Pair<Key, Value>>,
     ): MapEntrySpec<Key, Value, MapType> =
-        generatesMapEntries(
-            target = property(this),
+        property(this).generatesEach(
+            generator = generator,
             keyType = mapKeyType(),
             valueType = mapValueType(),
-            generator = generator,
         )
 
     /**
      * Generates map keys for this nested property path by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesKeys(
         generator: Generator<Key>,
     ): MapKeySpec<Key, Value, MapType> =
-        generatesMapKeys(
-            target = property(this),
+        property(this).generatesKeys(
+            generator = generator,
             keyType = mapKeyType(),
             valueType = mapValueType(),
-            generator = generator,
         )
 
     /**
      * Generates map values for this nested property path by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesValues(
         generator: Generator<Value>,
     ): MapValueSpec<Key, Value, MapType> =
-        generatesMapValues(
-            target = property(this),
+        property(this).generatesValues(
+            generator = generator,
             keyType = mapKeyType(),
             valueType = mapValueType(),
-            generator = generator,
         )
 
     /**
@@ -341,15 +418,6 @@ public class FakeSpec<Root> {
      */
     private fun <Value> target(segments: List<PathRuleSegment>): RuleTarget<Value> =
         target(RuleKey.Path(segments), RuleMatcher.Path(segments))
-
-    /**
-     * Targets a root property when only the property name and value type are known.
-     */
-    @PublishedApi
-    internal fun <Value> propertyByValueType(
-        name: String,
-        valueId: String?,
-    ): RuleTarget<Value> = target(listOf(PathRuleSegment(ownerId = null, name = name, valueId = valueId)))
 
     /**
      * Registers rules from [configure] below a nested path [prefix].

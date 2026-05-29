@@ -47,13 +47,10 @@ public sealed class FiktionRuleBuilder protected constructor() {
 
     /**
      * Targets values generated for [property].
-     *
-     * Kotlin common code cannot read the owner and value type from a bare [KProperty1]. Use the property reference
-     * infix functions or `property<Owner, Value>(name)` when type-safe matching is required.
      */
-    @Deprecated("Use property<Owner, Value>(property.name) or the infix KProperty generates API.", level = DeprecationLevel.ERROR)
-    public fun <Owner, Value> property(property: KProperty1<Owner, Value>): RuleTarget<Value> =
-        target(listOf(PathRuleSegment(ownerId = null, name = property.name, valueId = null)))
+    @Suppress("DEPRECATION_ERROR")
+    public inline fun <reified Owner, reified Value> property(property: KProperty1<Owner, Value>): RuleTarget<Value> =
+        property(property = property, owner = typeOf<Owner>(), value = typeOf<Value>())
 
     /**
      * Targets values generated for [path].
@@ -72,6 +69,19 @@ public sealed class FiktionRuleBuilder protected constructor() {
         name: String,
         value: KType,
     ): RuleTarget<*> = target<Any?>(RuleKey.Property(owner, name, value), RuleMatcher.Property(owner, name, value))
+
+    /**
+     * Targets generated values for [property] whose owner is [owner] and value type is [value].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep [value]
+     * and the generator value type consistent.
+     */
+    @Deprecated("Use the reified property(property) overload.", level = DeprecationLevel.ERROR)
+    public fun <Owner, Value> property(
+        property: KProperty1<Owner, Value>,
+        owner: KType,
+        value: KType,
+    ): RuleTarget<Value> = target(RuleKey.Property(owner, property.name, value), RuleMatcher.Property(owner, property.name, value))
 
     /**
      * Targets generated values of [value] whose owner is [owner] and property name matches [regex].
@@ -137,33 +147,30 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Generates [value] for this property.
      */
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <reified Owner, reified Value> KProperty1<Owner, Value>.generates(value: Value): GenerationSpec<Value> =
-        (property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>)
-            .generates(value)
+        property(property = this, owner = typeOf<Owner>(), value = typeOf<Value>()).generates(value)
 
     /**
      * Generates this property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <reified Owner, reified Value> KProperty1<Owner, Value>.generatesBy(
         noinline generator: Generator<Value>,
-    ): GenerationSpec<Value> =
-        (property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>)
-            .generatesBy(generator)
+    ): GenerationSpec<Value> = property(property = this, owner = typeOf<Owner>(), value = typeOf<Value>()).generatesBy(generator)
 
     /**
      * Generates this property using Fiktion's automatic generation.
      */
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public inline infix fun <reified Owner, reified Value> KProperty1<Owner, Value>.generates(auto: Auto): GenerationSpec<Value> =
-        (property(owner = typeOf<Owner>(), name = name, value = typeOf<Value>()) as RuleTarget<Value>) generates auto
+        property(property = this, owner = typeOf<Owner>(), value = typeOf<Value>()) generates auto
 
     /**
      * Generates this collection property by automatically generating each element.
      */
     @JvmName("generatesAutoCollectionProperty")
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public inline infix fun <
         reified Owner,
         reified Element,
@@ -171,21 +178,29 @@ public sealed class FiktionRuleBuilder protected constructor() {
     > KProperty1<Owner, CollectionType>.generates(
         auto: Auto,
     ): CollectionGenerationSpec<Element, CollectionType> =
-        generatesAutoCollection(
-            target =
-                property(
-                    owner = typeOf<Owner>(),
-                    name = name,
-                    value = typeOf<CollectionType>(),
-                ) as RuleTarget<CollectionType>,
-            elementType = typeOf<Element>(),
-        )
+        generates(auto = auto, owner = typeOf<Owner>(), collectionType = typeOf<CollectionType>(), elementType = typeOf<Element>())
+
+    /**
+     * Generates this collection property by automatically generating each element.
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified collection property generates(auto) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
+    public fun <Owner, Element, CollectionType : Collection<Element>> KProperty1<Owner, CollectionType>.generates(
+        auto: Auto,
+        owner: KType,
+        collectionType: KType,
+        elementType: KType,
+    ): CollectionGenerationSpec<Element, CollectionType> =
+        property(property = this, owner = owner, value = collectionType).generates(auto = auto, elementType = elementType)
 
     /**
      * Generates this map property by automatically generating each key and value.
      */
     @JvmName("generatesAutoMapProperty")
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
     public inline infix fun <
         reified Owner,
         reified Key,
@@ -194,21 +209,29 @@ public sealed class FiktionRuleBuilder protected constructor() {
     > KProperty1<Owner, MapType>.generates(
         auto: Auto,
     ): MapGenerationSpec<Key, Value, MapType> =
-        generatesAutoMap(
-            target =
-                property(
-                    owner = typeOf<Owner>(),
-                    name = name,
-                    value = typeOf<MapType>(),
-                ) as RuleTarget<MapType>,
-            keyType = typeOf<Key>(),
-            valueType = typeOf<Value>(),
-        )
+        generates(auto = auto, owner = typeOf<Owner>(), mapType = typeOf<MapType>(), keyType = typeOf<Key>(), valueType = typeOf<Value>())
+
+    /**
+     * Generates this map property by automatically generating each key and value.
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified map property generates(auto) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
+    public fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generates(
+        auto: Auto,
+        owner: KType,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapGenerationSpec<Key, Value, MapType> =
+        property(property = this, owner = owner, value = mapType).generates(auto = auto, keyType = keyType, valueType = valueType)
 
     /**
      * Generates each element for this collection property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <
         reified Owner,
         reified Element,
@@ -216,18 +239,27 @@ public sealed class FiktionRuleBuilder protected constructor() {
     > KProperty1<Owner, CollectionType>.generatesEach(
         noinline generator: Generator<Element>,
     ): CollectionGenerationSpec<Element, CollectionType> =
-        (
-            property(
-                owner = typeOf<Owner>(),
-                name = name,
-                value = typeOf<CollectionType>(),
-            ) as RuleTarget<CollectionType>
-        ).generatesEach(generator)
+        generatesEach(generator = generator, owner = typeOf<Owner>(), collectionType = typeOf<CollectionType>())
+
+    /**
+     * Generates each element for this collection property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified collection property generatesEach(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Owner, Element, CollectionType : Collection<Element>> KProperty1<Owner, CollectionType>.generatesEach(
+        generator: Generator<Element>,
+        owner: KType,
+        collectionType: KType,
+    ): CollectionGenerationSpec<Element, CollectionType> =
+        property(property = this, owner = owner, value = collectionType).generatesEach(generator)
 
     /**
      * Generates each entry for this map property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <
         reified Owner,
         reified Key,
@@ -236,22 +268,36 @@ public sealed class FiktionRuleBuilder protected constructor() {
     > KProperty1<Owner, MapType>.generatesEach(
         noinline generator: Generator<Pair<Key, Value>>,
     ): MapEntrySpec<Key, Value, MapType> =
-        generatesMapEntries(
-            target =
-                property(
-                    owner = typeOf<Owner>(),
-                    name = name,
-                    value = typeOf<MapType>(),
-                ) as RuleTarget<MapType>,
+        generatesEach(
+            generator = generator,
+            owner = typeOf<Owner>(),
+            mapType = typeOf<MapType>(),
             keyType = typeOf<Key>(),
             valueType = typeOf<Value>(),
-            generator = generator,
         )
+
+    /**
+     * Generates each entry for this map property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified map property generatesEach(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesEach(
+        generator: Generator<Pair<Key, Value>>,
+        owner: KType,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapEntrySpec<Key, Value, MapType> =
+        property(property = this, owner = owner, value = mapType)
+            .generatesEach(generator = generator, keyType = keyType, valueType = valueType)
 
     /**
      * Generates map keys for this property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <
         reified Owner,
         reified Key,
@@ -260,22 +306,36 @@ public sealed class FiktionRuleBuilder protected constructor() {
     > KProperty1<Owner, MapType>.generatesKeys(
         noinline generator: Generator<Key>,
     ): MapKeySpec<Key, Value, MapType> =
-        generatesMapKeys(
-            target =
-                property(
-                    owner = typeOf<Owner>(),
-                    name = name,
-                    value = typeOf<MapType>(),
-                ) as RuleTarget<MapType>,
+        generatesKeys(
+            generator = generator,
+            owner = typeOf<Owner>(),
+            mapType = typeOf<MapType>(),
             keyType = typeOf<Key>(),
             valueType = typeOf<Value>(),
-            generator = generator,
         )
+
+    /**
+     * Generates map keys for this property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified property generatesKeys(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesKeys(
+        generator: Generator<Key>,
+        owner: KType,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapKeySpec<Key, Value, MapType> =
+        property(property = this, owner = owner, value = mapType)
+            .generatesKeys(generator = generator, keyType = keyType, valueType = valueType)
 
     /**
      * Generates map values for this property by invoking [generator].
      */
-    @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST")
+    @Suppress("DEPRECATION_ERROR")
     public inline infix fun <
         reified Owner,
         reified Key,
@@ -284,17 +344,31 @@ public sealed class FiktionRuleBuilder protected constructor() {
     > KProperty1<Owner, MapType>.generatesValues(
         noinline generator: Generator<Value>,
     ): MapValueSpec<Key, Value, MapType> =
-        generatesMapValues(
-            target =
-                property(
-                    owner = typeOf<Owner>(),
-                    name = name,
-                    value = typeOf<MapType>(),
-                ) as RuleTarget<MapType>,
+        generatesValues(
+            generator = generator,
+            owner = typeOf<Owner>(),
+            mapType = typeOf<MapType>(),
             keyType = typeOf<Key>(),
             valueType = typeOf<Value>(),
-            generator = generator,
         )
+
+    /**
+     * Generates map values for this property by invoking [generator].
+     *
+     * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+     * and the generator types consistent.
+     */
+    @Deprecated("Use the reified property generatesValues(generator) overload.", level = DeprecationLevel.ERROR)
+    @Suppress("DEPRECATION_ERROR")
+    public fun <Owner, Key, Value, MapType : Map<Key, Value>> KProperty1<Owner, MapType>.generatesValues(
+        generator: Generator<Value>,
+        owner: KType,
+        mapType: KType,
+        keyType: KType,
+        valueType: KType,
+    ): MapValueSpec<Key, Value, MapType> =
+        property(property = this, owner = owner, value = mapType)
+            .generatesValues(generator = generator, keyType = keyType, valueType = valueType)
 
     /**
      * Generates [value] for this nested property path.
@@ -323,40 +397,40 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Generates each entry for this nested map property path by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesEach(
         generator: Generator<Pair<Key, Value>>,
     ): MapEntrySpec<Key, Value, MapType> =
-        generatesMapEntries(
-            target = property(this),
+        property(this).generatesEach(
+            generator = generator,
             keyType = mapKeyType(),
             valueType = mapValueType(),
-            generator = generator,
         )
 
     /**
      * Generates map keys for this nested property path by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesKeys(
         generator: Generator<Key>,
     ): MapKeySpec<Key, Value, MapType> =
-        generatesMapKeys(
-            target = property(this),
+        property(this).generatesKeys(
+            generator = generator,
             keyType = mapKeyType(),
             valueType = mapValueType(),
-            generator = generator,
         )
 
     /**
      * Generates map values for this nested property path by invoking [generator].
      */
+    @Suppress("DEPRECATION_ERROR")
     public infix fun <Root, Key, Value, MapType : Map<Key, Value>> PropertyPath<Root, MapType>.generatesValues(
         generator: Generator<Value>,
     ): MapValueSpec<Key, Value, MapType> =
-        generatesMapValues(
-            target = property(this),
+        property(this).generatesValues(
+            generator = generator,
             keyType = mapKeyType(),
             valueType = mapValueType(),
-            generator = generator,
         )
 
     /**
@@ -374,6 +448,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Configures how generated elements are materialized as collection type [CollectionType].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline fun <reified CollectionType : Collection<*>> configureCollection(noinline convert: (List<Any?>) -> CollectionType) {
         configureCollection(type = typeOf<CollectionType>(), convert = convert)
     }
@@ -381,15 +456,19 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Configures how generated entries are materialized as map type [MapType].
      */
+    @Suppress("DEPRECATION_ERROR")
     public inline fun <reified MapType : Map<*, *>> configureMap(noinline convert: (List<Pair<Any?, Any?>>) -> MapType) {
         configureMap(type = typeOf<MapType>(), convert = convert)
     }
 
     /**
-     * Registers a collection converter without exposing internal config to inline code.
+     * Configures how generated elements are materialized as collection type [type].
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [type] and
+     * the converter type consistent.
      */
-    @PublishedApi
-    internal fun configureCollection(
+    @Deprecated("Use the reified configureCollection<CollectionType>(convert) overload.", level = DeprecationLevel.ERROR)
+    public fun configureCollection(
         type: KType,
         convert: (List<Any?>) -> Collection<*>,
     ) {
@@ -397,10 +476,13 @@ public sealed class FiktionRuleBuilder protected constructor() {
     }
 
     /**
-     * Registers a map converter without exposing internal config to inline code.
+     * Configures how generated entries are materialized as map type [type].
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [type] and
+     * the converter type consistent.
      */
-    @PublishedApi
-    internal fun configureMap(
+    @Deprecated("Use the reified configureMap<MapType>(convert) overload.", level = DeprecationLevel.ERROR)
+    public fun configureMap(
         type: KType,
         convert: (List<Pair<Any?, Any?>>) -> Map<*, *>,
     ) {
@@ -434,6 +516,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
     @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
     public inline fun <reified Value> name(
         name: String,
+        // Keeps this overload distinct from name(name: String), which returns RuleNameTarget.
         typed: Unit = Unit,
     ): RuleTarget<Value> = name(name = name, value = typeOf<Value>()) as RuleTarget<Value>
 
@@ -443,6 +526,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
     @Suppress("DEPRECATION_ERROR", "UNCHECKED_CAST", "UNUSED_PARAMETER")
     public inline fun <reified Value> name(
         regex: Regex,
+        // Keeps this overload distinct from name(regex: Regex), which returns RuleNameTarget.
         typed: Unit = Unit,
     ): RuleTarget<Value> = name(regex = regex, value = typeOf<Value>()) as RuleTarget<Value>
 
