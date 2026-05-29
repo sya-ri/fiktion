@@ -7,9 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
@@ -17,11 +15,20 @@ concurrency:
 
 jobs:
   build:
-    name: Build Dokka
+    name: Build and Deploy Dokka
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout sources
         uses: actions/checkout@v6
+        with:
+          path: source
+
+      - name: Checkout Pages branch
+        uses: actions/checkout@v6
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: pages
 
       - name: Set up Java
         uses: actions/setup-java@v5
@@ -32,30 +39,52 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v6
+      - name: Prepare previous versions
+        working-directory: source
+        run: |
+          mkdir -p build/dokka/olderVersions
+          if [ -d ../pages ]; then
+            find ../pages -maxdepth 1 -type d -name 'v*' -exec cp -R {} build/dokka/olderVersions/ \;
+          fi
 
       - name: Build Dokka HTML
-        run: ./gradlew dokkaGeneratePublicationHtml --stacktrace
+        working-directory: source
+        run: ./gradlew :dokkaGeneratePublicationHtml -PdokkaVersionName=latest --stacktrace
 
-      - name: Configure Pages artifact
+      - name: Prepare Pages content
+        working-directory: source
         run: |
-          touch build/dokka/html/.nojekyll
-          echo "fiktion.s7a.dev" > build/dokka/html/CNAME
+          version="$(./gradlew -q printVersion)"
+          mkdir -p ../pages
+          rsync -a --checksum --delete --exclude '.git' --exclude 'v*/' build/dokka/html/ ../pages/
+          if [[ "${version}" != *-SNAPSHOT ]]; then
+            rsync -a --checksum --delete build/dokka/html/ "../pages/v${version}/"
+            printf '{"version":"%s"}\n' "${version}" > "../pages/v${version}/version.json"
+          fi
+          touch ../pages/.nojekyll
+          echo "fiktion.s7a.dev" > ../pages/CNAME
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: build/dokka/html
+      - name: Deploy Pages branch
+        working-directory: pages
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          if [ ! -d .git ]; then
+            git init
+            git checkout -b gh-pages
+            git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          else
+            git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          fi
 
-  deploy:
-    name: Deploy Pages
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No Pages changes to deploy."
+          else
+            git commit -m "Deploy Dokka documentation"
+            git push origin gh-pages
+          fi

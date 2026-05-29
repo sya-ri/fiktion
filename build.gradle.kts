@@ -15,10 +15,40 @@ plugins {
 group = "dev.s7a"
 version = "0.1.0"
 
+val dokkaOlderVersionsDir = layout.buildDirectory.dir("dokka/olderVersions")
+val dokkaVersionName = providers.gradleProperty("dokkaVersionName").orElse(project.version.toString())
+
 dependencies {
-    subprojects.forEach { it ->
+    subprojects.forEach {
         dokka(it)
         kover(it)
+    }
+    dokkaPlugin(libs.dokka.versioning.plugin)
+}
+
+dokka {
+    pluginsConfiguration {
+        versioning {
+            version.set(dokkaVersionName)
+            olderVersionsDir.set(dokkaOlderVersionsDir)
+        }
+    }
+}
+
+val prepareDokkaVersioning by tasks.registering {
+    outputs.dir(dokkaOlderVersionsDir)
+    doLast {
+        dokkaOlderVersionsDir.get().asFile.mkdirs()
+    }
+}
+
+tasks.matching { it.name == "dokkaGenerateHtml" || it.name == "dokkaGeneratePublicationHtml" }.configureEach {
+    dependsOn(prepareDokkaVersioning)
+}
+
+tasks.register("printVersion") {
+    doLast {
+        println(project.version)
     }
 }
 
