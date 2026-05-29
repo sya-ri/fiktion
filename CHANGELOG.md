@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.0 (Unpublished)
+## v0.2.0
 
 - Added reified `KProperty1` rule APIs backed by KType-aware overloads.
 - Removed `@PublishedApi` exposure from core rule/path internals.
