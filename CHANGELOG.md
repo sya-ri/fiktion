@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.0 (Unpublished)
+
+- Added reified `KProperty1` rule APIs backed by KType-aware overloads.
+- Removed `@PublishedApi` exposure from core rule/path internals.
+- Made `PropertyPath.properties` internal.
+
 ## v0.1.0
 
 Initial release of Fiktion.
