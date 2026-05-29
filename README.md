@@ -4,7 +4,7 @@
 [![Maven Central](https://img.shields.io/maven-central/v/dev.s7a/fiktion-core?label=maven%20central)](https://central.sonatype.com/artifact/dev.s7a/fiktion-core)
 [![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/dev.s7a.fiktion?label=gradle%20plugin)](https://plugins.gradle.org/plugin/dev.s7a.fiktion)
 
-Fiktion is a Kotlin fake data library for tests that should read like intent, not fixture setup.
+Fiktion is a Kotlin Multiplatform fake data library for tests that should read like intent, not fixture setup.
 
 It creates complete, realistic-enough object graphs from your Kotlin types, then lets each test override only the values
 that matter. No annotations in production code. No builders for every model. No fixture files drifting away from the
@@ -15,13 +15,15 @@ domain.
 fun `paid orders are shipped`() {
     val order = fake<Order> {
         Order::status generates OrderStatus.Paid
-        (Order::customer / Customer::email) generates "buyer@example.test"
-        Order::items generates auto withSize 3
+        // Other values are filled in automatically.
     }
 
     shippingService.ship(order)
 
-    assertEquals(ShipmentStatus.Created, shipmentRepository.findByOrderId(order.id).status)
+    assertEquals(
+        ShipmentStatus.Created,
+        shipmentRepository.findByOrderId(order.id).status
+    )
 }
 ```
 

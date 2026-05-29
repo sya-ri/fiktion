@@ -27,8 +27,8 @@ gradlePlugin {
         create("fiktion") {
             id = "dev.s7a.fiktion"
             displayName = "Fiktion Gradle Plugin"
-            description = "Kotlin fake data for tests that should read like intent, not fixture setup."
-            tags.set(listOf("kotlin", "testing", "fake-data"))
+            description = "Kotlin Multiplatform fake data for tests that should read like intent, not fixture setup."
+            tags.set(listOf("kotlin", "multiplatform", "testing", "fake-data"))
             implementationClass = "dev.s7a.fiktion.gradle.FiktionGradlePlugin"
         }
     }
