@@ -1,0 +1,1186 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>dev.s7a.fiktion.generators</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    fiktion
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;dev.s7a.fiktion.generators/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0" title="0.1.0"><span class="versions-dropdown-button-text">0.1.0</span></div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+<a href="index.html" class="dropdown--option dropdown--option_active dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.1.0"><span class="dropdown--option-icon dropdown--option-icon_selected"></span><span class="dropdown--option-text">0.1.0</span></a><a href="../../../../fiktion-core/dev.s7a.fiktion.generators/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="latest"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">latest</span></a></div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":fiktion-core/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":fiktion-core/commonMain" data-filter=":fiktion-core/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    fiktion
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="fiktion-core::dev.s7a.fiktion.generators////PointingToDeclaration//1493795707">
+  <div class="breadcrumbs"><a href="../index.html">fiktion-core</a><span class="delimiter">/</span><span class="current">dev.s7a.fiktion.generators</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1823493454%2FClasslikes%2F1493795707" anchor-label="FiktionCharset" id="1823493454%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-charset/index.html"><span>Fiktion</span><wbr><span><span>Charset</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1823493454%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-charset/index.html">FiktionCharset</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>chars<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Character set used by string generators.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1357796706%2FFunctions%2F1493795707" anchor-label="arithmeticException" id="-1357796706%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="arithmetic-exception.html"><span>arithmetic</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1357796706%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="arithmetic-exception.html"><span class="token function">arithmeticException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-arithmetic-exception/index.html">ArithmeticException</a></div><div class="brief "><p class="paragraph">Generates an arithmetic exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="651064421%2FFunctions%2F1493795707" anchor-label="assertionError" id="651064421%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="assertion-error.html"><span>assertion</span><wbr><span><span>Error</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="651064421%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="assertion-error.html"><span class="token function">assertionError</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-assertion-error/index.html">AssertionError</a></div><div class="brief "><p class="paragraph">Generates an assertion error.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1731105801%2FFunctions%2F1493795707" anchor-label="boolean" id="1731105801%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="boolean.html"><span><span>boolean</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1731105801%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="boolean.html"><span class="token function">boolean</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Generates a boolean.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="852521608%2FFunctions%2F1493795707" anchor-label="booleanArray" id="852521608%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="boolean-array.html"><span>boolean</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="852521608%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="boolean-array.html"><span class="token function">booleanArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean-array/index.html">BooleanArray</a></div><div class="brief "><p class="paragraph">Generates a boolean array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2010536799%2FFunctions%2F1493795707" anchor-label="byte" id="-2010536799%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="byte.html"><span><span>byte</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2010536799%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="byte.html"><span class="token function">byte</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte/index.html">Byte</a></div><div class="brief "><p class="paragraph">Generates a byte across the full byte range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="byte.html"><span class="token function">byte</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte/index.html">Byte</a></div><div class="brief "><p class="paragraph">Generates a byte within <a href="byte.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="byte.html"><span class="token function">byte</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte/index.html">Byte</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte/index.html">Byte</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte/index.html">Byte</a></div><div class="brief "><p class="paragraph">Generates a byte from <a href="byte.html">min</a> to <a href="byte.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="978990512%2FFunctions%2F1493795707" anchor-label="byteArray" id="978990512%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="byte-array.html"><span>byte</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="978990512%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="byte-array.html"><span class="token function">byteArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a></div><div class="brief "><p class="paragraph">Generates a byte array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="21133560%2FFunctions%2F1493795707" anchor-label="char" id="21133560%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="char.html"><span><span>char</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="21133560%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char.html"><span class="token function">char</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">charset<span class="token operator">: </span><a href="-fiktion-charset/index.html">FiktionCharset</a><span class="token operator"> = </span>FiktionCharset.AlphaNumeric</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a></div><div class="brief "><p class="paragraph">Generates a character from the default alpha-numeric character set.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char.html"><span class="token function">char</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-char-range/index.html">CharRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a></div><div class="brief "><p class="paragraph">Generates a character within <a href="char.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char.html"><span class="token function">char</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a></div><div class="brief "><p class="paragraph">Generates a character from <a href="char.html">min</a> to <a href="char.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1596434594%2FFunctions%2F1493795707" anchor-label="charArray" id="1596434594%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="char-array.html"><span>char</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1596434594%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char-array.html"><span class="token function">charArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char-array/index.html">CharArray</a></div><div class="brief "><p class="paragraph">Generates a character array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-88544026%2FFunctions%2F1493795707" anchor-label="charProgression" id="-88544026%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="char-progression.html"><span>char</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-88544026%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char-progression.html"><span class="token function">charProgression</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-char-progression/index.html">CharProgression</a></div><div class="brief "><p class="paragraph">Generates a finite character progression.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-609750369%2FFunctions%2F1493795707" anchor-label="charRange" id="-609750369%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="char-range.html"><span>char</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-609750369%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char-range.html"><span class="token function">charRange</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-char-range/index.html">CharRange</a></div><div class="brief "><p class="paragraph">Generates a finite character range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char-range.html"><span class="token function">charRange</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">charset<span class="token operator">: </span><a href="-fiktion-charset/index.html">FiktionCharset</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-char-range/index.html">CharRange</a></div><div class="brief "><p class="paragraph">Generates a finite character range inside <a href="char-range.html">charset</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="char-range.html"><span class="token function">charRange</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-char-range/index.html">CharRange</a></div><div class="brief "><p class="paragraph">Generates a finite character range from <a href="char-range.html">min</a> to <a href="char-range.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1606986643%2FFunctions%2F1493795707" anchor-label="classCastException" id="1606986643%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="class-cast-exception.html"><span>class</span><wbr><span>Cast</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1606986643%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="class-cast-exception.html"><span class="token function">classCastException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-class-cast-exception/index.html">ClassCastException</a></div><div class="brief "><p class="paragraph">Generates a class cast exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1110697561%2FFunctions%2F1493795707" anchor-label="concurrentModificationException" id="-1110697561%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="concurrent-modification-exception.html"><span>concurrent</span><wbr><span>Modification</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1110697561%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="concurrent-modification-exception.html"><span class="token function">concurrentModificationException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-concurrent-modification-exception/index.html">ConcurrentModificationException</a></div><div class="brief "><p class="paragraph">Generates a concurrent modification exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-610447821%2FFunctions%2F1493795707" anchor-label="double" id="-610447821%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="double.html"><span><span>double</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-610447821%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="double.html"><span class="token function">double</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Generates a double in <code class="lang-kotlin">0.0 &lt;= value &lt; 1.0</code>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="double.html"><span class="token function">double</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-floating-point-range/index.html">ClosedFloatingPointRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Generates a double within <a href="double.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="double.html"><span class="token function">double</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Generates a double from <a href="double.html">min</a> to <a href="double.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1554947769%2FFunctions%2F1493795707" anchor-label="doubleArray" id="-1554947769%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="double-array.html"><span>double</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1554947769%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="double-array.html"><span class="token function">doubleArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double-array/index.html">DoubleArray</a></div><div class="brief "><p class="paragraph">Generates a double array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1381344877%2FFunctions%2F1493795707" anchor-label="duration" id="1381344877%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="duration.html"><span><span>duration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1381344877%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="duration.html"><span class="token function">duration</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/index.html">Duration</a></div><div class="brief "><p class="paragraph">Generates a finite duration within approximately plus or minus 100 years.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-134544879%2FFunctions%2F1493795707" anchor-label="durationUnit" id="-134544879%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="duration-unit.html"><span>duration</span><wbr><span><span>Unit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-134544879%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="duration-unit.html"><span class="token function">durationUnit</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration-unit/index.html">DurationUnit</a></div><div class="brief "><p class="paragraph">Generates a duration unit.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1331144891%2FFunctions%2F1493795707" anchor-label="error" id="1331144891%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error.html"><span><span>error</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1331144891%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="error.html"><span class="token function">error</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-error/index.html">Error</a></div><div class="brief "><p class="paragraph">Generates an error.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="612920660%2FFunctions%2F1493795707" anchor-label="exception" id="612920660%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="exception.html"><span><span>exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="612920660%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="exception.html"><span class="token function">exception</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-exception/index.html">Exception</a></div><div class="brief "><p class="paragraph">Generates an exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="884824699%2FFunctions%2F1493795707" anchor-label="failureResult" id="884824699%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="failure-result.html"><span>failure</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="884824699%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="failure-result.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="failure-result.html"><span class="token function">failureResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">exception<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token operator"> = </span>{ IllegalStateException("Generated failure for ${type.displayName}") }</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="failure-result.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a failed result from <a href="failure-result.html">exception</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1077384743%2FFunctions%2F1493795707" anchor-label="float" id="-1077384743%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="float.html"><span><span>float</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1077384743%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="float.html"><span class="token function">float</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Generates a float in <code class="lang-kotlin">0.0 &lt;= value &lt; 1.0</code>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="float.html"><span class="token function">float</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-floating-point-range/index.html">ClosedFloatingPointRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Generates a float within <a href="float.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="float.html"><span class="token function">float</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Generates a float from <a href="float.html">min</a> to <a href="float.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2081865428%2FFunctions%2F1493795707" anchor-label="floatArray" id="2081865428%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="float-array.html"><span>float</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2081865428%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="float-array.html"><span class="token function">floatArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float-array/index.html">FloatArray</a></div><div class="brief "><p class="paragraph">Generates a float array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1475747569%2FFunctions%2F1493795707" anchor-label="illegalArgumentException" id="-1475747569%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="illegal-argument-exception.html"><span>illegal</span><wbr><span>Argument</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1475747569%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="illegal-argument-exception.html"><span class="token function">illegalArgumentException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-illegal-argument-exception/index.html">IllegalArgumentException</a></div><div class="brief "><p class="paragraph">Generates an illegal argument exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1672461201%2FFunctions%2F1493795707" anchor-label="illegalStateException" id="-1672461201%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="illegal-state-exception.html"><span>illegal</span><wbr><span>State</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1672461201%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="illegal-state-exception.html"><span class="token function">illegalStateException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-illegal-state-exception/index.html">IllegalStateException</a></div><div class="brief "><p class="paragraph">Generates an illegal state exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="512188444%2FFunctions%2F1493795707" anchor-label="indexOutOfBoundsException" id="512188444%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index-out-of-bounds-exception.html"><span>index</span><wbr><span>Out</span><wbr><span>Of</span><wbr><span>Bounds</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="512188444%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="index-out-of-bounds-exception.html"><span class="token function">indexOutOfBoundsException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-index-out-of-bounds-exception/index.html">IndexOutOfBoundsException</a></div><div class="brief "><p class="paragraph">Generates an index out of bounds exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-323939518%2FFunctions%2F1493795707" anchor-label="instant" id="-323939518%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="instant.html"><span><span>instant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-323939518%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="instant.html"><span class="token function">instant</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-instant/index.html">Instant</a></div><div class="brief "><p class="paragraph">Generates an instant from 2000-01-01T00:00:00Z until 2100-01-01T00:00:00Z.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-785503792%2FFunctions%2F1493795707" anchor-label="int" id="-785503792%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="int.html"><span><span>int</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-785503792%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="int.html"><span class="token function">int</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Generates an integer across the full integer range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="int.html"><span class="token function">int</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Generates an integer within <a href="int.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="int.html"><span class="token function">int</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Generates an integer from <a href="int.html">min</a> to <a href="int.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1435521889%2FFunctions%2F1493795707" anchor-label="intArray" id="1435521889%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="int-array.html"><span>int</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1435521889%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="int-array.html"><span class="token function">intArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a></div><div class="brief "><p class="paragraph">Generates an integer array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1030410021%2FFunctions%2F1493795707" anchor-label="intProgression" id="1030410021%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="int-progression.html"><span>int</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1030410021%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="int-progression.html"><span class="token function">intProgression</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-progression/index.html">IntProgression</a></div><div class="brief "><p class="paragraph">Generates a finite integer progression.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1481830077%2FFunctions%2F1493795707" anchor-label="intRange" id="1481830077%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="int-range.html"><span>int</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1481830077%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="int-range.html"><span class="token function">intRange</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></div><div class="brief "><p class="paragraph">Generates a finite integer range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="int-range.html"><span class="token function">intRange</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></div><div class="brief "><p class="paragraph">Generates a finite integer range from <a href="int-range.html">min</a> to <a href="int-range.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1253396354%2FFunctions%2F1493795707" anchor-label="list" id="1253396354%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="list.html"><span><span>list</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1253396354%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="list.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="list.html"><span class="token function">list</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)<span class="token punctuation">, </span></span><span class="parameter ">element<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="list.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="list.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a list using <a href="list.html">element</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-534074738%2FFunctions%2F1493795707" anchor-label="long" id="-534074738%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="long.html"><span><span>long</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-534074738%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="long.html"><span class="token function">long</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Generates a long across the full long range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="long.html"><span class="token function">long</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-long-range/index.html">LongRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Generates a long within <a href="long.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="long.html"><span class="token function">long</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Generates a long from <a href="long.html">min</a> to <a href="long.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1916668860%2FFunctions%2F1493795707" anchor-label="longArray" id="1916668860%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="long-array.html"><span>long</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1916668860%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="long-array.html"><span class="token function">longArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long-array/index.html">LongArray</a></div><div class="brief "><p class="paragraph">Generates a long array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="543223040%2FFunctions%2F1493795707" anchor-label="longProgression" id="543223040%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="long-progression.html"><span>long</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="543223040%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="long-progression.html"><span class="token function">longProgression</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-long-progression/index.html">LongProgression</a></div><div class="brief "><p class="paragraph">Generates a finite long progression.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1606499385%2FFunctions%2F1493795707" anchor-label="longRange" id="-1606499385%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="long-range.html"><span>long</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1606499385%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="long-range.html"><span class="token function">longRange</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-long-range/index.html">LongRange</a></div><div class="brief "><p class="paragraph">Generates a finite long range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="long-range.html"><span class="token function">longRange</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-long-range/index.html">LongRange</a></div><div class="brief "><p class="paragraph">Generates a finite long range from <a href="long-range.html">min</a> to <a href="long-range.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1521819445%2FFunctions%2F1493795707" anchor-label="map" id="1521819445%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="map.html"><span><span>map</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1521819445%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="map.html">K</a><span class="token punctuation">, </span><a href="map.html">V</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="map.html"><span class="token function">map</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)<span class="token punctuation">, </span></span><span class="parameter ">key<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="map.html">K</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="map.html">V</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="map.html">K</a><span class="token punctuation">, </span><a href="map.html">V</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a map using <a href="map.html">key</a> and <a href="map.html">value</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1588545584%2FFunctions%2F1493795707" anchor-label="mutableList" id="-1588545584%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mutable-list.html"><span>mutable</span><wbr><span><span>List</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1588545584%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="mutable-list.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="mutable-list.html"><span class="token function">mutableList</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)<span class="token punctuation">, </span></span><span class="parameter ">element<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="mutable-list.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="mutable-list.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a mutable list using <a href="mutable-list.html">element</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1468634535%2FFunctions%2F1493795707" anchor-label="mutableMap" id="1468634535%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mutable-map.html"><span>mutable</span><wbr><span><span>Map</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1468634535%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="mutable-map.html">K</a><span class="token punctuation">, </span><a href="mutable-map.html">V</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="mutable-map.html"><span class="token function">mutableMap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)<span class="token punctuation">, </span></span><span class="parameter ">key<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="mutable-map.html">K</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="mutable-map.html">V</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-map/index.html">MutableMap</a><span class="token operator">&lt;</span><a href="mutable-map.html">K</a><span class="token punctuation">, </span><a href="mutable-map.html">V</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a mutable map using <a href="mutable-map.html">key</a> and <a href="mutable-map.html">value</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-265615296%2FFunctions%2F1493795707" anchor-label="mutableSet" id="-265615296%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mutable-set.html"><span>mutable</span><wbr><span><span>Set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-265615296%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="mutable-set.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="mutable-set.html"><span class="token function">mutableSet</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)<span class="token punctuation">, </span></span><span class="parameter ">element<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="mutable-set.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="mutable-set.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a mutable set using <a href="mutable-set.html">element</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1007147696%2FFunctions%2F1493795707" anchor-label="noSuchElementException" id="1007147696%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="no-such-element-exception.html"><span>no</span><wbr><span>Such</span><wbr><span>Element</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1007147696%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="no-such-element-exception.html"><span class="token function">noSuchElementException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-no-such-element-exception/index.html">NoSuchElementException</a></div><div class="brief "><p class="paragraph">Generates a no such element exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-533494350%2FFunctions%2F1493795707" anchor-label="nullPointerException" id="-533494350%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="null-pointer-exception.html"><span>null</span><wbr><span>Pointer</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-533494350%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="null-pointer-exception.html"><span class="token function">nullPointerException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-null-pointer-exception/index.html">NullPointerException</a></div><div class="brief "><p class="paragraph">Generates a null pointer exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="427633684%2FFunctions%2F1493795707" anchor-label="numberFormatException" id="427633684%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="number-format-exception.html"><span>number</span><wbr><span>Format</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="427633684%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="number-format-exception.html"><span class="token function">numberFormatException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number-format-exception/index.html">NumberFormatException</a></div><div class="brief "><p class="paragraph">Generates a number format exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1150280552%2FFunctions%2F1493795707" anchor-label="oneOf" id="1150280552%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="one-of.html"><span>one</span><wbr><span><span>Of</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1150280552%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="one-of.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="one-of.html"><span class="token function">oneOf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">values<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="one-of.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="one-of.html">T</a></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="one-of.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="one-of.html"><span class="token function">oneOf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>values<span class="token operator">: </span><a href="one-of.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="one-of.html">T</a></div><div class="brief "><p class="paragraph">Chooses one value from <a href="one-of.html">values</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-20874650%2FFunctions%2F1493795707" anchor-label="pair" id="-20874650%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="pair.html"><span><span>pair</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-20874650%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="pair.html">First</a><span class="token punctuation">, </span><a href="pair.html">Second</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="pair.html"><span class="token function">pair</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">first<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="pair.html">First</a><span class="token punctuation">, </span></span><span class="parameter ">second<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="pair.html">Second</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="pair.html">First</a><span class="token punctuation">, </span><a href="pair.html">Second</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a pair from <a href="pair.html">first</a> and <a href="pair.html">second</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2098687257%2FFunctions%2F1493795707" anchor-label="regex" id="-2098687257%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="regex.html"><span><span>regex</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2098687257%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="regex.html"><span class="token function">regex</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">length<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">8</span><span class="token punctuation">, </span></span><span class="parameter ">charset<span class="token operator">: </span><a href="-fiktion-charset/index.html">FiktionCharset</a><span class="token operator"> = </span>FiktionCharset.AlphaNumeric</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.text/-regex/index.html">Regex</a></div><div class="brief "><p class="paragraph">Generates a regex whose pattern is a literal alpha-numeric string.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="120073900%2FFunctions%2F1493795707" anchor-label="result" id="120073900%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="result.html"><span><span>result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="120073900%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="result.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="result.html"><span class="token function">result</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">failureProbability<span class="token operator">: </span><a href="../dev.s7a.fiktion/-probability/index.html">Probability</a><span class="token operator"> = </span>50.percent<span class="token punctuation">, </span></span><span class="parameter ">exception<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token operator"> = </span>{ IllegalStateException("Generated failure for ${type.displayName}") }<span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="result.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="result.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a result that fails according to <a href="result.html">failureProbability</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1322243500%2FFunctions%2F1493795707" anchor-label="runtimeException" id="-1322243500%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="runtime-exception.html"><span>runtime</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1322243500%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="runtime-exception.html"><span class="token function">runtimeException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-runtime-exception/index.html">RuntimeException</a></div><div class="brief "><p class="paragraph">Generates a runtime exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="610274341%2FFunctions%2F1493795707" anchor-label="sequence" id="610274341%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sequence.html"><span><span>sequence</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="610274341%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="sequence.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="sequence.html"><span class="token function">sequence</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)<span class="token punctuation">, </span></span><span class="parameter ">element<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="sequence.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.sequences/-sequence/index.html">Sequence</a><span class="token operator">&lt;</span><a href="sequence.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a finite sequence using <a href="sequence.html">element</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-589581746%2FFunctions%2F1493795707" anchor-label="set" id="-589581746%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="set.html"><span><span>set</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-589581746%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="set.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="set.html"><span class="token function">set</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)<span class="token punctuation">, </span></span><span class="parameter ">element<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="set.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="set.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a set using <a href="set.html">element</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1035248483%2FFunctions%2F1493795707" anchor-label="short" id="-1035248483%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="short.html"><span><span>short</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1035248483%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="short.html"><span class="token function">short</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short/index.html">Short</a></div><div class="brief "><p class="paragraph">Generates a short across the full short range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="short.html"><span class="token function">short</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short/index.html">Short</a></div><div class="brief "><p class="paragraph">Generates a short within <a href="short.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="short.html"><span class="token function">short</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short/index.html">Short</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short/index.html">Short</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short/index.html">Short</a></div><div class="brief "><p class="paragraph">Generates a short from <a href="short.html">min</a> to <a href="short.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1818384204%2FFunctions%2F1493795707" anchor-label="shortArray" id="-1818384204%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="short-array.html"><span>short</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1818384204%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="short-array.html"><span class="token function">shortArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short-array/index.html">ShortArray</a></div><div class="brief "><p class="paragraph">Generates a short array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1500699217%2FFunctions%2F1493795707" anchor-label="string" id="-1500699217%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="string.html"><span><span>string</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1500699217%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="string.html"><span class="token function">string</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">length<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">charset<span class="token operator">: </span><a href="-fiktion-charset/index.html">FiktionCharset</a><span class="token operator"> = </span>FiktionCharset.AlphaNumeric</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Generates a string with <a href="string.html">length</a> characters using <a href="string.html">charset</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="string.html"><span class="token function">string</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">length<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a><span class="token operator"> = </span>DEFAULT_STRING_LENGTH<span class="token punctuation">, </span></span><span class="parameter ">charset<span class="token operator">: </span><a href="-fiktion-charset/index.html">FiktionCharset</a><span class="token operator"> = </span>FiktionCharset.AlphaNumeric</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Generates a string with a random length from <a href="string.html">length</a> using <a href="string.html">charset</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-29593653%2FFunctions%2F1493795707" anchor-label="successResult" id="-29593653%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="success-result.html"><span>success</span><wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-29593653%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="success-result.html">T</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="success-result.html"><span class="token function">successResult</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="success-result.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-result/index.html">Result</a><span class="token operator">&lt;</span><a href="success-result.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a successful result from <a href="success-result.html">value</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-777975165%2FFunctions%2F1493795707" anchor-label="throwable" id="-777975165%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="throwable.html"><span><span>throwable</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-777975165%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="throwable.html"><span class="token function">throwable</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a></div><div class="brief "><p class="paragraph">Generates a throwable.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1142349007%2FFunctions%2F1493795707" anchor-label="triple" id="1142349007%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="triple.html"><span><span>triple</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1142349007%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="triple.html">First</a><span class="token punctuation">, </span><a href="triple.html">Second</a><span class="token punctuation">, </span><a href="triple.html">Third</a><span class="token operator">&gt; </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="triple.html"><span class="token function">triple</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">first<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="triple.html">First</a><span class="token punctuation">, </span></span><span class="parameter ">second<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="triple.html">Second</a><span class="token punctuation">, </span></span><span class="parameter ">third<span class="token operator">: </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="triple.html">Third</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-triple/index.html">Triple</a><span class="token operator">&lt;</span><a href="triple.html">First</a><span class="token punctuation">, </span><a href="triple.html">Second</a><span class="token punctuation">, </span><a href="triple.html">Third</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates a triple from <a href="triple.html">first</a>, <a href="triple.html">second</a>, and <a href="triple.html">third</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1417060013%2FFunctions%2F1493795707" anchor-label="ubyte" id="-1417060013%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ubyte.html"><span><span>ubyte</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1417060013%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ubyte.html"><span class="token function">ubyte</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a></div><div class="brief "><p class="paragraph">Generates an unsigned byte across the full unsigned byte range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ubyte.html"><span class="token function">ubyte</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a></div><div class="brief "><p class="paragraph">Generates an unsigned byte within <a href="ubyte.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ubyte.html"><span class="token function">ubyte</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a></div><div class="brief "><p class="paragraph">Generates an unsigned byte from <a href="ubyte.html">min</a> to <a href="ubyte.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="908196499%2FFunctions%2F1493795707" anchor-label="ubyteArray" id="908196499%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ubyte-array.html"><span>ubyte</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="908196499%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ubyte-array.html"><span class="token function">ubyteArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte-array/index.html">UByteArray</a></div><div class="brief "><p class="paragraph">Generates an unsigned byte array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="497351782%2FFunctions%2F1493795707" anchor-label="uint" id="497351782%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="uint.html"><span><span>uint</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="497351782%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uint.html"><span class="token function">uint</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a></div><div class="brief "><p class="paragraph">Generates an unsigned integer across the full unsigned integer range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uint.html"><span class="token function">uint</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a></div><div class="brief "><p class="paragraph">Generates an unsigned integer within <a href="uint.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uint.html"><span class="token function">uint</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a></div><div class="brief "><p class="paragraph">Generates an unsigned integer from <a href="uint.html">min</a> to <a href="uint.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="186312222%2FFunctions%2F1493795707" anchor-label="uintArray" id="186312222%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="uint-array.html"><span>uint</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="186312222%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uint-array.html"><span class="token function">uintArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int-array/index.html">UIntArray</a></div><div class="brief "><p class="paragraph">Generates an unsigned integer array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-939636638%2FFunctions%2F1493795707" anchor-label="uintProgression" id="-939636638%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="uint-progression.html"><span>uint</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-939636638%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uint-progression.html"><span class="token function">uintProgression</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-progression/index.html">UIntProgression</a></div><div class="brief "><p class="paragraph">Generates a finite unsigned integer progression.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="951675147%2FFunctions%2F1493795707" anchor-label="uintRange" id="951675147%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="uint-range.html"><span>uint</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="951675147%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uint-range.html"><span class="token function">uintRange</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></div><div class="brief "><p class="paragraph">Generates a finite unsigned integer range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uint-range.html"><span class="token function">uintRange</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></div><div class="brief "><p class="paragraph">Generates a finite unsigned integer range from <a href="uint-range.html">min</a> to <a href="uint-range.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2087501492%2FFunctions%2F1493795707" anchor-label="ulong" id="2087501492%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ulong.html"><span><span>ulong</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2087501492%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ulong.html"><span class="token function">ulong</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a></div><div class="brief "><p class="paragraph">Generates an unsigned long across the full unsigned long range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ulong.html"><span class="token function">ulong</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-long-range/index.html">ULongRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a></div><div class="brief "><p class="paragraph">Generates an unsigned long within <a href="ulong.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ulong.html"><span class="token function">ulong</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a></div><div class="brief "><p class="paragraph">Generates an unsigned long from <a href="ulong.html">min</a> to <a href="ulong.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1845874847%2FFunctions%2F1493795707" anchor-label="ulongArray" id="1845874847%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ulong-array.html"><span>ulong</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1845874847%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ulong-array.html"><span class="token function">ulongArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long-array/index.html">ULongArray</a></div><div class="brief "><p class="paragraph">Generates an unsigned long array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-398681245%2FFunctions%2F1493795707" anchor-label="ulongProgression" id="-398681245%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ulong-progression.html"><span>ulong</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-398681245%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ulong-progression.html"><span class="token function">ulongProgression</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-long-progression/index.html">ULongProgression</a></div><div class="brief "><p class="paragraph">Generates a finite unsigned long progression.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-314431999%2FFunctions%2F1493795707" anchor-label="ulongRange" id="-314431999%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ulong-range.html"><span>ulong</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-314431999%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ulong-range.html"><span class="token function">ulongRange</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-long-range/index.html">ULongRange</a></div><div class="brief "><p class="paragraph">Generates a finite unsigned long range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ulong-range.html"><span class="token function">ulongRange</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-long-range/index.html">ULongRange</a></div><div class="brief "><p class="paragraph">Generates a finite unsigned long range from <a href="ulong-range.html">min</a> to <a href="ulong-range.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-738830243%2FFunctions%2F1493795707" anchor-label="unit" id="-738830243%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unit.html"><span><span>unit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-738830243%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="unit.html"><span class="token function">unit</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Generates the unit value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-897430618%2FFunctions%2F1493795707" anchor-label="unsupportedOperationException" id="-897430618%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="unsupported-operation-exception.html"><span>unsupported</span><wbr><span>Operation</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-897430618%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="unsupported-operation-exception.html"><span class="token function">unsupportedOperationException</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span>string()</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unsupported-operation-exception/index.html">UnsupportedOperationException</a></div><div class="brief "><p class="paragraph">Generates an unsupported operation exception.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-619559827%2FFunctions%2F1493795707" anchor-label="ushort" id="-619559827%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ushort.html"><span><span>ushort</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-619559827%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ushort.html"><span class="token function">ushort</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a></div><div class="brief "><p class="paragraph">Generates an unsigned short across the full unsigned short range.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ushort.html"><span class="token function">ushort</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a></div><div class="brief "><p class="paragraph">Generates an unsigned short within <a href="ushort.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ushort.html"><span class="token function">ushort</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">min<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a><span class="token punctuation">, </span></span><span class="parameter ">max<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a></div><div class="brief "><p class="paragraph">Generates an unsigned short from <a href="ushort.html">min</a> to <a href="ushort.html">max</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="281968689%2FFunctions%2F1493795707" anchor-label="ushortArray" id="281968689%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="ushort-array.html"><span>ushort</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="281968689%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="ushort-array.html"><span class="token function">ushortArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">size<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span>int(1..3)</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short-array/index.html">UShortArray</a></div><div class="brief "><p class="paragraph">Generates an unsigned short array.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="563713300%2FFunctions%2F1493795707" anchor-label="uuid" id="563713300%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="uuid.html"><span><span>uuid</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="563713300%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../dev.s7a.fiktion/-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><a href="uuid.html"><span class="token function">uuid</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.uuid/-uuid/index.html">Uuid</a></div><div class="brief "><p class="paragraph">Generates a deterministic UUID from the current fake context seed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
