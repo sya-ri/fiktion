@@ -75,6 +75,11 @@ import kotlin.uuid.Uuid
 /**
  * Configuration provided by Fiktion core.
  */
+@Suppress(
+    "ktlint:standard:function-literal",
+    "ktlint:standard:max-line-length",
+    "ktlint:standard:parameter-list-wrapping",
+)
 private val BUILT_IN_CONFIG: FiktionConfig by lazy {
     DefaultFiktionBuilder(installAutomaticAddons = false)
         .apply {
@@ -291,6 +296,119 @@ private val BUILT_IN_CONFIG: FiktionConfig by lazy {
             }
             typeFamily<Sequence<*>>() generatesBy {
                 sequence()
+            }
+            typeFamily<Function0<*>>() generatesBy {
+                { fake(0) }
+            }
+            typeFamily<Function1<*, *>>() generatesBy {
+                { _: Any? ->
+                    fake(1)
+                }
+            }
+            typeFamily<Function2<*, *, *>>() generatesBy {
+                { _: Any?, _: Any? ->
+                    fake(2)
+                }
+            }
+            typeFamily<Function3<*, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any? ->
+                    fake(3)
+                }
+            }
+            typeFamily<Function4<*, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(4)
+                }
+            }
+            typeFamily<Function5<*, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(5)
+                }
+            }
+            typeFamily<Function6<*, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(6)
+                }
+            }
+            typeFamily<Function7<*, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(7)
+                }
+            }
+            typeFamily<Function8<*, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(8)
+                }
+            }
+            typeFamily<Function9<*, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(9)
+                }
+            }
+            typeFamily<Function10<*, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(10)
+                }
+            }
+            typeFamily<Function11<*, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(11)
+                }
+            }
+            typeFamily<Function12<*, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(12)
+                }
+            }
+            typeFamily<Function13<*, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(13)
+                }
+            }
+            typeFamily<Function14<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(14)
+                }
+            }
+            typeFamily<Function15<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(15)
+                }
+            }
+            typeFamily<Function16<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(16)
+                }
+            }
+            typeFamily<Function17<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(17)
+                }
+            }
+            typeFamily<Function18<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(18)
+                }
+            }
+            typeFamily<Function19<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(19)
+                }
+            }
+            typeFamily<Function20<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(20)
+                }
+            }
+            typeFamily<Function21<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(21)
+                }
+            }
+            typeFamily<Function22<*, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *, *>>() generatesBy {
+                { _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any?, _: Any? ->
+                    fake(22)
+                }
             }
             typeFamily<Pair<*, *>>() generatesBy {
                 Pair(
