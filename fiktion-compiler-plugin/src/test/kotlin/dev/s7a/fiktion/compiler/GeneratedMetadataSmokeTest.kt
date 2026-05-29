@@ -1,7 +1,9 @@
 package dev.s7a.fiktion.compiler
 
 import dev.s7a.fiktion.CannotGenerateException
+import dev.s7a.fiktion.FakeType
 import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.Probability
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
 import java.util.concurrent.atomic.AtomicReference
@@ -22,6 +24,38 @@ class GeneratedMetadataSmokeTest {
         val user = fake<GeneratedRegularUser>(seed = 123)
 
         assertEquals(fake<GeneratedRegularUser>(seed = 123).id, user.id)
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for constructor property type arguments`() {
+        val user = fake<GeneratedRegularUserWithProfiles>(seed = 123)
+
+        assertEquals(user, fake<GeneratedRegularUserWithProfiles>(seed = 123))
+        assertTrue(user.profiles.isNotEmpty())
+        assertTrue(
+            user.profiles
+                .first()
+                .bio
+                .isNotBlank(),
+        )
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for dependency data classes`() {
+        val type = fake<FakeType>(seed = 123)
+
+        assertEquals(type, fake<FakeType>(seed = 123))
+        assertTrue(type.id.isNotBlank())
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for dependency value classes`() {
+        val fiktion =
+            Fiktion {
+                type<Double>() generates 0.5
+            }
+
+        assertEquals(Probability(0.5), fiktion.fake<Probability>(seed = 123))
     }
 
     @Test
@@ -82,7 +116,7 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
-    fun `compiler plugin skips local classes`() {
+    fun `compiler plugin registers generated metadata for local classes`() {
         class GeneratedLocalUser(
             /**
              * Local user identifier.
@@ -90,9 +124,7 @@ class GeneratedMetadataSmokeTest {
             val id: String,
         )
 
-        assertFailsWith<CannotGenerateException> {
-            fake<GeneratedLocalUser>(seed = 123)
-        }
+        assertEquals(fake<GeneratedLocalUser>(seed = 123).id, fake<GeneratedLocalUser>(seed = 123).id)
     }
 
     @Test
@@ -368,6 +400,26 @@ private class GeneratedRegularUser(
      * Regular user identifier generated from built-in String generation.
      */
     val id: String,
+)
+
+/**
+ * Smoke-test regular class with constructor property type arguments.
+ */
+private data class GeneratedRegularUserWithProfiles(
+    /**
+     * User profiles generated through collection element metadata.
+     */
+    val profiles: List<GeneratedRegularUserProfile>,
+)
+
+/**
+ * Smoke-test model generated only through constructor property type arguments.
+ */
+private data class GeneratedRegularUserProfile(
+    /**
+     * Required profile text.
+     */
+    val bio: String,
 )
 
 /**

@@ -8,6 +8,7 @@ Fixes:
 
 - Ensure the Gradle plugin is applied and enabled for the source set.
 - Ensure `fiktion-core` is on the test/runtime classpath.
+- Call `fake<T>()` or `Fiktion.fake<T>()` directly from a compiler-plugin-enabled source set when relying on generated metadata. Wrapper functions around `fake<T>()` are not metadata collection entry points, so metadata for `T` may not be generated.
 - Add missing add-on dependency, e.g. `fiktion-addon-java` for common JVM types.
 - Add an explicit rule:
 
