@@ -1,11 +1,11 @@
 ---
 name: fiktion
-description: Fiktion Kotlin fake data library guidance for using, configuring, extending, and troubleshooting fake calls in Kotlin tests. Use when Codex needs to write or review Fiktion test code, configure Gradle/compiler plugin settings, use built-in generators, install or auto-register add-ons, create a custom FiktionAddon, debug CannotGenerateException/configuration errors, or update this repository's Fiktion APIs and docs.
+description: Fiktion Kotlin Multiplatform fake data library guidance for using, configuring, extending, and troubleshooting fake calls in Kotlin tests. Use when Codex needs to write or review Fiktion test code, configure Gradle/compiler plugin settings, use built-in generators, install or auto-register add-ons, create a custom FiktionAddon, debug CannotGenerateException/configuration errors, or update this repository's Fiktion APIs and docs.
 ---
 
 # Fiktion
 
-Use this skill when working with Fiktion, a Kotlin fake data library for tests that should read like intent rather than fixture setup.
+Use this skill when working with Fiktion, a Kotlin Multiplatform fake data library for tests that should read like intent rather than fixture setup.
 
 ## Source Of Truth
 
