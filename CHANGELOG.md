@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.0 (Unpublished)
+## v0.2.0
 
 - Added reified `KProperty1` rule APIs backed by KType-aware overloads.
 - Added built-in generation for Kotlin function types from `Function0` through `Function22`.
