@@ -144,43 +144,52 @@ public infix fun <T> RuleTarget<T>.generates(auto: Auto): GenerationSpec<T> = (t
  * Uses Fiktion's automatic generation for each element of this collection rule target.
  */
 @JvmName("generatesAutoCollection")
-@Suppress("UNUSED_PARAMETER")
+@Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
 public inline infix fun <reified Element, reified CollectionType : Collection<Element>> RuleTarget<CollectionType>.generates(
     auto: Auto,
-): CollectionGenerationSpec<Element, CollectionType> = generatesAutoCollection(target = this, elementType = typeOf<Element>())
+): CollectionGenerationSpec<Element, CollectionType> = generates(auto = auto, elementType = typeOf<Element>())
+
+/**
+ * Uses Fiktion's automatic generation for each element of this collection rule target.
+ *
+ * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [elementType]
+ * and the generator element type consistent.
+ */
+@Deprecated("Use the reified generates(auto) overload.", level = DeprecationLevel.ERROR)
+@Suppress("UNUSED_PARAMETER")
+public fun <Element, CollectionType : Collection<Element>> RuleTarget<CollectionType>.generates(
+    auto: Auto,
+    elementType: KType,
+): CollectionGenerationSpec<Element, CollectionType> =
+    (this as DefaultRuleTarget<CollectionType>)
+        .generatesAutomaticCollection(elementType = elementType)
 
 /**
  * Uses Fiktion's automatic generation for each key and value of this map rule target.
  */
 @JvmName("generatesAutoMap")
-@Suppress("UNUSED_PARAMETER")
+@Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
 public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> RuleTarget<MapType>.generates(
     auto: Auto,
-): MapGenerationSpec<Key, Value, MapType> = generatesAutoMap(target = this, keyType = typeOf<Key>(), valueType = typeOf<Value>())
+): MapGenerationSpec<Key, Value, MapType> = generates(auto = auto, keyType = typeOf<Key>(), valueType = typeOf<Value>())
 
 /**
- * Registers automatic map generation without exposing the internal target implementation to inline code.
+ * Uses Fiktion's automatic generation for each key and value of this map rule target.
+ *
+ * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+ * and the generator types consistent.
  */
-@PublishedApi
-internal fun <Key, Value, MapType : Map<Key, Value>> generatesAutoMap(
-    target: RuleTarget<MapType>,
+@Deprecated("Use the reified generates(auto) overload.", level = DeprecationLevel.ERROR)
+@Suppress("UNUSED_PARAMETER")
+public fun <Key, Value, MapType : Map<Key, Value>> RuleTarget<MapType>.generates(
+    auto: Auto,
     keyType: KType?,
     valueType: KType?,
 ): MapGenerationSpec<Key, Value, MapType> =
-    target.mapGenerationSpec<Key, Value, MapType>().also { spec ->
+    mapGenerationSpec<Key, Value, MapType>().also { spec ->
         spec.keyType = keyType
         spec.valueType = valueType
     }
-
-/**
- * Registers automatic collection generation without exposing the internal target implementation to inline code.
- */
-@PublishedApi
-internal fun <Element, CollectionType : Collection<Element>> generatesAutoCollection(
-    target: RuleTarget<CollectionType>,
-    elementType: KType,
-): CollectionGenerationSpec<Element, CollectionType> =
-    (target as DefaultRuleTarget<CollectionType>).generatesAutomaticCollection(elementType = elementType)
 
 /**
  * Generates each element for this collection rule target by invoking [generator].
@@ -192,22 +201,24 @@ public infix fun <Element, CollectionType : Collection<Element>> RuleTarget<Coll
 /**
  * Generates each entry for this map rule target by invoking [generator].
  */
+@Suppress("DEPRECATION_ERROR")
 public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> RuleTarget<MapType>.generatesEach(
     noinline generator: Generator<Pair<Key, Value>>,
-): MapEntrySpec<Key, Value, MapType> =
-    generatesMapEntries(target = this, keyType = typeOf<Key>(), valueType = typeOf<Value>(), generator = generator)
+): MapEntrySpec<Key, Value, MapType> = generatesEach(generator = generator, keyType = typeOf<Key>(), valueType = typeOf<Value>())
 
 /**
- * Registers entry generation without exposing the internal target implementation to inline code.
+ * Generates each entry for this map rule target by invoking [generator].
+ *
+ * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+ * and the generator types consistent.
  */
-@PublishedApi
-internal fun <Key, Value, MapType : Map<Key, Value>> generatesMapEntries(
-    target: RuleTarget<MapType>,
+@Deprecated("Use the reified generatesEach(generator) overload.", level = DeprecationLevel.ERROR)
+public fun <Key, Value, MapType : Map<Key, Value>> RuleTarget<MapType>.generatesEach(
+    generator: Generator<Pair<Key, Value>>,
     keyType: KType?,
     valueType: KType?,
-    generator: Generator<Pair<Key, Value>>,
 ): MapEntrySpec<Key, Value, MapType> {
-    val spec = target.mapGenerationSpec<Key, Value, MapType>()
+    val spec = mapGenerationSpec<Key, Value, MapType>()
     spec.keyType = keyType
     spec.valueType = valueType
     spec.ensureNoMapParts()
@@ -218,22 +229,24 @@ internal fun <Key, Value, MapType : Map<Key, Value>> generatesMapEntries(
 /**
  * Generates map keys for this rule target by invoking [generator].
  */
+@Suppress("DEPRECATION_ERROR")
 public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> RuleTarget<MapType>.generatesKeys(
     noinline generator: Generator<Key>,
-): MapKeySpec<Key, Value, MapType> =
-    generatesMapKeys(target = this, keyType = typeOf<Key>(), valueType = typeOf<Value>(), generator = generator)
+): MapKeySpec<Key, Value, MapType> = generatesKeys(generator = generator, keyType = typeOf<Key>(), valueType = typeOf<Value>())
 
 /**
- * Registers key generation without exposing the internal target implementation to inline code.
+ * Generates map keys for this rule target by invoking [generator].
+ *
+ * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+ * and the generator types consistent.
  */
-@PublishedApi
-internal fun <Key, Value, MapType : Map<Key, Value>> generatesMapKeys(
-    target: RuleTarget<MapType>,
+@Deprecated("Use the reified generatesKeys(generator) overload.", level = DeprecationLevel.ERROR)
+public fun <Key, Value, MapType : Map<Key, Value>> RuleTarget<MapType>.generatesKeys(
+    generator: Generator<Key>,
     keyType: KType?,
     valueType: KType?,
-    generator: Generator<Key>,
 ): MapKeySpec<Key, Value, MapType> {
-    val spec = target.mapGenerationSpec<Key, Value, MapType>()
+    val spec = mapGenerationSpec<Key, Value, MapType>()
     spec.keyType = keyType
     spec.valueType = valueType
     spec.ensureNoEntryGenerator()
@@ -245,22 +258,24 @@ internal fun <Key, Value, MapType : Map<Key, Value>> generatesMapKeys(
 /**
  * Generates map values for this rule target by invoking [generator].
  */
+@Suppress("DEPRECATION_ERROR")
 public inline infix fun <reified Key, reified Value, reified MapType : Map<Key, Value>> RuleTarget<MapType>.generatesValues(
     noinline generator: Generator<Value>,
-): MapValueSpec<Key, Value, MapType> =
-    generatesMapValues(target = this, keyType = typeOf<Key>(), valueType = typeOf<Value>(), generator = generator)
+): MapValueSpec<Key, Value, MapType> = generatesValues(generator = generator, keyType = typeOf<Key>(), valueType = typeOf<Value>())
 
 /**
- * Registers value generation without exposing the internal target implementation to inline code.
+ * Generates map values for this rule target by invoking [generator].
+ *
+ * This low-level overload is intended for callers that already carry [KType] values. The caller must keep the types
+ * and the generator types consistent.
  */
-@PublishedApi
-internal fun <Key, Value, MapType : Map<Key, Value>> generatesMapValues(
-    target: RuleTarget<MapType>,
+@Deprecated("Use the reified generatesValues(generator) overload.", level = DeprecationLevel.ERROR)
+public fun <Key, Value, MapType : Map<Key, Value>> RuleTarget<MapType>.generatesValues(
+    generator: Generator<Value>,
     keyType: KType?,
     valueType: KType?,
-    generator: Generator<Value>,
 ): MapValueSpec<Key, Value, MapType> {
-    val spec = target.mapGenerationSpec<Key, Value, MapType>()
+    val spec = mapGenerationSpec<Key, Value, MapType>()
     spec.keyType = keyType
     spec.valueType = valueType
     spec.ensureNoEntryGenerator()
