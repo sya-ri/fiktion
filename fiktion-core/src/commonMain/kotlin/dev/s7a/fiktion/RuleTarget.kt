@@ -22,6 +22,14 @@ import kotlin.reflect.typeOf
 public sealed interface RuleTarget<T>
 
 /**
+ * Groups declarations for this rule target.
+ */
+public operator fun <T> RuleTarget<T>.invoke(configure: RuleTarget<T>.() -> Unit): RuleTarget<T> {
+    configure()
+    return this
+}
+
+/**
  * Generates [value] for this rule target.
  */
 public infix fun <T> RuleTarget<T>.generates(value: T): GenerationSpec<T> = generatesBy { value }

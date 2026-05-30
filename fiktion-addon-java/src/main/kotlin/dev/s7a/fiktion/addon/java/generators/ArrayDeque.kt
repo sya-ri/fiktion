@@ -20,5 +20,5 @@ public fun <T> FakeContext.arrayDeque(
  */
 internal fun TypeFamilyGenerationContext.arrayDeque(): ArrayDeque<Any?> =
     arrayDeque(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

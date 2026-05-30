@@ -30,10 +30,10 @@ internal fun TypeFamilyGenerationContext.enumMap(): EnumMap<*, *> {
     map(
         size = int(config(FiktionConfig.Map.size)),
         key = {
-            fake(argumentIndex = 0, seedIndex = index)
+            fakeKey(index)
         },
         value = {
-            fake(argumentIndex = 1, seedIndex = index)
+            fakeValue(index)
         },
     ).forEach { (key, value) ->
         if (key == null) return@forEach

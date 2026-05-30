@@ -3,9 +3,12 @@ package dev.s7a.fiktion.compiler
 import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.FakeType
 import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.Probability
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
+import dev.s7a.fiktion.invoke
+import dev.s7a.fiktion.using
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.jvm.JvmInline
 import kotlin.test.Test
@@ -28,9 +31,13 @@ class GeneratedMetadataSmokeTest {
 
     @Test
     fun `compiler plugin registers generated metadata for constructor property type arguments`() {
-        val user = fake<GeneratedRegularUserWithProfiles>(seed = 123)
+        val fiktion =
+            Fiktion {
+                this using FiktionConfig.Collection.size(1)
+            }
+        val user = fiktion.fake<GeneratedRegularUserWithProfiles>(seed = 123)
 
-        assertEquals(user, fake<GeneratedRegularUserWithProfiles>(seed = 123))
+        assertEquals(user, fiktion.fake<GeneratedRegularUserWithProfiles>(seed = 123))
         assertTrue(user.profiles.isNotEmpty())
         assertTrue(
             user.profiles
@@ -230,6 +237,7 @@ class GeneratedMetadataSmokeTest {
         val fiktion =
             Fiktion {
                 type<Int>() generates 42
+                this using FiktionConfig.Collection.size(1)
             }
         val value = fiktion.fake<GeneratedValueList<Int>>(seed = 123)
 
@@ -358,7 +366,12 @@ class GeneratedMetadataSmokeTest {
 
     @Test
     fun `compiler plugin registers generated metadata for arrays inside generic constructor properties`() {
-        val user = fake<GeneratedGenericArrayPropertyUser>(seed = 123)
+        val fiktion =
+            Fiktion {
+                this using FiktionConfig.Collection.size(1)
+                this using FiktionConfig.Map.size(1)
+            }
+        val user = fiktion.fake<GeneratedGenericArrayPropertyUser>(seed = 123)
 
         assertTrue(user.ids.isNotEmpty())
         assertTrue(user.ids.all { ids -> ids.isNotEmpty() })

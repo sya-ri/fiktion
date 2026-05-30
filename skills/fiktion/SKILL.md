@@ -38,6 +38,11 @@ Read only the file needed for the task:
 - Prefer property references in per-call rules: `User::id generates "user-1"`.
 - Use typed generator configuration to adjust default generator behavior without replacing the generator:
   `this using FiktionConfig.Int.range(-200..200)` or `User::id using FiktionConfig.String.length(12..12)`.
+- Use `element`, `key`, and `value` inside collection/map fake blocks when configuring or replacing generated container
+  parts: `fake<List<Map<String, Int>>> { element { key using FiktionConfig.String.length(4..4); value using FiktionConfig.Int.range(10..20) } }`.
+- Container targets also work from typed rule targets, such as `property(Catalog::counts).element using FiktionConfig.Int.range(10..20)`.
+- Prefer `key generatesBy { ... }` and `value generatesBy { ... }` when replacing map keys or values with the target DSL;
+  keep `generatesEach` for pair-level generation and existing `generatesKeys` / `generatesValues` code.
 - Prefer reified targets in global/instance/add-on rules: `property<User, String>("id")`, `type<User>()`, `typeFamily<Optional<*>>()`.
 - KProperty infix rules also exist in global/instance/add-on scopes; use reified targets when ambiguity or readability is a concern.
 - For value classes, target the public underlying property when available, use `name("value")` when the underlying property is private, and use `type<ValueClass>()` when replacing the whole value object.

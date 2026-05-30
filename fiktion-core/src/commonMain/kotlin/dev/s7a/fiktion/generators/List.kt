@@ -4,6 +4,7 @@ import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 import dev.s7a.fiktion.childContext
+import dev.s7a.fiktion.random
 
 /**
  * Generates a list using [element].
@@ -13,7 +14,7 @@ public fun <T> FakeContext.list(
     element: FakeContext.() -> T,
 ): List<T> =
     List(size) { index ->
-        element(childContext(index = index))
+        element(childContext(index))
     }
 
 /**
@@ -29,7 +30,7 @@ public fun <T> FakeContext.mutableList(
  */
 internal fun TypeFamilyGenerationContext.list(): List<Any?> =
     List(config(FiktionConfig.Collection.size).random(random)) { index ->
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }
 
 /**

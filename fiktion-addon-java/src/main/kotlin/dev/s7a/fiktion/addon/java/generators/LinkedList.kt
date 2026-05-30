@@ -20,5 +20,5 @@ public fun <T> FakeContext.linkedList(
  */
 internal fun TypeFamilyGenerationContext.linkedList(): LinkedList<Any?> =
     linkedList(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

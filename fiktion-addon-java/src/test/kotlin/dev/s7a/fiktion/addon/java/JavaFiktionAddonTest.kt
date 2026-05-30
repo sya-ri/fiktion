@@ -27,6 +27,7 @@ import dev.s7a.fiktion.addon.java.generators.treeSet
 import dev.s7a.fiktion.addon.java.generators.weakHashMap
 import dev.s7a.fiktion.andValues
 import dev.s7a.fiktion.auto
+import dev.s7a.fiktion.element
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
 import dev.s7a.fiktion.generatesBy
@@ -35,6 +36,9 @@ import dev.s7a.fiktion.generatesKeys
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.long
 import dev.s7a.fiktion.invoke
+import dev.s7a.fiktion.key
+import dev.s7a.fiktion.using
+import dev.s7a.fiktion.value
 import java.io.EOFException
 import java.io.File
 import java.io.FileNotFoundException
@@ -191,12 +195,12 @@ class JavaFiktionAddonTest {
         val fiktion =
             Fiktion {
                 install(JavaFiktionAddon)
-                this using JavaFiktionConfig.Instant.epochSeconds(instant.epochSecond..instant.epochSecond)
-                this using JavaFiktionConfig.Instant.nanosecond(123..123)
-                this using JavaFiktionConfig.LocalDate.epochDays(date.toEpochDay()..date.toEpochDay())
-                this using JavaFiktionConfig.LocalTime.nanosecondsOfDay(time.toNanoOfDay()..time.toNanoOfDay())
-                this using JavaFiktionConfig.ZoneOffset.hours(9..9)
-                this using JavaFiktionConfig.Duration.millis(42L..42L)
+                this using JavaFiktionConfig.Instant.epochSeconds(instant.epochSecond)
+                this using JavaFiktionConfig.Instant.nanosecond(123)
+                this using JavaFiktionConfig.LocalDate.epochDays(date.toEpochDay())
+                this using JavaFiktionConfig.LocalTime.nanosecondsOfDay(time.toNanoOfDay())
+                this using JavaFiktionConfig.ZoneOffset.hours(9)
+                this using JavaFiktionConfig.Duration.millis(42L)
             }
 
         assertEquals(instant.plusNanos(123), fiktion.fake<Instant>(seed = 123))
@@ -211,14 +215,34 @@ class JavaFiktionAddonTest {
         val fiktion =
             Fiktion {
                 install(JavaFiktionAddon)
-                this using FiktionConfig.Collection.size(4..4)
-                this using FiktionConfig.Map.size(5..5)
+                this using FiktionConfig.Collection.size(4)
+                this using FiktionConfig.Map.size(5)
             }
 
         assertEquals(4, fiktion.fake<ArrayList<Int>>(seed = 123).size)
         assertEquals(4, fiktion.fake<ArrayDeque<Int>>(seed = 123).size)
         assertEquals(5, fiktion.fake<HashMap<Int, Long>>(seed = 123).size)
         assertEquals(5, fiktion.fake<ConcurrentHashMap<Int, Long>>(seed = 123).size)
+    }
+
+    @Test
+    fun `installed java add-on uses core collection element and map part configs`() {
+        val fiktion =
+            Fiktion {
+                install(JavaFiktionAddon)
+                type<ArrayList<Int>>() using FiktionConfig.Collection.size(3)
+                type<ArrayList<Int>>().element using FiktionConfig.Int.range(42)
+                type<HashMap<String, Int>>() using FiktionConfig.Map.size(2)
+                type<HashMap<String, Int>>().key using FiktionConfig.String.length(4)
+                type<HashMap<String, Int>>().value using FiktionConfig.Int.range(10)
+            }
+
+        val map = fiktion.fake<HashMap<String, Int>>(seed = 123)
+
+        assertEquals(listOf(42, 42, 42), fiktion.fake<ArrayList<Int>>(seed = 123))
+        assertEquals(2, map.size)
+        assertTrue(map.keys.all { key -> key.length == 4 })
+        assertTrue(map.values.all { value -> value == 10 })
     }
 
     @Test

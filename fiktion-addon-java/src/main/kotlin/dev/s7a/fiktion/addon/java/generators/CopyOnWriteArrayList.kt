@@ -20,5 +20,5 @@ public fun <T> FakeContext.copyOnWriteArrayList(
  */
 internal fun TypeFamilyGenerationContext.copyOnWriteArrayList(): CopyOnWriteArrayList<Any?> =
     copyOnWriteArrayList(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

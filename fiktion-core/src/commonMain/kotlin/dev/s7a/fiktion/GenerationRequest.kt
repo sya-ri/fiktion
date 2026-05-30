@@ -24,6 +24,14 @@ internal data class GenerationRequest(
      */
     val propertyPath: List<KProperty1<*, *>> = emptyList(),
     /**
+     * Container parts currently being generated, from outermost to innermost.
+     */
+    val containerParts: List<ContainerPart> = emptyList(),
+    /**
+     * Index of the current value within its generated container.
+     */
+    val index: Int = 0,
+    /**
      * Typed path segments used for path rule matching.
      *
      * Object graph generation must provide these segments when it wants typed nested path rules to match. Segment type

@@ -3,6 +3,7 @@
 package dev.s7a.fiktion.addon.kotlinx.datetime
 
 import dev.s7a.fiktion.FiktionConfig
+import kotlin.ranges.ClosedRange
 import kotlinx.datetime.DatePeriod as KotlinxDatePeriod
 import kotlinx.datetime.DateTimePeriod as KotlinxDateTimePeriod
 import kotlinx.datetime.Instant as KotlinxInstant
@@ -18,10 +19,10 @@ public object KotlinxDatetimeFiktionConfig {
      * kotlinx-datetime instant generator configuration.
      */
     public object Instant {
-        public val epochSeconds: FiktionConfig<KotlinxInstant, LongRange> =
+        public val epochSeconds: FiktionConfig<KotlinxInstant, ClosedRange<Long>> =
             FiktionConfig(MIN_EPOCH_SECOND until MAX_EPOCH_SECOND_EXCLUSIVE)
 
-        public val nanosecond: FiktionConfig<KotlinxInstant, IntRange> =
+        public val nanosecond: FiktionConfig<KotlinxInstant, ClosedRange<Int>> =
             FiktionConfig(0 until MAX_NANOSECOND_EXCLUSIVE)
     }
 
@@ -29,13 +30,13 @@ public object KotlinxDatetimeFiktionConfig {
      * kotlinx-datetime local date generator configuration.
      */
     public object LocalDate {
-        public val year: FiktionConfig<KotlinxLocalDate, IntRange> =
+        public val year: FiktionConfig<KotlinxLocalDate, ClosedRange<Int>> =
             FiktionConfig(1900..2100)
 
-        public val month: FiktionConfig<KotlinxLocalDate, IntRange> =
+        public val month: FiktionConfig<KotlinxLocalDate, ClosedRange<Int>> =
             FiktionConfig(1..12)
 
-        public val day: FiktionConfig<KotlinxLocalDate, IntRange> =
+        public val day: FiktionConfig<KotlinxLocalDate, ClosedRange<Int>> =
             FiktionConfig(1..28)
     }
 
@@ -43,16 +44,16 @@ public object KotlinxDatetimeFiktionConfig {
      * kotlinx-datetime local time generator configuration.
      */
     public object LocalTime {
-        public val hour: FiktionConfig<KotlinxLocalTime, IntRange> =
+        public val hour: FiktionConfig<KotlinxLocalTime, ClosedRange<Int>> =
             FiktionConfig(0..23)
 
-        public val minute: FiktionConfig<KotlinxLocalTime, IntRange> =
+        public val minute: FiktionConfig<KotlinxLocalTime, ClosedRange<Int>> =
             FiktionConfig(0..59)
 
-        public val second: FiktionConfig<KotlinxLocalTime, IntRange> =
+        public val second: FiktionConfig<KotlinxLocalTime, ClosedRange<Int>> =
             FiktionConfig(0..59)
 
-        public val nanosecond: FiktionConfig<KotlinxLocalTime, IntRange> =
+        public val nanosecond: FiktionConfig<KotlinxLocalTime, ClosedRange<Int>> =
             FiktionConfig(0 until MAX_NANOSECOND_EXCLUSIVE)
     }
 
@@ -60,7 +61,7 @@ public object KotlinxDatetimeFiktionConfig {
      * kotlinx-datetime UTC offset generator configuration.
      */
     public object UtcOffset {
-        public val hours: FiktionConfig<KotlinxUtcOffset, IntRange> =
+        public val hours: FiktionConfig<KotlinxUtcOffset, ClosedRange<Int>> =
             FiktionConfig(-18..18)
     }
 
@@ -68,13 +69,13 @@ public object KotlinxDatetimeFiktionConfig {
      * kotlinx-datetime date period generator configuration.
      */
     public object DatePeriod {
-        public val years: FiktionConfig<KotlinxDatePeriod, IntRange> =
+        public val years: FiktionConfig<KotlinxDatePeriod, ClosedRange<Int>> =
             FiktionConfig(-200..200)
 
-        public val months: FiktionConfig<KotlinxDatePeriod, IntRange> =
+        public val months: FiktionConfig<KotlinxDatePeriod, ClosedRange<Int>> =
             FiktionConfig(-24..24)
 
-        public val days: FiktionConfig<KotlinxDatePeriod, IntRange> =
+        public val days: FiktionConfig<KotlinxDatePeriod, ClosedRange<Int>> =
             FiktionConfig(-366..366)
     }
 
@@ -82,25 +83,25 @@ public object KotlinxDatetimeFiktionConfig {
      * kotlinx-datetime date-time period generator configuration.
      */
     public object DateTimePeriod {
-        public val years: FiktionConfig<KotlinxDateTimePeriod, IntRange> =
+        public val years: FiktionConfig<KotlinxDateTimePeriod, ClosedRange<Int>> =
             FiktionConfig(-200..200)
 
-        public val months: FiktionConfig<KotlinxDateTimePeriod, IntRange> =
+        public val months: FiktionConfig<KotlinxDateTimePeriod, ClosedRange<Int>> =
             FiktionConfig(-24..24)
 
-        public val days: FiktionConfig<KotlinxDateTimePeriod, IntRange> =
+        public val days: FiktionConfig<KotlinxDateTimePeriod, ClosedRange<Int>> =
             FiktionConfig(-366..366)
 
-        public val hours: FiktionConfig<KotlinxDateTimePeriod, IntRange> =
+        public val hours: FiktionConfig<KotlinxDateTimePeriod, ClosedRange<Int>> =
             FiktionConfig(-48..48)
 
-        public val minutes: FiktionConfig<KotlinxDateTimePeriod, IntRange> =
+        public val minutes: FiktionConfig<KotlinxDateTimePeriod, ClosedRange<Int>> =
             FiktionConfig(-120..120)
 
-        public val seconds: FiktionConfig<KotlinxDateTimePeriod, IntRange> =
+        public val seconds: FiktionConfig<KotlinxDateTimePeriod, ClosedRange<Int>> =
             FiktionConfig(-120..120)
 
-        public val nanoseconds: FiktionConfig<KotlinxDateTimePeriod, LongRange> =
+        public val nanoseconds: FiktionConfig<KotlinxDateTimePeriod, ClosedRange<Long>> =
             FiktionConfig(-999_999_999L..999_999_999L)
     }
 }

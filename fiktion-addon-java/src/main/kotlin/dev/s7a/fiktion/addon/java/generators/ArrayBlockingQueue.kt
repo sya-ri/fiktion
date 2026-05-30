@@ -23,5 +23,5 @@ public fun <T> FakeContext.arrayBlockingQueue(
  */
 internal fun TypeFamilyGenerationContext.arrayBlockingQueue(): ArrayBlockingQueue<Any> =
     arrayBlockingQueue(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

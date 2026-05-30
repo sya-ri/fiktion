@@ -30,9 +30,9 @@ internal fun TypeFamilyGenerationContext.concurrentHashMap(): ConcurrentHashMap<
     concurrentHashMap(
         size = int(config(FiktionConfig.Map.size)),
         key = {
-            fake(argumentIndex = 0, seedIndex = index)
+            fakeKey(index)
         },
         value = {
-            fake(argumentIndex = 1, seedIndex = index)
+            fakeValue(index)
         },
     )

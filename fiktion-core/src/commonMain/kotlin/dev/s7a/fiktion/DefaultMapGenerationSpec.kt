@@ -30,7 +30,7 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
     /**
      * Generated map size range.
      */
-    var sizeRange: IntRange = DEFAULT_MAP_SIZE_RANGE
+    var sizeRange: ClosedRange<Int> = FiktionConfig.Map.size.defaultValue
 
     /**
      * Type used to automatically generate keys when no explicit key generator is configured.
@@ -87,8 +87,3 @@ internal class DefaultMapGenerationSpec<Key, Value, MapType : Map<Key, Value>>(
             spec.defaultProbability = defaultProbability
         }
 }
-
-/**
- * Default generated map size range.
- */
-internal val DEFAULT_MAP_SIZE_RANGE: IntRange = 1..3

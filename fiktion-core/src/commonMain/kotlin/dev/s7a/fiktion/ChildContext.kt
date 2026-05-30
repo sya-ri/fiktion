@@ -1,12 +1,15 @@
 package dev.s7a.fiktion
 
 /**
- * Creates a child fake context for generator parts.
+ * Creates a child fake context with separate seed and public index values.
  */
-internal fun FakeContext.childContext(index: Int): FakeContext =
+internal fun FakeContext.childContext(
+    index: Int,
+    seedIndex: Int = index,
+): FakeContext =
     defaultContext().let { context ->
         DefaultFakeContext(
-            seed = seed.childSeed(index),
+            seed = seed.childSeed(seedIndex),
             type = type,
             property = property,
             path = path,

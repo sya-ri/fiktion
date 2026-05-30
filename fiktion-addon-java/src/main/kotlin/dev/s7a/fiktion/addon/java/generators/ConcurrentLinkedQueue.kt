@@ -20,5 +20,5 @@ public fun <T> FakeContext.concurrentLinkedQueue(
  */
 internal fun TypeFamilyGenerationContext.concurrentLinkedQueue(): ConcurrentLinkedQueue<Any> =
     concurrentLinkedQueue(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

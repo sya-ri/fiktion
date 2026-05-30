@@ -41,7 +41,7 @@ class FiktionAddonBuilderTest {
                 override val id: String = "test-config-addon"
 
                 override fun install(builder: FiktionAddonBuilder) {
-                    builder using FiktionConfig.String.length(4..4)
+                    builder using FiktionConfig.String.length(4)
                 }
             }
         val fiktion =
@@ -59,13 +59,13 @@ class FiktionAddonBuilderTest {
                 override val id: String = "test-overridden-config-addon"
 
                 override fun install(builder: FiktionAddonBuilder) {
-                    builder using FiktionConfig.String.length(4..4)
+                    builder using FiktionConfig.String.length(4)
                 }
             }
         val fiktion =
             Fiktion {
                 install(addon)
-                this using FiktionConfig.String.length(8..8)
+                this using FiktionConfig.String.length(8)
             }
 
         assertEquals(8, fiktion.fake<String>(seed = 123).length)

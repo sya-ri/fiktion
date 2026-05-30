@@ -23,5 +23,5 @@ public fun <T> FakeContext.treeSet(
  */
 internal fun TypeFamilyGenerationContext.treeSet(): TreeSet<Any> =
     treeSet(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

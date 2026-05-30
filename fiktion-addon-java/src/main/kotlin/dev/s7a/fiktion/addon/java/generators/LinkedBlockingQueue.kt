@@ -20,5 +20,5 @@ public fun <T> FakeContext.linkedBlockingQueue(
  */
 internal fun TypeFamilyGenerationContext.linkedBlockingQueue(): LinkedBlockingQueue<Any> =
     linkedBlockingQueue(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

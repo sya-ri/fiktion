@@ -130,6 +130,23 @@ internal sealed interface RuleMatcher {
     }
 
     /**
+     * Matches values generated as nested container parts.
+     */
+    data class Container(
+        /**
+         * Container parts from outermost to innermost.
+         */
+        val parts: List<ContainerPart>,
+    ) : RuleMatcher {
+        override val specificity: RuleSpecificity = RuleSpecificity.CONTAINER_PART
+
+        /**
+         * Returns true when the request is for the container part below [parts].
+         */
+        override fun matches(request: GenerationRequest): Boolean = request.containerParts == parts
+    }
+
+    /**
      * Matches by property name and optional value type.
      */
     data class Name(

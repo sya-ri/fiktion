@@ -69,6 +69,16 @@ internal sealed interface RuleKey {
     ) : RuleKey
 
     /**
+     * Key for a nested container part rule.
+     */
+    data class Container(
+        /**
+         * Container parts from outermost to innermost.
+         */
+        val parts: List<ContainerPart>,
+    ) : RuleKey
+
+    /**
      * Key for a property-name rule.
      */
     data class Name(

@@ -267,8 +267,8 @@ formats:
 ```kotlin
 val fiktion = Fiktion {
     this using FiktionConfig.Int.range(-200..200)
-    this using FiktionConfig.String.length(8..8)
-    this using FiktionConfig.Collection.size(3..3)
+    this using FiktionConfig.String.length(8)
+    this using FiktionConfig.Collection.size(3)
 }
 
 val users = fiktion.fake<List<User>>()
@@ -278,15 +278,49 @@ Per-call configuration is scoped to the generated root type:
 
 ```kotlin
 val names = fake<List<String>> {
-    this using FiktionConfig.Collection.size(5..5)
+    this using FiktionConfig.Collection.size(5)
 }
 ```
+
+Container target configuration narrows defaults to values generated below collection and map roots:
+
+```kotlin
+val counts = fake<List<Int>> {
+    this using FiktionConfig.Collection.size(5)
+    element using FiktionConfig.Int.range(10..20)
+}
+
+val labels = fake<Map<String, List<Int>>> {
+    this using FiktionConfig.Map.size(2)
+    key using FiktionConfig.String.length(4)
+    value.element using FiktionConfig.Int.range(10..20)
+}
+
+val groups = fake<List<Map<String, Int>>> {
+    element {
+        key using FiktionConfig.String.length(4)
+        value using FiktionConfig.Int.range(10..20)
+    }
+}
+
+val catalog = fake<Catalog> {
+    property(Catalog::counts).element using FiktionConfig.Int.range(10..20)
+}
+
+val indexed = fake<Map<String, Int>> {
+    key generatesBy { "key-$index" }
+    value generatesBy { index }
+}
+```
+
+`generatesKeys` and `generatesValues` remain available for existing map rules. Use `key` and `value` targets when you
+want the same target DSL as other generated values, including nested configuration blocks.
 
 Property configuration narrows a generator default to one property:
 
 ```kotlin
 val user = fake<User> {
-    User::id using FiktionConfig.String.length(12..12)
+    User::id using FiktionConfig.String.length(12)
 }
 ```
 
@@ -625,10 +659,18 @@ public object CustomFiktionAddon : FiktionAddon {
             type<Token>() generatesBy {
                 Token(value = string(length = 32))
             }
+
+            typeFamily<CustomList<*>>() generatesBy {
+                CustomList(List(int(config(FiktionConfig.Collection.size))) { index -> fakeElement(index) })
+            }
         }
     }
 }
 ```
+
+When writing generic collection-like or map-like add-on generators, prefer `fakeElement(index)`, `fakeKey(index)`, and
+`fakeValue(index)` in `TypeFamilyGenerationContext`. These helpers keep `element`, `key`, and `value` target
+configuration working for users of the add-on.
 
 To make a third-party add-on auto-registerable, include a resource file named `META-INF/fiktion/addons` in the add-on
 artifact. Each non-empty line should contain one add-on object class name:

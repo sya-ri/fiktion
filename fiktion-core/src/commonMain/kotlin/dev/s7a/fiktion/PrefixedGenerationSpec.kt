@@ -33,6 +33,7 @@ private fun RuleKey.prefixedBy(prefix: List<PathRuleSegment>): RuleKey =
         is RuleKey.Type -> unsupportedNestedRule("type")
         is RuleKey.OwnedType -> unsupportedNestedRule("owner type")
         is RuleKey.Property -> unsupportedNestedRule("owner property")
+        is RuleKey.Container -> unsupportedNestedRule("container part")
         is RuleKey.OwnedRegexName -> unsupportedNestedRule("owner regex name")
     }
 
@@ -82,6 +83,10 @@ private fun RuleMatcher.prefixedBy(
 
         is RuleMatcher.Property -> {
             unsupportedNestedRule("owner property")
+        }
+
+        is RuleMatcher.Container -> {
+            unsupportedNestedRule("container part")
         }
 
         is RuleMatcher.OwnedRegexName -> {

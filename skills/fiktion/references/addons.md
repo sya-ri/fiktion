@@ -61,7 +61,17 @@ public object CustomFiktionAddon : FiktionAddon {
             }
 
             typeFamily<Box<*>>() generatesBy {
-                Box(value = fake(argumentIndex = 0))
+                Box(value = fake(0))
+            }
+
+            typeFamily<CustomList<*>>() generatesBy {
+                CustomList(List(int(config(FiktionConfig.Collection.size))) { index -> fakeElement(index) })
+            }
+
+            typeFamily<CustomMap<*, *>>() generatesBy {
+                CustomMap(
+                    List(int(config(FiktionConfig.Map.size))) { index -> fakeKey(index) to fakeValue(index) }.toMap(),
+                )
             }
 
             configureCollection<CustomList<*>> { elements ->
@@ -81,6 +91,12 @@ Naming:
 - Prefer `<Library>FiktionAddon`.
 - Use a stable, short `id`; Java uses `java`.
 - Keep generator helpers under the add-on's `generators` package.
+
+For generic collection-like and map-like type-family generators, use `fakeElement(index)`, `fakeKey(index)`, and
+`fakeValue(index)` instead of plain `fake(index, argumentIndex = ...)`. These helpers preserve `FakeContext.index`,
+derive separate key/value seeds, and allow user container-target configuration such as
+`type<CustomList<Int>>().element using FiktionConfig.Int.range(10..20)` and
+`type<CustomMap<String, Int>>().key using FiktionConfig.String.length(4)` to apply to generated parts.
 
 ## Automatic Add-On Registration
 
@@ -103,7 +119,7 @@ The compiler plugin reads this resource from the compilation classpath and regis
 - Add `api(project(":fiktion-core"))` or the published core dependency.
 - Add generators in separate `generators/Xxx.kt` files when practical.
 - Prefer generator functions on `FakeContext` for direct user use.
-- Prefer `TypeFamilyGenerationContext` helpers for generic containers.
+- Prefer `fakeElement`, `fakeKey`, and `fakeValue` in `TypeFamilyGenerationContext` for generic containers.
 - Use `configureCollection` / `configureMap` for concrete collection materialization.
 - For non-null Java containers such as concurrent maps/queues, filter null keys/values/elements.
 - Use stable ordering/comparators for sorted collections when generated keys may not be naturally comparable.

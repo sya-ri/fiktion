@@ -20,5 +20,5 @@ public fun <T> FakeContext.arrayList(
  */
 internal fun TypeFamilyGenerationContext.arrayList(): ArrayList<Any?> =
     arrayList(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

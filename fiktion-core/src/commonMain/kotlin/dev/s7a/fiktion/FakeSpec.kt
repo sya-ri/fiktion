@@ -79,12 +79,17 @@ public class FakeSpec<Root> {
     public fun <Value> property(
         property: KProperty1<Root, Value>,
         value: KType,
-    ): RuleTarget<Value> = target(listOf(PathRuleSegment(ownerId = null, name = property.name, valueId = value.nonNullTypeId())))
+    ): RuleTarget<Value> =
+        target(
+            segments = listOf(PathRuleSegment(ownerId = null, name = property.name, valueId = value.nonNullTypeId())),
+            type = value,
+        )
 
     /**
      * Targets a nested [path] starting from [Root].
      */
-    public fun <Value> property(path: PropertyPath<Root, Value>): RuleTarget<Value> = target(path.segments)
+    public fun <Value> property(path: PropertyPath<Root, Value>): RuleTarget<Value> =
+        target(segments = path.segments, type = path.valueType)
 
     /**
      * Targets properties generated while building [Root] whose value type is [value] and name is [name].
@@ -96,7 +101,7 @@ public class FakeSpec<Root> {
     public fun name(
         name: String,
         value: KType,
-    ): RuleTarget<*> = target<Any?>(RuleKey.Name(name, value), RuleMatcher.Name(name, value))
+    ): RuleTarget<*> = target<Any?>(RuleKey.Name(name, value), RuleMatcher.Name(name, value), targetType = value)
 
     /**
      * Targets properties generated while building [Root] whose name is [name], inferring the value type from the generator.
@@ -118,7 +123,8 @@ public class FakeSpec<Root> {
     public fun name(
         regex: Regex,
         value: KType,
-    ): RuleTarget<*> = target<Any?>(RuleKey.RegexName(regex.pattern, regex.options, value), RuleMatcher.RegexName(regex, value))
+    ): RuleTarget<*> =
+        target<Any?>(RuleKey.RegexName(regex.pattern, regex.options, value), RuleMatcher.RegexName(regex, value), targetType = value)
 
     /**
      * Targets properties generated while building [Root] whose name matches [regex], inferring the value type from the generator.
@@ -466,8 +472,10 @@ public class FakeSpec<Root> {
     /**
      * Targets a property path represented as raw Kotlin properties.
      */
-    private fun <Value> target(segments: List<PathRuleSegment>): RuleTarget<Value> =
-        target(RuleKey.Path(segments), RuleMatcher.Path(segments))
+    private fun <Value> target(
+        segments: List<PathRuleSegment>,
+        type: KType,
+    ): RuleTarget<Value> = target(RuleKey.Path(segments), RuleMatcher.Path(segments), targetType = type)
 
     /**
      * Registers rules from [configure] below a nested path [prefix].
@@ -494,10 +502,39 @@ public class FakeSpec<Root> {
     private fun <Value> target(
         key: RuleKey,
         matcher: RuleMatcher,
+        targetType: KType? = null,
     ): RuleTarget<Value> =
         DefaultRuleTarget(
             config = mutableConfig,
             key = key,
             matcher = matcher,
+            targetType = targetType,
+        )
+
+    internal fun <Element> collectionElementTarget(collectionType: KType): RuleTarget<Element> =
+        DefaultRuleTarget<Element>(
+            config = mutableConfig,
+            key = RuleKey.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.Collection, container = collectionType))),
+            matcher =
+                RuleMatcher.Container(
+                    parts = listOf(ContainerPart(kind = ContainerPart.Kind.Collection, container = collectionType)),
+                ),
+            targetType = collectionType.typeArgument(index = 0),
+        )
+
+    internal fun <Key> mapKeyTarget(mapType: KType): RuleTarget<Key> =
+        DefaultRuleTarget<Key>(
+            config = mutableConfig,
+            key = RuleKey.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapKey, container = mapType))),
+            matcher = RuleMatcher.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapKey, container = mapType))),
+            targetType = mapType.typeArgument(index = 0),
+        )
+
+    internal fun <Value> mapValueTarget(mapType: KType): RuleTarget<Value> =
+        DefaultRuleTarget<Value>(
+            config = mutableConfig,
+            key = RuleKey.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapValue, container = mapType))),
+            matcher = RuleMatcher.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapValue, container = mapType))),
+            targetType = mapType.typeArgument(index = 1),
         )
 }

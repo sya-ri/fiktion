@@ -9,7 +9,7 @@ import dev.s7a.fiktion.requireFiktionConfiguration
  */
 public fun FakeContext.uintRange(): UIntRange =
     config(FiktionConfig.UIntRange.bounds).let { range ->
-        uintRange(range.first, range.last)
+        uintRange(range.start, range.endInclusive)
     }
 
 /**

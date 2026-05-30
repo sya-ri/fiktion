@@ -15,26 +15,32 @@ internal fun <Key, Value, MapType : Map<Key, Value>> FakeContext.generateMap(
     val entries =
         List(count) { index ->
             spec.entryGenerator?.let { generator ->
-                return@List generator(childContext(index = index))
+                return@List generator(childContext(index))
             }
 
             val key =
-                spec.keyGenerator?.invoke(childContext(index = index * 2))
+                spec.keyGenerator?.invoke(childContext(index, seedIndex = index * 2))
                     ?: generateAutomaticMapPart(
                         part = "keys",
+                        request = request,
                         type = spec.keyType,
                         config = config,
                         seed = seed.childSeed(index * 2),
                         depth = depth + 1,
+                        kind = ContainerPart.Kind.MapKey,
+                        index = index,
                     )
             val value =
-                spec.valueGenerator?.invoke(childContext(index = index * 2 + 1))
+                spec.valueGenerator?.invoke(childContext(index, seedIndex = index * 2 + 1))
                     ?: generateAutomaticMapPart(
                         part = "values",
+                        request = request,
                         type = spec.valueType,
                         config = config,
                         seed = seed.childSeed(index * 2 + 1),
                         depth = depth + 1,
+                        kind = ContainerPart.Kind.MapValue,
+                        index = index,
                     )
             key to value
         }
@@ -63,14 +69,22 @@ private fun missingMapConverter(request: GenerationRequest): Nothing =
  */
 private fun generateAutomaticMapPart(
     part: String,
+    request: GenerationRequest,
     type: KType?,
     config: FiktionConfigState,
     seed: Long,
     depth: Int,
+    kind: ContainerPart.Kind,
+    index: Int,
 ): Any? {
     if (type == null) missingMapPart(part)
     return generateValue(
-        request = GenerationRequest(type = type),
+        request =
+            GenerationRequest(
+                type = type,
+                containerParts = request.containerParts + ContainerPart(kind = kind, container = request.type),
+                index = index,
+            ),
         config = config,
         seed = seed,
         depth = depth,

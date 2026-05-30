@@ -44,13 +44,20 @@ internal fun generateAutomaticCollection(
     depth: Int,
     context: FakeContext,
     elementType: KType,
-    sizeRange: IntRange,
+    sizeRange: ClosedRange<Int>,
 ): Any {
     val count = sizeRange.random(context.random)
     val elements =
         List(count) { index ->
             generateValue(
-                request = GenerationRequest(type = elementType),
+                request =
+                    GenerationRequest(
+                        type = elementType,
+                        containerParts =
+                            request.containerParts +
+                                ContainerPart(kind = ContainerPart.Kind.Collection, container = request.type),
+                        index = index,
+                    ),
                 config = config,
                 seed = seed.childSeed(index),
                 depth = depth + 1,

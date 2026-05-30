@@ -7,7 +7,10 @@ import dev.s7a.fiktion.requireFiktionConfiguration
 /**
  * Generates a finite integer range.
  */
-public fun FakeContext.intRange(): IntRange = config(FiktionConfig.IntRange.bounds).let { range -> intRange(range.first, range.last) }
+public fun FakeContext.intRange(): IntRange =
+    config(FiktionConfig.IntRange.bounds).let { range ->
+        intRange(range.start, range.endInclusive)
+    }
 
 /**
  * Generates a finite integer range from [min] to [max].

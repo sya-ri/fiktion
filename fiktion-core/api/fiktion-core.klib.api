@@ -108,12 +108,12 @@ final class <#A: kotlin/Any?, #B: kotlin/Any> dev.s7a.fiktion/FiktionConfig { //
 
     final object Array { // dev.s7a.fiktion/FiktionConfig.Array|null[0]
         final val size // dev.s7a.fiktion/FiktionConfig.Array.size|{}size[0]
-            final fun <get-size>(): dev.s7a.fiktion/FiktionConfig<kotlin/Array<*>, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Array.size.<get-size>|<get-size>(){}[0]
+            final fun <get-size>(): dev.s7a.fiktion/FiktionConfig<kotlin/Array<*>, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Array.size.<get-size>|<get-size>(){}[0]
     }
 
     final object Byte { // dev.s7a.fiktion/FiktionConfig.Byte|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.Byte.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Byte, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Byte.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Byte, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Byte.range.<get-range>|<get-range>(){}[0]
     }
 
     final object Char { // dev.s7a.fiktion/FiktionConfig.Char|null[0]
@@ -122,12 +122,12 @@ final class <#A: kotlin/Any?, #B: kotlin/Any> dev.s7a.fiktion/FiktionConfig { //
         final val rangeCharsets // dev.s7a.fiktion/FiktionConfig.Char.rangeCharsets|{}rangeCharsets[0]
             final fun <get-rangeCharsets>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/CharRange, kotlin.collections/List<dev.s7a.fiktion.generators/FiktionCharset>> // dev.s7a.fiktion/FiktionConfig.Char.rangeCharsets.<get-rangeCharsets>|<get-rangeCharsets>(){}[0]
         final val step // dev.s7a.fiktion/FiktionConfig.Char.step|{}step[0]
-            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/CharProgression, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Char.step.<get-step>|<get-step>(){}[0]
+            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/CharProgression, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Char.step.<get-step>|<get-step>(){}[0]
     }
 
     final object Collection { // dev.s7a.fiktion/FiktionConfig.Collection|null[0]
         final val size // dev.s7a.fiktion/FiktionConfig.Collection.size|{}size[0]
-            final fun <get-size>(): dev.s7a.fiktion/FiktionConfig<kotlin.collections/Collection<*>, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Collection.size.<get-size>|<get-size>(){}[0]
+            final fun <get-size>(): dev.s7a.fiktion/FiktionConfig<kotlin.collections/Collection<*>, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Collection.size.<get-size>|<get-size>(){}[0]
     }
 
     final object Companion { // dev.s7a.fiktion/FiktionConfig.Companion|null[0]
@@ -136,7 +136,7 @@ final class <#A: kotlin/Any?, #B: kotlin/Any> dev.s7a.fiktion/FiktionConfig { //
 
     final object Double { // dev.s7a.fiktion/FiktionConfig.Double|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.Double.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Double, kotlin.ranges/ClosedFloatingPointRange<kotlin/Double>> // dev.s7a.fiktion/FiktionConfig.Double.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Double, kotlin.ranges/ClosedRange<kotlin/Double>> // dev.s7a.fiktion/FiktionConfig.Double.range.<get-range>|<get-range>(){}[0]
     }
 
     final object Duration { // dev.s7a.fiktion/FiktionConfig.Duration|null[0]
@@ -146,116 +146,116 @@ final class <#A: kotlin/Any?, #B: kotlin/Any> dev.s7a.fiktion/FiktionConfig { //
 
     final object Float { // dev.s7a.fiktion/FiktionConfig.Float|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.Float.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Float, kotlin.ranges/ClosedFloatingPointRange<kotlin/Float>> // dev.s7a.fiktion/FiktionConfig.Float.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Float, kotlin.ranges/ClosedRange<kotlin/Float>> // dev.s7a.fiktion/FiktionConfig.Float.range.<get-range>|<get-range>(){}[0]
     }
 
     final object Instant { // dev.s7a.fiktion/FiktionConfig.Instant|null[0]
         final val epochSeconds // dev.s7a.fiktion/FiktionConfig.Instant.epochSeconds|{}epochSeconds[0]
-            final fun <get-epochSeconds>(): dev.s7a.fiktion/FiktionConfig<kotlin.time/Instant, kotlin.ranges/LongRange> // dev.s7a.fiktion/FiktionConfig.Instant.epochSeconds.<get-epochSeconds>|<get-epochSeconds>(){}[0]
+            final fun <get-epochSeconds>(): dev.s7a.fiktion/FiktionConfig<kotlin.time/Instant, kotlin.ranges/ClosedRange<kotlin/Long>> // dev.s7a.fiktion/FiktionConfig.Instant.epochSeconds.<get-epochSeconds>|<get-epochSeconds>(){}[0]
         final val nanosecond // dev.s7a.fiktion/FiktionConfig.Instant.nanosecond|{}nanosecond[0]
-            final fun <get-nanosecond>(): dev.s7a.fiktion/FiktionConfig<kotlin.time/Instant, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Instant.nanosecond.<get-nanosecond>|<get-nanosecond>(){}[0]
+            final fun <get-nanosecond>(): dev.s7a.fiktion/FiktionConfig<kotlin.time/Instant, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Instant.nanosecond.<get-nanosecond>|<get-nanosecond>(){}[0]
     }
 
     final object Int { // dev.s7a.fiktion/FiktionConfig.Int|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.Int.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Int, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Int.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Int, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Int.range.<get-range>|<get-range>(){}[0]
     }
 
     final object IntProgression { // dev.s7a.fiktion/FiktionConfig.IntProgression|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.IntProgression.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/IntProgression, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.IntProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/IntProgression, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.IntProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
         final val step // dev.s7a.fiktion/FiktionConfig.IntProgression.step|{}step[0]
-            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/IntProgression, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.IntProgression.step.<get-step>|<get-step>(){}[0]
+            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/IntProgression, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.IntProgression.step.<get-step>|<get-step>(){}[0]
     }
 
     final object IntRange { // dev.s7a.fiktion/FiktionConfig.IntRange|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.IntRange.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/IntRange, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.IntRange.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/IntRange, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.IntRange.bounds.<get-bounds>|<get-bounds>(){}[0]
     }
 
     final object Long { // dev.s7a.fiktion/FiktionConfig.Long|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.Long.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Long, kotlin.ranges/LongRange> // dev.s7a.fiktion/FiktionConfig.Long.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Long, kotlin.ranges/ClosedRange<kotlin/Long>> // dev.s7a.fiktion/FiktionConfig.Long.range.<get-range>|<get-range>(){}[0]
     }
 
     final object LongProgression { // dev.s7a.fiktion/FiktionConfig.LongProgression|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.LongProgression.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/LongProgression, kotlin.ranges/LongRange> // dev.s7a.fiktion/FiktionConfig.LongProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/LongProgression, kotlin.ranges/ClosedRange<kotlin/Long>> // dev.s7a.fiktion/FiktionConfig.LongProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
         final val step // dev.s7a.fiktion/FiktionConfig.LongProgression.step|{}step[0]
-            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/LongProgression, kotlin.ranges/LongRange> // dev.s7a.fiktion/FiktionConfig.LongProgression.step.<get-step>|<get-step>(){}[0]
+            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/LongProgression, kotlin.ranges/ClosedRange<kotlin/Long>> // dev.s7a.fiktion/FiktionConfig.LongProgression.step.<get-step>|<get-step>(){}[0]
     }
 
     final object LongRange { // dev.s7a.fiktion/FiktionConfig.LongRange|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.LongRange.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/LongRange, kotlin.ranges/LongRange> // dev.s7a.fiktion/FiktionConfig.LongRange.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/LongRange, kotlin.ranges/ClosedRange<kotlin/Long>> // dev.s7a.fiktion/FiktionConfig.LongRange.bounds.<get-bounds>|<get-bounds>(){}[0]
     }
 
     final object Map { // dev.s7a.fiktion/FiktionConfig.Map|null[0]
         final val size // dev.s7a.fiktion/FiktionConfig.Map.size|{}size[0]
-            final fun <get-size>(): dev.s7a.fiktion/FiktionConfig<kotlin.collections/Map<*, *>, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Map.size.<get-size>|<get-size>(){}[0]
+            final fun <get-size>(): dev.s7a.fiktion/FiktionConfig<kotlin.collections/Map<*, *>, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Map.size.<get-size>|<get-size>(){}[0]
     }
 
     final object Regex { // dev.s7a.fiktion/FiktionConfig.Regex|null[0]
         final val charset // dev.s7a.fiktion/FiktionConfig.Regex.charset|{}charset[0]
             final fun <get-charset>(): dev.s7a.fiktion/FiktionConfig<kotlin.text/Regex, dev.s7a.fiktion.generators/FiktionCharset> // dev.s7a.fiktion/FiktionConfig.Regex.charset.<get-charset>|<get-charset>(){}[0]
         final val length // dev.s7a.fiktion/FiktionConfig.Regex.length|{}length[0]
-            final fun <get-length>(): dev.s7a.fiktion/FiktionConfig<kotlin.text/Regex, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Regex.length.<get-length>|<get-length>(){}[0]
+            final fun <get-length>(): dev.s7a.fiktion/FiktionConfig<kotlin.text/Regex, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Regex.length.<get-length>|<get-length>(){}[0]
     }
 
     final object Short { // dev.s7a.fiktion/FiktionConfig.Short|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.Short.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Short, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.Short.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/Short, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.Short.range.<get-range>|<get-range>(){}[0]
     }
 
     final object String { // dev.s7a.fiktion/FiktionConfig.String|null[0]
         final val charset // dev.s7a.fiktion/FiktionConfig.String.charset|{}charset[0]
             final fun <get-charset>(): dev.s7a.fiktion/FiktionConfig<kotlin/String, dev.s7a.fiktion.generators/FiktionCharset> // dev.s7a.fiktion/FiktionConfig.String.charset.<get-charset>|<get-charset>(){}[0]
         final val length // dev.s7a.fiktion/FiktionConfig.String.length|{}length[0]
-            final fun <get-length>(): dev.s7a.fiktion/FiktionConfig<kotlin/String, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.String.length.<get-length>|<get-length>(){}[0]
+            final fun <get-length>(): dev.s7a.fiktion/FiktionConfig<kotlin/String, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.String.length.<get-length>|<get-length>(){}[0]
     }
 
     final object UByte { // dev.s7a.fiktion/FiktionConfig.UByte|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.UByte.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/UByte, kotlin.ranges/UIntRange> // dev.s7a.fiktion/FiktionConfig.UByte.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/UByte, kotlin.ranges/ClosedRange<kotlin/UInt>> // dev.s7a.fiktion/FiktionConfig.UByte.range.<get-range>|<get-range>(){}[0]
     }
 
     final object UInt { // dev.s7a.fiktion/FiktionConfig.UInt|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.UInt.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/UInt, kotlin.ranges/UIntRange> // dev.s7a.fiktion/FiktionConfig.UInt.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/UInt, kotlin.ranges/ClosedRange<kotlin/UInt>> // dev.s7a.fiktion/FiktionConfig.UInt.range.<get-range>|<get-range>(){}[0]
     }
 
     final object UIntProgression { // dev.s7a.fiktion/FiktionConfig.UIntProgression|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.UIntProgression.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/UIntProgression, kotlin.ranges/UIntRange> // dev.s7a.fiktion/FiktionConfig.UIntProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/UIntProgression, kotlin.ranges/ClosedRange<kotlin/UInt>> // dev.s7a.fiktion/FiktionConfig.UIntProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
         final val step // dev.s7a.fiktion/FiktionConfig.UIntProgression.step|{}step[0]
-            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/UIntProgression, kotlin.ranges/IntRange> // dev.s7a.fiktion/FiktionConfig.UIntProgression.step.<get-step>|<get-step>(){}[0]
+            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/UIntProgression, kotlin.ranges/ClosedRange<kotlin/Int>> // dev.s7a.fiktion/FiktionConfig.UIntProgression.step.<get-step>|<get-step>(){}[0]
     }
 
     final object UIntRange { // dev.s7a.fiktion/FiktionConfig.UIntRange|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.UIntRange.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/UIntRange, kotlin.ranges/UIntRange> // dev.s7a.fiktion/FiktionConfig.UIntRange.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/UIntRange, kotlin.ranges/ClosedRange<kotlin/UInt>> // dev.s7a.fiktion/FiktionConfig.UIntRange.bounds.<get-bounds>|<get-bounds>(){}[0]
     }
 
     final object ULong { // dev.s7a.fiktion/FiktionConfig.ULong|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.ULong.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/ULong, kotlin.ranges/ULongRange> // dev.s7a.fiktion/FiktionConfig.ULong.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/ULong, kotlin.ranges/ClosedRange<kotlin/ULong>> // dev.s7a.fiktion/FiktionConfig.ULong.range.<get-range>|<get-range>(){}[0]
     }
 
     final object ULongProgression { // dev.s7a.fiktion/FiktionConfig.ULongProgression|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.ULongProgression.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/ULongProgression, kotlin.ranges/ULongRange> // dev.s7a.fiktion/FiktionConfig.ULongProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/ULongProgression, kotlin.ranges/ClosedRange<kotlin/ULong>> // dev.s7a.fiktion/FiktionConfig.ULongProgression.bounds.<get-bounds>|<get-bounds>(){}[0]
         final val step // dev.s7a.fiktion/FiktionConfig.ULongProgression.step|{}step[0]
-            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/ULongProgression, kotlin.ranges/LongRange> // dev.s7a.fiktion/FiktionConfig.ULongProgression.step.<get-step>|<get-step>(){}[0]
+            final fun <get-step>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/ULongProgression, kotlin.ranges/ClosedRange<kotlin/Long>> // dev.s7a.fiktion/FiktionConfig.ULongProgression.step.<get-step>|<get-step>(){}[0]
     }
 
     final object ULongRange { // dev.s7a.fiktion/FiktionConfig.ULongRange|null[0]
         final val bounds // dev.s7a.fiktion/FiktionConfig.ULongRange.bounds|{}bounds[0]
-            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/ULongRange, kotlin.ranges/ULongRange> // dev.s7a.fiktion/FiktionConfig.ULongRange.bounds.<get-bounds>|<get-bounds>(){}[0]
+            final fun <get-bounds>(): dev.s7a.fiktion/FiktionConfig<kotlin.ranges/ULongRange, kotlin.ranges/ClosedRange<kotlin/ULong>> // dev.s7a.fiktion/FiktionConfig.ULongRange.bounds.<get-bounds>|<get-bounds>(){}[0]
     }
 
     final object UShort { // dev.s7a.fiktion/FiktionConfig.UShort|null[0]
         final val range // dev.s7a.fiktion/FiktionConfig.UShort.range|{}range[0]
-            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/UShort, kotlin.ranges/UIntRange> // dev.s7a.fiktion/FiktionConfig.UShort.range.<get-range>|<get-range>(){}[0]
+            final fun <get-range>(): dev.s7a.fiktion/FiktionConfig<kotlin/UShort, kotlin.ranges/ClosedRange<kotlin/UInt>> // dev.s7a.fiktion/FiktionConfig.UShort.range.<get-range>|<get-range>(){}[0]
     }
 }
 
@@ -520,8 +520,10 @@ final class dev.s7a.fiktion/TypeFamilyGenerationContext : dev.s7a.fiktion/FakeCo
 
     final fun <#A1: kotlin/Any> config(dev.s7a.fiktion/FiktionConfig<*, #A1>): #A1 // dev.s7a.fiktion/TypeFamilyGenerationContext.config|config(dev.s7a.fiktion.FiktionConfig<*,0:0>){0§<kotlin.Any>}[0]
     final fun argumentType(kotlin/Int): kotlin.reflect/KType // dev.s7a.fiktion/TypeFamilyGenerationContext.argumentType|argumentType(kotlin.Int){}[0]
-    final fun fake(kotlin/Int): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fake|fake(kotlin.Int){}[0]
-    final fun fake(kotlin/Int, kotlin/Int): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fake|fake(kotlin.Int;kotlin.Int){}[0]
+    final fun fake(kotlin/Int, kotlin/Int = ...): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fake|fake(kotlin.Int;kotlin.Int){}[0]
+    final fun fakeElement(kotlin/Int, kotlin/Int = ...): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fakeElement|fakeElement(kotlin.Int;kotlin.Int){}[0]
+    final fun fakeKey(kotlin/Int, kotlin/Int = ...): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fakeKey|fakeKey(kotlin.Int;kotlin.Int){}[0]
+    final fun fakeValue(kotlin/Int, kotlin/Int = ...): kotlin/Any? // dev.s7a.fiktion/TypeFamilyGenerationContext.fakeValue|fakeValue(kotlin.Int;kotlin.Int){}[0]
 }
 
 final value class dev.s7a.fiktion/Probability { // dev.s7a.fiktion/Probability|null[0]
@@ -609,16 +611,29 @@ final object dev.s7a.fiktion/FiktionObjectDefault : dev.s7a.fiktion/FiktionObjec
 
 final val dev.s7a.fiktion/auto // dev.s7a.fiktion/auto|{}auto[0]
     final fun <get-auto>(): dev.s7a.fiktion/Auto // dev.s7a.fiktion/auto.<get-auto>|<get-auto>(){}[0]
+final val dev.s7a.fiktion/element // dev.s7a.fiktion/element|@dev.s7a.fiktion.FakeSpec<0:1>{0§<kotlin.Any?>;1§<kotlin.collections.Collection<0:0>>}element[0]
+    final fun <#A1: kotlin/Any?, #B1: kotlin.collections/Collection<#A1>> (dev.s7a.fiktion/FakeSpec<#B1>).<get-element>(): dev.s7a.fiktion/RuleTarget<#A1> // dev.s7a.fiktion/element.<get-element>|<get-element>@dev.s7a.fiktion.FakeSpec<0:1>(){0§<kotlin.Any?>;1§<kotlin.collections.Collection<0:0>>}[0]
+final val dev.s7a.fiktion/element // dev.s7a.fiktion/element|@dev.s7a.fiktion.RuleTarget<0:1>{0§<kotlin.Any?>;1§<kotlin.collections.Collection<0:0>>}element[0]
+    final fun <#A1: kotlin/Any?, #B1: kotlin.collections/Collection<#A1>> (dev.s7a.fiktion/RuleTarget<#B1>).<get-element>(): dev.s7a.fiktion/RuleTarget<#A1> // dev.s7a.fiktion/element.<get-element>|<get-element>@dev.s7a.fiktion.RuleTarget<0:1>(){0§<kotlin.Any?>;1§<kotlin.collections.Collection<0:0>>}[0]
+final val dev.s7a.fiktion/key // dev.s7a.fiktion/key|@dev.s7a.fiktion.FakeSpec<0:2>{0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}key[0]
+    final fun <#A1: kotlin/Any?, #B1: kotlin/Any?, #C1: kotlin.collections/Map<#A1, #B1>> (dev.s7a.fiktion/FakeSpec<#C1>).<get-key>(): dev.s7a.fiktion/RuleTarget<#A1> // dev.s7a.fiktion/key.<get-key>|<get-key>@dev.s7a.fiktion.FakeSpec<0:2>(){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}[0]
+final val dev.s7a.fiktion/key // dev.s7a.fiktion/key|@dev.s7a.fiktion.RuleTarget<0:2>{0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}key[0]
+    final fun <#A1: kotlin/Any?, #B1: kotlin/Any?, #C1: kotlin.collections/Map<#A1, #B1>> (dev.s7a.fiktion/RuleTarget<#C1>).<get-key>(): dev.s7a.fiktion/RuleTarget<#A1> // dev.s7a.fiktion/key.<get-key>|<get-key>@dev.s7a.fiktion.RuleTarget<0:2>(){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}[0]
 final val dev.s7a.fiktion/percent // dev.s7a.fiktion/percent|@kotlin.Double{}percent[0]
     final fun (kotlin/Double).<get-percent>(): dev.s7a.fiktion/Probability // dev.s7a.fiktion/percent.<get-percent>|<get-percent>@kotlin.Double(){}[0]
 final val dev.s7a.fiktion/percent // dev.s7a.fiktion/percent|@kotlin.Int{}percent[0]
     final fun (kotlin/Int).<get-percent>(): dev.s7a.fiktion/Probability // dev.s7a.fiktion/percent.<get-percent>|<get-percent>@kotlin.Int(){}[0]
+final val dev.s7a.fiktion/value // dev.s7a.fiktion/value|@dev.s7a.fiktion.FakeSpec<0:2>{0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}value[0]
+    final fun <#A1: kotlin/Any?, #B1: kotlin/Any?, #C1: kotlin.collections/Map<#A1, #B1>> (dev.s7a.fiktion/FakeSpec<#C1>).<get-value>(): dev.s7a.fiktion/RuleTarget<#B1> // dev.s7a.fiktion/value.<get-value>|<get-value>@dev.s7a.fiktion.FakeSpec<0:2>(){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}[0]
+final val dev.s7a.fiktion/value // dev.s7a.fiktion/value|@dev.s7a.fiktion.RuleTarget<0:2>{0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}value[0]
+    final fun <#A1: kotlin/Any?, #B1: kotlin/Any?, #C1: kotlin.collections/Map<#A1, #B1>> (dev.s7a.fiktion/RuleTarget<#C1>).<get-value>(): dev.s7a.fiktion/RuleTarget<#B1> // dev.s7a.fiktion/value.<get-value>|<get-value>@dev.s7a.fiktion.RuleTarget<0:2>(){0§<kotlin.Any?>;1§<kotlin.Any?>;2§<kotlin.collections.Map<0:0,0:1>>}[0]
 
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/arithmeticException(kotlin/String = ...): kotlin/ArithmeticException // dev.s7a.fiktion.generators/arithmeticException|arithmeticException@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/assertionError(kotlin/String = ...): kotlin/AssertionError // dev.s7a.fiktion.generators/assertionError|assertionError@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/boolean(): kotlin/Boolean // dev.s7a.fiktion.generators/boolean|boolean@dev.s7a.fiktion.FakeContext(){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/booleanArray(kotlin/Int = ...): kotlin/BooleanArray // dev.s7a.fiktion.generators/booleanArray|booleanArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/byte(): kotlin/Byte // dev.s7a.fiktion.generators/byte|byte@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/byte(kotlin.ranges/ClosedRange<kotlin/Int>): kotlin/Byte // dev.s7a.fiktion.generators/byte|byte@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.Int>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/byte(kotlin.ranges/IntRange): kotlin/Byte // dev.s7a.fiktion.generators/byte|byte@dev.s7a.fiktion.FakeContext(kotlin.ranges.IntRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/byte(kotlin/Byte, kotlin/Byte): kotlin/Byte // dev.s7a.fiktion.generators/byte|byte@dev.s7a.fiktion.FakeContext(kotlin.Byte;kotlin.Byte){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/byteArray(kotlin/Int = ...): kotlin/ByteArray // dev.s7a.fiktion.generators/byteArray|byteArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
@@ -634,6 +649,7 @@ final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/classCastExce
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/concurrentModificationException(kotlin/String = ...): kotlin/ConcurrentModificationException // dev.s7a.fiktion.generators/concurrentModificationException|concurrentModificationException@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/double(): kotlin/Double // dev.s7a.fiktion.generators/double|double@dev.s7a.fiktion.FakeContext(){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/double(kotlin.ranges/ClosedFloatingPointRange<kotlin/Double>): kotlin/Double // dev.s7a.fiktion.generators/double|double@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedFloatingPointRange<kotlin.Double>){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/double(kotlin.ranges/ClosedRange<kotlin/Double>): kotlin/Double // dev.s7a.fiktion.generators/double|double@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.Double>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/double(kotlin/Double, kotlin/Double): kotlin/Double // dev.s7a.fiktion.generators/double|double@dev.s7a.fiktion.FakeContext(kotlin.Double;kotlin.Double){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/doubleArray(kotlin/Int = ...): kotlin/DoubleArray // dev.s7a.fiktion.generators/doubleArray|doubleArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/duration(): kotlin.time/Duration // dev.s7a.fiktion.generators/duration|duration@dev.s7a.fiktion.FakeContext(){}[0]
@@ -642,6 +658,7 @@ final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/error(kotlin/
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/exception(kotlin/String = ...): kotlin/Exception // dev.s7a.fiktion.generators/exception|exception@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/float(): kotlin/Float // dev.s7a.fiktion.generators/float|float@dev.s7a.fiktion.FakeContext(){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/float(kotlin.ranges/ClosedFloatingPointRange<kotlin/Float>): kotlin/Float // dev.s7a.fiktion.generators/float|float@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedFloatingPointRange<kotlin.Float>){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/float(kotlin.ranges/ClosedRange<kotlin/Float>): kotlin/Float // dev.s7a.fiktion.generators/float|float@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.Float>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/float(kotlin/Float, kotlin/Float): kotlin/Float // dev.s7a.fiktion.generators/float|float@dev.s7a.fiktion.FakeContext(kotlin.Float;kotlin.Float){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/floatArray(kotlin/Int = ...): kotlin/FloatArray // dev.s7a.fiktion.generators/floatArray|floatArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/illegalArgumentException(kotlin/String = ...): kotlin/IllegalArgumentException // dev.s7a.fiktion.generators/illegalArgumentException|illegalArgumentException@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
@@ -649,6 +666,7 @@ final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/illegalStateE
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/indexOutOfBoundsException(kotlin/String = ...): kotlin/IndexOutOfBoundsException // dev.s7a.fiktion.generators/indexOutOfBoundsException|indexOutOfBoundsException@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/instant(): kotlin.time/Instant // dev.s7a.fiktion.generators/instant|instant@dev.s7a.fiktion.FakeContext(){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/int(): kotlin/Int // dev.s7a.fiktion.generators/int|int@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/int(kotlin.ranges/ClosedRange<kotlin/Int>): kotlin/Int // dev.s7a.fiktion.generators/int|int@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.Int>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/int(kotlin.ranges/IntRange): kotlin/Int // dev.s7a.fiktion.generators/int|int@dev.s7a.fiktion.FakeContext(kotlin.ranges.IntRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/int(kotlin/Int, kotlin/Int): kotlin/Int // dev.s7a.fiktion.generators/int|int@dev.s7a.fiktion.FakeContext(kotlin.Int;kotlin.Int){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/intArray(kotlin/Int = ...): kotlin/IntArray // dev.s7a.fiktion.generators/intArray|intArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
@@ -656,6 +674,7 @@ final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/intProgressio
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/intRange(): kotlin.ranges/IntRange // dev.s7a.fiktion.generators/intRange|intRange@dev.s7a.fiktion.FakeContext(){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/intRange(kotlin/Int, kotlin/Int): kotlin.ranges/IntRange // dev.s7a.fiktion.generators/intRange|intRange@dev.s7a.fiktion.FakeContext(kotlin.Int;kotlin.Int){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/long(): kotlin/Long // dev.s7a.fiktion.generators/long|long@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/long(kotlin.ranges/ClosedRange<kotlin/Long>): kotlin/Long // dev.s7a.fiktion.generators/long|long@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.Long>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/long(kotlin.ranges/LongRange): kotlin/Long // dev.s7a.fiktion.generators/long|long@dev.s7a.fiktion.FakeContext(kotlin.ranges.LongRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/long(kotlin/Long, kotlin/Long): kotlin/Long // dev.s7a.fiktion.generators/long|long@dev.s7a.fiktion.FakeContext(kotlin.Long;kotlin.Long){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/longArray(kotlin/Int = ...): kotlin/LongArray // dev.s7a.fiktion.generators/longArray|longArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
@@ -668,17 +687,20 @@ final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/numberFormatE
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/regex(kotlin/Int = ..., dev.s7a.fiktion.generators/FiktionCharset = ...): kotlin.text/Regex // dev.s7a.fiktion.generators/regex|regex@dev.s7a.fiktion.FakeContext(kotlin.Int;dev.s7a.fiktion.generators.FiktionCharset){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/runtimeException(kotlin/String = ...): kotlin/RuntimeException // dev.s7a.fiktion.generators/runtimeException|runtimeException@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/short(): kotlin/Short // dev.s7a.fiktion.generators/short|short@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/short(kotlin.ranges/ClosedRange<kotlin/Int>): kotlin/Short // dev.s7a.fiktion.generators/short|short@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.Int>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/short(kotlin.ranges/IntRange): kotlin/Short // dev.s7a.fiktion.generators/short|short@dev.s7a.fiktion.FakeContext(kotlin.ranges.IntRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/short(kotlin/Short, kotlin/Short): kotlin/Short // dev.s7a.fiktion.generators/short|short@dev.s7a.fiktion.FakeContext(kotlin.Short;kotlin.Short){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/shortArray(kotlin/Int = ...): kotlin/ShortArray // dev.s7a.fiktion.generators/shortArray|shortArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
-final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/string(kotlin.ranges/IntRange = ..., dev.s7a.fiktion.generators/FiktionCharset = ...): kotlin/String // dev.s7a.fiktion.generators/string|string@dev.s7a.fiktion.FakeContext(kotlin.ranges.IntRange;dev.s7a.fiktion.generators.FiktionCharset){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/string(kotlin.ranges/ClosedRange<kotlin/Int> = ..., dev.s7a.fiktion.generators/FiktionCharset = ...): kotlin/String // dev.s7a.fiktion.generators/string|string@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.Int>;dev.s7a.fiktion.generators.FiktionCharset){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/string(kotlin/Int, dev.s7a.fiktion.generators/FiktionCharset = ...): kotlin/String // dev.s7a.fiktion.generators/string|string@dev.s7a.fiktion.FakeContext(kotlin.Int;dev.s7a.fiktion.generators.FiktionCharset){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/throwable(kotlin/String = ...): kotlin/Throwable // dev.s7a.fiktion.generators/throwable|throwable@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ubyte(): kotlin/UByte // dev.s7a.fiktion.generators/ubyte|ubyte@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ubyte(kotlin.ranges/ClosedRange<kotlin/UInt>): kotlin/UByte // dev.s7a.fiktion.generators/ubyte|ubyte@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.UInt>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ubyte(kotlin.ranges/UIntRange): kotlin/UByte // dev.s7a.fiktion.generators/ubyte|ubyte@dev.s7a.fiktion.FakeContext(kotlin.ranges.UIntRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ubyte(kotlin/UByte, kotlin/UByte): kotlin/UByte // dev.s7a.fiktion.generators/ubyte|ubyte@dev.s7a.fiktion.FakeContext(kotlin.UByte;kotlin.UByte){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ubyteArray(kotlin/Int = ...): kotlin/UByteArray // dev.s7a.fiktion.generators/ubyteArray|ubyteArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uint(): kotlin/UInt // dev.s7a.fiktion.generators/uint|uint@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uint(kotlin.ranges/ClosedRange<kotlin/UInt>): kotlin/UInt // dev.s7a.fiktion.generators/uint|uint@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.UInt>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uint(kotlin.ranges/UIntRange): kotlin/UInt // dev.s7a.fiktion.generators/uint|uint@dev.s7a.fiktion.FakeContext(kotlin.ranges.UIntRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uint(kotlin/UInt, kotlin/UInt): kotlin/UInt // dev.s7a.fiktion.generators/uint|uint@dev.s7a.fiktion.FakeContext(kotlin.UInt;kotlin.UInt){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uintArray(kotlin/Int = ...): kotlin/UIntArray // dev.s7a.fiktion.generators/uintArray|uintArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
@@ -686,6 +708,7 @@ final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uintProgressi
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uintRange(): kotlin.ranges/UIntRange // dev.s7a.fiktion.generators/uintRange|uintRange@dev.s7a.fiktion.FakeContext(){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/uintRange(kotlin/UInt, kotlin/UInt): kotlin.ranges/UIntRange // dev.s7a.fiktion.generators/uintRange|uintRange@dev.s7a.fiktion.FakeContext(kotlin.UInt;kotlin.UInt){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ulong(): kotlin/ULong // dev.s7a.fiktion.generators/ulong|ulong@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ulong(kotlin.ranges/ClosedRange<kotlin/ULong>): kotlin/ULong // dev.s7a.fiktion.generators/ulong|ulong@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.ULong>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ulong(kotlin.ranges/ULongRange): kotlin/ULong // dev.s7a.fiktion.generators/ulong|ulong@dev.s7a.fiktion.FakeContext(kotlin.ranges.ULongRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ulong(kotlin/ULong, kotlin/ULong): kotlin/ULong // dev.s7a.fiktion.generators/ulong|ulong@dev.s7a.fiktion.FakeContext(kotlin.ULong;kotlin.ULong){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ulongArray(kotlin/Int = ...): kotlin/ULongArray // dev.s7a.fiktion.generators/ulongArray|ulongArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
@@ -695,6 +718,7 @@ final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ulongRange(ko
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/unit() // dev.s7a.fiktion.generators/unit|unit@dev.s7a.fiktion.FakeContext(){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/unsupportedOperationException(kotlin/String = ...): kotlin/UnsupportedOperationException // dev.s7a.fiktion.generators/unsupportedOperationException|unsupportedOperationException@dev.s7a.fiktion.FakeContext(kotlin.String){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ushort(): kotlin/UShort // dev.s7a.fiktion.generators/ushort|ushort@dev.s7a.fiktion.FakeContext(){}[0]
+final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ushort(kotlin.ranges/ClosedRange<kotlin/UInt>): kotlin/UShort // dev.s7a.fiktion.generators/ushort|ushort@dev.s7a.fiktion.FakeContext(kotlin.ranges.ClosedRange<kotlin.UInt>){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ushort(kotlin.ranges/UIntRange): kotlin/UShort // dev.s7a.fiktion.generators/ushort|ushort@dev.s7a.fiktion.FakeContext(kotlin.ranges.UIntRange){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ushort(kotlin/UShort, kotlin/UShort): kotlin/UShort // dev.s7a.fiktion.generators/ushort|ushort@dev.s7a.fiktion.FakeContext(kotlin.UShort;kotlin.UShort){}[0]
 final fun (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/ushortArray(kotlin/Int = ...): kotlin/UShortArray // dev.s7a.fiktion.generators/ushortArray|ushortArray@dev.s7a.fiktion.FakeContext(kotlin.Int){}[0]
@@ -727,6 +751,7 @@ final fun <#A: kotlin/Any?, #B: kotlin/Any?, #C: kotlin/Any?> (dev.s7a.fiktion/F
 final fun <#A: kotlin/Any?, #B: kotlin/Any?> (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/map(kotlin/Int = ..., kotlin/Function1<dev.s7a.fiktion/FakeContext, #A>, kotlin/Function1<dev.s7a.fiktion/FakeContext, #B>): kotlin.collections/Map<#A, #B> // dev.s7a.fiktion.generators/map|map@dev.s7a.fiktion.FakeContext(kotlin.Int;kotlin.Function1<dev.s7a.fiktion.FakeContext,0:0>;kotlin.Function1<dev.s7a.fiktion.FakeContext,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?, #B: kotlin/Any?> (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/mutableMap(kotlin/Int = ..., kotlin/Function1<dev.s7a.fiktion/FakeContext, #A>, kotlin/Function1<dev.s7a.fiktion/FakeContext, #B>): kotlin.collections/MutableMap<#A, #B> // dev.s7a.fiktion.generators/mutableMap|mutableMap@dev.s7a.fiktion.FakeContext(kotlin.Int;kotlin.Function1<dev.s7a.fiktion.FakeContext,0:0>;kotlin.Function1<dev.s7a.fiktion.FakeContext,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?, #B: kotlin/Any?> (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/pair(kotlin/Function1<dev.s7a.fiktion/FakeContext, #A>, kotlin/Function1<dev.s7a.fiktion/FakeContext, #B>): kotlin/Pair<#A, #B> // dev.s7a.fiktion.generators/pair|pair@dev.s7a.fiktion.FakeContext(kotlin.Function1<dev.s7a.fiktion.FakeContext,0:0>;kotlin.Function1<dev.s7a.fiktion.FakeContext,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?, #B: kotlin/Comparable<#B>> (dev.s7a.fiktion/FiktionConfig<#A, kotlin.ranges/ClosedRange<#B>>).dev.s7a.fiktion/invoke(#B): dev.s7a.fiktion/FiktionConfigSetting<#A, kotlin.ranges/ClosedRange<#B>> // dev.s7a.fiktion/invoke|invoke@dev.s7a.fiktion.FiktionConfig<0:0,kotlin.ranges.ClosedRange<0:1>>(0:1){0§<kotlin.Any?>;1§<kotlin.Comparable<0:1>>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/failureResult(kotlin/Function1<dev.s7a.fiktion/FakeContext, kotlin/Throwable> = ...): kotlin/Result<#A> // dev.s7a.fiktion.generators/failureResult|failureResult@dev.s7a.fiktion.FakeContext(kotlin.Function1<dev.s7a.fiktion.FakeContext,kotlin.Throwable>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/list(kotlin/Int = ..., kotlin/Function1<dev.s7a.fiktion/FakeContext, #A>): kotlin.collections/List<#A> // dev.s7a.fiktion.generators/list|list@dev.s7a.fiktion.FakeContext(kotlin.Int;kotlin.Function1<dev.s7a.fiktion.FakeContext,0:0>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/FakeContext).dev.s7a.fiktion.generators/mutableList(kotlin/Int = ..., kotlin/Function1<dev.s7a.fiktion/FakeContext, #A>): kotlin.collections/MutableList<#A> // dev.s7a.fiktion.generators/mutableList|mutableList@dev.s7a.fiktion.FakeContext(kotlin.Int;kotlin.Function1<dev.s7a.fiktion.FakeContext,0:0>){0§<kotlin.Any?>}[0]
@@ -742,6 +767,7 @@ final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/gen
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/generates(dev.s7a.fiktion/Auto): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generates|generates@dev.s7a.fiktion.RuleTarget<0:0>(dev.s7a.fiktion.Auto){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/generatesBy(kotlin/Function1<dev.s7a.fiktion/FakeContext, #A>): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generatesBy|generatesBy@dev.s7a.fiktion.RuleTarget<0:0>(kotlin.Function1<dev.s7a.fiktion.FakeContext,0:0>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/generatesOneOf(kotlin.collections/Iterable<#A>): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generatesOneOf|generatesOneOf@dev.s7a.fiktion.RuleTarget<0:0>(kotlin.collections.Iterable<0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (dev.s7a.fiktion/RuleTarget<#A>).dev.s7a.fiktion/invoke(kotlin/Function1<dev.s7a.fiktion/RuleTarget<#A>, kotlin/Unit>): dev.s7a.fiktion/RuleTarget<#A> // dev.s7a.fiktion/invoke|invoke@dev.s7a.fiktion.RuleTarget<0:0>(kotlin.Function1<dev.s7a.fiktion.RuleTarget<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> (dev.s7a.fiktion/TypeFamilyRuleTarget<#A>).dev.s7a.fiktion/generatesBy(kotlin/Function1<dev.s7a.fiktion/TypeFamilyGenerationContext, #A>): dev.s7a.fiktion/GenerationSpec<#A> // dev.s7a.fiktion/generatesBy|generatesBy@dev.s7a.fiktion.TypeFamilyRuleTarget<0:0>(kotlin.Function1<dev.s7a.fiktion.TypeFamilyGenerationContext,0:0>){0§<kotlin.Any?>}[0]
 final fun <#A: kotlin/Any?> dev.s7a.fiktion/fake(kotlin.reflect/KType, kotlin/Long? = ..., kotlin/Function1<dev.s7a.fiktion/FakeSpec<#A>, kotlin/Unit> = ...): #A // dev.s7a.fiktion/fake|fake(kotlin.reflect.KType;kotlin.Long?;kotlin.Function1<dev.s7a.fiktion.FakeSpec<0:0>,kotlin.Unit>){0§<kotlin.Any?>}[0]
 final fun dev.s7a.fiktion/generatedObjectArgumentUsesDefault(kotlin.collections/List<dev.s7a.fiktion/FiktionObjectArgument>, kotlin/Int): kotlin/Boolean // dev.s7a.fiktion/generatedObjectArgumentUsesDefault|generatedObjectArgumentUsesDefault(kotlin.collections.List<dev.s7a.fiktion.FiktionObjectArgument>;kotlin.Int){}[0]

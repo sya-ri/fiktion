@@ -412,15 +412,15 @@ private val BUILT_IN_CONFIG: FiktionConfigState by lazy {
             }
             typeFamily<Pair<*, *>>() generatesBy {
                 Pair(
-                    fake(argumentIndex = 0, seedIndex = 0),
-                    fake(argumentIndex = 1, seedIndex = 1),
+                    fake(index = 0, argumentIndex = 0),
+                    fake(index = 1, argumentIndex = 1),
                 )
             }
             typeFamily<Triple<*, *, *>>() generatesBy {
                 Triple(
-                    fake(argumentIndex = 0, seedIndex = 0),
-                    fake(argumentIndex = 1, seedIndex = 1),
-                    fake(argumentIndex = 2, seedIndex = 2),
+                    fake(index = 0, argumentIndex = 0),
+                    fake(index = 1, argumentIndex = 1),
+                    fake(index = 2, argumentIndex = 2),
                 )
             }
             typeFamily<Result<*>>() generatesBy {

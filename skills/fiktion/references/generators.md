@@ -183,16 +183,21 @@ Use `typeFamily<T>()` for generic families where generation depends on requested
 ```kotlin
 typeFamily<Pair<*, *>>() generatesBy {
     Pair(
-        fake(argumentIndex = 0, seedIndex = 0),
-        fake(argumentIndex = 1, seedIndex = 1),
+        fake(0),
+        fake(1),
     )
 }
 ```
 
 Inside `TypeFamilyGenerationContext`:
 
-- `fake(argumentIndex)` generates the requested type argument with the same index as seed index.
-- `fake(argumentIndex, seedIndex)` allows deterministic sibling values.
+- `fake(index)` generates the requested type argument at the same index and exposes that value through `FakeContext.index`.
+- `fake(index, argumentIndex)` uses a different requested type argument while keeping the provided context index.
+- `fakeElement(index)` generates collection-like elements and lets `element` target rules/config apply.
+- `fakeKey(index)` and `fakeValue(index)` generate map-like keys and values with separate seeds and let `key`/`value`
+  target rules/config apply.
 - `argumentType(argumentIndex)` returns the requested `KType` or throws a `CannotGenerateException`.
 
-Use distinct seed indexes for sibling values to avoid duplicated output.
+Use distinct indexes for sibling values to avoid duplicated output. For add-on containers, prefer `fakeElement`,
+`fakeKey`, and `fakeValue` over hand-written `fake(index, argumentIndex = ...)` calls so user container target
+configuration works consistently.
