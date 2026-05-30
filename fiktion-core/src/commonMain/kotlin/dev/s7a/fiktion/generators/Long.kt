@@ -1,12 +1,13 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates a long across the full long range.
  */
-public fun FakeContext.long(): Long = random.nextLong()
+public fun FakeContext.long(): Long = long(config(FiktionConfig.Long.range))
 
 /**
  * Generates a long from [min] to [max].

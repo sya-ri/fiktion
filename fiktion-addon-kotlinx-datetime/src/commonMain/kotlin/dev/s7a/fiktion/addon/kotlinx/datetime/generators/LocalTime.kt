@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.addon.kotlinx.datetime.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.addon.kotlinx.datetime.KotlinxDatetimeFiktionConfig
 import dev.s7a.fiktion.generators.int
 import kotlinx.datetime.LocalTime
 
@@ -9,8 +10,8 @@ import kotlinx.datetime.LocalTime
  */
 public fun FakeContext.localTime(): LocalTime =
     LocalTime(
-        hour = int(0, 23),
-        minute = int(0, 59),
-        second = int(0, 59),
-        nanosecond = int(0, 999_999_999),
+        hour = int(config(KotlinxDatetimeFiktionConfig.LocalTime.hour)),
+        minute = int(config(KotlinxDatetimeFiktionConfig.LocalTime.minute)),
+        second = int(config(KotlinxDatetimeFiktionConfig.LocalTime.second)),
+        nanosecond = int(config(KotlinxDatetimeFiktionConfig.LocalTime.nanosecond)),
     )

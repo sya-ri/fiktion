@@ -1,12 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates a character from the default alpha-numeric character set.
  */
-public fun FakeContext.char(charset: FiktionCharset = FiktionCharset.AlphaNumeric): Char = string(length = 1, charset = charset).single()
+public fun FakeContext.char(charset: FiktionCharset = config(FiktionConfig.Char.charset)): Char =
+    string(length = 1, charset = charset).single()
 
 /**
  * Generates a character from [min] to [max].

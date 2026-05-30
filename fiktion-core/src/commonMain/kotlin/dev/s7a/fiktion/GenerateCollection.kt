@@ -8,7 +8,7 @@ import kotlin.reflect.KType
 @Suppress("UNCHECKED_CAST")
 internal fun <Element, CollectionType : Collection<Element>> FakeContext.generateCollection(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     spec: DefaultCollectionGenerationSpec<Element, CollectionType>,
 ): CollectionType {
     val count = spec.sizeRange.random(random)
@@ -23,6 +23,8 @@ internal fun <Element, CollectionType : Collection<Element>> FakeContext.generat
                     path = path,
                     depth = depth + 1,
                     index = index,
+                    config = config,
+                    request = request,
                 ),
             )
         }
@@ -37,7 +39,7 @@ internal fun <Element, CollectionType : Collection<Element>> FakeContext.generat
 @Suppress("UNCHECKED_CAST")
 internal fun generateAutomaticCollection(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     context: FakeContext,

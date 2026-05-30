@@ -1,12 +1,13 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates an unsigned byte across the full unsigned byte range.
  */
-public fun FakeContext.ubyte(): UByte = ubyte(min = UByte.MIN_VALUE, max = UByte.MAX_VALUE)
+public fun FakeContext.ubyte(): UByte = ubyte(config(FiktionConfig.UByte.range))
 
 /**
  * Generates an unsigned byte from [min] to [max].

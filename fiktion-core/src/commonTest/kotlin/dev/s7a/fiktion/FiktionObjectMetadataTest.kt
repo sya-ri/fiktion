@@ -35,7 +35,7 @@ class FiktionObjectMetadataTest {
     @Test
     fun `overlay metadata replaces base metadata for the same generated type`() {
         val base =
-            FiktionConfig(
+            FiktionConfigState(
                 metadata =
                     mapOf(
                         typeOf<User>().nonNullTypeId() to userMetadata("base"),
@@ -43,7 +43,7 @@ class FiktionObjectMetadataTest {
                     ),
             )
         val overlay =
-            FiktionConfig(
+            FiktionConfigState(
                 metadata =
                     mapOf(
                         typeOf<User>().nonNullTypeId() to userMetadata("overlay"),

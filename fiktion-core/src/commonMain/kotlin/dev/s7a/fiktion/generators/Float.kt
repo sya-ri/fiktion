@@ -1,13 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
 
 /**
  * Generates a float in `0.0 <= value < 1.0`.
  */
-public fun FakeContext.float(): Float = random.nextFloat()
+public fun FakeContext.float(): Float = float(config(FiktionConfig.Float.range))
 
 /**
  * Generates a float from [min] to [max].

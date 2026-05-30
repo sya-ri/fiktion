@@ -12,7 +12,24 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Mutable configuration receiving rules registered through this builder.
      */
-    internal abstract val config: MutableFiktionConfig
+    internal abstract val mutableConfig: MutableFiktionConfig
+
+    /**
+     * Configures built-in or add-on generator behavior for every generated value matching [key]'s scope.
+     */
+    public fun <Scope, Value : Any> using(
+        key: FiktionConfig<Scope, Value>,
+        value: Value,
+    ) {
+        using(key(value))
+    }
+
+    /**
+     * Configures built-in or add-on generator behavior for every generated value matching [value]'s scope.
+     */
+    public infix fun <Scope, Value : Any> using(value: FiktionConfigSetting<Scope, Value>) {
+        mutableConfig.add(DefaultConfigSpec(key = value.key, matcher = RuleMatcher.All, value = value.value))
+    }
 
     /**
      * Targets every generated value of [type].
@@ -131,7 +148,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
         DefaultRuleNameTarget(
             key = { type -> RuleKey.Name(name, type) },
             matcher = { type -> RuleMatcher.Name(name, type) },
-            register = config::add,
+            register = mutableConfig::add,
         )
 
     /**
@@ -141,7 +158,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
         DefaultRuleNameTarget(
             key = { type -> RuleKey.RegexName(regex.pattern, regex.options, type) },
             matcher = { type -> RuleMatcher.RegexName(regex, type) },
-            register = config::add,
+            register = mutableConfig::add,
         )
 
     /**
@@ -472,7 +489,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
         type: KType,
         convert: (List<Any?>) -> Collection<*>,
     ) {
-        config.add(CollectionConverter(classifier = type.classifier, convert = convert))
+        mutableConfig.add(CollectionConverter(classifier = type.classifier, convert = convert))
     }
 
     /**
@@ -486,7 +503,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
         type: KType,
         convert: (List<Pair<Any?, Any?>>) -> Map<*, *>,
     ) {
-        config.add(MapConverter(classifier = type.classifier, convert = convert))
+        mutableConfig.add(MapConverter(classifier = type.classifier, convert = convert))
     }
 
     /**
@@ -542,7 +559,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
     private fun <Value> target(
         key: RuleKey,
         matcher: RuleMatcher,
-    ): RuleTarget<Value> = DefaultRuleTarget(config, key, matcher)
+    ): RuleTarget<Value> = DefaultRuleTarget(mutableConfig, key, matcher)
 
     /**
      * Creates a type-family rule target using [key] for replacement and [matcher] for lookup.
@@ -550,5 +567,5 @@ public sealed class FiktionRuleBuilder protected constructor() {
     private fun <Value> typeFamilyTarget(
         key: RuleKey,
         matcher: RuleMatcher,
-    ): TypeFamilyRuleTarget<Value> = DefaultTypeFamilyRuleTarget(config, key, matcher)
+    ): TypeFamilyRuleTarget<Value> = DefaultTypeFamilyRuleTarget(mutableConfig, key, matcher)
 }

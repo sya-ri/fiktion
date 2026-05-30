@@ -1,6 +1,8 @@
 package dev.s7a.fiktion.addon.java.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
+import dev.s7a.fiktion.addon.java.JavaFiktionConfig
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.long
 import java.time.Instant
@@ -10,10 +12,6 @@ import java.time.Instant
  */
 public fun FakeContext.instant(): Instant =
     Instant.ofEpochSecond(
-        long(DEFAULT_MIN_EPOCH_SECOND until DEFAULT_MAX_EPOCH_SECOND_EXCLUSIVE),
-        int(0 until NANOS_PER_SECOND).toLong(),
+        long(config(JavaFiktionConfig.Instant.epochSeconds)),
+        int(config(JavaFiktionConfig.Instant.nanosecond)).toLong(),
     )
-
-private val DEFAULT_MIN_EPOCH_SECOND: Long = Instant.parse("1900-01-01T00:00:00Z").epochSecond
-private val DEFAULT_MAX_EPOCH_SECOND_EXCLUSIVE: Long = Instant.parse("2101-01-01T00:00:00Z").epochSecond
-private const val NANOS_PER_SECOND: Int = 1_000_000_000

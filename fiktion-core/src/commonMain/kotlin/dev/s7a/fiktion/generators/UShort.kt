@@ -1,12 +1,13 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates an unsigned short across the full unsigned short range.
  */
-public fun FakeContext.ushort(): UShort = ushort(min = UShort.MIN_VALUE, max = UShort.MAX_VALUE)
+public fun FakeContext.ushort(): UShort = ushort(config(FiktionConfig.UShort.range))
 
 /**
  * Generates an unsigned short from [min] to [max].

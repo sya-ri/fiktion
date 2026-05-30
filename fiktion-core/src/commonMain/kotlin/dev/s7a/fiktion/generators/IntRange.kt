@@ -1,12 +1,13 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates a finite integer range.
  */
-public fun FakeContext.intRange(): IntRange = intRange(min = Int.MIN_VALUE, max = Int.MAX_VALUE)
+public fun FakeContext.intRange(): IntRange = config(FiktionConfig.IntRange.bounds).let { range -> intRange(range.first, range.last) }
 
 /**
  * Generates a finite integer range from [min] to [max].

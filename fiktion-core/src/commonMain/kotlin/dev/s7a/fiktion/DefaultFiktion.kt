@@ -7,5 +7,5 @@ internal class DefaultFiktion(
     /**
      * Instance-specific configuration.
      */
-    val config: FiktionConfig,
+    val config: FiktionConfigState,
 ) : Fiktion

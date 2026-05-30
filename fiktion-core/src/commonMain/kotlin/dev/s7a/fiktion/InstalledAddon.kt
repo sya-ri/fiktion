@@ -17,6 +17,10 @@ internal data class InstalledAddon(
      */
     val collectionConverters: List<CollectionConverter> = emptyList(),
     /**
+     * Generator configuration contributed by this add-on.
+     */
+    val configs: List<DefaultConfigSpec<*>> = emptyList(),
+    /**
      * Map converters contributed by this add-on.
      */
     val mapConverters: List<MapConverter> = emptyList(),
@@ -25,5 +29,8 @@ internal data class InstalledAddon(
      * Returns a detached copy whose rules can be stored in an immutable configuration snapshot.
      */
     fun snapshot(precedence: RulePrecedence? = null): InstalledAddon =
-        copy(rules = rules.map { rule -> rule.snapshot(precedence = precedence ?: rule.precedence) })
+        copy(
+            rules = rules.map { rule -> rule.snapshot(precedence = precedence ?: rule.precedence) },
+            configs = configs.map { config -> config.snapshot(precedence = precedence ?: config.precedence) },
+        )
 }

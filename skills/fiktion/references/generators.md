@@ -14,7 +14,13 @@ depth: Int
 index: Int
 ```
 
-Use context methods and other generators instead of ad hoc randomness when possible.
+Use context methods and other generators instead of ad hoc randomness when possible. Generator defaults should read
+typed config keys through `config(...)`:
+
+```kotlin
+public fun FakeContext.customInt(): Int =
+    int(config(FiktionConfig.Int.range))
+```
 
 ## Core Built-Ins
 

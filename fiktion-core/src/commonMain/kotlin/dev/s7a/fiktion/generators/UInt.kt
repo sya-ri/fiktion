@@ -1,13 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
 
 /**
  * Generates an unsigned integer across the full unsigned integer range.
  */
-public fun FakeContext.uint(): UInt = int().toUInt()
+public fun FakeContext.uint(): UInt = uint(config(FiktionConfig.UInt.range))
 
 /**
  * Generates an unsigned integer from [min] to [max].

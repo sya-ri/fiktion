@@ -29,6 +29,18 @@ internal class DefaultRuleTarget<T>(
     }
 
     /**
+     * Registers [value] for [configKey] on this target.
+     */
+    fun <Value : Any> config(
+        configKey: FiktionConfig<in T, Value>,
+        value: Value,
+    ): DefaultConfigSpec<Value> {
+        val spec = DefaultConfigSpec(key = configKey, matcher = matcher, value = value)
+        config.add(spec)
+        return spec
+    }
+
+    /**
      * Registers automatic generation for this target.
      */
     fun generatesAutomatically(): DefaultGenerationSpec<T> {

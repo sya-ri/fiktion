@@ -10,18 +10,19 @@ import kotlin.reflect.KType
  */
 internal fun <T> generateFake(
     type: KType,
-    baseConfig: FiktionConfig,
+    baseConfig: FiktionConfigState,
     seed: Long?,
     configure: FakeSpec<T>.() -> Unit,
 ): T {
     val spec = FakeSpec<T>()
+    spec.rootType = type
     spec.configure()
     val rootSeed = spec.seed ?: seed ?: baseConfig.seed ?: Random.nextLong()
     val config =
         baseConfig
             .withAutomaticAddons()
             .overlaidBy(
-                other = FiktionConfig(rules = spec.rules),
+                other = FiktionConfigState(rules = spec.rules, configs = spec.configs),
                 rulePrecedence = RulePrecedence.PER_CALL,
             )
     val request = GenerationRequest(type = type)
@@ -33,7 +34,7 @@ internal fun <T> generateFake(
 /**
  * Returns [this] with the current automatic add-ons installed.
  */
-private fun FiktionConfig.withAutomaticAddons(): FiktionConfig {
+private fun FiktionConfigState.withAutomaticAddons(): FiktionConfigState {
     val builder = DefaultFiktionBuilder(config = this, installAutomaticAddons = false)
     builder.installAutomaticAddons()
     return builder.build()

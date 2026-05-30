@@ -7,7 +7,7 @@ package dev.s7a.fiktion
  */
 internal fun generateValueClass(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     metadata: FiktionValueMetadata<*>,

@@ -1,7 +1,9 @@
 package dev.s7a.fiktion.addon.kotlinx.datetime.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.addon.kotlinx.datetime.KotlinxDatetimeFiktionConfig
 import dev.s7a.fiktion.generators.int
+import dev.s7a.fiktion.generators.long
 import kotlinx.datetime.DateTimePeriod
 
 /**
@@ -9,11 +11,11 @@ import kotlinx.datetime.DateTimePeriod
  */
 public fun FakeContext.dateTimePeriod(): DateTimePeriod =
     DateTimePeriod(
-        int(-200, 200),
-        int(-24, 24),
-        int(-366, 366),
-        int(-48, 48),
-        int(-120, 120),
-        int(-120, 120),
-        int(-999_999_999, 999_999_999).toLong(),
+        years = int(config(KotlinxDatetimeFiktionConfig.DateTimePeriod.years)),
+        months = int(config(KotlinxDatetimeFiktionConfig.DateTimePeriod.months)),
+        days = int(config(KotlinxDatetimeFiktionConfig.DateTimePeriod.days)),
+        hours = int(config(KotlinxDatetimeFiktionConfig.DateTimePeriod.hours)),
+        minutes = int(config(KotlinxDatetimeFiktionConfig.DateTimePeriod.minutes)),
+        seconds = int(config(KotlinxDatetimeFiktionConfig.DateTimePeriod.seconds)),
+        nanoseconds = long(config(KotlinxDatetimeFiktionConfig.DateTimePeriod.nanoseconds)),
     )

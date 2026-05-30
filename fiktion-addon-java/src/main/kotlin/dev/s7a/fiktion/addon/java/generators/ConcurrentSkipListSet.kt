@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.addon.java.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.list
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListSet
  * Generates a Java concurrent skip list set using [element].
  */
 public fun <T : Any> FakeContext.concurrentSkipListSet(
-    size: Int = int(1..3),
+    size: Int = int(config(FiktionConfig.Collection.size)),
     element: FakeContext.() -> T,
 ): ConcurrentSkipListSet<T> =
     ConcurrentSkipListSet<T>(compareBy { value -> value.toString() }).apply {
@@ -22,7 +23,7 @@ public fun <T : Any> FakeContext.concurrentSkipListSet(
  */
 internal fun TypeFamilyGenerationContext.concurrentSkipListSet(): ConcurrentSkipListSet<Any> =
     ConcurrentSkipListSet<Any>(compareBy { value -> value.toString() }).apply {
-        repeat(int(1, 3)) { index ->
+        repeat(int(config(FiktionConfig.Collection.size))) { index ->
             fake(argumentIndex = 0, seedIndex = index)?.let(::add)
         }
     }

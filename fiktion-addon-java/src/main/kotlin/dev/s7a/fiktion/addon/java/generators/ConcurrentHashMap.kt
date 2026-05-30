@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.addon.java.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.map
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Generates a Java concurrent hash map using [key] and [value].
  */
 public fun <K, V> FakeContext.concurrentHashMap(
-    size: Int = int(1..3),
+    size: Int = int(config(FiktionConfig.Map.size)),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): ConcurrentHashMap<K & Any, V & Any> =
@@ -27,7 +28,7 @@ public fun <K, V> FakeContext.concurrentHashMap(
  */
 internal fun TypeFamilyGenerationContext.concurrentHashMap(): ConcurrentHashMap<Any, Any> =
     concurrentHashMap(
-        size = int(1..3),
+        size = int(config(FiktionConfig.Map.size)),
         key = {
             fake(argumentIndex = 0, seedIndex = index)
         },

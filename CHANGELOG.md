@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3.0
+
+- Added typed generator configuration for changing built-in and add-on generator defaults.
+
 ## v0.2.4
 
 - Fixed automatic add-on discovery for dependencies provided through Gradle test fixtures.

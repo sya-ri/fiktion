@@ -1,13 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
 
 /**
  * Generates a double in `0.0 <= value < 1.0`.
  */
-public fun FakeContext.double(): Double = random.nextDouble()
+public fun FakeContext.double(): Double = double(config(FiktionConfig.Double.range))
 
 /**
  * Generates a double from [min] to [max].

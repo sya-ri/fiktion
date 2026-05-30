@@ -1,12 +1,16 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates a finite unsigned integer range.
  */
-public fun FakeContext.uintRange(): UIntRange = uintRange(min = UInt.MIN_VALUE, max = UInt.MAX_VALUE)
+public fun FakeContext.uintRange(): UIntRange =
+    config(FiktionConfig.UIntRange.bounds).let { range ->
+        uintRange(range.first, range.last)
+    }
 
 /**
  * Generates a finite unsigned integer range from [min] to [max].

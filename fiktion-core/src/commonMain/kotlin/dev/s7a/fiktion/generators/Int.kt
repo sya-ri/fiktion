@@ -1,12 +1,13 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates an integer across the full integer range.
  */
-public fun FakeContext.int(): Int = random.nextInt()
+public fun FakeContext.int(): Int = int(config(FiktionConfig.Int.range))
 
 /**
  * Generates an integer from [min] to [max].
