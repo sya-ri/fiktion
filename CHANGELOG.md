@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.3
+
+- Fixed value class underlying property overrides so public property references and private-property name rules can
+  control generated value class values.
+- Documented value class override patterns in the README and Fiktion skill guidance.
+
 ## v0.2.2
 
 - Fixed the Gradle plugin wiring so applying `dev.s7a.fiktion` resolves the matching `fiktion-compiler-plugin`

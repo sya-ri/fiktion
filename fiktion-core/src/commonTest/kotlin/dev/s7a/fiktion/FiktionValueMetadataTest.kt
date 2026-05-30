@@ -79,6 +79,7 @@ class FiktionValueMetadataTest {
         FiktionValueMetadata(
             type = typeOf<UserId>(),
             underlyingType = typeOf<String>(),
+            propertyName = "value",
         ) { value ->
             UserId(listOfNotNull(prefix, value as String).joinToString("-"))
         }

@@ -174,8 +174,10 @@ final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionSealedMetadata : dev.s7a.fi
 }
 
 final class <#A: kotlin/Any?> dev.s7a.fiktion/FiktionValueMetadata : dev.s7a.fiktion/FiktionTypeMetadata<#A> { // dev.s7a.fiktion/FiktionValueMetadata|null[0]
-    constructor <init>(kotlin.reflect/KType, kotlin.reflect/KType, kotlin/Function1<kotlin/Any?, #A>) // dev.s7a.fiktion/FiktionValueMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.reflect.KType;kotlin.Function1<kotlin.Any?,1:0>){}[0]
+    constructor <init>(kotlin.reflect/KType, kotlin.reflect/KType, kotlin/String, kotlin/Function1<kotlin/Any?, #A>) // dev.s7a.fiktion/FiktionValueMetadata.<init>|<init>(kotlin.reflect.KType;kotlin.reflect.KType;kotlin.String;kotlin.Function1<kotlin.Any?,1:0>){}[0]
 
+    final val propertyName // dev.s7a.fiktion/FiktionValueMetadata.propertyName|{}propertyName[0]
+        final fun <get-propertyName>(): kotlin/String // dev.s7a.fiktion/FiktionValueMetadata.propertyName.<get-propertyName>|<get-propertyName>(){}[0]
     final val type // dev.s7a.fiktion/FiktionValueMetadata.type|{}type[0]
         final fun <get-type>(): kotlin.reflect/KType // dev.s7a.fiktion/FiktionValueMetadata.type.<get-type>|<get-type>(){}[0]
     final val underlyingType // dev.s7a.fiktion/FiktionValueMetadata.underlyingType|{}underlyingType[0]

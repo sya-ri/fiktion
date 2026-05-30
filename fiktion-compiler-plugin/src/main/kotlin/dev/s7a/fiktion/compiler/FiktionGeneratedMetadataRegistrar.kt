@@ -304,7 +304,8 @@ internal class FiktionGeneratedMetadataRegistrar(
         irCallConstructor(symbols.valueMetadataConstructor, listOf(candidate.irClass.defaultType)).apply {
             setRegularArgument(0, typeOf(candidate.irClass.defaultType))
             setRegularArgument(1, typeOf(candidate.property.parameter.type))
-            setRegularArgument(2, constructor)
+            setRegularArgument(2, irString(candidate.property.name))
+            setRegularArgument(3, constructor)
         }
 
     /**

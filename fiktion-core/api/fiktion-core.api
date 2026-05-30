@@ -267,8 +267,9 @@ public abstract interface class dev/s7a/fiktion/FiktionTypeMetadata {
 }
 
 public final class dev/s7a/fiktion/FiktionValueMetadata : dev/s7a/fiktion/FiktionTypeMetadata {
-	public fun <init> (Lkotlin/reflect/KType;Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
+	public fun <init> (Lkotlin/reflect/KType;Lkotlin/reflect/KType;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
 	public final fun construct (Ljava/lang/Object;)Ljava/lang/Object;
+	public final fun getPropertyName ()Ljava/lang/String;
 	public fun getType ()Lkotlin/reflect/KType;
 	public final fun getUnderlyingType ()Lkotlin/reflect/KType;
 }
