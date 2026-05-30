@@ -12,14 +12,8 @@ concurrency:
 
 jobs:
   build:
-    name: Build (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
+    name: Build
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -34,13 +28,25 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Set up Chrome
-        id: setup-chrome
-        uses: browser-actions/setup-chrome@v2
-        with:
-          install-dependencies: true
-
       - name: Build
         run: ./gradlew build --stacktrace
-        env:
-          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
+
+  apple-native:
+    name: Apple native
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: zulu
+          java-version: 25
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Test Apple native targets
+        run: ./gradlew :fiktion-core:macosArm64Test :fiktion-core:iosSimulatorArm64Test --stacktrace
