@@ -226,6 +226,17 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata for generic value classes`() {
+        val fiktion =
+            Fiktion {
+                type<Int>() generates 42
+            }
+        val value = fiktion.fake<GeneratedValueList<Int>>(seed = 123)
+
+        assertEquals(listOf(42), value.values)
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata with value class property names`() {
         val userId =
             fake<GeneratedUserId>(seed = 123) {
@@ -707,6 +718,17 @@ private value class GeneratedPrivateUserId(
      */
     private val value: String,
 )
+
+/**
+ * Smoke-test generic value class that depends on compiler-generated metadata.
+ */
+@JvmInline
+private value class GeneratedValueList<out T>(
+    /**
+     * Underlying generated values.
+     */
+    val values: List<T>,
+) : List<T> by values
 
 /**
  * Smoke-test enum that depends on compiler-generated metadata.

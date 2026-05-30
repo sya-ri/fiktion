@@ -49,7 +49,7 @@ public class FiktionGradlePlugin :
      * Returns compiler options for add-ons listed in compilation dependencies.
      */
     private fun KotlinCompilation<*>.automaticAddonOptions(): List<SubpluginOption> =
-        compileDependencyFiles.files
+        (compileDependencyFiles.files + runtimeDependencyFiles?.files.orEmpty())
             .flatMap { file -> file.fiktionAddonClassNames() }
             .distinct()
             .map { className -> SubpluginOption(key = "automaticAddon", value = className) }
@@ -84,11 +84,13 @@ private val FIKTION_ADDON_INDEX_PATHS: List<String> =
  * Returns Fiktion add-on class names declared by this dependency file.
  */
 internal fun File.fiktionAddonClassNames(): List<String> =
-    when {
-        isDirectory -> readDirectoryAddonIndex()
-        isFile && extension in FIKTION_ADDON_INDEX_ARCHIVE_EXTENSIONS -> readArchiveAddonIndex()
-        else -> emptyList()
-    }
+    (
+        when {
+            isDirectory -> readDirectoryAddonIndex()
+            extension in FIKTION_ADDON_INDEX_ARCHIVE_EXTENSIONS -> readArchiveAddonIndex()
+            else -> emptyList()
+        } + readGradleProjectResourceAddonIndex()
+    ).distinct()
 
 private val FIKTION_ADDON_INDEX_ARCHIVE_EXTENSIONS: Set<String> = setOf("jar", "klib")
 
@@ -109,15 +111,59 @@ private fun File?.readAddonIndex(): List<String> = this?.readLines()?.addonClass
  * Reads add-on class names from an archive index entry.
  */
 private fun File.readArchiveAddonIndex(): List<String> =
-    ZipFile(this).use { zip ->
-        val entry =
-            FIKTION_ADDON_INDEX_PATHS
-                .firstNotNullOfOrNull { path -> zip.getEntry(path) }
-                ?: return emptyList()
-        zip.getInputStream(entry).bufferedReader().use { reader ->
-            reader.readLines().addonClassNames()
+    if (!isFile) {
+        emptyList()
+    } else {
+        ZipFile(this).use { zip ->
+            val entry =
+                FIKTION_ADDON_INDEX_PATHS
+                    .firstNotNullOfOrNull { path -> zip.getEntry(path) }
+                    ?: return emptyList()
+            zip.getInputStream(entry).bufferedReader().use { reader ->
+                reader.readLines().addonClassNames()
+            }
         }
     }
+
+private fun File.readGradleProjectResourceAddonIndex(): List<String> =
+    gradleProjectResourceAddonIndexCandidates()
+        .firstNotNullOfOrNull { file -> file.takeIf { it.isFile } }
+        .readAddonIndex()
+
+private fun File.gradleProjectResourceAddonIndexCandidates(): List<File> {
+    val path = path.replace(File.separatorChar, '/')
+    val classDirectory =
+        listOf("/build/classes/kotlin/", "/build/classes/java/")
+            .firstNotNullOfOrNull { marker ->
+                val markerIndex = path.indexOf(marker)
+                if (markerIndex == -1) return@firstNotNullOfOrNull null
+                val sourceSet = path.substring(markerIndex + marker.length).substringBefore('/')
+                val projectPath = path.substring(0, markerIndex)
+                projectPath to sourceSet
+            }
+    if (classDirectory != null) {
+        val (projectPath, sourceSet) = classDirectory
+        return listOf(
+            File(projectPath, "src/$sourceSet/resources/$FIKTION_ADDON_INDEX_PATH"),
+            File(projectPath, "build/resources/$sourceSet/$FIKTION_ADDON_INDEX_PATH"),
+        )
+    }
+
+    val jarMarker = "/build/libs/"
+    val jarMarkerIndex = path.indexOf(jarMarker)
+    if (jarMarkerIndex == -1) return emptyList()
+    val projectPath = path.substring(0, jarMarkerIndex)
+    val sourceSet =
+        if (path.substring(jarMarkerIndex + jarMarker.length).contains("test-fixtures")) {
+            "testFixtures"
+        } else {
+            "main"
+        }
+    return listOf(
+        File(projectPath, "src/$sourceSet/resources/$FIKTION_ADDON_INDEX_PATH"),
+        File(projectPath, "build/resources/$sourceSet/$FIKTION_ADDON_INDEX_PATH"),
+    )
+}
 
 /**
  * Parses add-on class names from index lines.

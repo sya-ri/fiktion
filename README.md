@@ -54,6 +54,7 @@ The repository currently contains:
 - `fiktion-compiler-plugin`: Kotlin compiler plugin for generated type metadata
 - `fiktion-gradle-plugin`: Gradle wiring for test source sets
 - `fiktion-addon-java`: rules for common Java/JVM standard library types
+- `fiktion-addon-kotlinx-datetime`: rules for `kotlinx-datetime` types
 
 ## Install
 
@@ -62,14 +63,17 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.3"
+    id("dev.s7a.fiktion") version "0.2.4"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.3")
+    testImplementation("dev.s7a:fiktion-core:0.2.4")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.3")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.4")
+
+    // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.2.4")
 }
 ```
 
@@ -522,7 +526,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.3")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.4")
 }
 ```
 
@@ -542,6 +546,35 @@ Add-ons can still be installed explicitly when the compiler plugin is not enable
 ```kotlin
 val fiktion = Fiktion {
     install(JavaFiktionAddon)
+}
+```
+
+## kotlinx-datetime Add-On
+
+Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types such as `Instant`, `LocalDate`,
+`LocalTime`, `LocalDateTime`, `TimeZone`, `UtcOffset`, `DatePeriod`, or `DateTimePeriod`:
+
+```kotlin
+dependencies {
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.2.4")
+}
+```
+
+With the Gradle plugin enabled, the add-on is registered automatically before `fake<T>()` calls:
+
+```kotlin
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+
+val date = fake<LocalDate>()
+val timeZone = fake<TimeZone>()
+```
+
+It can also be installed explicitly:
+
+```kotlin
+val fiktion = Fiktion {
+    install(KotlinxDatetimeFiktionAddon)
 }
 ```
 

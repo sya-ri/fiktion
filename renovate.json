@@ -3,6 +3,9 @@
   "extends": [
     "config:recommended"
   ],
+  "baseBranches": [
+    "release/0.x"
+  ],
   "labels": [
     "dependencies"
   ],
