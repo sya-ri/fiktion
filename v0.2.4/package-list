@@ -4,6 +4,9 @@ $dokka.linkExtension:html
 module:fiktion-addon-java
 dev.s7a.fiktion.addon.java
 dev.s7a.fiktion.addon.java.generators
+module:fiktion-addon-kotlinx-datetime
+dev.s7a.fiktion.addon.kotlinx.datetime
+dev.s7a.fiktion.addon.kotlinx.datetime.generators
 module:fiktion-compiler-plugin
 dev.s7a.fiktion.compiler
 module:fiktion-core
