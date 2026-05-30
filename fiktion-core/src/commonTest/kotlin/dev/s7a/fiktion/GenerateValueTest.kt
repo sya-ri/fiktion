@@ -85,6 +85,29 @@ class GenerateValueTest {
     }
 
     @Test
+    fun `generateValue selects exact generic type rules independent of registration order`() {
+        val exactAfterFamily =
+            Fiktion {
+                typeFamily<List<*>>() generatesBy {
+                    listOf("family")
+                }
+                type<List<Int>>() generates listOf(42)
+            }
+        val exactBeforeFamily =
+            Fiktion {
+                type<List<Int>>() generates listOf(42)
+                typeFamily<List<*>>() generatesBy {
+                    listOf("family")
+                }
+            }
+
+        assertEquals(listOf(42), exactAfterFamily.fake<List<Int>>(seed = 123))
+        assertEquals(listOf("family"), exactAfterFamily.fake<List<String>>(seed = 123))
+        assertEquals(listOf(42), exactBeforeFamily.fake<List<Int>>(seed = 123))
+        assertEquals(listOf("family"), exactBeforeFamily.fake<List<String>>(seed = 123))
+    }
+
+    @Test
     fun `generateValue generates function0 return values from the return type argument`() {
         val callback = fake<() -> String>(seed = 123)
 
