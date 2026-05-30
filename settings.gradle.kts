@@ -15,6 +15,7 @@ rootProject.name = "fiktion"
 
 include(
     ":fiktion-addon-java",
+    ":fiktion-addon-kotlinx-datetime",
     ":fiktion-core",
     ":fiktion-compiler-plugin",
     ":fiktion-gradle-plugin",
