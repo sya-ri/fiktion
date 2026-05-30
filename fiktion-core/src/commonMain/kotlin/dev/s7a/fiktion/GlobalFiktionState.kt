@@ -11,5 +11,5 @@ internal data class GlobalFiktionState(
     /**
      * Configuration active for this version.
      */
-    val config: FiktionConfig,
+    val config: FiktionConfigState,
 )

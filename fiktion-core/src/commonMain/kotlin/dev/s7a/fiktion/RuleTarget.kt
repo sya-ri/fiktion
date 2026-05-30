@@ -33,6 +33,23 @@ public infix fun <T> RuleTarget<T>.generatesBy(generator: Generator<T>): Generat
     (this as DefaultRuleTarget<T>).generatesBy(generator)
 
 /**
+ * Configures built-in or add-on generator behavior for this rule target.
+ */
+public fun <T, Value : Any> RuleTarget<T>.using(
+    key: FiktionConfig<in T, Value>,
+    value: Value,
+) {
+    using(key(value))
+}
+
+/**
+ * Configures built-in or add-on generator behavior for this rule target.
+ */
+public infix fun <T, Value : Any> RuleTarget<T>.using(value: FiktionConfigSetting<in T, Value>) {
+    (this as DefaultRuleTarget<T>).config(configKey = value.key, value = value.value)
+}
+
+/**
  * Generates integer values within [range].
  */
 public infix fun RuleTarget<Int>.generatesIn(range: IntRange): GenerationSpec<Int> =

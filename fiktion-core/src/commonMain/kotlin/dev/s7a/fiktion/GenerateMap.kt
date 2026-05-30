@@ -9,7 +9,7 @@ import kotlin.reflect.KType
 internal fun <Key, Value, MapType : Map<Key, Value>> FakeContext.generateMap(
     request: GenerationRequest,
     spec: DefaultMapGenerationSpec<Key, Value, MapType>,
-    config: FiktionConfig,
+    config: FiktionConfigState,
 ): MapType {
     val count = spec.sizeRange.random(random)
     val entries =
@@ -64,7 +64,7 @@ private fun missingMapConverter(request: GenerationRequest): Nothing =
 private fun generateAutomaticMapPart(
     part: String,
     type: KType?,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
 ): Any? {

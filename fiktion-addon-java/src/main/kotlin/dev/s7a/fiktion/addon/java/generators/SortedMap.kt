@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.addon.java.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 import dev.s7a.fiktion.generators.int
 import java.util.SortedMap
@@ -9,7 +10,7 @@ import java.util.SortedMap
  * Generates a Java sorted map using [key] and [value].
  */
 public fun <K : Any, V> FakeContext.sortedMap(
-    size: Int = int(1..3),
+    size: Int = int(config(FiktionConfig.Map.size)),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): SortedMap<K, V> = treeMap(size = size, key = key, value = value)

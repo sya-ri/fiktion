@@ -259,6 +259,40 @@ Rule precedence is:
 Within the same precedence level, more specific targets win before registration order. When two matching rules have the
 same specificity, the later registration wins.
 
+## Generator Defaults
+
+Use typed generator configuration when you want to keep Fiktion's default generators but adjust their ranges, sizes, or
+formats:
+
+```kotlin
+val fiktion = Fiktion {
+    this using FiktionConfig.Int.range(-200..200)
+    this using FiktionConfig.String.length(8..8)
+    this using FiktionConfig.Collection.size(3..3)
+}
+
+val users = fiktion.fake<List<User>>()
+```
+
+Per-call configuration is scoped to the generated root type:
+
+```kotlin
+val names = fake<List<String>> {
+    this using FiktionConfig.Collection.size(5..5)
+}
+```
+
+Property configuration narrows a generator default to one property:
+
+```kotlin
+val user = fake<User> {
+    User::id using FiktionConfig.String.length(12..12)
+}
+```
+
+Configuration keys are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects such as
+`JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
+
 ## Test Framework Integration
 
 With `kotlin.test`, prefer an isolated `Fiktion { ... }` instance from `@BeforeTest` when each test should start from

@@ -36,6 +36,8 @@ Read only the file needed for the task:
 - Use `Fiktion.configure` only for process-wide defaults needed by top-level `fake<T>()` calls; pair every call with
   snapshot restoration in the matching project-level teardown hook when tests may run in parallel.
 - Prefer property references in per-call rules: `User::id generates "user-1"`.
+- Use typed generator configuration to adjust default generator behavior without replacing the generator:
+  `this using FiktionConfig.Int.range(-200..200)` or `User::id using FiktionConfig.String.length(12..12)`.
 - Prefer reified targets in global/instance/add-on rules: `property<User, String>("id")`, `type<User>()`, `typeFamily<Optional<*>>()`.
 - KProperty infix rules also exist in global/instance/add-on scopes; use reified targets when ambiguity or readability is a concern.
 - For value classes, target the public underlying property when available, use `name("value")` when the underlying property is private, and use `type<ValueClass>()` when replacing the whole value object.

@@ -80,7 +80,7 @@ import kotlin.uuid.Uuid
     "ktlint:standard:max-line-length",
     "ktlint:standard:parameter-list-wrapping",
 )
-private val BUILT_IN_CONFIG: FiktionConfig by lazy {
+private val BUILT_IN_CONFIG: FiktionConfigState by lazy {
     DefaultFiktionBuilder(installAutomaticAddons = false)
         .apply {
             configurePlatformBuiltIns()

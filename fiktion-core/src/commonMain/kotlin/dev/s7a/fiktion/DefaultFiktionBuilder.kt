@@ -9,7 +9,7 @@ internal class DefaultFiktionBuilder private constructor(
     /**
      * Mutable configuration being built.
      */
-    override val config: MutableFiktionConfig,
+    override val mutableConfig: MutableFiktionConfig,
 ) : FiktionConfigureBuilder() {
     /**
      * Creates an empty builder.
@@ -24,7 +24,7 @@ internal class DefaultFiktionBuilder private constructor(
      * Creates a builder initialized from [config].
      */
     constructor(
-        config: FiktionConfig,
+        config: FiktionConfigState,
         installAutomaticAddons: Boolean = true,
     ) :
         this(
@@ -32,6 +32,7 @@ internal class DefaultFiktionBuilder private constructor(
                 seed = config.seed,
                 addons = config.addons,
                 rules = config.rules,
+                configs = config.configs,
                 collectionConverters = config.collectionConverters,
                 mapConverters = config.mapConverters,
                 metadata = config.metadata,
@@ -45,21 +46,21 @@ internal class DefaultFiktionBuilder private constructor(
     /**
      * Builds an immutable configuration snapshot.
      */
-    fun build(): FiktionConfig = config.build()
+    fun build(): FiktionConfigState = mutableConfig.build()
 
     override fun withSeed(seed: Long) {
-        config.seed = seed
+        mutableConfig.seed = seed
     }
 
     override fun install(addon: FiktionAddon) {
-        config.installAddon(addon.id) {
-            addon.install(DefaultFiktionAddonBuilder(config))
+        mutableConfig.installAddon(addon.id) {
+            addon.install(DefaultFiktionAddonBuilder(mutableConfig))
         }
     }
 
     @ExperimentalFiktionApi
     override fun <T> register(metadata: FiktionTypeMetadata<T>) {
-        config.register(metadata)
+        mutableConfig.register(metadata)
     }
 
     internal fun installAutomaticAddons() {

@@ -1,12 +1,16 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates a finite long range.
  */
-public fun FakeContext.longRange(): LongRange = longRange(min = Long.MIN_VALUE, max = Long.MAX_VALUE)
+public fun FakeContext.longRange(): LongRange =
+    config(FiktionConfig.LongRange.bounds).let { range ->
+        longRange(range.first, range.last)
+    }
 
 /**
  * Generates a finite long range from [min] to [max].

@@ -12,7 +12,7 @@ private const val DEFAULT_NULL_PROBABILITY = 0.5
  */
 internal fun generateValue(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
 ): Any? {
@@ -28,6 +28,8 @@ internal fun generateValue(
             path = path,
             depth = depth,
             index = 0,
+            config = config,
+            request = request,
         )
 
     if (rule != null) {
@@ -55,7 +57,7 @@ internal fun generateValue(
  */
 internal fun generateAutomaticValue(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     context: FakeContext,
@@ -91,7 +93,7 @@ internal fun generateAutomaticValue(
 private fun generateFromMetadata(
     metadata: FiktionTypeMetadata<*>,
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     context: FakeContext,
@@ -109,6 +111,7 @@ private fun generateFromMetadata(
 
         is FiktionArrayMetadata<*> -> {
             generateArray(
+                request = request,
                 config = config,
                 seed = seed,
                 depth = depth,
@@ -152,7 +155,7 @@ private fun generateFromMetadata(
 private fun generateFromRule(
     rule: DefaultGenerationSpec<*>,
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     contextSeed: Long,
     depth: Int,
     context: FakeContext,

@@ -1,12 +1,13 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates a byte across the full byte range.
  */
-public fun FakeContext.byte(): Byte = byte(min = Byte.MIN_VALUE, max = Byte.MAX_VALUE)
+public fun FakeContext.byte(): Byte = byte(config(FiktionConfig.Byte.range))
 
 /**
  * Generates a byte from [min] to [max].

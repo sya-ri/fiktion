@@ -6,7 +6,7 @@ package dev.s7a.fiktion
 internal fun DefaultGenerationSpec<*>.prefixedBy(prefix: List<PathRuleSegment>): DefaultGenerationSpec<*> =
     DefaultGenerationSpec<Any?>(
         key = key.prefixedBy(prefix),
-        matcher = matcher.prefixedBy(prefix),
+        matcher = matcher.prefixedBy(prefix = prefix, allowRootTarget = false),
         generator = generator,
         seed = seed,
         nullProbability = nullProbability,
@@ -14,6 +14,12 @@ internal fun DefaultGenerationSpec<*>.prefixedBy(prefix: List<PathRuleSegment>):
         automaticallyGenerates = automaticallyGenerates,
         precedence = precedence,
     )
+
+/**
+ * Returns this config spec scoped below [prefix].
+ */
+internal fun <Value : Any> DefaultConfigSpec<Value>.prefixedBy(prefix: List<PathRuleSegment>): DefaultConfigSpec<Value> =
+    copy(matcher = matcher.prefixedBy(prefix = prefix, allowRootTarget = true))
 
 /**
  * Returns this rule key scoped below [prefix].
@@ -33,16 +39,54 @@ private fun RuleKey.prefixedBy(prefix: List<PathRuleSegment>): RuleKey =
 /**
  * Returns this rule matcher scoped below [prefix].
  */
-private fun RuleMatcher.prefixedBy(prefix: List<PathRuleSegment>): RuleMatcher =
+private fun RuleMatcher.prefixedBy(
+    prefix: List<PathRuleSegment>,
+    allowRootTarget: Boolean,
+): RuleMatcher =
     when (this) {
-        is RuleMatcher.Path -> RuleMatcher.Path(prefix + segments)
-        is RuleMatcher.Name -> RuleMatcher.Path(prefix + PathRuleSegment(ownerId = null, name = name, valueId = value?.nonNullTypeId()))
-        is RuleMatcher.RegexName -> unsupportedNestedRule("regex name")
-        is RuleMatcher.TypeFamily -> unsupportedNestedRule("type family")
-        is RuleMatcher.Type -> unsupportedNestedRule("type")
-        is RuleMatcher.OwnedType -> unsupportedNestedRule("owner type")
-        is RuleMatcher.Property -> unsupportedNestedRule("owner property")
-        is RuleMatcher.OwnedRegexName -> unsupportedNestedRule("owner regex name")
+        is RuleMatcher.All -> {
+            if (allowRootTarget) {
+                RuleMatcher.Path(prefix)
+            } else {
+                unsupportedNestedRule("all")
+            }
+        }
+
+        is RuleMatcher.Path -> {
+            RuleMatcher.Path(prefix + segments)
+        }
+
+        is RuleMatcher.Name -> {
+            RuleMatcher.Path(prefix + PathRuleSegment(ownerId = null, name = name, valueId = value?.nonNullTypeId()))
+        }
+
+        is RuleMatcher.RegexName -> {
+            unsupportedNestedRule("regex name")
+        }
+
+        is RuleMatcher.TypeFamily -> {
+            unsupportedNestedRule("type family")
+        }
+
+        is RuleMatcher.Type -> {
+            if (allowRootTarget) {
+                RuleMatcher.Path(prefix)
+            } else {
+                unsupportedNestedRule("type")
+            }
+        }
+
+        is RuleMatcher.OwnedType -> {
+            unsupportedNestedRule("owner type")
+        }
+
+        is RuleMatcher.Property -> {
+            unsupportedNestedRule("owner property")
+        }
+
+        is RuleMatcher.OwnedRegexName -> {
+            unsupportedNestedRule("owner regex name")
+        }
     }
 
 /**

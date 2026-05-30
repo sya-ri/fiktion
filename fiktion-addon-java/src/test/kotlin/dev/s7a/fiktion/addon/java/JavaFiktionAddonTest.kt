@@ -2,6 +2,7 @@ package dev.s7a.fiktion.addon.java
 
 import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.addon.java.generators.arrayDeque
 import dev.s7a.fiktion.addon.java.generators.arrayList
 import dev.s7a.fiktion.addon.java.generators.atomicReference
@@ -33,6 +34,7 @@ import dev.s7a.fiktion.generatesEach
 import dev.s7a.fiktion.generatesKeys
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.long
+import dev.s7a.fiktion.invoke
 import java.io.EOFException
 import java.io.File
 import java.io.FileNotFoundException
@@ -89,6 +91,7 @@ import java.time.Period
 import java.time.Year
 import java.time.YearMonth
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -178,6 +181,44 @@ class JavaFiktionAddonTest {
         assertFailsWith<CannotGenerateException> {
             fake<Instant>(seed = 123)
         }
+    }
+
+    @Test
+    fun `installed java add-on uses configured ranges`() {
+        val instant = Instant.parse("2026-05-31T00:00:00Z")
+        val date = LocalDate.of(2026, 5, 31)
+        val time = LocalTime.of(9, 30)
+        val fiktion =
+            Fiktion {
+                install(JavaFiktionAddon)
+                this using JavaFiktionConfig.Instant.epochSeconds(instant.epochSecond..instant.epochSecond)
+                this using JavaFiktionConfig.Instant.nanosecond(123..123)
+                this using JavaFiktionConfig.LocalDate.epochDays(date.toEpochDay()..date.toEpochDay())
+                this using JavaFiktionConfig.LocalTime.nanosecondsOfDay(time.toNanoOfDay()..time.toNanoOfDay())
+                this using JavaFiktionConfig.ZoneOffset.hours(9..9)
+                this using JavaFiktionConfig.Duration.millis(42L..42L)
+            }
+
+        assertEquals(instant.plusNanos(123), fiktion.fake<Instant>(seed = 123))
+        assertEquals(date, fiktion.fake<LocalDate>(seed = 123))
+        assertEquals(time, fiktion.fake<LocalTime>(seed = 123))
+        assertEquals(ZoneOffset.ofHours(9), fiktion.fake<ZoneOffset>(seed = 123))
+        assertEquals(Duration.ofMillis(42), fiktion.fake<Duration>(seed = 123))
+    }
+
+    @Test
+    fun `installed java add-on uses core collection and map size configs`() {
+        val fiktion =
+            Fiktion {
+                install(JavaFiktionAddon)
+                this using FiktionConfig.Collection.size(4..4)
+                this using FiktionConfig.Map.size(5..5)
+            }
+
+        assertEquals(4, fiktion.fake<ArrayList<Int>>(seed = 123).size)
+        assertEquals(4, fiktion.fake<ArrayDeque<Int>>(seed = 123).size)
+        assertEquals(5, fiktion.fake<HashMap<Int, Long>>(seed = 123).size)
+        assertEquals(5, fiktion.fake<ConcurrentHashMap<Int, Long>>(seed = 123).size)
     }
 
     @Test

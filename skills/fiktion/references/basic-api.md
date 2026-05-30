@@ -477,6 +477,34 @@ val snapshot = Fiktion.configure {
 Prefer per-call rules for test-specific intent, isolated `Fiktion { ... }` for reusable suite-local policy, and global
 configuration only for process-wide test defaults.
 
+### Generator Defaults
+
+Use typed generator configuration when the built-in or add-on generator should stay in place but use different ranges,
+sizes, or formatting defaults:
+
+```kotlin
+val user = fake<User> {
+    User::id using FiktionConfig.String.length(12..12)
+}
+
+val values = fake<List<Int>> {
+    this using FiktionConfig.Collection.size(5..5)
+}
+
+val fiktion = Fiktion {
+    this using FiktionConfig.Int.range(-200..200)
+    this using FiktionConfig.Collection.size(3..3)
+}
+```
+
+Global, instance, and add-on builder configs apply to every generated value matching the config key's scope. Per-call
+root config applies only when the config scope can affect the generated root type. Property config applies only to that
+property path.
+
+Generator config is intentionally separate from rules: rules replace how a value is generated, while config changes
+parameters read by the existing generator. Nested generic element targeting, such as configuring only the `Int` inside
+`List<Int>` from a per-call root block, is a follow-up design area.
+
 ## Collections And Maps
 
 Collections:

@@ -1,12 +1,13 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 
 /**
  * Generates a finite character range.
  */
-public fun FakeContext.charRange(): CharRange = charRange(oneOf(DEFAULT_CHAR_RANGE_SETS))
+public fun FakeContext.charRange(): CharRange = charRange(oneOf(config(FiktionConfig.Char.rangeCharsets)))
 
 /**
  * Generates a finite character range inside [charset].
@@ -28,13 +29,6 @@ public fun FakeContext.charRange(
     val last = char(first, max)
     return first..last
 }
-
-private val DEFAULT_CHAR_RANGE_SETS: List<FiktionCharset> =
-    listOf(
-        FiktionCharset.LowercaseAlpha,
-        FiktionCharset.UppercaseAlpha,
-        FiktionCharset.Numeric,
-    )
 
 private fun FiktionCharset.contiguousBounds(): CharRange {
     requireFiktionConfiguration(chars.isNotEmpty()) { "charset must not be empty." }

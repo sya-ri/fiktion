@@ -14,7 +14,7 @@ private const val DEFAULT_VALUE_PROBABILITY = 0.5
  */
 internal fun generateObject(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     metadata: FiktionObjectMetadata<*>,
@@ -51,7 +51,7 @@ internal fun generateObject(
  * Returns whether [property] should use its constructor default for this generation.
  */
 private fun FiktionObjectProperty.usesDefault(
-    config: FiktionConfig,
+    config: FiktionConfigState,
     request: GenerationRequest,
     seed: Long,
 ): Boolean {

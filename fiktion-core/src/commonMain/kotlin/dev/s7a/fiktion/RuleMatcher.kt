@@ -18,6 +18,15 @@ internal sealed interface RuleMatcher {
     fun matches(request: GenerationRequest): Boolean
 
     /**
+     * Matches any generated value.
+     */
+    data object All : RuleMatcher {
+        override val specificity: RuleSpecificity = RuleSpecificity.ALL
+
+        override fun matches(request: GenerationRequest): Boolean = true
+    }
+
+    /**
      * Matches by generated type classifier.
      */
     data class TypeFamily(

@@ -1,13 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
 
 /**
  * Generates an unsigned long across the full unsigned long range.
  */
-public fun FakeContext.ulong(): ULong = long().toULong()
+public fun FakeContext.ulong(): ULong = ulong(config(FiktionConfig.ULong.range))
 
 /**
  * Generates an unsigned long from [min] to [max].

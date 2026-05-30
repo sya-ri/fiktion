@@ -144,7 +144,7 @@ class GenerateValueTest {
     @Test
     fun `generateValue prefers a higher precedence layer before specificity`() {
         val base =
-            FiktionConfig(
+            FiktionConfigState(
                 rules =
                     listOf(
                         DefaultGenerationSpec(
@@ -155,7 +155,7 @@ class GenerateValueTest {
                     ),
             )
         val overlay =
-            FiktionConfig(
+            FiktionConfigState(
                 rules =
                     listOf(
                         DefaultGenerationSpec(
@@ -328,7 +328,7 @@ class GenerateValueTest {
                         propertyName = "id",
                         propertyPath = listOf(User::id),
                     ),
-                config = FiktionConfig(rules = spec.rules),
+                config = FiktionConfigState(rules = spec.rules),
                 seed = 123,
                 depth = 0,
             )
@@ -375,7 +375,7 @@ class GenerateValueTest {
      * Counts generated null values across deterministic sample seeds.
      */
     private fun countNulls(
-        config: FiktionConfig,
+        config: FiktionConfigState,
         samples: Int,
     ): Int =
         (0 until samples).count { seed ->

@@ -11,7 +11,7 @@ public class TypeFamilyGenerationContext internal constructor(
      */
     public val context: FakeContext,
     private val requestedType: KType,
-    private val config: FiktionConfig,
+    private val config: FiktionConfigState,
 ) : FakeContext by context {
     /**
      * Generates a value for the type argument at [argumentIndex].
