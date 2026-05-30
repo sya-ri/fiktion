@@ -18,9 +18,15 @@ internal fun generateValueClass(
                 request =
                     GenerationRequest(
                         type = metadata.underlyingType,
-                        owner = request.type,
-                        propertyName = request.propertyName,
-                        pathSegments = request.pathSegments,
+                        owner = metadata.type,
+                        propertyName = metadata.propertyName,
+                        pathSegments =
+                            request.pathSegments +
+                                PathRuleSegment(
+                                    ownerId = metadata.type.nonNullTypeId(),
+                                    name = metadata.propertyName,
+                                    valueId = metadata.underlyingType.nonNullTypeId(),
+                                ),
                     ),
                 config = config,
                 seed = seed.childSeed(index = 0),

@@ -226,6 +226,36 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata with value class property names`() {
+        val userId =
+            fake<GeneratedUserId>(seed = 123) {
+                GeneratedUserId::value generates "configured"
+            }
+
+        assertEquals(GeneratedUserId("configured"), userId)
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata with private value class property names`() {
+        val userId =
+            fake<GeneratedPrivateUserId>(seed = 123) {
+                name("value") generates "configured"
+            }
+
+        assertEquals(GeneratedPrivateUserId("configured"), userId)
+    }
+
+    @Test
+    fun `type rules override generated value classes`() {
+        val fiktion =
+            Fiktion {
+                type<GeneratedUserId>() generates GeneratedUserId("configured")
+            }
+
+        assertEquals(GeneratedUserId("configured"), fiktion.fake<GeneratedUserId>(seed = 123))
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for enum classes`() {
         assertEquals(fake<GeneratedStatus>(seed = 123), fake<GeneratedStatus>(seed = 123))
         assertTrue(fake<GeneratedStatus>(seed = 123) in GeneratedStatus.entries)
@@ -665,6 +695,17 @@ private value class GeneratedUserId(
      * Underlying user identifier.
      */
     val value: String,
+)
+
+/**
+ * Smoke-test value class with a private underlying property.
+ */
+@JvmInline
+private value class GeneratedPrivateUserId(
+    /**
+     * Private underlying user identifier.
+     */
+    private val value: String,
 )
 
 /**

@@ -8,7 +8,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.2")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.3")
 }
 ```
 

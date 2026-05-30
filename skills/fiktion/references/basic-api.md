@@ -7,12 +7,12 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.2"
+    id("dev.s7a.fiktion") version "0.2.3"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.2")
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.2") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-core:0.2.3")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.3") // optional JVM add-on
 }
 ```
 
@@ -340,6 +340,31 @@ Fiktion {
 
 Use the property-reference form when possible. Use `property<User, String>("id")` when owner and value type should both
 be explicit. Use `name<String>("id")` when the convention should intentionally apply across owners.
+
+For value classes, choose the rule by the surface you want to control:
+
+```kotlin
+@JvmInline
+value class PublicUserId(val value: String)
+
+fake<PublicUserId> {
+    PublicUserId::value generates "user-1"
+}
+
+@JvmInline
+value class PrivateUserId(private val value: String)
+
+fake<PrivateUserId> {
+    name("value") generates "user-1"
+}
+
+Fiktion {
+    type<PublicUserId>() generates PublicUserId("user-1")
+}
+```
+
+Use a property reference for a public underlying property. Use a name rule for a private underlying property because
+external Kotlin code cannot reference it. Use a type rule when the whole value object should be replaced.
 
 ### Generator Function
 

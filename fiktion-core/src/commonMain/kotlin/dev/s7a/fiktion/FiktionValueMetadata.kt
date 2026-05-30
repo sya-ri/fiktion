@@ -17,6 +17,10 @@ public class FiktionValueMetadata<T>(
      */
     public val underlyingType: KType,
     /**
+     * Constructor property name for the underlying value.
+     */
+    public val propertyName: String,
+    /**
      * Creates an instance from the generated underlying [value].
      */
     private val constructor: (value: Any?) -> T,

@@ -62,14 +62,14 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.2"
+    id("dev.s7a.fiktion") version "0.2.3"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.2")
+    testImplementation("dev.s7a:fiktion-core:0.2.3")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.2")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.3")
 }
 ```
 
@@ -449,6 +449,36 @@ Shapes that should be configured explicitly are skipped:
 - private or protected primary constructors
 - vararg or otherwise unsupported constructor parameters
 
+Value class overrides depend on what the test wants to control. For a public underlying property, target that property:
+
+```kotlin
+@JvmInline
+value class UserId(val value: String)
+
+val userId = fake<UserId> {
+    UserId::value generates "user-1"
+}
+```
+
+For a private underlying property, use a name rule because Kotlin code outside the class cannot reference the property:
+
+```kotlin
+@JvmInline
+value class UserId(private val value: String)
+
+val userId = fake<UserId> {
+    name("value") generates "user-1"
+}
+```
+
+When the whole value object should be fixed, prefer a type rule in shared configuration:
+
+```kotlin
+val fiktion = Fiktion {
+    type<UserId>() generates UserId("user-1")
+}
+```
+
 Skipped types can still be generated with explicit rules:
 
 ```kotlin
@@ -492,7 +522,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.2")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.3")
 }
 ```
 

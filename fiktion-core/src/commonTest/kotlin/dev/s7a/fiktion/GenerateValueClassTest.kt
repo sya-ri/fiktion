@@ -36,6 +36,69 @@ class GenerateValueClassTest {
     }
 
     @Test
+    fun `per-call property rules override generated value class underlying properties`() {
+        val fiktion =
+            Fiktion {
+                register(userIdMetadata())
+                type<String>() generates "generated"
+            }
+
+        val userId =
+            fiktion.fake<UserId>(seed = 123) {
+                UserId::value generates "configured"
+            }
+
+        assertEquals(UserId("configured"), userId)
+    }
+
+    @Test
+    fun `property rules override generated nullable value class underlying properties`() {
+        val fiktion =
+            Fiktion {
+                register(userIdMetadata())
+                type<String>() generates "generated"
+                UserId::value generates "configured"
+            }
+
+        val userId = fiktion.fake<UserId?>(seed = 123)
+
+        assertEquals(UserId("configured"), userId)
+    }
+
+    @Test
+    fun `name rules override generated value class underlying properties`() {
+        val fiktion =
+            Fiktion {
+                register(userIdMetadata())
+                type<String>() generates "generated"
+            }
+
+        val userId =
+            fiktion.fake<UserId>(seed = 123) {
+                name<String>("value") generates "configured"
+            }
+
+        assertEquals(UserId("configured"), userId)
+    }
+
+    @Test
+    fun `property rules override nested generated value class underlying properties`() {
+        val fiktion =
+            Fiktion {
+                register(userAccountMetadata())
+                register(userIdMetadata())
+                type<String>() generates "generated"
+            }
+
+        val account =
+            fiktion.fake<UserAccount>(seed = 123) {
+                (UserAccount::id / UserId::value) generates "configured"
+            }
+
+        assertEquals(UserAccount(id = UserId("configured")), account)
+    }
+
+    @Test
     fun `explicit type rules override registered value metadata`() {
         val fiktion =
             Fiktion {
@@ -92,8 +155,23 @@ class GenerateValueClassTest {
         FiktionValueMetadata(
             type = typeOf<UserId>(),
             underlyingType = typeOf<String>(),
+            propertyName = "value",
         ) { value ->
             UserId(value as String)
+        }
+
+    /**
+     * Returns test metadata for [UserAccount].
+     */
+    private fun userAccountMetadata(): FiktionObjectMetadata<UserAccount> =
+        FiktionObjectMetadata(
+            type = typeOf<UserAccount>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<UserId>()),
+                ),
+        ) { values ->
+            UserAccount(id = values[0].valueOrDefault(defaultValue = null) as UserId)
         }
 
     /**
@@ -103,7 +181,12 @@ class GenerateValueClassTest {
         FiktionValueMetadata(
             type = typeOf<ComplexUserId>(),
             underlyingType = typeOf<ComplexUserIdValue>(),
+            propertyName = "value",
         ) { value ->
             ComplexUserId(value as ComplexUserIdValue)
         }
 }
+
+private data class UserAccount(
+    val id: UserId,
+)

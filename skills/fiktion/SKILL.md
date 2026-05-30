@@ -38,6 +38,7 @@ Read only the file needed for the task:
 - Prefer property references in per-call rules: `User::id generates "user-1"`.
 - Prefer reified targets in global/instance/add-on rules: `property<User, String>("id")`, `type<User>()`, `typeFamily<Optional<*>>()`.
 - KProperty infix rules also exist in global/instance/add-on scopes; use reified targets when ambiguity or readability is a concern.
+- For value classes, target the public underlying property when available, use `name("value")` when the underlying property is private, and use `type<ValueClass>()` when replacing the whole value object.
 - Prefer `generates auto` for object, collection, and map graph generation when the shape should be generated and only size or specific fields matter.
 - Add explicit rules for unsupported shapes, private constructors, abstract/interface targets, or domain-specific realistic data.
 - When editing this repo, keep new public generators in `generators/Xxx.kt` and add focused tests in matching generator test files.
