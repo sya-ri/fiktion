@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.2.4
+
+- Fixed automatic add-on discovery for dependencies provided through Gradle test fixtures.
+- Fixed compiler-plugin metadata generation for generic value classes such as `@JvmInline value class MyList<T>`.
+- Added coverage for exact generic type rules taking precedence over broader type-family rules independent of
+  registration order.
+- Reduced duplicated CI work by running the full build on Ubuntu and Apple native checks on macOS.
+
 ## v0.2.3
 
 - Fixed value class underlying property overrides so public property references and private-property name rules can
