@@ -8,6 +8,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerPluginSupportPlugin
 import org.jetbrains.kotlin.gradle.plugin.SubpluginArtifact
 import org.jetbrains.kotlin.gradle.plugin.SubpluginOption
 import java.io.File
+import java.util.Properties
 import java.util.zip.ZipFile
 
 /**
@@ -29,7 +30,7 @@ public class FiktionGradlePlugin :
         SubpluginArtifact(
             groupId = "dev.s7a",
             artifactId = "fiktion-compiler-plugin",
-            version = "0.1.0",
+            version = compilerPluginVersion(),
         )
 
     override fun applyToCompilation(kotlinCompilation: KotlinCompilation<*>): Provider<List<SubpluginOption>> =
@@ -52,6 +53,20 @@ public class FiktionGradlePlugin :
             .flatMap { file -> file.fiktionAddonClassNames() }
             .distinct()
             .map { className -> SubpluginOption(key = "automaticAddon", value = className) }
+
+    /**
+     * Returns the compiler plugin version that matches this Gradle plugin artifact.
+     */
+    private fun compilerPluginVersion(): String =
+        requireNotNull(
+            FiktionGradlePlugin::class.java
+                .getResourceAsStream("/dev/s7a/fiktion/gradle/fiktion-gradle-plugin.properties")
+                ?.use { stream ->
+                    Properties().apply { load(stream) }.getProperty("version")
+                },
+        ) {
+            "Fiktion Gradle plugin version metadata is missing."
+        }
 }
 
 /**

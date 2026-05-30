@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "dev.s7a"
-version = "0.2.1"
+version = "0.2.2"
 
 val dokkaOlderVersionsDir = layout.buildDirectory.dir("dokka/olderVersions")
 val dokkaVersionName = providers.gradleProperty("dokkaVersionName").orElse(project.version.toString())
