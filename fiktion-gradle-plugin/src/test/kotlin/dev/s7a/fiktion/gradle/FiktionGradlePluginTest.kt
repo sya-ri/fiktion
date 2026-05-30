@@ -246,6 +246,136 @@ class FiktionGradlePluginTest {
         assertEquals(SUCCESS, result.task(":my-app:test")?.outcome)
     }
 
+    @Test
+    fun `plugin auto-loads add-ons from local jar dependencies`() {
+        val repository = Path.of(System.getProperty("user.dir")).parent
+        val directory = Files.createTempDirectory("fiktion-local-jar-addon-test")
+        directory.resolve("settings.gradle.kts").writeText(
+            """
+            pluginManagement {
+                includeBuild("${repository.toString().replace("\\", "\\\\")}")
+                repositories {
+                    gradlePluginPortal()
+                    mavenCentral()
+                }
+            }
+
+            dependencyResolutionManagement {
+                repositories {
+                    mavenCentral()
+                }
+            }
+
+            rootProject.name = "fiktion-local-jar-addon-test"
+            include(":my-addon", ":my-app")
+            includeBuild("${repository.toString().replace("\\", "\\\\")}")
+            """.trimIndent(),
+        )
+        directory.resolve("build.gradle.kts").writeText(
+            """
+            plugins {
+                kotlin("jvm") version "2.3.21" apply false
+                id("dev.s7a.fiktion") apply false
+            }
+            """.trimIndent(),
+        )
+
+        val addon = directory.resolve("my-addon")
+        Files.createDirectories(addon.resolve("src/main/kotlin/com/example/addon"))
+        Files.createDirectories(addon.resolve("src/main/resources/META-INF/fiktion"))
+        addon.resolve("build.gradle.kts").writeText(
+            """
+            plugins {
+                kotlin("jvm")
+            }
+
+            dependencies {
+                compileOnly("dev.s7a:fiktion-core:0.2.3")
+            }
+            """.trimIndent(),
+        )
+        addon.resolve("src/main/kotlin/com/example/addon/Token.kt").writeText(
+            """
+            package com.example.addon
+
+            @JvmInline
+            value class Token(val value: String)
+            """.trimIndent(),
+        )
+        addon.resolve("src/main/kotlin/com/example/addon/LocalJarFiktionAddon.kt").writeText(
+            """
+            package com.example.addon
+
+            import dev.s7a.fiktion.FiktionAddon
+            import dev.s7a.fiktion.FiktionAddonBuilder
+            import dev.s7a.fiktion.generates
+
+            object LocalJarFiktionAddon : FiktionAddon {
+                override val id: String = "local-jar"
+
+                override fun install(builder: FiktionAddonBuilder) {
+                    with(builder) {
+                        type<Token>() generates Token("from-local-jar")
+                    }
+                }
+            }
+            """.trimIndent(),
+        )
+        addon.resolve("src/main/resources/META-INF/fiktion/addons").writeText(
+            "com.example.addon.LocalJarFiktionAddon",
+        )
+
+        val app = directory.resolve("my-app")
+        Files.createDirectories(app.resolve("src/test/kotlin/com/example/myapp"))
+        app.resolve("build.gradle.kts").writeText(
+            """
+            plugins {
+                kotlin("jvm")
+                id("dev.s7a.fiktion")
+            }
+
+            dependencies {
+                testImplementation(files("../my-addon/build/libs/my-addon.jar"))
+                testImplementation("dev.s7a:fiktion-core:0.2.3")
+                testImplementation(kotlin("test"))
+            }
+            """.trimIndent(),
+        )
+        app.resolve("src/test/kotlin/com/example/myapp/TokenTest.kt").writeText(
+            """
+            package com.example.myapp
+
+            import com.example.addon.Token
+            import dev.s7a.fiktion.fake
+            import kotlin.test.Test
+            import kotlin.test.assertEquals
+
+            class TokenTest {
+                @Test
+                fun fakeTokenUsesLocalJarAddon() {
+                    assertEquals(Token("from-local-jar"), fake<Token>(seed = 123))
+                }
+            }
+            """.trimIndent(),
+        )
+
+        val jarResult =
+            GradleRunner
+                .create()
+                .withProjectDir(directory.toFile())
+                .withArguments(":my-addon:jar", "--stacktrace")
+                .build()
+        val testResult =
+            GradleRunner
+                .create()
+                .withProjectDir(directory.toFile())
+                .withArguments(":my-app:test", "--stacktrace")
+                .build()
+
+        assertEquals(SUCCESS, jarResult.task(":my-addon:jar")?.outcome)
+        assertEquals(SUCCESS, testResult.task(":my-app:test")?.outcome)
+    }
+
     /**
      * Creates a temporary Gradle project for a TestKit run.
      */
