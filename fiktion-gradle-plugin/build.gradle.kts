@@ -20,6 +20,13 @@ tasks.named<PluginUnderTestMetadata>("pluginUnderTestMetadata") {
     pluginClasspath.from(configurations.compileClasspath)
 }
 
+tasks.processResources {
+    inputs.property("version", project.version)
+    filesMatching("dev/s7a/fiktion/gradle/fiktion-gradle-plugin.properties") {
+        expand("version" to project.version)
+    }
+}
+
 gradlePlugin {
     website.set("https://github.com/sya-ri/fiktion")
     vcsUrl.set("https://github.com/sya-ri/fiktion")

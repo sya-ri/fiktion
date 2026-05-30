@@ -62,14 +62,14 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.1"
+    id("dev.s7a.fiktion") version "0.2.2"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.1")
+    testImplementation("dev.s7a:fiktion-core:0.2.2")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.2")
 }
 ```
 
@@ -492,7 +492,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.2.2")
 }
 ```
 

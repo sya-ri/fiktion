@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.2.2
+
+- Fixed the Gradle plugin wiring so applying `dev.s7a.fiktion` resolves the matching `fiktion-compiler-plugin`
+  version instead of the initial `0.1.0` compiler plugin.
+
 ## v0.2.1
 
 - Changed compiler-plugin metadata collection to register metadata for types reached from `fake<T>()` calls instead of
