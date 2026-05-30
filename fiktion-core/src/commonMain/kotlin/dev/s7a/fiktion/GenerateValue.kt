@@ -166,16 +166,14 @@ private fun generateFromRule(
     }
 
     if (rule.automaticallyGenerates) {
-        rule.autoCollectionElementType?.let { elementType ->
-            return generateAutomaticCollection(
-                request = request,
-                config = config,
-                seed = contextSeed,
-                depth = depth,
-                context = context,
-                elementType = elementType,
-                sizeRange = rule.autoCollectionSizeRange,
-            )
+        generateAutomaticContainerValue(
+            request = request,
+            config = config,
+            seed = contextSeed,
+            depth = depth,
+            context = context,
+        )?.let { value ->
+            return value
         }
 
         return generateAutomaticValue(
@@ -184,24 +182,6 @@ private fun generateFromRule(
             seed = contextSeed,
             depth = depth,
             context = context,
-        )
-    }
-
-    if (rule is DefaultMapGenerationSpec<*, *, *>) {
-        @Suppress("UNCHECKED_CAST")
-        return context.generateMap(
-            request = request,
-            spec = rule as DefaultMapGenerationSpec<Any?, Any?, Map<Any?, Any?>>,
-            config = config,
-        )
-    }
-
-    if (rule is DefaultCollectionGenerationSpec<*, *>) {
-        @Suppress("UNCHECKED_CAST")
-        return context.generateCollection(
-            request = request,
-            config = config,
-            spec = rule as DefaultCollectionGenerationSpec<Any?, Collection<Any?>>,
         )
     }
 
@@ -217,4 +197,73 @@ private fun generateFromRule(
     }
 
     return rule.generator(context)
+}
+
+/**
+ * Generates collection or map values when an exact `generates auto` rule targets a configured converter type.
+ */
+private fun generateAutomaticContainerValue(
+    request: GenerationRequest,
+    config: FiktionConfigState,
+    seed: Long,
+    depth: Int,
+    context: FakeContext,
+): Any? {
+    config.selectCollectionConverter(request)?.let { converter ->
+        val elementType = request.type.typeArgument(index = 0) ?: return null
+        val elements =
+            List(context.config(FiktionConfig.Collection.size).random(context.random)) { index ->
+                generateValue(
+                    request =
+                        GenerationRequest(
+                            type = elementType,
+                            containerParts =
+                                request.containerParts +
+                                    ContainerPart(kind = ContainerPart.Kind.Collection, container = request.type),
+                            index = index,
+                        ),
+                    config = config,
+                    seed = seed.childSeed(index),
+                    depth = depth + 1,
+                )
+            }
+        return converter.convert(elements)
+    }
+
+    config.selectMapConverter(request)?.let { converter ->
+        val keyType = request.type.typeArgument(index = 0) ?: return null
+        val valueType = request.type.typeArgument(index = 1) ?: return null
+        val entries =
+            List(context.config(FiktionConfig.Map.size).random(context.random)) { index ->
+                generateValue(
+                    request =
+                        GenerationRequest(
+                            type = keyType,
+                            containerParts =
+                                request.containerParts +
+                                    ContainerPart(kind = ContainerPart.Kind.MapKey, container = request.type),
+                            index = index,
+                        ),
+                    config = config,
+                    seed = seed.childSeed(index * 2),
+                    depth = depth + 1,
+                ) to
+                    generateValue(
+                        request =
+                            GenerationRequest(
+                                type = valueType,
+                                containerParts =
+                                    request.containerParts +
+                                        ContainerPart(kind = ContainerPart.Kind.MapValue, container = request.type),
+                                index = index,
+                            ),
+                        config = config,
+                        seed = seed.childSeed(index * 2 + 1),
+                        depth = depth + 1,
+                    )
+            }
+        return converter.convert(entries)
+    }
+
+    return null
 }

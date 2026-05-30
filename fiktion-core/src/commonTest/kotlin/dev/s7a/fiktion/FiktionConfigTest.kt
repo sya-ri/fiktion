@@ -213,9 +213,11 @@ class FiktionConfigTest {
 
         val index =
             fiktion.fake<ConfigIndex>(seed = 1) {
-                ConfigIndex::entries generates auto withSize 3
-                property(ConfigIndex::entries).key generatesBy { "key-$index" }
-                property(ConfigIndex::entries).value generatesBy { index }
+                property(ConfigIndex::entries) {
+                    this using FiktionConfig.Map.size(3)
+                    key generatesBy { "key-$index" }
+                    value generatesBy { index }
+                }
             }
 
         assertEquals(
@@ -232,8 +234,10 @@ class FiktionConfigTest {
     fun `builder type target can configure generated container parts`() {
         val fiktion =
             Fiktion {
-                type<List<Int>>() using FiktionConfig.Collection.size(3)
-                type<List<Int>>().element using FiktionConfig.Int.range(10..20)
+                type<List<Int>> {
+                    this using FiktionConfig.Collection.size(3)
+                    element using FiktionConfig.Int.range(10..20)
+                }
             }
 
         val value = fiktion.fake<List<Int>>(seed = 1)

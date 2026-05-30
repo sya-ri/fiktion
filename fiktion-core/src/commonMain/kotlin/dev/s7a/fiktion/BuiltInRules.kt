@@ -282,6 +282,12 @@ private val BUILT_IN_CONFIG: FiktionConfigState by lazy {
             typeFamily<MutableList<*>>() generatesBy {
                 mutableList()
             }
+            typeFamily<Collection<*>>() generatesBy {
+                list()
+            }
+            typeFamily<MutableCollection<*>>() generatesBy {
+                mutableList()
+            }
             typeFamily<Set<*>>() generatesBy {
                 set()
             }

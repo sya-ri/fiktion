@@ -146,7 +146,9 @@ Collections can generate each element automatically:
 
 ```kotlin
 val catalog = fake<Catalog> {
-    Catalog::items generates auto withSize 3
+    Catalog::items {
+        this using FiktionConfig.Collection.size(3)
+    }
 }
 ```
 
@@ -154,18 +156,21 @@ Or you can provide element rules:
 
 ```kotlin
 val catalog = fake<Catalog> {
-    Catalog::tags generatesEach {
-        string(length = 8)
-    } withSize (1..5)
+    Catalog::tags {
+        this using FiktionConfig.Collection.size(1..5)
+        element generatesBy { string(length = 8) }
+    }
 }
 ```
 
-Maps support key, value, and entry generation:
+Maps support key and value targets:
 
 ```kotlin
 val index = fake<SearchIndex> {
-    SearchIndex::entries generatesKeys { string(length = 8) }
-    SearchIndex::entries generatesValues { fake<Entry>() }
+    SearchIndex::entries {
+        key generatesBy { string(length = 8) }
+        value generatesBy { fake<Entry>() }
+    }
 
     SearchIndex::aliases generatesOneOf listOf("primary", "secondary")
 }
@@ -313,8 +318,7 @@ val indexed = fake<Map<String, Int>> {
 }
 ```
 
-`generatesKeys` and `generatesValues` remain available for existing map rules. Use `key` and `value` targets when you
-want the same target DSL as other generated values, including nested configuration blocks.
+Use `key` and `value` targets when defining map key or value generation, including nested configuration blocks.
 
 Property configuration narrows a generator default to one property:
 

@@ -50,11 +50,6 @@ internal class MutableFiktionConfig(
     private val metadata: MutableMap<String, FiktionTypeMetadata<*>> = metadata.toMutableMap()
 
     /**
-     * Mutable map generation specs keyed by the same rule identity used for replacement.
-     */
-    private val mapGenerationSpecs: MutableMap<RuleKey, DefaultMapGenerationSpec<*, *, *>> = mutableMapOf()
-
-    /**
      * Rule buffer for the add-on currently being installed.
      */
     private var installingAddonRules: MutableList<DefaultGenerationSpec<*>>? = null
@@ -109,16 +104,6 @@ internal class MutableFiktionConfig(
         targetConverters.removeAll { it.classifier == converter.classifier }
         targetConverters += converter
     }
-
-    /**
-     * Returns the shared map generation spec for [key].
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun <Key, Value, MapType : Map<Key, Value>> mapGenerationSpec(
-        key: RuleKey,
-        create: () -> DefaultMapGenerationSpec<Key, Value, MapType>,
-    ): DefaultMapGenerationSpec<Key, Value, MapType> =
-        mapGenerationSpecs.getOrPut(key) { create() } as DefaultMapGenerationSpec<Key, Value, MapType>
 
     /**
      * Registers [metadata], replacing existing metadata for the same generated type.

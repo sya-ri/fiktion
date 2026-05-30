@@ -1,7 +1,5 @@
 package dev.s7a.fiktion
 
-import kotlin.reflect.KType
-
 /**
  * Mutable generation spec registered in a Fiktion configuration.
  */
@@ -35,14 +33,6 @@ internal open class DefaultGenerationSpec<T>(
      */
     open val automaticallyGenerates: Boolean = false,
     /**
-     * Element type used when automatically generating collection values.
-     */
-    open val autoCollectionElementType: KType? = null,
-    /**
-     * Size range used when automatically generating collection values.
-     */
-    open val autoCollectionSizeRange: ClosedRange<Int> = FiktionConfig.Collection.size.defaultValue,
-    /**
      * Precedence layer assigned while composing configurations.
      */
     open val precedence: RulePrecedence = RulePrecedence.GLOBAL,
@@ -74,8 +64,6 @@ internal open class DefaultGenerationSpec<T>(
             nullProbability = nullProbability,
             defaultProbability = defaultProbability,
             automaticallyGenerates = automaticallyGenerates,
-            autoCollectionElementType = autoCollectionElementType,
-            autoCollectionSizeRange = autoCollectionSizeRange,
             precedence = precedence,
         )
 }
