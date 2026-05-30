@@ -1,0 +1,77 @@
+name: Publish PR
+
+on:
+  push:
+    branches:
+      - release/**
+  workflow_dispatch:
+    inputs:
+      release_branch:
+        description: Release branch to publish from.
+        required: true
+        default: release/0.x
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: publish-pr-${{ github.event_name == 'workflow_dispatch' && inputs.release_branch || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  create:
+    name: Create publish PR
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_BRANCH: ${{ github.event_name == 'workflow_dispatch' && inputs.release_branch || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Create PR
+        run: |
+          set -euo pipefail
+
+          git fetch origin main "${RELEASE_BRANCH}"
+          ahead_count="$(git rev-list --count "origin/main..origin/${RELEASE_BRANCH}")"
+          if [[ "${ahead_count}" == "0" ]]; then
+            echo "${RELEASE_BRANCH} has no commits ahead of main."
+            exit 0
+          fi
+
+          existing_pr="$(
+            gh pr list \
+              --base main \
+              --head "${RELEASE_BRANCH}" \
+              --state open \
+              --json number \
+              --jq '.[0].number // empty'
+          )"
+
+          title="Publish ${RELEASE_BRANCH}"
+          body="$(
+            cat <<EOF
+          Automated publish PR from \`${RELEASE_BRANCH}\` to \`main\`.
+
+          Merge this PR when the release branch is ready to become the latest published state.
+
+          After merging, publish artifacts from \`main\`, verify availability, then create the GitHub Release.
+          EOF
+          )"
+
+          if [[ -n "${existing_pr}" ]]; then
+            gh pr edit "${existing_pr}" --title "${title}" --body "${body}"
+            echo "Updated publish PR #${existing_pr}."
+            exit 0
+          fi
+
+          gh pr create \
+            --base main \
+            --head "${RELEASE_BRANCH}" \
+            --title "${title}" \
+            --body "${body}"
