@@ -61,16 +61,16 @@ name<String?>("nickname") generates null
 
 Without this, Kotlin may infer `Nothing?`, making the rule hard to match.
 
-## Map Rule Configuration Errors
+## Map Key And Value Rules
 
-Map rules are intentionally exclusive:
+Use `key generatesBy { ... }` and `value generatesBy { ... }` when defining generated map parts:
 
-- Use `generatesEach { key to value }`, or
-- Use `generatesKeys { ... }` and `generatesValues { ... }`.
-
-Do not mix entry generation with key/value generation for the same target.
-
-Duplicate key or duplicate value rules for the same target fail immediately.
+```kotlin
+fake<Map<String, Int>> {
+    key generatesBy { "key-$index" }
+    value generatesBy { index }
+}
+```
 
 ## Collection Or Map Concrete Type Fails
 

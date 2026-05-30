@@ -25,14 +25,11 @@ import dev.s7a.fiktion.addon.java.generators.queue
 import dev.s7a.fiktion.addon.java.generators.treeMap
 import dev.s7a.fiktion.addon.java.generators.treeSet
 import dev.s7a.fiktion.addon.java.generators.weakHashMap
-import dev.s7a.fiktion.andValues
 import dev.s7a.fiktion.auto
 import dev.s7a.fiktion.element
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
 import dev.s7a.fiktion.generatesBy
-import dev.s7a.fiktion.generatesEach
-import dev.s7a.fiktion.generatesKeys
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.long
 import dev.s7a.fiktion.invoke
@@ -559,35 +556,39 @@ class JavaFiktionAddonTest {
         val fiktion =
             Fiktion {
                 install(JavaFiktionAddon)
-                type<ArrayDeque<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<HashSet<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<HashMap<Int, Long>>() generatesKeys {
-                    int()
-                } andValues {
-                    long()
-                } withSize 2
-                type<TreeSet<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<TreeMap<Int, Long>>() generatesKeys {
-                    int()
-                } andValues {
-                    long()
-                } withSize 2
-                type<ConcurrentLinkedQueue<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<ConcurrentSkipListMap<Int, Long>>() generatesKeys {
-                    int()
-                } andValues {
-                    long()
-                } withSize 2
-                type<ArrayDeque<String>>() generates auto withSize 2
-                type<ConcurrentHashMap<Int, Long>>() generates auto withSize 2
+                type<ArrayDeque<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<HashSet<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<HashMap<Int, Long>> {
+                    this using FiktionConfig.Map.size(2)
+                    key generatesBy { int() }
+                    value generatesBy { long() }
+                }
+                type<TreeSet<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<TreeMap<Int, Long>> {
+                    this using FiktionConfig.Map.size(2)
+                    key generatesBy { int() }
+                    value generatesBy { long() }
+                }
+                type<ConcurrentLinkedQueue<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<ConcurrentSkipListMap<Int, Long>> {
+                    this using FiktionConfig.Map.size(2)
+                    key generatesBy { int() }
+                    value generatesBy { long() }
+                }
+                type<ArrayDeque<String>>() using FiktionConfig.Collection.size(2)
+                type<ConcurrentHashMap<Int, Long>>() using FiktionConfig.Map.size(2)
             }
 
         assertEquals(2, fiktion.fake<ArrayDeque<Int>>(seed = 123).size)
