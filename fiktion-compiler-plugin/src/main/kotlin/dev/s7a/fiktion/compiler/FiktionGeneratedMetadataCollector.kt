@@ -11,10 +11,12 @@ import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
+import org.jetbrains.kotlin.ir.types.AbstractIrTypeSubstitutor
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.typeOrNull
+import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrVisitorVoid
@@ -47,7 +49,7 @@ internal class FiktionGeneratedMetadataCollector {
             null,
         )
 
-        return candidates.distinctBy { candidate -> candidate.className }
+        return candidates.distinctBy { candidate -> candidate.id }
     }
 
     /**
@@ -58,7 +60,7 @@ internal class FiktionGeneratedMetadataCollector {
         candidates: MutableList<FiktionGeneratedMetadataCandidate>,
         visited: MutableSet<String>,
     ) {
-        classOrNull?.owner?.addCandidate(candidates, visited)
+        classOrNull?.owner?.addCandidate(this, candidates, visited)
         (this as? IrSimpleType)
             ?.arguments
             ?.mapNotNull { argument -> argument.typeOrNull }
@@ -69,14 +71,15 @@ internal class FiktionGeneratedMetadataCollector {
      * Adds this class and sealed subtype leaves when they are supported.
      */
     private fun IrClass.addCandidate(
+        type: IrType,
         candidates: MutableList<FiktionGeneratedMetadataCandidate>,
         visited: MutableSet<String>,
     ) {
-        val candidate = toCandidate() ?: return
-        if (!visited.add(candidate.className)) return
+        val candidate = toCandidate(type) ?: return
+        if (!visited.add(candidate.id)) return
         candidates.add(candidate)
         candidate.referencedClasses().forEach { irClass ->
-            irClass.addCandidate(candidates, visited)
+            irClass.addCandidate(irClass.defaultType, candidates, visited)
         }
     }
 
@@ -87,12 +90,12 @@ internal class FiktionGeneratedMetadataCollector {
         when (this) {
             is FiktionGeneratedObjectMetadataCandidate -> {
                 properties.flatMap { property ->
-                    property.parameter.type.referencedClasses()
+                    property.type.referencedClasses()
                 }
             }
 
             is FiktionGeneratedValueMetadataCandidate -> {
-                property.parameter.type.referencedClasses()
+                property.type.referencedClasses()
             }
 
             is FiktionGeneratedSealedMetadataCandidate -> {
@@ -124,10 +127,11 @@ internal class FiktionGeneratedMetadataCollector {
      * Returns a generated metadata candidate for this class, or `null` when the class is outside the supported shape.
      */
     @OptIn(UnsafeDuringIrConstructionAPI::class)
-    private fun IrClass.toCandidate(): FiktionGeneratedMetadataCandidate? {
+    private fun IrClass.toCandidate(type: IrType): FiktionGeneratedMetadataCandidate? {
         if (isExpect || isInner) return null
         val className = fqNameWhenAvailable?.asString().orEmpty()
         if (className.isBlank()) return null
+        val candidateType = type.takeIf { it.classOrNull?.owner == this } ?: defaultType
 
         if (modality == Modality.SEALED) {
             return FiktionGeneratedSealedMetadataCandidate(
@@ -159,12 +163,19 @@ internal class FiktionGeneratedMetadataCollector {
         if (constructor.hasUnsupportedParameters()) return null
         val parameters = constructor.parameters
         if (valueClass && parameters.size != 1) return null
+        val substitutor =
+            if (valueClass) {
+                (candidateType as? IrSimpleType)?.let { type -> AbstractIrTypeSubstitutor.forType(type) }
+            } else {
+                null
+            }
         val properties =
             parameters.map { parameter ->
+                val type = substitutor?.substitute(parameter.type) ?: parameter.type
                 FiktionGeneratedMetadataPropertyCandidate(
                     parameter = parameter,
+                    type = type,
                     name = parameter.name.asString(),
-                    type = parameter.type.render(),
                     hasDefault = parameter.defaultValue != null,
                 )
             }
@@ -172,6 +183,7 @@ internal class FiktionGeneratedMetadataCollector {
         return if (valueClass) {
             FiktionGeneratedValueMetadataCandidate(
                 irClass = this,
+                type = candidateType,
                 constructor = constructor,
                 className = className,
                 property = properties.single(),
@@ -219,4 +231,14 @@ internal class FiktionGeneratedMetadataCollector {
      */
     @OptIn(UnsafeDuringIrConstructionAPI::class)
     private fun IrCall.isFiktionFakeCall(): Boolean = symbol.owner.fqNameWhenAvailable?.asString() == FIKTION_FAKE_FUNCTION
+
+    /**
+     * Returns the uniqueness key for generated metadata candidates.
+     */
+    private val FiktionGeneratedMetadataCandidate.id: String
+        get() =
+            when (this) {
+                is FiktionGeneratedValueMetadataCandidate -> type.render()
+                else -> className
+            }
 }

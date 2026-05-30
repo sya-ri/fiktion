@@ -213,7 +213,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         metadata: IrExpression,
     ): IrExpression =
         irCall(symbols.registerGeneratedMetadata).apply {
-            setTypeArgument(0, candidate.irClass.defaultType)
+            setTypeArgument(0, candidate.metadataType)
             setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
             setRegularArgument(0, metadata)
         }
@@ -301,9 +301,9 @@ internal class FiktionGeneratedMetadataRegistrar(
         candidate: FiktionGeneratedValueMetadataCandidate,
         constructor: IrExpression,
     ): IrExpression =
-        irCallConstructor(symbols.valueMetadataConstructor, listOf(candidate.irClass.defaultType)).apply {
-            setRegularArgument(0, typeOf(candidate.irClass.defaultType))
-            setRegularArgument(1, typeOf(candidate.property.parameter.type))
+        irCallConstructor(symbols.valueMetadataConstructor, listOf(candidate.metadataType)).apply {
+            setRegularArgument(0, typeOf(candidate.metadataType))
+            setRegularArgument(1, typeOf(candidate.property.type))
             setRegularArgument(2, irString(candidate.property.name))
             setRegularArgument(3, constructor)
         }
@@ -497,7 +497,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         candidate: FiktionGeneratedValueMetadataCandidate,
         parent: IrDeclarationParent,
     ): ConstructorLambda {
-        val classType = candidate.irClass.defaultType
+        val classType = candidate.metadataType
         val valueType = pluginContext.irBuiltIns.anyNType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(valueType, classType)
         val function =
@@ -647,8 +647,8 @@ internal class FiktionGeneratedMetadataRegistrar(
         candidate: FiktionGeneratedValueMetadataCandidate,
         value: IrValueParameter,
     ): IrExpression =
-        irCallConstructor(candidate.constructor.symbol, emptyList()).apply {
-            setRegularArgument(0, irAs(irGet(value), candidate.property.parameter.type))
+        irCallConstructor(candidate.constructor.symbol, candidate.metadataType.constructorTypeArguments()).apply {
+            setRegularArgument(0, irAs(irGet(value), candidate.property.type))
         }
 
     /**
@@ -760,14 +760,36 @@ private fun IrType.arrayElementTypeOrNull(): IrType? {
 }
 
 /**
+ * Returns class type arguments usable for constructor calls of this type.
+ */
+private fun IrType.constructorTypeArguments(): List<IrType> {
+    val typeParameters = classOrNull?.owner?.typeParameters ?: return emptyList()
+    return (this as? IrSimpleType)
+        ?.arguments
+        ?.take(typeParameters.size)
+        ?.mapNotNull { argument -> argument.typeOrNull }
+        .orEmpty()
+}
+
+/**
  * Returns array metadata types needed by this generated metadata candidate.
  */
 private fun FiktionGeneratedMetadataCandidate.arrayTypes(): List<Pair<IrType, IrType>> =
     when (this) {
         is FiktionGeneratedObjectMetadataCandidate -> properties.flatMap { property -> property.parameter.type.arrayTypes() }
-        is FiktionGeneratedValueMetadataCandidate -> property.parameter.type.arrayTypes()
+        is FiktionGeneratedValueMetadataCandidate -> property.type.arrayTypes()
         else -> emptyList()
     }
+
+/**
+ * Returns the type that should be registered for this generated metadata candidate.
+ */
+private val FiktionGeneratedMetadataCandidate.metadataType: IrType
+    get() =
+        when (this) {
+            is FiktionGeneratedValueMetadataCandidate -> type
+            else -> irClass.defaultType
+        }
 
 /**
  * Sets the dispatch receiver value.
