@@ -1,8 +1,9 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 
 /**
  * Generates a double array.
  */
-public fun FakeContext.doubleArray(size: Int = int(1..3)): DoubleArray = DoubleArray(size) { double() }
+public fun FakeContext.doubleArray(size: Int = int(config(FiktionConfig.Array.size))): DoubleArray = DoubleArray(size) { double() }

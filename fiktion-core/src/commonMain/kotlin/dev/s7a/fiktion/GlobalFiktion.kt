@@ -23,9 +23,9 @@ internal object GlobalFiktion {
     /**
      * Current effective global configuration snapshot.
      */
-    val config: FiktionConfig
+    val config: FiktionConfigState
         get() =
-            FiktionConfig(metadata = generatedMetadata.load()).overlaidBy(
+            FiktionConfigState(metadata = generatedMetadata.load()).overlaidBy(
                 other = current.load().config,
                 rulePrecedence = RulePrecedence.GLOBAL,
             )

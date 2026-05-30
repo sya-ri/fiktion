@@ -80,7 +80,7 @@ import kotlin.uuid.Uuid
     "ktlint:standard:max-line-length",
     "ktlint:standard:parameter-list-wrapping",
 )
-private val BUILT_IN_CONFIG: FiktionConfig by lazy {
+private val BUILT_IN_CONFIG: FiktionConfigState by lazy {
     DefaultFiktionBuilder(installAutomaticAddons = false)
         .apply {
             configurePlatformBuiltIns()
@@ -282,6 +282,12 @@ private val BUILT_IN_CONFIG: FiktionConfig by lazy {
             typeFamily<MutableList<*>>() generatesBy {
                 mutableList()
             }
+            typeFamily<Collection<*>>() generatesBy {
+                list()
+            }
+            typeFamily<MutableCollection<*>>() generatesBy {
+                mutableList()
+            }
             typeFamily<Set<*>>() generatesBy {
                 set()
             }
@@ -412,15 +418,15 @@ private val BUILT_IN_CONFIG: FiktionConfig by lazy {
             }
             typeFamily<Pair<*, *>>() generatesBy {
                 Pair(
-                    fake(argumentIndex = 0, seedIndex = 0),
-                    fake(argumentIndex = 1, seedIndex = 1),
+                    fake(index = 0, argumentIndex = 0),
+                    fake(index = 1, argumentIndex = 1),
                 )
             }
             typeFamily<Triple<*, *, *>>() generatesBy {
                 Triple(
-                    fake(argumentIndex = 0, seedIndex = 0),
-                    fake(argumentIndex = 1, seedIndex = 1),
-                    fake(argumentIndex = 2, seedIndex = 2),
+                    fake(index = 0, argumentIndex = 0),
+                    fake(index = 1, argumentIndex = 1),
+                    fake(index = 2, argumentIndex = 2),
                 )
             }
             typeFamily<Result<*>>() generatesBy {

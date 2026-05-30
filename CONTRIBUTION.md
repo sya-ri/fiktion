@@ -22,8 +22,11 @@ Renovate is configured to open dependency update pull requests against `release/
 
 ## Publishing
 
-Publish pull requests target `main` from `release/0.x`. Merge the publish pull request only when the release branch is
-ready to become the latest published state.
+Publish pull requests target `main` from `release/0.x`. Merge the publish pull request with a merge commit only when the
+release branch is ready to become the latest published state.
+
+Do not squash or rebase publish pull requests. A merge commit preserves the release branch commits and keeps the next
+publish pull request based on the previous published merge point.
 
 After the publish pull request is merged, publish artifacts from `main`, verify that they are available, then create the
 GitHub Release.
@@ -36,5 +39,6 @@ The protected branch set is:
 - `release/*`
 
 Do not force-push or delete protected branches. Changes should go through pull requests.
+Rulesets should allow only merge commits into `main` and only squash merges into `release/*`.
 The repository ruleset requires one approving review, except for maintainers listed as pull-request bypass actors.
 Required status checks cannot be bypassed.

@@ -7,12 +7,12 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.3"
+    id("dev.s7a.fiktion") version "0.3.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.3")
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.3") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-core:0.3.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.3.0") // optional JVM add-on
 }
 ```
 
@@ -236,7 +236,9 @@ fake<User> {
     }
 
     (User::profile / Profile::nickname) generates "example"
-    (User::profile / Profile::roles) generates auto withSize 2
+    (User::profile / Profile::roles) {
+        this using FiktionConfig.Collection.size(2)
+    }
 }
 ```
 
@@ -270,7 +272,7 @@ Type-family targets are for generic families:
 ```kotlin
 Fiktion {
     typeFamily<Box<*>>() generatesBy {
-        Box(fake(argumentIndex = 0))
+        Box(fake(0))
     }
 }
 ```
@@ -413,7 +415,9 @@ Per-call property form:
 
 ```kotlin
 fake<Team> {
-    Team::names generates auto withSize 3
+    Team::names {
+        this using FiktionConfig.Collection.size(3)
+    }
 }
 ```
 
@@ -421,8 +425,12 @@ Shared configuration equivalents:
 
 ```kotlin
 Fiktion {
-    Team::names generates auto withSize 3
-    property<Team, List<String>>("names") generates auto withSize 3
+    Team::names {
+        this using FiktionConfig.Collection.size(3)
+    }
+    property<Team, List<String>>("names") {
+        this using FiktionConfig.Collection.size(3)
+    }
 }
 ```
 
@@ -431,29 +439,32 @@ For nested collections:
 ```kotlin
 fake<Department> {
     Department::team {
-        Team::names generates auto withSize 3
+        Team::names {
+            this using FiktionConfig.Collection.size(3)
+        }
     }
 
-    (Department::team / Team::names) generates auto withSize 3
+    (Department::team / Team::names) {
+        this using FiktionConfig.Collection.size(3)
+    }
 }
 ```
 
 ### Map Keys And Values
 
-These are equivalent:
+Configure keys and values through map container targets:
 
 ```kotlin
 fake<SearchIndex> {
-    SearchIndex::entries generatesKeys { string(length = 8) } andValues { Entry(id = string(length = 8)) }
-}
-
-fake<SearchIndex> {
-    SearchIndex::entries generatesKeys { string(length = 8) }
-    SearchIndex::entries generatesValues { Entry(id = string(length = 8)) }
+    SearchIndex::entries {
+        key generatesBy { string(length = 8) }
+        value generatesBy { Entry(id = string(length = 8)) }
+    }
 }
 ```
 
-The chained form is compact. The split form is useful when key and value rules are declared in different places.
+Use `property(SearchIndex::entries).key` and `property(SearchIndex::entries).value` when the declarations need to live
+outside a block.
 
 ### Scoped Configuration
 
@@ -477,14 +488,73 @@ val snapshot = Fiktion.configure {
 Prefer per-call rules for test-specific intent, isolated `Fiktion { ... }` for reusable suite-local policy, and global
 configuration only for process-wide test defaults.
 
+### Generator Defaults
+
+Use typed generator configuration when the built-in or add-on generator should stay in place but use different ranges,
+sizes, or formatting defaults:
+
+```kotlin
+val user = fake<User> {
+    User::id using FiktionConfig.String.length(12)
+}
+
+val values = fake<List<Int>> {
+    this using FiktionConfig.Collection.size(5)
+    element using FiktionConfig.Int.range(10..20)
+}
+
+val labels = fake<Map<String, List<Int>>> {
+    this using FiktionConfig.Map.size(2)
+    key using FiktionConfig.String.length(4)
+    value.element using FiktionConfig.Int.range(10..20)
+}
+
+val groups = fake<List<Map<String, Int>>> {
+    element {
+        key using FiktionConfig.String.length(4)
+        value using FiktionConfig.Int.range(10..20)
+    }
+}
+
+val catalog = fake<Catalog> {
+    property(Catalog::counts).element using FiktionConfig.Int.range(10..20)
+}
+
+val indexed = fake<Map<String, Int>> {
+    key generatesBy { "key-$index" }
+    value generatesBy { index }
+}
+
+val fiktion = Fiktion {
+    this using FiktionConfig.Int.range(-200..200)
+    this using FiktionConfig.Collection.size(3)
+}
+```
+
+Global, instance, and add-on builder configs apply to every generated value matching the config key's scope. Per-call
+root config applies only when the config scope can affect the generated root type. Property config applies only to that
+property path.
+
+Generator config is intentionally separate from rules: rules define how a value is generated, while config changes
+parameters read by the existing generator. Container targets can be chained through generated collection and map parts,
+so `fake<Map<String, List<Int>>> { value.element using FiktionConfig.Int.range(10..20) }` configures only the generated
+`Int` elements below map values. Container targets can also be grouped with blocks, such as
+`fake<List<Map<String, Int>>> { element { key using FiktionConfig.String.length(4) } }`. Map keys and values can also
+be defined through `key generatesBy { ... }` and `value generatesBy { ... }`.
+
 ## Collections And Maps
 
 Collections:
 
 ```kotlin
 fake<Catalog> {
-    Catalog::items generates auto withSize 3
-    Catalog::tags generatesEach { string(length = 8) } withSize (1..5)
+    Catalog::items {
+        this using FiktionConfig.Collection.size(3)
+    }
+    Catalog::tags {
+        this using FiktionConfig.Collection.size(1..5)
+        element generatesBy { string(length = 8) }
+    }
 }
 ```
 
@@ -492,21 +562,15 @@ Maps:
 
 ```kotlin
 fake<SearchIndex> {
-    SearchIndex::entries generates auto withSize 2
-    SearchIndex::entries generatesKeys { string(length = 8) } andValues { Entry(id = string(length = 8)) }
-    SearchIndex::weights generatesValues { int(1, 100) } andKeys { string(length = 8) }
-    SearchIndex::aliases generatesEach { string(length = 4) to string(length = 8) }
-}
-```
-
-Map entry generation and key/value generation cannot be mixed for the same target.
-
-Split map key/value rules can also be registered separately for the same target:
-
-```kotlin
-fake<SearchIndex> {
-    SearchIndex::entries generatesKeys { string(length = 8) }
-    SearchIndex::entries generatesValues { Entry(id = string(length = 8)) }
+    SearchIndex::entries {
+        this using FiktionConfig.Map.size(2)
+        key generatesBy { string(length = 8) }
+        value generatesBy { Entry(id = string(length = 8)) }
+    }
+    SearchIndex::weights {
+        key generatesBy { string(length = 8) }
+        value generatesBy { int(1, 100) }
+    }
 }
 ```
 

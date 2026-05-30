@@ -2,6 +2,7 @@ package dev.s7a.fiktion.addon.java
 
 import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.addon.java.generators.arrayDeque
 import dev.s7a.fiktion.addon.java.generators.arrayList
 import dev.s7a.fiktion.addon.java.generators.atomicReference
@@ -24,15 +25,17 @@ import dev.s7a.fiktion.addon.java.generators.queue
 import dev.s7a.fiktion.addon.java.generators.treeMap
 import dev.s7a.fiktion.addon.java.generators.treeSet
 import dev.s7a.fiktion.addon.java.generators.weakHashMap
-import dev.s7a.fiktion.andValues
 import dev.s7a.fiktion.auto
+import dev.s7a.fiktion.element
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
 import dev.s7a.fiktion.generatesBy
-import dev.s7a.fiktion.generatesEach
-import dev.s7a.fiktion.generatesKeys
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.long
+import dev.s7a.fiktion.invoke
+import dev.s7a.fiktion.key
+import dev.s7a.fiktion.using
+import dev.s7a.fiktion.value
 import java.io.EOFException
 import java.io.File
 import java.io.FileNotFoundException
@@ -89,6 +92,7 @@ import java.time.Period
 import java.time.Year
 import java.time.YearMonth
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -178,6 +182,64 @@ class JavaFiktionAddonTest {
         assertFailsWith<CannotGenerateException> {
             fake<Instant>(seed = 123)
         }
+    }
+
+    @Test
+    fun `installed java add-on uses configured ranges`() {
+        val instant = Instant.parse("2026-05-31T00:00:00Z")
+        val date = LocalDate.of(2026, 5, 31)
+        val time = LocalTime.of(9, 30)
+        val fiktion =
+            Fiktion {
+                install(JavaFiktionAddon)
+                this using JavaFiktionConfig.Instant.epochSeconds(instant.epochSecond)
+                this using JavaFiktionConfig.Instant.nanosecond(123)
+                this using JavaFiktionConfig.LocalDate.epochDays(date.toEpochDay())
+                this using JavaFiktionConfig.LocalTime.nanosecondsOfDay(time.toNanoOfDay())
+                this using JavaFiktionConfig.ZoneOffset.hours(9)
+                this using JavaFiktionConfig.Duration.millis(42L)
+            }
+
+        assertEquals(instant.plusNanos(123), fiktion.fake<Instant>(seed = 123))
+        assertEquals(date, fiktion.fake<LocalDate>(seed = 123))
+        assertEquals(time, fiktion.fake<LocalTime>(seed = 123))
+        assertEquals(ZoneOffset.ofHours(9), fiktion.fake<ZoneOffset>(seed = 123))
+        assertEquals(Duration.ofMillis(42), fiktion.fake<Duration>(seed = 123))
+    }
+
+    @Test
+    fun `installed java add-on uses core collection and map size configs`() {
+        val fiktion =
+            Fiktion {
+                install(JavaFiktionAddon)
+                this using FiktionConfig.Collection.size(4)
+                this using FiktionConfig.Map.size(5)
+            }
+
+        assertEquals(4, fiktion.fake<ArrayList<Int>>(seed = 123).size)
+        assertEquals(4, fiktion.fake<ArrayDeque<Int>>(seed = 123).size)
+        assertEquals(5, fiktion.fake<HashMap<Int, Long>>(seed = 123).size)
+        assertEquals(5, fiktion.fake<ConcurrentHashMap<Int, Long>>(seed = 123).size)
+    }
+
+    @Test
+    fun `installed java add-on uses core collection element and map part configs`() {
+        val fiktion =
+            Fiktion {
+                install(JavaFiktionAddon)
+                type<ArrayList<Int>>() using FiktionConfig.Collection.size(3)
+                type<ArrayList<Int>>().element using FiktionConfig.Int.range(42)
+                type<HashMap<String, Int>>() using FiktionConfig.Map.size(2)
+                type<HashMap<String, Int>>().key using FiktionConfig.String.length(4)
+                type<HashMap<String, Int>>().value using FiktionConfig.Int.range(10)
+            }
+
+        val map = fiktion.fake<HashMap<String, Int>>(seed = 123)
+
+        assertEquals(listOf(42, 42, 42), fiktion.fake<ArrayList<Int>>(seed = 123))
+        assertEquals(2, map.size)
+        assertTrue(map.keys.all { key -> key.length == 4 })
+        assertTrue(map.values.all { value -> value == 10 })
     }
 
     @Test
@@ -494,35 +556,39 @@ class JavaFiktionAddonTest {
         val fiktion =
             Fiktion {
                 install(JavaFiktionAddon)
-                type<ArrayDeque<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<HashSet<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<HashMap<Int, Long>>() generatesKeys {
-                    int()
-                } andValues {
-                    long()
-                } withSize 2
-                type<TreeSet<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<TreeMap<Int, Long>>() generatesKeys {
-                    int()
-                } andValues {
-                    long()
-                } withSize 2
-                type<ConcurrentLinkedQueue<Int>>() generatesEach {
-                    int()
-                } withSize 2
-                type<ConcurrentSkipListMap<Int, Long>>() generatesKeys {
-                    int()
-                } andValues {
-                    long()
-                } withSize 2
-                type<ArrayDeque<String>>() generates auto withSize 2
-                type<ConcurrentHashMap<Int, Long>>() generates auto withSize 2
+                type<ArrayDeque<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<HashSet<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<HashMap<Int, Long>> {
+                    this using FiktionConfig.Map.size(2)
+                    key generatesBy { int() }
+                    value generatesBy { long() }
+                }
+                type<TreeSet<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<TreeMap<Int, Long>> {
+                    this using FiktionConfig.Map.size(2)
+                    key generatesBy { int() }
+                    value generatesBy { long() }
+                }
+                type<ConcurrentLinkedQueue<Int>> {
+                    this using FiktionConfig.Collection.size(2)
+                    element generatesBy { int() }
+                }
+                type<ConcurrentSkipListMap<Int, Long>> {
+                    this using FiktionConfig.Map.size(2)
+                    key generatesBy { int() }
+                    value generatesBy { long() }
+                }
+                type<ArrayDeque<String>>() using FiktionConfig.Collection.size(2)
+                type<ConcurrentHashMap<Int, Long>>() using FiktionConfig.Map.size(2)
             }
 
         assertEquals(2, fiktion.fake<ArrayDeque<Int>>(seed = 123).size)

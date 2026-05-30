@@ -1,12 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates a short across the full short range.
  */
-public fun FakeContext.short(): Short = short(min = Short.MIN_VALUE, max = Short.MAX_VALUE)
+public fun FakeContext.short(): Short = short(config(FiktionConfig.Short.range))
 
 /**
  * Generates a short from [min] to [max].
@@ -28,4 +30,15 @@ public fun FakeContext.short(range: IntRange): Short {
         "range must be inside Short bounds."
     }
     return short(range.first.toShort(), range.last.toShort())
+}
+
+/**
+ * Generates a short within [range].
+ */
+public fun FakeContext.short(range: ClosedRange<Int>): Short {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    requireFiktionConfiguration(range.start >= Short.MIN_VALUE && range.endInclusive <= Short.MAX_VALUE) {
+        "range must be inside Short bounds."
+    }
+    return short(range.start.toShort(), range.endInclusive.toShort())
 }

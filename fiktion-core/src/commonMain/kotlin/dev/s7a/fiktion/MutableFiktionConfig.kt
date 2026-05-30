@@ -3,12 +3,13 @@
 package dev.s7a.fiktion
 
 /**
- * Mutable builder-side representation of [FiktionConfig].
+ * Mutable builder-side representation of [FiktionConfigState].
  */
 internal class MutableFiktionConfig(
     seed: Long? = null,
     addons: List<InstalledAddon> = emptyList(),
     rules: List<DefaultGenerationSpec<*>> = emptyList(),
+    configs: List<DefaultConfigSpec<*>> = emptyList(),
     collectionConverters: List<CollectionConverter> = emptyList(),
     mapConverters: List<MapConverter> = emptyList(),
     metadata: Map<String, FiktionTypeMetadata<*>> = emptyMap(),
@@ -29,6 +30,11 @@ internal class MutableFiktionConfig(
     private val rules: MutableList<DefaultGenerationSpec<*>> = rules.toMutableList()
 
     /**
+     * Explicit generator config buffer.
+     */
+    private val configs: MutableList<DefaultConfigSpec<*>> = configs.toMutableList()
+
+    /**
      * Explicit collection converter buffer.
      */
     private val collectionConverters: MutableList<CollectionConverter> = collectionConverters.toMutableList()
@@ -44,14 +50,14 @@ internal class MutableFiktionConfig(
     private val metadata: MutableMap<String, FiktionTypeMetadata<*>> = metadata.toMutableMap()
 
     /**
-     * Mutable map generation specs keyed by the same rule identity used for replacement.
-     */
-    private val mapGenerationSpecs: MutableMap<RuleKey, DefaultMapGenerationSpec<*, *, *>> = mutableMapOf()
-
-    /**
      * Rule buffer for the add-on currently being installed.
      */
     private var installingAddonRules: MutableList<DefaultGenerationSpec<*>>? = null
+
+    /**
+     * Config buffer for the add-on currently being installed.
+     */
+    private var installingAddonConfigs: MutableList<DefaultConfigSpec<*>>? = null
 
     /**
      * Collection converter buffer for the add-on currently being installed.
@@ -73,6 +79,15 @@ internal class MutableFiktionConfig(
     }
 
     /**
+     * Adds [config], replacing an existing config with the same key and matcher within the current layer.
+     */
+    fun add(config: DefaultConfigSpec<*>) {
+        val targetConfigs = installingAddonConfigs ?: configs
+        targetConfigs.removeAll { it.key == config.key && it.matcher == config.matcher }
+        targetConfigs += config
+    }
+
+    /**
      * Adds [converter], replacing an existing collection converter with the same key within the current layer.
      */
     fun add(converter: CollectionConverter) {
@@ -91,16 +106,6 @@ internal class MutableFiktionConfig(
     }
 
     /**
-     * Returns the shared map generation spec for [key].
-     */
-    @Suppress("UNCHECKED_CAST")
-    fun <Key, Value, MapType : Map<Key, Value>> mapGenerationSpec(
-        key: RuleKey,
-        create: () -> DefaultMapGenerationSpec<Key, Value, MapType>,
-    ): DefaultMapGenerationSpec<Key, Value, MapType> =
-        mapGenerationSpecs.getOrPut(key) { create() } as DefaultMapGenerationSpec<Key, Value, MapType>
-
-    /**
      * Registers [metadata], replacing existing metadata for the same generated type.
      */
     fun register(metadata: FiktionTypeMetadata<*>) {
@@ -115,18 +120,22 @@ internal class MutableFiktionConfig(
         install: () -> Unit,
     ) {
         val previousAddonRules = installingAddonRules
+        val previousAddonConfigs = installingAddonConfigs
         val previousAddonCollectionConverters = installingAddonCollectionConverters
         val previousAddonMapConverters = installingAddonMapConverters
         val addonRules = mutableListOf<DefaultGenerationSpec<*>>()
+        val addonConfigs = mutableListOf<DefaultConfigSpec<*>>()
         val addonCollectionConverters = mutableListOf<CollectionConverter>()
         val addonMapConverters = mutableListOf<MapConverter>()
         installingAddonRules = addonRules
+        installingAddonConfigs = addonConfigs
         installingAddonCollectionConverters = addonCollectionConverters
         installingAddonMapConverters = addonMapConverters
         try {
             install()
         } finally {
             installingAddonRules = previousAddonRules
+            installingAddonConfigs = previousAddonConfigs
             installingAddonCollectionConverters = previousAddonCollectionConverters
             installingAddonMapConverters = previousAddonMapConverters
         }
@@ -135,6 +144,7 @@ internal class MutableFiktionConfig(
             InstalledAddon(
                 id = id,
                 rules = addonRules.map { rule -> rule.snapshot() },
+                configs = addonConfigs.map { config -> config.snapshot() },
                 collectionConverters = addonCollectionConverters,
                 mapConverters = addonMapConverters,
             )
@@ -143,11 +153,12 @@ internal class MutableFiktionConfig(
     /**
      * Builds an immutable configuration snapshot.
      */
-    fun build(): FiktionConfig =
-        FiktionConfig(
+    fun build(): FiktionConfigState =
+        FiktionConfigState(
             seed = seed,
             addons = addons.map { addon -> addon.snapshot() },
             rules = rules.map { rule -> rule.snapshot() },
+            configs = configs.map { config -> config.snapshot() },
             collectionConverters = collectionConverters,
             mapConverters = mapConverters,
             metadata = metadata,

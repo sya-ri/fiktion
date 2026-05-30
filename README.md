@@ -63,17 +63,17 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.4"
+    id("dev.s7a.fiktion") version "0.3.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.4")
+    testImplementation("dev.s7a:fiktion-core:0.3.0")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.3.0")
 }
 ```
 
@@ -146,7 +146,9 @@ Collections can generate each element automatically:
 
 ```kotlin
 val catalog = fake<Catalog> {
-    Catalog::items generates auto withSize 3
+    Catalog::items {
+        this using FiktionConfig.Collection.size(3)
+    }
 }
 ```
 
@@ -154,18 +156,21 @@ Or you can provide element rules:
 
 ```kotlin
 val catalog = fake<Catalog> {
-    Catalog::tags generatesEach {
-        string(length = 8)
-    } withSize (1..5)
+    Catalog::tags {
+        this using FiktionConfig.Collection.size(1..5)
+        element generatesBy { string(length = 8) }
+    }
 }
 ```
 
-Maps support key, value, and entry generation:
+Maps support key and value targets:
 
 ```kotlin
 val index = fake<SearchIndex> {
-    SearchIndex::entries generatesKeys { string(length = 8) }
-    SearchIndex::entries generatesValues { fake<Entry>() }
+    SearchIndex::entries {
+        key generatesBy { string(length = 8) }
+        value generatesBy { fake<Entry>() }
+    }
 
     SearchIndex::aliases generatesOneOf listOf("primary", "secondary")
 }
@@ -258,6 +263,73 @@ Rule precedence is:
 
 Within the same precedence level, more specific targets win before registration order. When two matching rules have the
 same specificity, the later registration wins.
+
+## Generator Defaults
+
+Use typed generator configuration when you want to keep Fiktion's default generators but adjust their ranges, sizes, or
+formats:
+
+```kotlin
+val fiktion = Fiktion {
+    this using FiktionConfig.Int.range(-200..200)
+    this using FiktionConfig.String.length(8)
+    this using FiktionConfig.Collection.size(3)
+}
+
+val users = fiktion.fake<List<User>>()
+```
+
+Per-call configuration is scoped to the generated root type:
+
+```kotlin
+val names = fake<List<String>> {
+    this using FiktionConfig.Collection.size(5)
+}
+```
+
+Container target configuration narrows defaults to values generated below collection and map roots:
+
+```kotlin
+val counts = fake<List<Int>> {
+    this using FiktionConfig.Collection.size(5)
+    element using FiktionConfig.Int.range(10..20)
+}
+
+val labels = fake<Map<String, List<Int>>> {
+    this using FiktionConfig.Map.size(2)
+    key using FiktionConfig.String.length(4)
+    value.element using FiktionConfig.Int.range(10..20)
+}
+
+val groups = fake<List<Map<String, Int>>> {
+    element {
+        key using FiktionConfig.String.length(4)
+        value using FiktionConfig.Int.range(10..20)
+    }
+}
+
+val catalog = fake<Catalog> {
+    property(Catalog::counts).element using FiktionConfig.Int.range(10..20)
+}
+
+val indexed = fake<Map<String, Int>> {
+    key generatesBy { "key-$index" }
+    value generatesBy { index }
+}
+```
+
+Use `key` and `value` targets when defining map key or value generation, including nested configuration blocks.
+
+Property configuration narrows a generator default to one property:
+
+```kotlin
+val user = fake<User> {
+    User::id using FiktionConfig.String.length(12)
+}
+```
+
+Configuration keys are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects such as
+`JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
 
 ## Test Framework Integration
 
@@ -526,7 +598,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
 }
 ```
 
@@ -556,7 +628,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.3.0")
 }
 ```
 
@@ -591,10 +663,18 @@ public object CustomFiktionAddon : FiktionAddon {
             type<Token>() generatesBy {
                 Token(value = string(length = 32))
             }
+
+            typeFamily<CustomList<*>>() generatesBy {
+                CustomList(List(int(config(FiktionConfig.Collection.size))) { index -> fakeElement(index) })
+            }
         }
     }
 }
 ```
+
+When writing generic collection-like or map-like add-on generators, prefer `fakeElement(index)`, `fakeKey(index)`, and
+`fakeValue(index)` in `TypeFamilyGenerationContext`. These helpers keep `element`, `key`, and `value` target
+configuration working for users of the add-on.
 
 To make a third-party add-on auto-registerable, include a resource file named `META-INF/fiktion/addons` in the add-on
 artifact. Each non-empty line should contain one add-on object class name:

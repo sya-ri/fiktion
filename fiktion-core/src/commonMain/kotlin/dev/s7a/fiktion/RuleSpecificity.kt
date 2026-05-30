@@ -5,6 +5,11 @@ package dev.s7a.fiktion
  */
 internal enum class RuleSpecificity {
     /**
+     * Matches any generated value.
+     */
+    ALL,
+
+    /**
      * Matches by generated value type classifier.
      */
     TYPE_FAMILY,
@@ -28,6 +33,11 @@ internal enum class RuleSpecificity {
      * Matches by owner type, property name, and generated value type.
      */
     OWNER_NAME,
+
+    /**
+     * Matches by collection or map container part path.
+     */
+    CONTAINER_PART,
 
     /**
      * Matches by the full property path.

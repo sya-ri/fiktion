@@ -1,13 +1,15 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates an unsigned integer across the full unsigned integer range.
  */
-public fun FakeContext.uint(): UInt = int().toUInt()
+public fun FakeContext.uint(): UInt = uint(config(FiktionConfig.UInt.range))
 
 /**
  * Generates an unsigned integer from [min] to [max].
@@ -26,6 +28,14 @@ public fun FakeContext.uint(
 public fun FakeContext.uint(range: UIntRange): UInt {
     requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
     return uint(range.first, range.last)
+}
+
+/**
+ * Generates an unsigned integer within [range].
+ */
+public fun FakeContext.uint(range: ClosedRange<UInt>): UInt {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    return uint(range.start, range.endInclusive)
 }
 
 private fun UIntRange.random(random: Random): UInt {

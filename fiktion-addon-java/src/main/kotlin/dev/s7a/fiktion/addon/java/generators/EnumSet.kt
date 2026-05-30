@@ -2,6 +2,7 @@ package dev.s7a.fiktion.addon.java.generators
 
 import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 import dev.s7a.fiktion.generators.int
 import java.util.EnumSet
@@ -11,7 +12,7 @@ import kotlin.reflect.KClass
  * Generates a Java enum set using [element].
  */
 public inline fun <reified E : Enum<E>> FakeContext.enumSet(
-    size: Int = int(1..3),
+    size: Int = int(config(FiktionConfig.Collection.size)),
     element: FakeContext.() -> E,
 ): EnumSet<E> =
     EnumSet.noneOf(E::class.java).apply {
@@ -26,8 +27,8 @@ public inline fun <reified E : Enum<E>> FakeContext.enumSet(
 internal fun TypeFamilyGenerationContext.enumSet(): EnumSet<*> {
     val enumClass = enumClass(argumentIndex = 0)
     val values = mutableListOf<Enum<*>>()
-    repeat(int(1, 3)) { index ->
-        fake(argumentIndex = 0, seedIndex = index)?.let { value ->
+    repeat(int(config(FiktionConfig.Collection.size))) { index ->
+        fakeElement(index)?.let { value ->
             values += enumClass.cast(value)
         }
     }

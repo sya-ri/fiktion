@@ -40,6 +40,11 @@ public interface FakeContext {
      * Random instance derived from [seed].
      */
     public val random: Random
+
+    /**
+     * Returns the effective generator configuration for this context.
+     */
+    public fun <Value : Any> config(key: FiktionConfig<*, Value>): Value
 }
 
 /**
@@ -52,6 +57,10 @@ internal data class DefaultFakeContext(
     override val path: FakePath,
     override val depth: Int,
     override val index: Int,
+    internal val config: FiktionConfigState,
+    internal val request: GenerationRequest,
 ) : FakeContext {
     override val random: Random = Random(seed)
+
+    override fun <Value : Any> config(key: FiktionConfig<*, Value>): Value = config.selectConfig(key = key, request = request)
 }

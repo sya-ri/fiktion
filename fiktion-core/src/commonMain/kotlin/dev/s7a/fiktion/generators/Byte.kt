@@ -1,12 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates a byte across the full byte range.
  */
-public fun FakeContext.byte(): Byte = byte(min = Byte.MIN_VALUE, max = Byte.MAX_VALUE)
+public fun FakeContext.byte(): Byte = byte(config(FiktionConfig.Byte.range))
 
 /**
  * Generates a byte from [min] to [max].
@@ -28,4 +30,15 @@ public fun FakeContext.byte(range: IntRange): Byte {
         "range must be inside Byte bounds."
     }
     return byte(range.first.toByte(), range.last.toByte())
+}
+
+/**
+ * Generates a byte within [range].
+ */
+public fun FakeContext.byte(range: ClosedRange<Int>): Byte {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    requireFiktionConfiguration(range.start >= Byte.MIN_VALUE && range.endInclusive <= Byte.MAX_VALUE) {
+        "range must be inside Byte bounds."
+    }
+    return byte(range.start.toByte(), range.endInclusive.toByte())
 }

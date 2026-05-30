@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.addon.java.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 import dev.s7a.fiktion.generators.int
 import java.util.SortedSet
@@ -9,7 +10,7 @@ import java.util.SortedSet
  * Generates a Java sorted set using [element].
  */
 public fun <T : Any> FakeContext.sortedSet(
-    size: Int = int(1..3),
+    size: Int = int(config(FiktionConfig.Collection.size)),
     element: FakeContext.() -> T,
 ): SortedSet<T> = treeSet(size = size, element = element)
 

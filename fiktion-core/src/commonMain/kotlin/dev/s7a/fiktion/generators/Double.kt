@@ -1,13 +1,15 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates a double in `0.0 <= value < 1.0`.
  */
-public fun FakeContext.double(): Double = random.nextDouble()
+public fun FakeContext.double(): Double = double(config(FiktionConfig.Double.range))
 
 /**
  * Generates a double from [min] to [max].
@@ -26,6 +28,14 @@ public fun FakeContext.double(
  */
 public fun FakeContext.double(range: ClosedFloatingPointRange<Double>): Double {
     requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
+    return double(range.start, range.endInclusive)
+}
+
+/**
+ * Generates a double within [range].
+ */
+public fun FakeContext.double(range: ClosedRange<Double>): Double {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
     return double(range.start, range.endInclusive)
 }
 

@@ -2,8 +2,6 @@
 
 package dev.s7a.fiktion
 
-import kotlin.random.Random
-
 /**
  * Creates a typed array from compiler-generated array metadata.
  */
@@ -14,12 +12,13 @@ public inline fun <reified T> generatedArray(elements: List<Any?>): Array<T> = A
  * Generates an array from registered construction [metadata].
  */
 internal fun generateArray(
-    config: FiktionConfig,
+    request: GenerationRequest,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     metadata: FiktionArrayMetadata<*>,
 ): Any {
-    val count = DEFAULT_COLLECTION_SIZE_RANGE.random(Random(seed))
+    val count = config.selectConfig(key = FiktionConfig.Array.size, request = request).random(kotlin.random.Random(seed))
     val elements =
         List(count) { index ->
             generateValue(

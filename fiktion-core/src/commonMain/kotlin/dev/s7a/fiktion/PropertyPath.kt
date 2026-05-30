@@ -100,24 +100,3 @@ public fun <Root, Intermediate : Any, Value> PropertyPath<Root, Intermediate?>.d
                     valueId = value.nonNullTypeId(),
                 ),
     )
-
-/**
- * Returns the collection element type for this property path.
- */
-internal fun PropertyPath<*, *>.collectionElementType(): KType =
-    valueType.arguments.firstOrNull()?.type
-        ?: throw FiktionConfigurationException("Cannot infer collection element type for property path.")
-
-/**
- * Returns the map key type for this property path.
- */
-internal fun PropertyPath<*, *>.mapKeyType(): KType =
-    valueType.arguments.getOrNull(0)?.type
-        ?: throw FiktionConfigurationException("Cannot infer map key type for property path.")
-
-/**
- * Returns the map value type for this property path.
- */
-internal fun PropertyPath<*, *>.mapValueType(): KType =
-    valueType.arguments.getOrNull(1)?.type
-        ?: throw FiktionConfigurationException("Cannot infer map value type for property path.")

@@ -5,6 +5,7 @@ package dev.s7a.fiktion.addon.kotlinx.datetime
 import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.invoke
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimePeriod
 import kotlinx.datetime.DayOfWeek
@@ -16,6 +17,7 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
@@ -44,6 +46,36 @@ class KotlinxDatetimeFiktionAddonTest {
         assertTrue(fiktion.fake<DateTimePeriod>(seed = 123).years in -200..200)
         assertTrue(fiktion.fake<Month>(seed = 123) in Month.entries)
         assertTrue(fiktion.fake<DayOfWeek>(seed = 123) in DayOfWeek.entries)
+    }
+
+    @Test
+    fun `installed kotlinx-datetime add-on uses configured ranges`() {
+        val fiktion =
+            Fiktion {
+                install(KotlinxDatetimeFiktionAddon)
+                this using KotlinxDatetimeFiktionConfig.LocalDate.year(2026)
+                this using KotlinxDatetimeFiktionConfig.LocalDate.month(5)
+                this using KotlinxDatetimeFiktionConfig.LocalDate.day(31)
+                this using KotlinxDatetimeFiktionConfig.LocalTime.hour(9)
+                this using KotlinxDatetimeFiktionConfig.LocalTime.minute(30)
+                this using KotlinxDatetimeFiktionConfig.LocalTime.second(0)
+                this using KotlinxDatetimeFiktionConfig.LocalTime.nanosecond(123)
+                this using KotlinxDatetimeFiktionConfig.UtcOffset.hours(9)
+                this using KotlinxDatetimeFiktionConfig.DatePeriod.years(1)
+                this using KotlinxDatetimeFiktionConfig.DateTimePeriod.years(0)
+                this using KotlinxDatetimeFiktionConfig.DateTimePeriod.months(0)
+                this using KotlinxDatetimeFiktionConfig.DateTimePeriod.days(0)
+                this using KotlinxDatetimeFiktionConfig.DateTimePeriod.hours(0)
+                this using KotlinxDatetimeFiktionConfig.DateTimePeriod.minutes(0)
+                this using KotlinxDatetimeFiktionConfig.DateTimePeriod.seconds(0)
+                this using KotlinxDatetimeFiktionConfig.DateTimePeriod.nanoseconds(7L)
+            }
+
+        assertEquals(LocalDate(2026, 5, 31), fiktion.fake<LocalDate>(seed = 123))
+        assertEquals(LocalTime(9, 30, 0, 123), fiktion.fake<LocalTime>(seed = 123))
+        assertEquals(9 * 60 * 60, fiktion.fake<UtcOffset>(seed = 123).totalSeconds)
+        assertEquals(1, fiktion.fake<DatePeriod>(seed = 123).years)
+        assertEquals(7, fiktion.fake<DateTimePeriod>(seed = 123).nanoseconds)
     }
 }
 

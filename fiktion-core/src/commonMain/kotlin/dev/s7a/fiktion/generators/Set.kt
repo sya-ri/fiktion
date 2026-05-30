@@ -1,13 +1,14 @@
 package dev.s7a.fiktion.generators
 
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 
 /**
  * Generates a set using [element].
  */
 public fun <T> FakeContext.set(
-    size: Int = int(1..3),
+    size: Int = int(config(FiktionConfig.Collection.size)),
     element: FakeContext.() -> T,
 ): Set<T> = list(size = size, element = element).toSet()
 
@@ -15,7 +16,7 @@ public fun <T> FakeContext.set(
  * Generates a mutable set using [element].
  */
 public fun <T> FakeContext.mutableSet(
-    size: Int = int(1..3),
+    size: Int = int(config(FiktionConfig.Collection.size)),
     element: FakeContext.() -> T,
 ): MutableSet<T> = set(size = size, element = element).toMutableSet()
 

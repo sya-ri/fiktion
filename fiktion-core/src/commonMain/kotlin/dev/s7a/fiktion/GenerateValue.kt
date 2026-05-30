@@ -12,7 +12,7 @@ private const val DEFAULT_NULL_PROBABILITY = 0.5
  */
 internal fun generateValue(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
 ): Any? {
@@ -27,7 +27,9 @@ internal fun generateValue(
             property = path.segments.lastOrNull(),
             path = path,
             depth = depth,
-            index = 0,
+            index = request.index,
+            config = config,
+            request = request,
         )
 
     if (rule != null) {
@@ -55,7 +57,7 @@ internal fun generateValue(
  */
 internal fun generateAutomaticValue(
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     context: FakeContext,
@@ -91,7 +93,7 @@ internal fun generateAutomaticValue(
 private fun generateFromMetadata(
     metadata: FiktionTypeMetadata<*>,
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     seed: Long,
     depth: Int,
     context: FakeContext,
@@ -109,6 +111,7 @@ private fun generateFromMetadata(
 
         is FiktionArrayMetadata<*> -> {
             generateArray(
+                request = request,
                 config = config,
                 seed = seed,
                 depth = depth,
@@ -152,7 +155,7 @@ private fun generateFromMetadata(
 private fun generateFromRule(
     rule: DefaultGenerationSpec<*>,
     request: GenerationRequest,
-    config: FiktionConfig,
+    config: FiktionConfigState,
     contextSeed: Long,
     depth: Int,
     context: FakeContext,
@@ -163,16 +166,14 @@ private fun generateFromRule(
     }
 
     if (rule.automaticallyGenerates) {
-        rule.autoCollectionElementType?.let { elementType ->
-            return generateAutomaticCollection(
-                request = request,
-                config = config,
-                seed = contextSeed,
-                depth = depth,
-                context = context,
-                elementType = elementType,
-                sizeRange = rule.autoCollectionSizeRange,
-            )
+        generateAutomaticContainerValue(
+            request = request,
+            config = config,
+            seed = contextSeed,
+            depth = depth,
+            context = context,
+        )?.let { value ->
+            return value
         }
 
         return generateAutomaticValue(
@@ -184,33 +185,85 @@ private fun generateFromRule(
         )
     }
 
-    if (rule is DefaultMapGenerationSpec<*, *, *>) {
-        @Suppress("UNCHECKED_CAST")
-        return context.generateMap(
-            request = request,
-            spec = rule as DefaultMapGenerationSpec<Any?, Any?, Map<Any?, Any?>>,
-            config = config,
-        )
-    }
-
-    if (rule is DefaultCollectionGenerationSpec<*, *>) {
-        @Suppress("UNCHECKED_CAST")
-        return context.generateCollection(
-            request = request,
-            config = config,
-            spec = rule as DefaultCollectionGenerationSpec<Any?, Collection<Any?>>,
-        )
-    }
-
     if (rule is DefaultTypeFamilyGenerationSpec<*>) {
         return rule.generate(
             TypeFamilyGenerationContext(
                 context = context,
                 requestedType = request.type,
                 config = config,
+                request = request,
             ),
         )
     }
 
     return rule.generator(context)
+}
+
+/**
+ * Generates collection or map values when an exact `generates auto` rule targets a configured converter type.
+ */
+private fun generateAutomaticContainerValue(
+    request: GenerationRequest,
+    config: FiktionConfigState,
+    seed: Long,
+    depth: Int,
+    context: FakeContext,
+): Any? {
+    config.selectCollectionConverter(request)?.let { converter ->
+        val elementType = request.type.typeArgument(index = 0) ?: return null
+        val elements =
+            List(context.config(FiktionConfig.Collection.size).random(context.random)) { index ->
+                generateValue(
+                    request =
+                        GenerationRequest(
+                            type = elementType,
+                            containerParts =
+                                request.containerParts +
+                                    ContainerPart(kind = ContainerPart.Kind.Collection, container = request.type),
+                            index = index,
+                        ),
+                    config = config,
+                    seed = seed.childSeed(index),
+                    depth = depth + 1,
+                )
+            }
+        return converter.convert(elements)
+    }
+
+    config.selectMapConverter(request)?.let { converter ->
+        val keyType = request.type.typeArgument(index = 0) ?: return null
+        val valueType = request.type.typeArgument(index = 1) ?: return null
+        val entries =
+            List(context.config(FiktionConfig.Map.size).random(context.random)) { index ->
+                generateValue(
+                    request =
+                        GenerationRequest(
+                            type = keyType,
+                            containerParts =
+                                request.containerParts +
+                                    ContainerPart(kind = ContainerPart.Kind.MapKey, container = request.type),
+                            index = index,
+                        ),
+                    config = config,
+                    seed = seed.childSeed(index * 2),
+                    depth = depth + 1,
+                ) to
+                    generateValue(
+                        request =
+                            GenerationRequest(
+                                type = valueType,
+                                containerParts =
+                                    request.containerParts +
+                                        ContainerPart(kind = ContainerPart.Kind.MapValue, container = request.type),
+                                index = index,
+                            ),
+                        config = config,
+                        seed = seed.childSeed(index * 2 + 1),
+                        depth = depth + 1,
+                    )
+            }
+        return converter.convert(entries)
+    }
+
+    return null
 }

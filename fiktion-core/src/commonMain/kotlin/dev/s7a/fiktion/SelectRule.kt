@@ -3,7 +3,7 @@ package dev.s7a.fiktion
 /**
  * Selects the effective rule for [request] from this configuration.
  */
-internal fun FiktionConfig.selectRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
+internal fun FiktionConfigState.selectRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
     effectiveRules()
         .selectRule(request)
 
@@ -21,6 +21,24 @@ internal fun Iterable<DefaultGenerationSpec<*>>.selectRule(request: GenerationRe
         }
 
 /**
+ * Selects the effective config value for [key] and [request].
+ */
+@Suppress("UNCHECKED_CAST")
+internal fun <Value : Any> FiktionConfigState.selectConfig(
+    key: FiktionConfig<*, Value>,
+    request: GenerationRequest,
+): Value =
+    effectiveConfigs()
+        .filter { config -> config.key == key && config.matcher.matches(request) }
+        .fold(initial = null as DefaultConfigSpec<*>?) { selected, candidate ->
+            when {
+                selected == null -> candidate
+                candidate.hasHigherPriorityThan(selected) -> candidate
+                else -> selected
+            }
+        }?.value as? Value ?: key.defaultValue
+
+/**
  * Returns whether this rule should override [other] within the effective lookup order.
  */
 private fun DefaultGenerationSpec<*>.hasHigherPriorityThan(other: DefaultGenerationSpec<*>): Boolean =
@@ -31,15 +49,25 @@ private fun DefaultGenerationSpec<*>.hasHigherPriorityThan(other: DefaultGenerat
     }
 
 /**
+ * Returns whether this config should override [other] within the effective lookup order.
+ */
+private fun DefaultConfigSpec<*>.hasHigherPriorityThan(other: DefaultConfigSpec<*>): Boolean =
+    when {
+        precedence != other.precedence -> precedence > other.precedence
+        matcher.specificity != other.matcher.specificity -> matcher.specificity > other.matcher.specificity
+        else -> true
+    }
+
+/**
  * Selects the effective collection converter for [request] from this configuration.
  */
-internal fun FiktionConfig.selectCollectionConverter(request: GenerationRequest): CollectionConverter? =
+internal fun FiktionConfigState.selectCollectionConverter(request: GenerationRequest): CollectionConverter? =
     effectiveCollectionConverters()
         .lastOrNull { converter -> converter.classifier == request.type.classifier }
 
 /**
  * Selects the effective map converter for [request] from this configuration.
  */
-internal fun FiktionConfig.selectMapConverter(request: GenerationRequest): MapConverter? =
+internal fun FiktionConfigState.selectMapConverter(request: GenerationRequest): MapConverter? =
     effectiveMapConverters()
         .lastOrNull { converter -> converter.classifier == request.type.classifier }

@@ -35,6 +35,43 @@ class FiktionAddonBuilderTest {
     }
 
     @Test
+    fun `installed add-on contributes configs`() {
+        val addon =
+            object : FiktionAddon {
+                override val id: String = "test-config-addon"
+
+                override fun install(builder: FiktionAddonBuilder) {
+                    builder using FiktionConfig.String.length(4)
+                }
+            }
+        val fiktion =
+            Fiktion {
+                install(addon)
+            }
+
+        assertEquals(4, fiktion.fake<String>(seed = 123).length)
+    }
+
+    @Test
+    fun `instance configs override installed add-on configs`() {
+        val addon =
+            object : FiktionAddon {
+                override val id: String = "test-overridden-config-addon"
+
+                override fun install(builder: FiktionAddonBuilder) {
+                    builder using FiktionConfig.String.length(4)
+                }
+            }
+        val fiktion =
+            Fiktion {
+                install(addon)
+                this using FiktionConfig.String.length(8)
+            }
+
+        assertEquals(8, fiktion.fake<String>(seed = 123).length)
+    }
+
+    @Test
     fun `rule seed configured by an add-on is applied to the installed rule`() {
         val addon =
             object : FiktionAddon {
