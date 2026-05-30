@@ -4,6 +4,7 @@ import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates a float in `0.0 <= value < 1.0`.
@@ -27,6 +28,14 @@ public fun FakeContext.float(
  */
 public fun FakeContext.float(range: ClosedFloatingPointRange<Float>): Float {
     requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
+    return float(range.start, range.endInclusive)
+}
+
+/**
+ * Generates a float within [range].
+ */
+public fun FakeContext.float(range: ClosedRange<Float>): Float {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
     return float(range.start, range.endInclusive)
 }
 

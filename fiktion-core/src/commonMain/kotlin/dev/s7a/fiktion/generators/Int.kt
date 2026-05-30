@@ -3,6 +3,7 @@ package dev.s7a.fiktion.generators
 import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates an integer across the full integer range.
@@ -26,4 +27,12 @@ public fun FakeContext.int(
 public fun FakeContext.int(range: IntRange): Int {
     requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
     return int(range.first, range.last)
+}
+
+/**
+ * Generates an integer within [range].
+ */
+public fun FakeContext.int(range: ClosedRange<Int>): Int {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    return int(range.start, range.endInclusive)
 }

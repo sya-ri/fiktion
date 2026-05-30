@@ -38,7 +38,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
      * the generator value type consistent.
      */
     @Deprecated("Use the reified type<T>() overload.", level = DeprecationLevel.ERROR)
-    public fun type(type: KType): RuleTarget<*> = target<Any?>(RuleKey.Type(type), RuleMatcher.Type(type))
+    public fun type(type: KType): RuleTarget<*> = target<Any?>(RuleKey.Type(type), RuleMatcher.Type(type), targetType = type)
 
     /**
      * Targets every generated value whose type belongs to [type]'s type family.
@@ -60,7 +60,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
     public fun property(
         owner: KType,
         value: KType,
-    ): RuleTarget<*> = target<Any?>(RuleKey.OwnedType(owner, value), RuleMatcher.OwnedType(owner, value))
+    ): RuleTarget<*> = target<Any?>(RuleKey.OwnedType(owner, value), RuleMatcher.OwnedType(owner, value), targetType = value)
 
     /**
      * Targets values generated for [property].
@@ -72,7 +72,8 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets values generated for [path].
      */
-    public fun <Root, Value> property(path: PropertyPath<Root, Value>): RuleTarget<Value> = target(path.segments)
+    public fun <Root, Value> property(path: PropertyPath<Root, Value>): RuleTarget<Value> =
+        target(segments = path.segments, type = path.valueType)
 
     /**
      * Targets generated values of [value] whose owner is [owner] and property name is [name].
@@ -85,7 +86,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
         owner: KType,
         name: String,
         value: KType,
-    ): RuleTarget<*> = target<Any?>(RuleKey.Property(owner, name, value), RuleMatcher.Property(owner, name, value))
+    ): RuleTarget<*> = target<Any?>(RuleKey.Property(owner, name, value), RuleMatcher.Property(owner, name, value), targetType = value)
 
     /**
      * Targets generated values for [property] whose owner is [owner] and value type is [value].
@@ -98,7 +99,8 @@ public sealed class FiktionRuleBuilder protected constructor() {
         property: KProperty1<Owner, Value>,
         owner: KType,
         value: KType,
-    ): RuleTarget<Value> = target(RuleKey.Property(owner, property.name, value), RuleMatcher.Property(owner, property.name, value))
+    ): RuleTarget<Value> =
+        target(RuleKey.Property(owner, property.name, value), RuleMatcher.Property(owner, property.name, value), targetType = value)
 
     /**
      * Targets generated values of [value] whose owner is [owner] and property name matches [regex].
@@ -115,6 +117,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
         target<Any?>(
             RuleKey.OwnedRegexName(owner, regex.pattern, regex.options, value),
             RuleMatcher.OwnedRegexName(owner, regex, value),
+            targetType = value,
         )
 
     /**
@@ -127,7 +130,7 @@ public sealed class FiktionRuleBuilder protected constructor() {
     public fun name(
         name: String,
         value: KType,
-    ): RuleTarget<*> = target<Any?>(RuleKey.Name(name, value), RuleMatcher.Name(name, value))
+    ): RuleTarget<*> = target<Any?>(RuleKey.Name(name, value), RuleMatcher.Name(name, value), targetType = value)
 
     /**
      * Targets generated values of [value] whose property name matches [regex], regardless of owner.
@@ -139,7 +142,8 @@ public sealed class FiktionRuleBuilder protected constructor() {
     public fun name(
         regex: Regex,
         value: KType,
-    ): RuleTarget<*> = target<Any?>(RuleKey.RegexName(regex.pattern, regex.options, value), RuleMatcher.RegexName(regex, value))
+    ): RuleTarget<*> =
+        target<Any?>(RuleKey.RegexName(regex.pattern, regex.options, value), RuleMatcher.RegexName(regex, value), targetType = value)
 
     /**
      * Targets generated values whose property name is [name], inferring the value type from the generator.
@@ -550,8 +554,10 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets a nested property path represented as raw path segments.
      */
-    private fun <Value> target(segments: List<PathRuleSegment>): RuleTarget<Value> =
-        target(RuleKey.Path(segments), RuleMatcher.Path(segments))
+    private fun <Value> target(
+        segments: List<PathRuleSegment>,
+        type: KType,
+    ): RuleTarget<Value> = target(RuleKey.Path(segments), RuleMatcher.Path(segments), targetType = type)
 
     /**
      * Creates a rule target using [key] for replacement and [matcher] for lookup.
@@ -559,7 +565,8 @@ public sealed class FiktionRuleBuilder protected constructor() {
     private fun <Value> target(
         key: RuleKey,
         matcher: RuleMatcher,
-    ): RuleTarget<Value> = DefaultRuleTarget(mutableConfig, key, matcher)
+        targetType: KType? = null,
+    ): RuleTarget<Value> = DefaultRuleTarget(mutableConfig, key, matcher, targetType)
 
     /**
      * Creates a type-family rule target using [key] for replacement and [matcher] for lookup.

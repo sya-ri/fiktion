@@ -27,7 +27,7 @@ internal fun generateValue(
             property = path.segments.lastOrNull(),
             path = path,
             depth = depth,
-            index = 0,
+            index = request.index,
             config = config,
             request = request,
         )
@@ -211,6 +211,7 @@ private fun generateFromRule(
                 context = context,
                 requestedType = request.type,
                 config = config,
+                request = request,
             ),
         )
     }

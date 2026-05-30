@@ -8,5 +8,5 @@ import dev.s7a.fiktion.FiktionConfig
  */
 public fun FakeContext.uintProgression(): UIntProgression =
     config(FiktionConfig.UIntProgression.bounds).let { range ->
-        uintRange(min = range.first, max = range.last) step int(config(FiktionConfig.UIntProgression.step))
+        uintRange(min = range.start, max = range.endInclusive) step int(config(FiktionConfig.UIntProgression.step))
     }

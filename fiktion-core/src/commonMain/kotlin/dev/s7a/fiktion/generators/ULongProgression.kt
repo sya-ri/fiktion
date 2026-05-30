@@ -8,5 +8,5 @@ import dev.s7a.fiktion.FiktionConfig
  */
 public fun FakeContext.ulongProgression(): ULongProgression =
     config(FiktionConfig.ULongProgression.bounds).let { range ->
-        ulongRange(min = range.first, max = range.last) step long(config(FiktionConfig.ULongProgression.step))
+        ulongRange(min = range.start, max = range.endInclusive) step long(config(FiktionConfig.ULongProgression.step))
     }

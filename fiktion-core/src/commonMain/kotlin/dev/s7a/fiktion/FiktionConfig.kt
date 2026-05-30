@@ -1,6 +1,7 @@
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.generators.FiktionCharset
+import kotlin.ranges.ClosedRange
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 import kotlin.time.Duration.Companion.milliseconds
@@ -55,7 +56,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Integer generator configuration.
          */
         public object Int {
-            public val range: FiktionConfig<KotlinInt, KotlinIntRange> =
+            public val range: FiktionConfig<KotlinInt, ClosedRange<KotlinInt>> =
                 FiktionConfig(KotlinInt.MIN_VALUE..KotlinInt.MAX_VALUE)
         }
 
@@ -63,7 +64,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Integer range generator configuration.
          */
         public object IntRange {
-            public val bounds: FiktionConfig<KotlinIntRange, KotlinIntRange> =
+            public val bounds: FiktionConfig<KotlinIntRange, ClosedRange<KotlinInt>> =
                 FiktionConfig(KotlinInt.MIN_VALUE..KotlinInt.MAX_VALUE)
         }
 
@@ -71,10 +72,10 @@ public class FiktionConfig<Scope, Value : Any>
          * Integer progression generator configuration.
          */
         public object IntProgression {
-            public val bounds: FiktionConfig<KotlinIntProgression, KotlinIntRange> =
+            public val bounds: FiktionConfig<KotlinIntProgression, ClosedRange<KotlinInt>> =
                 FiktionConfig(-100..100)
 
-            public val step: FiktionConfig<KotlinIntProgression, KotlinIntRange> =
+            public val step: FiktionConfig<KotlinIntProgression, ClosedRange<KotlinInt>> =
                 FiktionConfig(1..5)
         }
 
@@ -82,7 +83,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Byte generator configuration.
          */
         public object Byte {
-            public val range: FiktionConfig<KotlinByte, KotlinIntRange> =
+            public val range: FiktionConfig<KotlinByte, ClosedRange<KotlinInt>> =
                 FiktionConfig(KotlinByte.MIN_VALUE..KotlinByte.MAX_VALUE)
         }
 
@@ -90,7 +91,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Short generator configuration.
          */
         public object Short {
-            public val range: FiktionConfig<KotlinShort, KotlinIntRange> =
+            public val range: FiktionConfig<KotlinShort, ClosedRange<KotlinInt>> =
                 FiktionConfig(KotlinShort.MIN_VALUE..KotlinShort.MAX_VALUE)
         }
 
@@ -98,7 +99,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Long generator configuration.
          */
         public object Long {
-            public val range: FiktionConfig<KotlinLong, KotlinLongRange> =
+            public val range: FiktionConfig<KotlinLong, ClosedRange<KotlinLong>> =
                 FiktionConfig(KotlinLong.MIN_VALUE..KotlinLong.MAX_VALUE)
         }
 
@@ -106,7 +107,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Long range generator configuration.
          */
         public object LongRange {
-            public val bounds: FiktionConfig<KotlinLongRange, KotlinLongRange> =
+            public val bounds: FiktionConfig<KotlinLongRange, ClosedRange<KotlinLong>> =
                 FiktionConfig(KotlinLong.MIN_VALUE..KotlinLong.MAX_VALUE)
         }
 
@@ -114,10 +115,10 @@ public class FiktionConfig<Scope, Value : Any>
          * Long progression generator configuration.
          */
         public object LongProgression {
-            public val bounds: FiktionConfig<KotlinLongProgression, KotlinLongRange> =
+            public val bounds: FiktionConfig<KotlinLongProgression, ClosedRange<KotlinLong>> =
                 FiktionConfig(-100L..100L)
 
-            public val step: FiktionConfig<KotlinLongProgression, KotlinLongRange> =
+            public val step: FiktionConfig<KotlinLongProgression, ClosedRange<KotlinLong>> =
                 FiktionConfig(1L..5L)
         }
 
@@ -125,7 +126,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned byte generator configuration.
          */
         public object UByte {
-            public val range: FiktionConfig<KotlinUByte, KotlinUIntRange> =
+            public val range: FiktionConfig<KotlinUByte, ClosedRange<KotlinUInt>> =
                 FiktionConfig(KotlinUByte.MIN_VALUE..KotlinUByte.MAX_VALUE)
         }
 
@@ -133,7 +134,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned short generator configuration.
          */
         public object UShort {
-            public val range: FiktionConfig<KotlinUShort, KotlinUIntRange> =
+            public val range: FiktionConfig<KotlinUShort, ClosedRange<KotlinUInt>> =
                 FiktionConfig(KotlinUShort.MIN_VALUE..KotlinUShort.MAX_VALUE)
         }
 
@@ -141,7 +142,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned integer generator configuration.
          */
         public object UInt {
-            public val range: FiktionConfig<KotlinUInt, KotlinUIntRange> =
+            public val range: FiktionConfig<KotlinUInt, ClosedRange<KotlinUInt>> =
                 FiktionConfig(KotlinUInt.MIN_VALUE..KotlinUInt.MAX_VALUE)
         }
 
@@ -149,7 +150,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned integer range generator configuration.
          */
         public object UIntRange {
-            public val bounds: FiktionConfig<KotlinUIntRange, KotlinUIntRange> =
+            public val bounds: FiktionConfig<KotlinUIntRange, ClosedRange<KotlinUInt>> =
                 FiktionConfig(KotlinUInt.MIN_VALUE..KotlinUInt.MAX_VALUE)
         }
 
@@ -157,10 +158,10 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned integer progression generator configuration.
          */
         public object UIntProgression {
-            public val bounds: FiktionConfig<KotlinUIntProgression, KotlinUIntRange> =
+            public val bounds: FiktionConfig<KotlinUIntProgression, ClosedRange<KotlinUInt>> =
                 FiktionConfig(0u..100u)
 
-            public val step: FiktionConfig<KotlinUIntProgression, KotlinIntRange> =
+            public val step: FiktionConfig<KotlinUIntProgression, ClosedRange<KotlinInt>> =
                 FiktionConfig(1..5)
         }
 
@@ -168,7 +169,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned long generator configuration.
          */
         public object ULong {
-            public val range: FiktionConfig<KotlinULong, KotlinULongRange> =
+            public val range: FiktionConfig<KotlinULong, ClosedRange<KotlinULong>> =
                 FiktionConfig(KotlinULong.MIN_VALUE..KotlinULong.MAX_VALUE)
         }
 
@@ -176,7 +177,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned long range generator configuration.
          */
         public object ULongRange {
-            public val bounds: FiktionConfig<KotlinULongRange, KotlinULongRange> =
+            public val bounds: FiktionConfig<KotlinULongRange, ClosedRange<KotlinULong>> =
                 FiktionConfig(KotlinULong.MIN_VALUE..KotlinULong.MAX_VALUE)
         }
 
@@ -184,10 +185,10 @@ public class FiktionConfig<Scope, Value : Any>
          * Unsigned long progression generator configuration.
          */
         public object ULongProgression {
-            public val bounds: FiktionConfig<KotlinULongProgression, KotlinULongRange> =
+            public val bounds: FiktionConfig<KotlinULongProgression, ClosedRange<KotlinULong>> =
                 FiktionConfig(0uL..100uL)
 
-            public val step: FiktionConfig<KotlinULongProgression, KotlinLongRange> =
+            public val step: FiktionConfig<KotlinULongProgression, ClosedRange<KotlinLong>> =
                 FiktionConfig(1L..5L)
         }
 
@@ -195,7 +196,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Float generator configuration.
          */
         public object Float {
-            public val range: FiktionConfig<KotlinFloat, ClosedFloatingPointRange<KotlinFloat>> =
+            public val range: FiktionConfig<KotlinFloat, ClosedRange<KotlinFloat>> =
                 FiktionConfig(0.0f..1.0f)
         }
 
@@ -203,7 +204,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Double generator configuration.
          */
         public object Double {
-            public val range: FiktionConfig<KotlinDouble, ClosedFloatingPointRange<KotlinDouble>> =
+            public val range: FiktionConfig<KotlinDouble, ClosedRange<KotlinDouble>> =
                 FiktionConfig(0.0..1.0)
         }
 
@@ -219,7 +220,7 @@ public class FiktionConfig<Scope, Value : Any>
                     listOf(FiktionCharset.LowercaseAlpha, FiktionCharset.UppercaseAlpha, FiktionCharset.Numeric),
                 )
 
-            public val step: FiktionConfig<KotlinCharProgression, KotlinIntRange> =
+            public val step: FiktionConfig<KotlinCharProgression, ClosedRange<KotlinInt>> =
                 FiktionConfig(1..5)
         }
 
@@ -227,7 +228,7 @@ public class FiktionConfig<Scope, Value : Any>
          * String generator configuration.
          */
         public object String {
-            public val length: FiktionConfig<KotlinString, KotlinIntRange> =
+            public val length: FiktionConfig<KotlinString, ClosedRange<KotlinInt>> =
                 FiktionConfig(1..32)
 
             public val charset: FiktionConfig<KotlinString, FiktionCharset> =
@@ -238,23 +239,23 @@ public class FiktionConfig<Scope, Value : Any>
          * Collection generator configuration.
          */
         public object Collection {
-            public val size: FiktionConfig<KotlinCollection<*>, KotlinIntRange> =
-                FiktionConfig(DEFAULT_COLLECTION_SIZE_RANGE)
+            public val size: FiktionConfig<KotlinCollection<*>, ClosedRange<KotlinInt>> =
+                FiktionConfig(0..5)
         }
 
         /**
          * Map generator configuration.
          */
         public object Map {
-            public val size: FiktionConfig<KotlinMap<*, *>, KotlinIntRange> =
-                FiktionConfig(DEFAULT_MAP_SIZE_RANGE)
+            public val size: FiktionConfig<KotlinMap<*, *>, ClosedRange<KotlinInt>> =
+                FiktionConfig(0..5)
         }
 
         /**
          * Array generator configuration.
          */
         public object Array {
-            public val size: FiktionConfig<KotlinArray<*>, KotlinIntRange> =
+            public val size: FiktionConfig<KotlinArray<*>, ClosedRange<KotlinInt>> =
                 FiktionConfig(1..3)
         }
 
@@ -262,7 +263,7 @@ public class FiktionConfig<Scope, Value : Any>
          * Regex generator configuration.
          */
         public object Regex {
-            public val length: FiktionConfig<kotlin.text.Regex, KotlinIntRange> =
+            public val length: FiktionConfig<kotlin.text.Regex, ClosedRange<KotlinInt>> =
                 FiktionConfig(8..8)
 
             public val charset: FiktionConfig<kotlin.text.Regex, FiktionCharset> =
@@ -281,10 +282,10 @@ public class FiktionConfig<Scope, Value : Any>
          * Instant generator configuration.
          */
         public object Instant {
-            public val epochSeconds: FiktionConfig<KotlinInstant, KotlinLongRange> =
+            public val epochSeconds: FiktionConfig<KotlinInstant, ClosedRange<KotlinLong>> =
                 FiktionConfig(946_684_800L..<4_102_444_800L)
 
-            public val nanosecond: FiktionConfig<KotlinInstant, KotlinIntRange> =
+            public val nanosecond: FiktionConfig<KotlinInstant, ClosedRange<KotlinInt>> =
                 FiktionConfig(0..<1_000_000_000)
         }
     }
@@ -302,3 +303,10 @@ public data class FiktionConfigSetting<Scope, Value : Any>(
  */
 public operator fun <Scope, Value : Any> FiktionConfig<Scope, Value>.invoke(value: Value): FiktionConfigSetting<Scope, Value> =
     FiktionConfigSetting(key = this, value = value)
+
+/**
+ * Creates a typed generator configuration value whose closed range is fixed to [value].
+ */
+public operator fun <Scope, Value : Comparable<Value>> FiktionConfig<Scope, ClosedRange<Value>>.invoke(
+    value: Value,
+): FiktionConfigSetting<Scope, ClosedRange<Value>> = invoke(value..value)

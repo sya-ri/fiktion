@@ -2,7 +2,9 @@
 
 ## v0.3.0
 
-- Added typed generator configuration for changing built-in and add-on generator defaults.
+- Added typed generator configuration for changing built-in and add-on generator defaults, including container part
+  defaults and rules such as `fake<List<Map<String, Int>>> { element { key using FiktionConfig.String.length(4) } }`.
+- Changed default collection and map sizes to include empty containers by default.
 
 ## v0.2.4
 

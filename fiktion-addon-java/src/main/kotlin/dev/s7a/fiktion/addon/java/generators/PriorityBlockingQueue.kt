@@ -23,5 +23,5 @@ public fun <T> FakeContext.priorityBlockingQueue(
  */
 internal fun TypeFamilyGenerationContext.priorityBlockingQueue(): PriorityBlockingQueue<Any> =
     priorityBlockingQueue(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

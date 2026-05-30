@@ -21,7 +21,7 @@ internal class DefaultAutoCollectionGenerationSpec<Element, CollectionType : Col
     /**
      * Generated collection size range.
      */
-    override var autoCollectionSizeRange: IntRange = DEFAULT_COLLECTION_SIZE_RANGE,
+    override var autoCollectionSizeRange: ClosedRange<Int> = FiktionConfig.Collection.size.defaultValue,
 ) : DefaultGenerationSpec<CollectionType>(
         key = key,
         matcher = matcher,
@@ -67,8 +67,3 @@ internal class DefaultAutoCollectionGenerationSpec<Element, CollectionType : Col
             )
         }
 }
-
-/**
- * Default generated collection size range.
- */
-internal val DEFAULT_COLLECTION_SIZE_RANGE: IntRange = 1..3

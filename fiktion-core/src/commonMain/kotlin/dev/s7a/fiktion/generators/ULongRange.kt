@@ -9,7 +9,7 @@ import dev.s7a.fiktion.requireFiktionConfiguration
  */
 public fun FakeContext.ulongRange(): ULongRange =
     config(FiktionConfig.ULongRange.bounds).let { range ->
-        ulongRange(range.first, range.last)
+        ulongRange(range.start, range.endInclusive)
     }
 
 /**

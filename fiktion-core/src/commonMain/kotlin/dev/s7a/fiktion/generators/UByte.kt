@@ -3,6 +3,7 @@ package dev.s7a.fiktion.generators
 import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates an unsigned byte across the full unsigned byte range.
@@ -29,4 +30,15 @@ public fun FakeContext.ubyte(range: UIntRange): UByte {
         "range must be inside UByte bounds."
     }
     return ubyte(range.first.toUByte(), range.last.toUByte())
+}
+
+/**
+ * Generates an unsigned byte within [range].
+ */
+public fun FakeContext.ubyte(range: ClosedRange<UInt>): UByte {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    requireFiktionConfiguration(range.start >= UByte.MIN_VALUE.toUInt() && range.endInclusive <= UByte.MAX_VALUE.toUInt()) {
+        "range must be inside UByte bounds."
+    }
+    return ubyte(range.start.toUByte(), range.endInclusive.toUByte())
 }

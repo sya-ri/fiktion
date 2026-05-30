@@ -3,6 +3,7 @@ package dev.s7a.fiktion.generators
 import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates an unsigned short across the full unsigned short range.
@@ -29,4 +30,15 @@ public fun FakeContext.ushort(range: UIntRange): UShort {
         "range must be inside UShort bounds."
     }
     return ushort(range.first.toUShort(), range.last.toUShort())
+}
+
+/**
+ * Generates an unsigned short within [range].
+ */
+public fun FakeContext.ushort(range: ClosedRange<UInt>): UShort {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    requireFiktionConfiguration(range.start >= UShort.MIN_VALUE.toUInt() && range.endInclusive <= UShort.MAX_VALUE.toUInt()) {
+        "range must be inside UShort bounds."
+    }
+    return ushort(range.start.toUShort(), range.endInclusive.toUShort())
 }

@@ -19,7 +19,7 @@ internal class DefaultCollectionGenerationSpec<Element, CollectionType : Collect
     /**
      * Generated collection size range.
      */
-    var sizeRange: IntRange = DEFAULT_COLLECTION_SIZE_RANGE,
+    var sizeRange: ClosedRange<Int> = FiktionConfig.Collection.size.defaultValue,
     /**
      * Precedence layer assigned while composing configurations.
      */

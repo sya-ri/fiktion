@@ -3,6 +3,7 @@ package dev.s7a.fiktion.generators
 import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates a long across the full long range.
@@ -26,4 +27,12 @@ public fun FakeContext.long(
 public fun FakeContext.long(range: LongRange): Long {
     requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
     return long(range.first, range.last)
+}
+
+/**
+ * Generates a long within [range].
+ */
+public fun FakeContext.long(range: ClosedRange<Long>): Long {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    return long(range.start, range.endInclusive)
 }

@@ -20,5 +20,5 @@ public fun <T> FakeContext.linkedHashSet(
  */
 internal fun TypeFamilyGenerationContext.linkedHashSet(): LinkedHashSet<Any?> =
     linkedHashSet(size = int(config(FiktionConfig.Collection.size))) {
-        fake(argumentIndex = 0, seedIndex = index)
+        fakeElement(index)
     }

@@ -35,6 +35,11 @@ internal enum class RuleSpecificity {
     OWNER_NAME,
 
     /**
+     * Matches by collection or map container part path.
+     */
+    CONTAINER_PART,
+
+    /**
      * Matches by the full property path.
      */
     PATH,

@@ -41,7 +41,7 @@ internal open class DefaultGenerationSpec<T>(
     /**
      * Size range used when automatically generating collection values.
      */
-    open val autoCollectionSizeRange: IntRange = DEFAULT_COLLECTION_SIZE_RANGE,
+    open val autoCollectionSizeRange: ClosedRange<Int> = FiktionConfig.Collection.size.defaultValue,
     /**
      * Precedence layer assigned while composing configurations.
      */

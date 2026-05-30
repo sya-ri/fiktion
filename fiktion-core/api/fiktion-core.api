@@ -14,6 +14,11 @@ public final class dev/s7a/fiktion/CannotGenerateException : java/lang/RuntimeEx
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
+public final class dev/s7a/fiktion/CollectionElementTargetKt {
+	public static final fun getElement (Ldev/s7a/fiktion/FakeSpec;)Ldev/s7a/fiktion/RuleTarget;
+	public static final fun getElement (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/RuleTarget;
+}
+
 public abstract interface class dev/s7a/fiktion/CollectionGenerationSpec : dev/s7a/fiktion/GenerationSpec {
 	public abstract fun withSize (I)Ldev/s7a/fiktion/CollectionGenerationSpec;
 	public abstract fun withSize (Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/CollectionGenerationSpec;
@@ -312,6 +317,7 @@ public final class dev/s7a/fiktion/FiktionConfig$UShort {
 }
 
 public final class dev/s7a/fiktion/FiktionConfigKt {
+	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Comparable;)Ldev/s7a/fiktion/FiktionConfigSetting;
 	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;)Ldev/s7a/fiktion/FiktionConfigSetting;
 }
 
@@ -465,6 +471,13 @@ public final class dev/s7a/fiktion/GenerationSpec$DefaultImpls {
 	public static fun orNullAt (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
 }
 
+public final class dev/s7a/fiktion/MapElementTargetKt {
+	public static final fun getKey (Ldev/s7a/fiktion/FakeSpec;)Ldev/s7a/fiktion/RuleTarget;
+	public static final fun getKey (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/RuleTarget;
+	public static final fun getValue (Ldev/s7a/fiktion/FakeSpec;)Ldev/s7a/fiktion/RuleTarget;
+	public static final fun getValue (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/RuleTarget;
+}
+
 public abstract interface class dev/s7a/fiktion/MapEntrySpec : dev/s7a/fiktion/MapGenerationSpec {
 }
 
@@ -563,6 +576,7 @@ public final class dev/s7a/fiktion/RuleTargetKt {
 	public static final fun generatesUByteIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/UIntRange;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesUShortIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/UIntRange;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesValues (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;Lkotlin/reflect/KType;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/MapValueSpec;
+	public static final fun invoke (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/RuleTarget;
 	public static final fun using (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;)V
 	public static final fun using (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/FiktionConfigSetting;)V
 }
@@ -570,8 +584,14 @@ public final class dev/s7a/fiktion/RuleTargetKt {
 public final class dev/s7a/fiktion/TypeFamilyGenerationContext : dev/s7a/fiktion/FakeContext {
 	public final fun argumentType (I)Lkotlin/reflect/KType;
 	public fun config (Ldev/s7a/fiktion/FiktionConfig;)Ljava/lang/Object;
-	public final fun fake (I)Ljava/lang/Object;
 	public final fun fake (II)Ljava/lang/Object;
+	public static synthetic fun fake$default (Ldev/s7a/fiktion/TypeFamilyGenerationContext;IIILjava/lang/Object;)Ljava/lang/Object;
+	public final fun fakeElement (II)Ljava/lang/Object;
+	public static synthetic fun fakeElement$default (Ldev/s7a/fiktion/TypeFamilyGenerationContext;IIILjava/lang/Object;)Ljava/lang/Object;
+	public final fun fakeKey (II)Ljava/lang/Object;
+	public static synthetic fun fakeKey$default (Ldev/s7a/fiktion/TypeFamilyGenerationContext;IIILjava/lang/Object;)Ljava/lang/Object;
+	public final fun fakeValue (II)Ljava/lang/Object;
+	public static synthetic fun fakeValue$default (Ldev/s7a/fiktion/TypeFamilyGenerationContext;IIILjava/lang/Object;)Ljava/lang/Object;
 	public final fun getContext ()Ldev/s7a/fiktion/FakeContext;
 	public fun getDepth ()I
 	public fun getIndex ()I
@@ -616,6 +636,7 @@ public final class dev/s7a/fiktion/generators/ByteArrayKt {
 public final class dev/s7a/fiktion/generators/ByteKt {
 	public static final fun byte (Ldev/s7a/fiktion/FakeContext;)B
 	public static final fun byte (Ldev/s7a/fiktion/FakeContext;BB)B
+	public static final fun byte (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)B
 	public static final fun byte (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/IntRange;)B
 }
 
@@ -660,6 +681,7 @@ public final class dev/s7a/fiktion/generators/DoubleKt {
 	public static final fun double (Ldev/s7a/fiktion/FakeContext;)D
 	public static final fun double (Ldev/s7a/fiktion/FakeContext;DD)D
 	public static final fun double (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedFloatingPointRange;)D
+	public static final fun double (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)D
 }
 
 public final class dev/s7a/fiktion/generators/DurationKt {
@@ -708,6 +730,7 @@ public final class dev/s7a/fiktion/generators/FloatKt {
 	public static final fun float (Ldev/s7a/fiktion/FakeContext;)F
 	public static final fun float (Ldev/s7a/fiktion/FakeContext;FF)F
 	public static final fun float (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedFloatingPointRange;)F
+	public static final fun float (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)F
 }
 
 public final class dev/s7a/fiktion/generators/IllegalArgumentExceptionKt {
@@ -737,6 +760,7 @@ public final class dev/s7a/fiktion/generators/IntArrayKt {
 public final class dev/s7a/fiktion/generators/IntKt {
 	public static final fun int (Ldev/s7a/fiktion/FakeContext;)I
 	public static final fun int (Ldev/s7a/fiktion/FakeContext;II)I
+	public static final fun int (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)I
 	public static final fun int (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/IntRange;)I
 }
 
@@ -764,6 +788,7 @@ public final class dev/s7a/fiktion/generators/LongArrayKt {
 public final class dev/s7a/fiktion/generators/LongKt {
 	public static final fun long (Ldev/s7a/fiktion/FakeContext;)J
 	public static final fun long (Ldev/s7a/fiktion/FakeContext;JJ)J
+	public static final fun long (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)J
 	public static final fun long (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/LongRange;)J
 }
 
@@ -844,15 +869,16 @@ public final class dev/s7a/fiktion/generators/ShortArrayKt {
 
 public final class dev/s7a/fiktion/generators/ShortKt {
 	public static final fun short (Ldev/s7a/fiktion/FakeContext;)S
+	public static final fun short (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)S
 	public static final fun short (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/IntRange;)S
 	public static final fun short (Ldev/s7a/fiktion/FakeContext;SS)S
 }
 
 public final class dev/s7a/fiktion/generators/StringKt {
 	public static final fun string (Ldev/s7a/fiktion/FakeContext;ILdev/s7a/fiktion/generators/FiktionCharset;)Ljava/lang/String;
-	public static final fun string (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/IntRange;Ldev/s7a/fiktion/generators/FiktionCharset;)Ljava/lang/String;
+	public static final fun string (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;Ldev/s7a/fiktion/generators/FiktionCharset;)Ljava/lang/String;
 	public static synthetic fun string$default (Ldev/s7a/fiktion/FakeContext;ILdev/s7a/fiktion/generators/FiktionCharset;ILjava/lang/Object;)Ljava/lang/String;
-	public static synthetic fun string$default (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/IntRange;Ldev/s7a/fiktion/generators/FiktionCharset;ILjava/lang/Object;)Ljava/lang/String;
+	public static synthetic fun string$default (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;Ldev/s7a/fiktion/generators/FiktionCharset;ILjava/lang/Object;)Ljava/lang/String;
 }
 
 public final class dev/s7a/fiktion/generators/ThrowableKt {
@@ -871,6 +897,7 @@ public final class dev/s7a/fiktion/generators/UByteArrayKt {
 
 public final class dev/s7a/fiktion/generators/UByteKt {
 	public static final fun ubyte (Ldev/s7a/fiktion/FakeContext;)B
+	public static final fun ubyte (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)B
 	public static final fun ubyte (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/UIntRange;)B
 	public static final fun ubyte-8olNwgk (Ldev/s7a/fiktion/FakeContext;BB)B
 }
@@ -882,6 +909,7 @@ public final class dev/s7a/fiktion/generators/UIntArrayKt {
 
 public final class dev/s7a/fiktion/generators/UIntKt {
 	public static final fun uint (Ldev/s7a/fiktion/FakeContext;)I
+	public static final fun uint (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)I
 	public static final fun uint (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/UIntRange;)I
 	public static final fun uint-BltQuoY (Ldev/s7a/fiktion/FakeContext;II)I
 }
@@ -902,6 +930,7 @@ public final class dev/s7a/fiktion/generators/ULongArrayKt {
 
 public final class dev/s7a/fiktion/generators/ULongKt {
 	public static final fun ulong (Ldev/s7a/fiktion/FakeContext;)J
+	public static final fun ulong (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)J
 	public static final fun ulong (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ULongRange;)J
 	public static final fun ulong-ZFynlJw (Ldev/s7a/fiktion/FakeContext;JJ)J
 }
@@ -922,6 +951,7 @@ public final class dev/s7a/fiktion/generators/UShortArrayKt {
 
 public final class dev/s7a/fiktion/generators/UShortKt {
 	public static final fun ushort (Ldev/s7a/fiktion/FakeContext;)S
+	public static final fun ushort (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/ClosedRange;)S
 	public static final fun ushort (Ldev/s7a/fiktion/FakeContext;Lkotlin/ranges/UIntRange;)S
 	public static final fun ushort-lwaoQsk (Ldev/s7a/fiktion/FakeContext;SS)S
 }

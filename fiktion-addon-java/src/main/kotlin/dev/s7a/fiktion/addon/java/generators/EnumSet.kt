@@ -28,7 +28,7 @@ internal fun TypeFamilyGenerationContext.enumSet(): EnumSet<*> {
     val enumClass = enumClass(argumentIndex = 0)
     val values = mutableListOf<Enum<*>>()
     repeat(int(config(FiktionConfig.Collection.size))) { index ->
-        fake(argumentIndex = 0, seedIndex = index)?.let { value ->
+        fakeElement(index)?.let { value ->
             values += enumClass.cast(value)
         }
     }

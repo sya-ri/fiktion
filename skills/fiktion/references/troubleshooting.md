@@ -101,7 +101,7 @@ Use seeds:
 fake<User>(seed = 123)
 ```
 
-Inside generators, use the provided `random`, `seed`, `index`, and existing generators instead of global randomness. For sibling values, use separate seed indexes in `TypeFamilyGenerationContext.fake(argumentIndex, seedIndex)`.
+Inside generators, use the provided `random`, `seed`, `index`, and existing generators instead of global randomness. For sibling values, use separate indexes in `TypeFamilyGenerationContext.fake(index)`.
 
 ## Review Checklist For Fiktion Code
 

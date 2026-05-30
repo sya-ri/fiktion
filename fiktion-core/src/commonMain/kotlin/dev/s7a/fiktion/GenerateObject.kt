@@ -70,6 +70,7 @@ private fun GenerationRequest.child(property: FiktionObjectProperty): Generation
         type = property.type,
         owner = type,
         propertyName = property.name,
+        containerParts = containerParts,
         pathSegments =
             pathSegments +
                 PathRuleSegment(

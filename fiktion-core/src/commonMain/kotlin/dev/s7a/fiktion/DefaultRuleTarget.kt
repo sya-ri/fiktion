@@ -18,7 +18,35 @@ internal class DefaultRuleTarget<T>(
      * Matcher used during generation.
      */
     private val matcher: RuleMatcher,
+    /**
+     * Type selected by this target, if it is known.
+     */
+    private val targetType: KType? = null,
 ) : RuleTarget<T> {
+    /**
+     * Targets a container part generated for the value selected by this target.
+     */
+    fun <Element> containerPartTarget(
+        kind: ContainerPart.Kind,
+        resultType: (KType) -> KType?,
+    ): RuleTarget<Element> {
+        val containerType =
+            targetType
+                ?: throw FiktionConfigurationException("Cannot target a nested container part because the container type is unavailable.")
+        val part = ContainerPart(kind = kind, container = containerType)
+        val parts =
+            when (matcher) {
+                is RuleMatcher.Container -> matcher.parts + part
+                else -> listOf(part)
+            }
+        return DefaultRuleTarget(
+            config = config,
+            key = RuleKey.Container(parts = parts),
+            matcher = RuleMatcher.Container(parts = parts),
+            targetType = resultType(containerType),
+        )
+    }
+
     /**
      * Registers [generator] for this target.
      */

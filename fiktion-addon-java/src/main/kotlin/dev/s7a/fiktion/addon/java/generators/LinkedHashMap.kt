@@ -23,9 +23,9 @@ internal fun TypeFamilyGenerationContext.linkedHashMap(): LinkedHashMap<Any?, An
     linkedHashMap(
         size = int(config(FiktionConfig.Map.size)),
         key = {
-            fake(argumentIndex = 0, seedIndex = index)
+            fakeKey(index)
         },
         value = {
-            fake(argumentIndex = 1, seedIndex = index)
+            fakeValue(index)
         },
     )

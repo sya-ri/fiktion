@@ -9,7 +9,7 @@ import dev.s7a.fiktion.requireFiktionConfiguration
  */
 public fun FakeContext.longRange(): LongRange =
     config(FiktionConfig.LongRange.bounds).let { range ->
-        longRange(range.first, range.last)
+        longRange(range.start, range.endInclusive)
     }
 
 /**

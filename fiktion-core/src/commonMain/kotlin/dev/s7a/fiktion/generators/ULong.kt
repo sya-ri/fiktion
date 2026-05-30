@@ -4,6 +4,7 @@ import dev.s7a.fiktion.FakeContext
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.requireFiktionConfiguration
 import kotlin.random.Random
+import kotlin.ranges.ClosedRange
 
 /**
  * Generates an unsigned long across the full unsigned long range.
@@ -27,6 +28,14 @@ public fun FakeContext.ulong(
 public fun FakeContext.ulong(range: ULongRange): ULong {
     requireFiktionConfiguration(!range.isEmpty()) { "range must not be empty." }
     return ulong(range.first, range.last)
+}
+
+/**
+ * Generates an unsigned long within [range].
+ */
+public fun FakeContext.ulong(range: ClosedRange<ULong>): ULong {
+    requireFiktionConfiguration(range.start <= range.endInclusive) { "range must not be empty." }
+    return ulong(range.start, range.endInclusive)
 }
 
 private fun ULongRange.random(random: Random): ULong {

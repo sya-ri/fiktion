@@ -270,7 +270,7 @@ Type-family targets are for generic families:
 ```kotlin
 Fiktion {
     typeFamily<Box<*>>() generatesBy {
-        Box(fake(argumentIndex = 0))
+        Box(fake(0))
     }
 }
 ```
@@ -484,16 +484,39 @@ sizes, or formatting defaults:
 
 ```kotlin
 val user = fake<User> {
-    User::id using FiktionConfig.String.length(12..12)
+    User::id using FiktionConfig.String.length(12)
 }
 
 val values = fake<List<Int>> {
-    this using FiktionConfig.Collection.size(5..5)
+    this using FiktionConfig.Collection.size(5)
+    element using FiktionConfig.Int.range(10..20)
+}
+
+val labels = fake<Map<String, List<Int>>> {
+    this using FiktionConfig.Map.size(2)
+    key using FiktionConfig.String.length(4)
+    value.element using FiktionConfig.Int.range(10..20)
+}
+
+val groups = fake<List<Map<String, Int>>> {
+    element {
+        key using FiktionConfig.String.length(4)
+        value using FiktionConfig.Int.range(10..20)
+    }
+}
+
+val catalog = fake<Catalog> {
+    property(Catalog::counts).element using FiktionConfig.Int.range(10..20)
+}
+
+val indexed = fake<Map<String, Int>> {
+    key generatesBy { "key-$index" }
+    value generatesBy { index }
 }
 
 val fiktion = Fiktion {
     this using FiktionConfig.Int.range(-200..200)
-    this using FiktionConfig.Collection.size(3..3)
+    this using FiktionConfig.Collection.size(3)
 }
 ```
 
@@ -502,8 +525,12 @@ root config applies only when the config scope can affect the generated root typ
 property path.
 
 Generator config is intentionally separate from rules: rules replace how a value is generated, while config changes
-parameters read by the existing generator. Nested generic element targeting, such as configuring only the `Int` inside
-`List<Int>` from a per-call root block, is a follow-up design area.
+parameters read by the existing generator. Container targets can be chained through generated collection and map parts,
+so `fake<Map<String, List<Int>>> { value.element using FiktionConfig.Int.range(10..20) }` configures only the generated
+`Int` elements below map values. Container targets can also be grouped with blocks, such as
+`fake<List<Map<String, Int>>> { element { key using FiktionConfig.String.length(4) } }`. Map keys and values can also
+be replaced through `key generatesBy { ... }` and `value generatesBy { ... }`; keep `generatesEach` when the generated
+key and value need to be coordinated as a pair.
 
 ## Collections And Maps
 

@@ -24,6 +24,6 @@ public fun <T : Any> FakeContext.concurrentSkipListSet(
 internal fun TypeFamilyGenerationContext.concurrentSkipListSet(): ConcurrentSkipListSet<Any> =
     ConcurrentSkipListSet<Any>(compareBy { value -> value.toString() }).apply {
         repeat(int(config(FiktionConfig.Collection.size))) { index ->
-            fake(argumentIndex = 0, seedIndex = index)?.let(::add)
+            fakeElement(index)?.let(::add)
         }
     }
