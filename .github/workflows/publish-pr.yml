@@ -58,7 +58,7 @@ jobs:
             cat <<EOF
           Automated publish PR from \`${RELEASE_BRANCH}\` to \`main\`.
 
-          Merge this PR when the release branch is ready to become the latest published state.
+          Merge this PR with a merge commit when the release branch is ready to become the latest published state.
 
           After merging, publish artifacts from \`main\`, verify availability, then create the GitHub Release.
           EOF
