@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release"
+  short_description: "Maintain Fiktion release updates"
+  default_prompt: "Use $release to update Fiktion versions, changelog entries, and release docs."
