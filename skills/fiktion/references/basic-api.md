@@ -7,12 +7,12 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.3"
+    id("dev.s7a.fiktion") version "0.3.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.3")
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.3") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-core:0.3.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.3.0") // optional JVM add-on
 }
 ```
 

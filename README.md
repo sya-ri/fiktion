@@ -63,17 +63,17 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.2.4"
+    id("dev.s7a.fiktion") version "0.3.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.2.4")
+    testImplementation("dev.s7a:fiktion-core:0.3.0")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.3.0")
 }
 ```
 
@@ -598,7 +598,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
 }
 ```
 
@@ -628,7 +628,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.2.4")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.3.0")
 }
 ```
 
