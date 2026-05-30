@@ -2,6 +2,7 @@ package dev.s7a.fiktion.compiler
 
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
+import org.jetbrains.kotlin.ir.types.IrType
 
 /**
  * Value metadata declaration that can be generated for one Kotlin value class.
@@ -11,6 +12,10 @@ internal data class FiktionGeneratedValueMetadataCandidate(
      * IR class represented by this candidate.
      */
     override val irClass: IrClass,
+    /**
+     * Concrete type represented by this candidate.
+     */
+    val type: IrType,
     /**
      * Primary constructor used to instantiate this class.
      */
