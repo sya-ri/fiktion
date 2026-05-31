@@ -47,7 +47,7 @@ mavenPublishing {
     coordinates("dev.s7a", "fiktion-addon-kotlinx-datetime", version.toString())
     configure(
         KotlinMultiplatform(
-            javadocJar = JavadocJar.Empty(),
+            javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
             sourcesJar = SourcesJar.Sources(),
         ),
     )
