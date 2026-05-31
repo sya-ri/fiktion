@@ -13,6 +13,7 @@ plugins {
 dependencies {
     testImplementation("dev.s7a:fiktion-core:0.3.0")
     testImplementation("dev.s7a:fiktion-addon-java:0.3.0") // optional JVM add-on
+    detektPlugins("dev.s7a:fiktion-detekt-rules:<unreleased>") // optional detekt rules
 }
 ```
 
@@ -529,6 +530,20 @@ val fiktion = Fiktion {
     this using FiktionConfig.Int.range(-200..200)
     this using FiktionConfig.Collection.size(3)
 }
+```
+
+When a config key accepts a range, prefer the fixed-value shorthand for equal bounds:
+
+```kotlin
+this using FiktionConfig.Collection.size(2)
+this using FiktionConfig.Int.range(42)
+```
+
+instead of:
+
+```kotlin
+this using FiktionConfig.Collection.size(2..2)
+this using FiktionConfig.Int.range(42..42)
 ```
 
 Global, instance, and add-on builder configs apply to every generated value matching the config key's scope. Per-call

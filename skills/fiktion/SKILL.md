@@ -16,6 +16,7 @@ Prefer the repository source over memory when details matter:
 - Java add-on: `fiktion-addon-java/src/main/kotlin/dev/s7a/fiktion/addon/java`
 - Gradle plugin: `fiktion-gradle-plugin/src/main/kotlin/dev/s7a/fiktion/gradle`
 - Compiler plugin: `fiktion-compiler-plugin/src/main/kotlin/dev/s7a/fiktion/compiler`
+- Detekt rules: `fiktion-detekt-rules/src/main/kotlin/dev/s7a/fiktion/detekt`
 - User docs: `README.md`
 
 If a reference below conflicts with code, trust the code and update the reference.
@@ -27,6 +28,7 @@ Read only the file needed for the task:
 - Basic usage, rule precedence, target selection, collections/maps, nulls/defaults, compiler plugin, Gradle config: `references/basic-api.md`
 - Built-in generator functions and generator-writing patterns: `references/generators.md`
 - Java add-on usage, automatic add-on registration, and custom add-on authoring: `references/addons.md`
+- Detekt rule authoring and available Fiktion rules: `references/detekt-rules.md`
 - Common failures, error messages, and review checklist: `references/troubleshooting.md`
 
 ## Working Conventions
@@ -38,6 +40,8 @@ Read only the file needed for the task:
 - Prefer property references in per-call rules: `User::id generates "user-1"`.
 - Use typed generator configuration to adjust default generator behavior:
   `this using FiktionConfig.Int.range(-200..200)` or `User::id using FiktionConfig.String.length(12..12)`.
+- Prefer fixed config values over equal-bound config ranges:
+  `FiktionConfig.Collection.size(2)` instead of `FiktionConfig.Collection.size(2..2)`.
 - Use `element`, `key`, and `value` inside collection/map fake blocks when configuring generated container
   parts: `fake<List<Map<String, Int>>> { element { key using FiktionConfig.String.length(4..4); value using FiktionConfig.Int.range(10..20) } }`.
 - Container targets also work from typed rule targets, such as `property(Catalog::counts).element using FiktionConfig.Int.range(10..20)`.

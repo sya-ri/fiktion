@@ -55,6 +55,7 @@ The repository currently contains:
 - `fiktion-gradle-plugin`: Gradle wiring for test source sets
 - `fiktion-addon-java`: rules for common Java/JVM standard library types
 - `fiktion-addon-kotlinx-datetime`: rules for `kotlinx-datetime` types
+- `fiktion-detekt-rules`: optional detekt rules for Fiktion DSL usage
 
 ## Install
 
@@ -74,8 +75,14 @@ dependencies {
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
     testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.3.0")
+
+    // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
+    detektPlugins("dev.s7a:fiktion-detekt-rules:<unreleased>")
 }
 ```
+
+If detekt is not configured yet, follow the
+[official detekt Gradle setup](https://detekt.dev/docs/gettingstarted/gradle/) before adding `fiktion-detekt-rules`.
 
 Fiktion is enabled for test source sets by default, including JVM `test` and Multiplatform source sets such as
 `commonTest` and `jvmTest`.
@@ -330,6 +337,24 @@ val user = fake<User> {
 
 Configuration keys are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects such as
 `JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
+
+## Detekt Rules
+
+Fiktion often has several equivalent DSL forms. `fiktion-detekt-rules` helps teams keep those choices consistent by
+recommending the narrower or more direct form when two forms express the same intent. This is useful for shared test
+code because the rule feedback appears during normal linting, before the style spreads through fixtures and helpers.
+
+Add it as a detekt plugin dependency. If detekt is not configured in the project yet, follow the
+[official detekt Gradle setup](https://detekt.dev/docs/gettingstarted/gradle/) first. The rules are published under the
+`fiktion` rule set.
+
+```kotlin
+dependencies {
+    detektPlugins("dev.s7a:fiktion-detekt-rules:<unreleased>")
+}
+```
+
+See [fiktion-detekt-rules](fiktion-detekt-rules/README.md) for rule details.
 
 ## Test Framework Integration
 
