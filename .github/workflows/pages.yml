@@ -42,9 +42,31 @@ jobs:
       - name: Prepare previous versions
         working-directory: source
         run: |
+          current_version="$(./gradlew -q printVersion)"
           mkdir -p build/dokka/olderVersions
           if [ -d ../pages ]; then
-            find ../pages -maxdepth 1 -type d -name 'v*' -exec cp -R {} build/dokka/olderVersions/ \;
+            if [ -d ../pages/older ]; then
+              find ../pages/older -mindepth 1 -maxdepth 1 -type d | while read -r older_version_dir; do
+                older_version="$(basename "${older_version_dir}")"
+                if [ "${older_version}" != "${current_version}" ]; then
+                  cp -R "${older_version_dir}" build/dokka/olderVersions/
+                fi
+              done
+            else
+              find ../pages -maxdepth 1 -type d -name 'v*' | while read -r version_dir; do
+                version="$(basename "${version_dir}")"
+                if [ "${version#v}" != "${current_version}" ]; then
+                  cp -R "${version_dir}" "build/dokka/olderVersions/${version#v}"
+                fi
+              done
+            fi
+            if [ -f ../pages/version.json ]; then
+              root_version="$(sed -n 's/.*"version"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' ../pages/version.json)"
+              if [ -n "${root_version}" ] && [ "${root_version}" != "${current_version}" ]; then
+                mkdir -p "build/dokka/olderVersions/${root_version}"
+                rsync -a --checksum --delete --exclude '.git' --exclude 'v*/' --exclude 'older/' ../pages/ "build/dokka/olderVersions/${root_version}/"
+              fi
+            fi
           fi
 
       - name: Build Dokka HTML
@@ -56,15 +78,15 @@ jobs:
         run: |
           version="$(./gradlew -q printVersion)"
           mkdir -p ../pages
-          rsync -a --checksum --delete --exclude '.git' --exclude 'v*/' build/dokka/html/ ../pages/
+          rsync -a --checksum --delete --exclude '.git' --exclude 'v*/' --exclude 'older/' build/dokka/html/ ../pages/
           if [ -d build/dokka/html/older ]; then
-            find build/dokka/html/older -mindepth 1 -maxdepth 1 -type d | while read -r older_version_dir; do
-              older_version="$(basename "${older_version_dir}")"
-              rsync -a --checksum --delete "${older_version_dir}/" "../pages/v${older_version}/"
-            done
+            rsync -a --checksum --delete build/dokka/html/older/ ../pages/older/
+          else
+            rm -rf ../pages/older
           fi
           if [[ "${version}" != *-SNAPSHOT ]]; then
-            rsync -a --checksum --delete build/dokka/html/ "../pages/v${version}/"
+            find ../pages -maxdepth 1 -type d -name 'v*' -exec rm -rf {} +
+            printf '{"version":"%s"}\n' "${version}" > ../pages/version.json
           fi
           touch ../pages/.nojekyll
           echo "fiktion.s7a.dev" > ../pages/CNAME
