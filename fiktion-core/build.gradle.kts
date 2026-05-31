@@ -50,7 +50,7 @@ mavenPublishing {
     coordinates("dev.s7a", "fiktion-core", version.toString())
     configure(
         KotlinMultiplatform(
-            javadocJar = JavadocJar.Empty(),
+            javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
             sourcesJar = SourcesJar.Sources(),
         ),
     )
