@@ -18,5 +18,6 @@ include(
     ":fiktion-addon-kotlinx-datetime",
     ":fiktion-core",
     ":fiktion-compiler-plugin",
+    ":fiktion-detekt-rules",
     ":fiktion-gradle-plugin",
 )

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added `fiktion-detekt-rules`, an optional detekt rule set for keeping Fiktion DSL usage focused and consistent.
+
 ## v0.3.0
 
 - Added typed generator configuration for changing built-in and add-on generator defaults, including container part
