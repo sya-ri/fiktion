@@ -14,6 +14,7 @@ dependencyResolutionManagement {
 rootProject.name = "fiktion"
 
 include(
+    ":fiktion-addon-arrow",
     ":fiktion-addon-java",
     ":fiktion-addon-kotlinx-datetime",
     ":fiktion-core",

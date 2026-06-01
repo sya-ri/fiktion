@@ -3,7 +3,7 @@ package dev.s7a.fiktion
 /**
  * Creates a child fake context with separate seed and public index values.
  */
-internal fun FakeContext.childContext(
+public fun FakeContext.childContext(
     index: Int,
     seedIndex: Int = index,
 ): FakeContext =

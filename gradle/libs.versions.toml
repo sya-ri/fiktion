@@ -1,4 +1,5 @@
 [versions]
+arrow = "2.2.2.1"
 detekt = "2.0.0-alpha.3"
 dokka = "2.2.0"
 gradlePluginPublish = "2.1.1"
@@ -9,6 +10,7 @@ kotlinter = "5.5.0"
 mavenPublish = "0.36.0"
 
 [libraries]
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 detekt-api = { module = "dev.detekt:detekt-api", version.ref = "detekt" }
 detekt-test = { module = "dev.detekt:detekt-test", version.ref = "detekt" }
 dokka-versioning-plugin = { module = "org.jetbrains.dokka:versioning-plugin", version.ref = "dokka" }

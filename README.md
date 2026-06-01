@@ -53,6 +53,7 @@ The repository currently contains:
 - `fiktion-core`: runtime APIs and built-in generators
 - `fiktion-compiler-plugin`: Kotlin compiler plugin for generated type metadata
 - `fiktion-gradle-plugin`: Gradle wiring for test source sets
+- `fiktion-addon-arrow`: rules for Arrow Core types
 - `fiktion-addon-java`: rules for common Java/JVM standard library types
 - `fiktion-addon-kotlinx-datetime`: rules for `kotlinx-datetime` types
 - `fiktion-detekt-rules`: optional detekt rules for Fiktion DSL usage
@@ -69,6 +70,9 @@ plugins {
 
 dependencies {
     testImplementation("dev.s7a:fiktion-core:0.3.0")
+
+    // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
+    testImplementation("dev.s7a:fiktion-addon-arrow:<unreleased>")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
     testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
@@ -643,6 +647,40 @@ Add-ons can still be installed explicitly when the compiler plugin is not enable
 ```kotlin
 val fiktion = Fiktion {
     install(JavaFiktionAddon)
+}
+```
+
+## Arrow Add-On
+
+Add `fiktion-addon-arrow` when tests need Arrow Core types such as `Option`, `Either`, `Ior`, `NonEmptyList`, or
+`NonEmptySet`:
+
+```kotlin
+dependencies {
+    testImplementation("dev.s7a:fiktion-addon-arrow:<unreleased>")
+}
+```
+
+With the Gradle plugin enabled, the add-on is registered automatically before `fake<T>()` calls:
+
+```kotlin
+import arrow.core.Either
+import arrow.core.NonEmptyList
+import arrow.core.Option
+
+val option = fake<Option<Int>>()
+val either = fake<Either<String, Int>>()
+val items = fake<NonEmptyList<String>>()
+```
+
+`NonEmptySet` follows normal set semantics: duplicate generated values collapse, so the final set size can be smaller
+than `FiktionConfig.Collection.size`.
+
+It can also be installed explicitly:
+
+```kotlin
+val fiktion = Fiktion {
+    install(ArrowFiktionAddon)
 }
 ```
 

@@ -2,6 +2,38 @@
 
 Add-ons are reusable bundles of rules and converters. They are lower precedence than per-call, instance, and global rules, and higher than built-ins.
 
+## Arrow Add-On Usage
+
+Install dependency:
+
+```kotlin
+dependencies {
+    testImplementation("dev.s7a:fiktion-addon-arrow:<unreleased>")
+}
+```
+
+With the Fiktion Gradle/compiler plugin enabled for the source set, add-ons on the compilation classpath are registered automatically before `fake<T>()` calls:
+
+```kotlin
+val option = fake<arrow.core.Option<Int>>()
+val either = fake<arrow.core.Either<String, Int>>()
+val items = fake<arrow.core.NonEmptyList<String>>()
+```
+
+When the compiler plugin is not enabled for that source set, install explicitly:
+
+```kotlin
+val fiktion = Fiktion {
+    install(ArrowFiktionAddon)
+}
+```
+
+## Arrow Add-On Coverage
+
+The Arrow add-on includes generation rules for `Option`, `Either`, `Ior`, `NonEmptyList`, and `NonEmptySet`.
+`NonEmptySet` follows normal set semantics, so duplicate generated values can make the final set smaller than
+`FiktionConfig.Collection.size`.
+
 ## Java Add-On Usage
 
 Install dependency:
