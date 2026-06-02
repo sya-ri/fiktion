@@ -1,4 +1,4 @@
-package dev.s7a.fiktion.addon.arrow
+package dev.s7a.fiktion.addon.arrow.core
 
 import arrow.core.Either
 import arrow.core.Ior
@@ -9,11 +9,11 @@ import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.UniqueElementStrategy
-import dev.s7a.fiktion.addon.arrow.generators.either
-import dev.s7a.fiktion.addon.arrow.generators.ior
-import dev.s7a.fiktion.addon.arrow.generators.nonEmptyList
-import dev.s7a.fiktion.addon.arrow.generators.nonEmptySet
-import dev.s7a.fiktion.addon.arrow.generators.option
+import dev.s7a.fiktion.addon.arrow.core.generators.either
+import dev.s7a.fiktion.addon.arrow.core.generators.ior
+import dev.s7a.fiktion.addon.arrow.core.generators.nonEmptyList
+import dev.s7a.fiktion.addon.arrow.core.generators.nonEmptySet
+import dev.s7a.fiktion.addon.arrow.core.generators.option
 import dev.s7a.fiktion.element
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generatesBy
@@ -24,7 +24,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
-class ArrowFiktionAddonTest {
+class ArrowCoreFiktionAddonTest {
     @Test
     fun `arrow add-on rules are inactive until the add-on is installed`() {
         assertFailsWith<CannotGenerateException> {
@@ -36,7 +36,7 @@ class ArrowFiktionAddonTest {
     fun `installed arrow add-on generates supported types`() {
         val fiktion =
             Fiktion {
-                install(ArrowFiktionAddon)
+                install(ArrowCoreFiktionAddon)
             }
 
         val nonEmptyList = fiktion.fake<NonEmptyList<Int>>(seed = 123)
@@ -53,7 +53,7 @@ class ArrowFiktionAddonTest {
     fun `installed arrow add-on generates nested generic values`() {
         val fiktion =
             Fiktion {
-                install(ArrowFiktionAddon)
+                install(ArrowCoreFiktionAddon)
                 type<String>() generatesBy { "value-$index" }
             }
 
@@ -76,7 +76,7 @@ class ArrowFiktionAddonTest {
     fun `installed arrow add-on uses core collection size configs`() {
         val fiktion =
             Fiktion {
-                install(ArrowFiktionAddon)
+                install(ArrowCoreFiktionAddon)
                 this using FiktionConfig.Collection.size(4)
             }
 
@@ -88,7 +88,7 @@ class ArrowFiktionAddonTest {
     fun `installed arrow add-on keeps non-empty collections non-empty with zero size config`() {
         val fiktion =
             Fiktion {
-                install(ArrowFiktionAddon)
+                install(ArrowCoreFiktionAddon)
                 this using FiktionConfig.Collection.size(0)
             }
 
@@ -100,7 +100,7 @@ class ArrowFiktionAddonTest {
     fun `installed arrow add-on applies element target rules to non-empty collections`() {
         val fiktion =
             Fiktion {
-                install(ArrowFiktionAddon)
+                install(ArrowCoreFiktionAddon)
                 this using FiktionConfig.Collection.size(3)
                 type<NonEmptyList<Int>>().element generatesBy { 42 }
                 type<NonEmptySet<Int>>().element generatesBy { index + 10 }
@@ -114,7 +114,7 @@ class ArrowFiktionAddonTest {
     fun `installed arrow add-on retries non-empty set generation when exact unique element generation is configured`() {
         val fiktion =
             Fiktion {
-                install(ArrowFiktionAddon)
+                install(ArrowCoreFiktionAddon)
                 type<NonEmptySet<String>> {
                     this using FiktionConfig.Collection.size(3)
                     this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
@@ -131,7 +131,7 @@ class ArrowFiktionAddonTest {
     fun `installed arrow add-on fails exact non-empty set generation when distinct values cannot fill requested size`() {
         val fiktion =
             Fiktion {
-                install(ArrowFiktionAddon)
+                install(ArrowCoreFiktionAddon)
                 type<NonEmptySet<Boolean>> {
                     this using FiktionConfig.Collection.size(3)
                     this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
