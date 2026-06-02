@@ -1,0 +1,1010 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>dev.s7a.fiktion</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    fiktion
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;dev.s7a.fiktion/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0" title="0.2.0"><span class="versions-dropdown-button-text">0.2.0</span></div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+<a href="../../../../fiktion-core/dev.s7a.fiktion/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.4.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.4.0</span></a><a href="../../../0.3.0/fiktion-core/dev.s7a.fiktion/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.3.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.3.0</span></a><a href="../../../0.2.4/fiktion-core/dev.s7a.fiktion/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.4"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.4</span></a><a href="../../../0.2.3/fiktion-core/dev.s7a.fiktion/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.3"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.3</span></a><a href="../../../0.2.2/fiktion-core/dev.s7a.fiktion/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.2"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.2</span></a><a href="../../../0.2.1/fiktion-core/dev.s7a.fiktion/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.1"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.1</span></a><a href="index.html" class="dropdown--option dropdown--option_active dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.0"><span class="dropdown--option-icon dropdown--option-icon_selected"></span><span class="dropdown--option-text">0.2.0</span></a><a href="../../../0.1.0/fiktion-core/dev.s7a.fiktion/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.1.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.1.0</span></a></div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":fiktion-core/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":fiktion-core/commonMain" data-filter=":fiktion-core/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    fiktion
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="fiktion-core::dev.s7a.fiktion////PointingToDeclaration//1493795707">
+  <div class="breadcrumbs"><a href="../index.html">fiktion-core</a><span class="delimiter">/</span><span class="current">dev.s7a.fiktion</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1419717253%2FClasslikes%2F1493795707" anchor-label="Auto" id="1419717253%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-auto/index.html"><span><span>Auto</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1419717253%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-auto/index.html">Auto</a></div><div class="brief "><p class="paragraph">Marker used by <code class="lang-kotlin">generates auto</code> to request Fiktion's automatic generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1750700663%2FClasslikes%2F1493795707" anchor-label="CannotGenerateException" id="1750700663%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-cannot-generate-exception/index.html"><span>Cannot</span><wbr><span>Generate</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1750700663%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-cannot-generate-exception/index.html">CannotGenerateException</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">cause<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-runtime-exception/index.html">RuntimeException</a></div><div class="brief "><p class="paragraph">Thrown when Fiktion cannot generate a value for the requested target.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-65923133%2FClasslikes%2F1493795707" anchor-label="CollectionGenerationSpec" id="-65923133%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-collection-generation-spec/index.html"><span>Collection</span><wbr><span>Generation</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-65923133%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-collection-generation-spec/index.html">CollectionGenerationSpec</a><span class="token operator">&lt;</span><a href="-collection-generation-spec/index.html">Element</a><span class="token punctuation">, </span><a href="-collection-generation-spec/index.html">CollectionType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="-collection-generation-spec/index.html">Element</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span> : <a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="-collection-generation-spec/index.html">CollectionType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Configured generation rule for collection values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1937942290%2FClasslikes%2F1493795707" anchor-label="ExperimentalFiktionApi" id="-1937942290%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-experimental-fiktion-api/index.html"><span>Experimental</span><wbr><span>Fiktion</span><wbr><span><span>Api</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1937942290%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-requires-opt-in/index.html"><span class="token annotation builtin">RequiresOptIn</span></a><span class="token punctuation">(</span><span>message<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"This Fiktion API is experimental and may change before 1.0."</span></span><span class="token punctuation">, </span></span><wbr><span>level<span class="token operator"> = </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-requires-opt-in/-level/-w-a-r-n-i-n-g/index.html">RequiresOptIn.Level.WARNING</a></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">annotation class </span><a href="-experimental-fiktion-api/index.html">ExperimentalFiktionApi</a></div><div class="brief "><p class="paragraph">Marks APIs that are expected to evolve before Fiktion reaches 1.0.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2039882156%2FClasslikes%2F1493795707" anchor-label="FakeContext" id="-2039882156%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fake-context/index.html"><span>Fake</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2039882156%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-fake-context/index.html">FakeContext</a></div><div class="brief "><p class="paragraph">Runtime context passed to custom generators.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1009233984%2FClasslikes%2F1493795707" anchor-label="FakeNullability" id="-1009233984%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fake-nullability/index.html"><span>Fake</span><wbr><span><span>Nullability</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1009233984%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-fake-nullability/index.html">FakeNullability</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-fake-nullability/index.html">FakeNullability</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Runtime nullability information for a generated property.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2053726202%2FClasslikes%2F1493795707" anchor-label="FakePath" id="2053726202%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fake-path/index.html"><span>Fake</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2053726202%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-fake-path/index.html">FakePath</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>segments<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-fake-property/index.html">FakeProperty</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runtime path to a generated value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1226222262%2FClasslikes%2F1493795707" anchor-label="FakeProperty" id="-1226222262%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fake-property/index.html"><span>Fake</span><wbr><span><span>Property</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1226222262%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-fake-property/index.html">FakeProperty</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>owner<span class="token operator">: </span><a href="-fake-type/index.html">FakeType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="-fake-type/index.html">FakeType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>nullability<span class="token operator">: </span><a href="-fake-nullability/index.html">FakeNullability</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runtime description of a generated property.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1382424284%2FClasslikes%2F1493795707" anchor-label="FakeSpec" id="-1382424284%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fake-spec/index.html"><span>Fake</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1382424284%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fake-spec/index.html">FakeSpec</a><span class="token operator">&lt;</span><a href="-fake-spec/index.html">Root</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Per-call configuration for generating a <a href="-fake-spec/index.html">Root</a> value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-932092283%2FClasslikes%2F1493795707" anchor-label="FakeType" id="-932092283%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fake-type/index.html"><span>Fake</span><wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-932092283%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-fake-type/index.html">FakeType</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>displayName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runtime description of a generated type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-452690798%2FClasslikes%2F1493795707" anchor-label="Fiktion" id="-452690798%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion/index.html"><span><span>Fiktion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-452690798%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-fiktion/index.html">Fiktion</a></div><div class="brief "><p class="paragraph">Configured fake data generator.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-486951344%2FClasslikes%2F1493795707" anchor-label="FiktionAddon" id="-486951344%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-addon/index.html"><span>Fiktion</span><wbr><span><span>Addon</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-486951344%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">interface </span><a href="-fiktion-addon/index.html">FiktionAddon</a></div><div class="brief "><p class="paragraph">Extension point that contributes reusable Fiktion rules.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-405295593%2FClasslikes%2F1493795707" anchor-label="FiktionAddonBuilder" id="-405295593%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-addon-builder/index.html"><span>Fiktion</span><wbr><span>Addon</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-405295593%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-fiktion-addon-builder/index.html">FiktionAddonBuilder</a> : <a href="-fiktion-rule-builder/index.html">FiktionRuleBuilder</a></div><div class="brief "><p class="paragraph">Builder exposed to add-ons for contributing reusable low-precedence rules.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-816159256%2FClasslikes%2F1493795707" anchor-label="FiktionArrayMetadata" id="-816159256%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-array-metadata/index.html"><span>Fiktion</span><wbr><span>Array</span><wbr><span><span>Metadata</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-816159256%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-array-metadata/index.html">FiktionArrayMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-array-metadata/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>elementType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter ">constructor<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-fiktion-array-metadata/index.html">T</a></span></span><span class="token punctuation">)</span> : <a href="-fiktion-type-metadata/index.html">FiktionTypeMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-array-metadata/index.html">T</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Runtime construction metadata for an array type that Fiktion can generate automatically.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1464842645%2FClasslikes%2F1493795707" anchor-label="FiktionBuilder" id="1464842645%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-builder/index.html"><span>Fiktion</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1464842645%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-fiktion-builder/index.html">FiktionBuilder</a> : <a href="-fiktion-rule-builder/index.html">FiktionRuleBuilder</a></div><div class="brief "><p class="paragraph">Builder exposed when creating isolated Fiktion instances.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1046786087%2FClasslikes%2F1493795707" anchor-label="FiktionConfigurationException" id="-1046786087%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-configuration-exception/index.html"><span>Fiktion</span><wbr><span>Configuration</span><wbr><span><span>Exception</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1046786087%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-configuration-exception/index.html">FiktionConfigurationException</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">cause<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-illegal-argument-exception/index.html">IllegalArgumentException</a></div><div class="brief "><p class="paragraph">Thrown when Fiktion configuration or DSL input is invalid.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2031301059%2FClasslikes%2F1493795707" anchor-label="FiktionConfigureBuilder" id="-2031301059%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-configure-builder/index.html"><span>Fiktion</span><wbr><span>Configure</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2031301059%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-fiktion-configure-builder/index.html">FiktionConfigureBuilder</a> : <a href="-fiktion-builder/index.html">FiktionBuilder</a></div><div class="brief "><p class="paragraph">Builder exposed when updating the global Fiktion configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2047936094%2FClasslikes%2F1493795707" anchor-label="FiktionEnumMetadata" id="-2047936094%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-enum-metadata/index.html"><span>Fiktion</span><wbr><span>Enum</span><wbr><span><span>Metadata</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2047936094%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-enum-metadata/index.html">FiktionEnumMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-enum-metadata/index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-fiktion-enum-metadata/index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>entries<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-fiktion-enum-metadata/index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="-fiktion-type-metadata/index.html">FiktionTypeMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-enum-metadata/index.html">T</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Runtime construction metadata for an enum type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="832608022%2FClasslikes%2F1493795707" anchor-label="FiktionObjectArgument" id="832608022%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-object-argument/index.html"><span>Fiktion</span><wbr><span>Object</span><wbr><span><span>Argument</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="832608022%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-fiktion-object-argument/index.html">FiktionObjectArgument</a></div><div class="brief "><p class="paragraph">Constructor argument produced while generating an object.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1267813938%2FClasslikes%2F1493795707" anchor-label="FiktionObjectDefault" id="-1267813938%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-object-default/index.html"><span>Fiktion</span><wbr><span>Object</span><wbr><span><span>Default</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1267813938%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-fiktion-object-default/index.html">FiktionObjectDefault</a> : <a href="-fiktion-object-argument/index.html">FiktionObjectArgument</a></div><div class="brief "><p class="paragraph">Constructor argument marker that asks generated metadata to use the property's default value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="760282852%2FClasslikes%2F1493795707" anchor-label="FiktionObjectMetadata" id="760282852%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-object-metadata/index.html"><span>Fiktion</span><wbr><span>Object</span><wbr><span><span>Metadata</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="760282852%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-object-metadata/index.html">FiktionObjectMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-object-metadata/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>properties<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-fiktion-object-property/index.html">FiktionObjectProperty</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">constructor<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-fiktion-object-argument/index.html">FiktionObjectArgument</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-fiktion-object-metadata/index.html">T</a></span></span><span class="token punctuation">)</span> : <a href="-fiktion-type-metadata/index.html">FiktionTypeMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-object-metadata/index.html">T</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Runtime construction metadata for a type that Fiktion can generate automatically.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2039561474%2FClasslikes%2F1493795707" anchor-label="FiktionObjectProperty" id="-2039561474%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-object-property/index.html"><span>Fiktion</span><wbr><span>Object</span><wbr><span><span>Property</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2039561474%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-fiktion-object-property/index.html">FiktionObjectProperty</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>hasDefault<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runtime construction metadata for one generated object property.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1905296414%2FClasslikes%2F1493795707" anchor-label="FiktionObjectValue" id="1905296414%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-object-value/index.html"><span>Fiktion</span><wbr><span>Object</span><wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1905296414%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-fiktion-object-value/index.html">FiktionObjectValue</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-fiktion-object-argument/index.html">FiktionObjectArgument</a></div><div class="brief "><p class="paragraph">Constructor argument containing a generated <a href="../../fiktion-core/dev.s7a.fiktion/-fiktion-object-value/--root--.html">value</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1090780465%2FClasslikes%2F1493795707" anchor-label="FiktionRuleBuilder" id="1090780465%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-rule-builder/index.html"><span>Fiktion</span><wbr><span>Rule</span><wbr><span><span>Builder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1090780465%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-fiktion-rule-builder/index.html">FiktionRuleBuilder</a></div><div class="brief "><p class="paragraph">Shared rule registration surface exposed by Fiktion builders.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-304739737%2FClasslikes%2F1493795707" anchor-label="FiktionSealedMetadata" id="-304739737%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-sealed-metadata/index.html"><span>Fiktion</span><wbr><span>Sealed</span><wbr><span><span>Metadata</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-304739737%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-sealed-metadata/index.html">FiktionSealedMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-sealed-metadata/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>subtypes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span> : <a href="-fiktion-type-metadata/index.html">FiktionTypeMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-sealed-metadata/index.html">T</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Runtime construction metadata for a sealed type.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="524778030%2FClasslikes%2F1493795707" anchor-label="FiktionSnapshot" id="524778030%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-snapshot/index.html"><span>Fiktion</span><wbr><span><span>Snapshot</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="524778030%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-fiktion-snapshot/index.html">FiktionSnapshot</a></div><div class="brief "><p class="paragraph">Restorable snapshot of the global Fiktion configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1069421943%2FClasslikes%2F1493795707" anchor-label="FiktionTypeMetadata" id="-1069421943%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-type-metadata/index.html"><span>Fiktion</span><wbr><span>Type</span><wbr><span><span>Metadata</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1069421943%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-fiktion-type-metadata/index.html">FiktionTypeMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-type-metadata/index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Runtime metadata for a type that Fiktion can generate automatically.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="99912144%2FClasslikes%2F1493795707" anchor-label="FiktionValueMetadata" id="99912144%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-value-metadata/index.html"><span>Fiktion</span><wbr><span>Value</span><wbr><span><span>Metadata</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="99912144%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-value-metadata/index.html">FiktionValueMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-value-metadata/index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>underlyingType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter ">constructor<span class="token operator">: </span><span class="token punctuation">(</span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-fiktion-value-metadata/index.html">T</a></span></span><span class="token punctuation">)</span> : <a href="-fiktion-type-metadata/index.html">FiktionTypeMetadata</a><span class="token operator">&lt;</span><a href="-fiktion-value-metadata/index.html">T</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Runtime construction metadata for a value-like type backed by one generated value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1446943743%2FClasslikes%2F1493795707" anchor-label="GenerationSpec" id="-1446943743%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-generation-spec/index.html"><span>Generation</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1446943743%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="-generation-spec/index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Configured generation rule for values of <a href="-generation-spec/index.html">T</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1095318907%2FClasslikes%2F1493795707" anchor-label="Generator" id="1095318907%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-generator/index.html"><span><span>Generator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1095318907%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="-generator/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><a href="-fake-context/index.html">FakeContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-generator/index.html">T</a></div><div class="brief "><p class="paragraph">Custom value generator executed with a <a href="-fake-context/index.html">FakeContext</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1703608867%2FClasslikes%2F1493795707" anchor-label="MapEntrySpec" id="1703608867%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-map-entry-spec/index.html"><span>Map</span><wbr><span>Entry</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1703608867%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-map-entry-spec/index.html">MapEntrySpec</a><span class="token operator">&lt;</span><a href="-map-entry-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-entry-spec/index.html">Value</a><span class="token punctuation">, </span><a href="-map-entry-spec/index.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-map-entry-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-entry-spec/index.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span> : <a href="-map-generation-spec/index.html">MapGenerationSpec</a><span class="token operator">&lt;</span><a href="-map-entry-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-entry-spec/index.html">Value</a><span class="token punctuation">, </span><a href="-map-entry-spec/index.html">MapType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Configured map rule that defines key and value generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1850902879%2FClasslikes%2F1493795707" anchor-label="MapGenerationSpec" id="1850902879%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-map-generation-spec/index.html"><span>Map</span><wbr><span>Generation</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1850902879%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-map-generation-spec/index.html">MapGenerationSpec</a><span class="token operator">&lt;</span><a href="-map-generation-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-generation-spec/index.html">Value</a><span class="token punctuation">, </span><a href="-map-generation-spec/index.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-map-generation-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-generation-spec/index.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span> : <a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="-map-generation-spec/index.html">MapType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Configured generation rule for map values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="362187542%2FClasslikes%2F1493795707" anchor-label="MapKeySpec" id="362187542%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-map-key-spec/index.html"><span>Map</span><wbr><span>Key</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="362187542%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-map-key-spec/index.html">MapKeySpec</a><span class="token operator">&lt;</span><a href="-map-key-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-key-spec/index.html">Value</a><span class="token punctuation">, </span><a href="-map-key-spec/index.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-map-key-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-key-spec/index.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span> : <a href="-map-generation-spec/index.html">MapGenerationSpec</a><span class="token operator">&lt;</span><a href="-map-key-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-key-spec/index.html">Value</a><span class="token punctuation">, </span><a href="-map-key-spec/index.html">MapType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Partially configured map rule that defines key generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="7171460%2FClasslikes%2F1493795707" anchor-label="MapValueSpec" id="7171460%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-map-value-spec/index.html"><span>Map</span><wbr><span>Value</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="7171460%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-map-value-spec/index.html">MapValueSpec</a><span class="token operator">&lt;</span><a href="-map-value-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-value-spec/index.html">Value</a><span class="token punctuation">, </span><a href="-map-value-spec/index.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="-map-value-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-value-spec/index.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span> : <a href="-map-generation-spec/index.html">MapGenerationSpec</a><span class="token operator">&lt;</span><a href="-map-value-spec/index.html">Key</a><span class="token punctuation">, </span><a href="-map-value-spec/index.html">Value</a><span class="token punctuation">, </span><a href="-map-value-spec/index.html">MapType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Partially configured map rule that defines value generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-546048231%2FClasslikes%2F1493795707" anchor-label="Probability" id="-546048231%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-probability/index.html"><span><span>Probability</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-546048231%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-probability/index.html">Probability</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Probability value represented as a number from <code class="lang-kotlin">0.0</code> to <code class="lang-kotlin">1.0</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1344446470%2FClasslikes%2F1493795707" anchor-label="PropertyPath" id="-1344446470%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-property-path/index.html"><span>Property</span><wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1344446470%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-property-path/index.html">PropertyPath</a><span class="token operator">&lt;</span><a href="-property-path/index.html">Root</a><span class="token punctuation">, </span><span class="token keyword">out </span><a href="-property-path/index.html">Value</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Type-safe path from <a href="-property-path/index.html">Root</a> to a nested <a href="-property-path/index.html">Value</a> property.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1644944260%2FClasslikes%2F1493795707" anchor-label="RuleNameTarget" id="-1644944260%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rule-name-target/index.html"><span>Rule</span><wbr><span>Name</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1644944260%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-rule-name-target/index.html">RuleNameTarget</a></div><div class="brief "><p class="paragraph">Target selected by a property-name rule before its value type is known.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-252595193%2FClasslikes%2F1493795707" anchor-label="RuleTarget" id="-252595193%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-rule-target/index.html"><span>Rule</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-252595193%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="-rule-target/index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Target selected by a rule declaration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="717405173%2FClasslikes%2F1493795707" anchor-label="TypeFamilyGenerationContext" id="717405173%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-family-generation-context/index.html"><span>Type</span><wbr><span>Family</span><wbr><span>Generation</span><wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="717405173%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-type-family-generation-context/index.html">TypeFamilyGenerationContext</a> : <a href="-fake-context/index.html">FakeContext</a></div><div class="brief "><p class="paragraph">Context for generating a value from the requested type's type arguments.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1376183577%2FClasslikes%2F1493795707" anchor-label="TypeFamilyGenerator" id="1376183577%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-family-generator/index.html"><span>Type</span><wbr><span>Family</span><wbr><span><span>Generator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1376183577%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">typealias </span><a href="-type-family-generator/index.html">TypeFamilyGenerator</a><span class="token operator">&lt;</span><a href="-type-family-generator/index.html">T</a><span class="token operator">&gt;</span><span class="token operator"> = </span><a href="-type-family-generation-context/index.html">TypeFamilyGenerationContext</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="-type-family-generator/index.html">T</a></div><div class="brief "><p class="paragraph">Generator used by type-family rules.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-135725015%2FClasslikes%2F1493795707" anchor-label="TypeFamilyRuleTarget" id="-135725015%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-type-family-rule-target/index.html"><span>Type</span><wbr><span>Family</span><wbr><span>Rule</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-135725015%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-type-family-rule-target/index.html">TypeFamilyRuleTarget</a><span class="token operator">&lt;</span><a href="-type-family-rule-target/index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Target selected by a type-family rule declaration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="737989692%2FProperties%2F1493795707" anchor-label="auto" id="737989692%2FProperties%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="auto.html"><span><span>auto</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="737989692%2FProperties%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="auto.html">auto</a><span class="token operator">: </span><a href="-auto/index.html">Auto</a></div><div class="brief "><p class="paragraph">Requests Fiktion's automatic generation in rule declarations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="978523240%2FProperties%2F1493795707" anchor-label="percent" id="978523240%2FProperties%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="percent.html"><span><span>percent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="978523240%2FProperties%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">.</span><a href="percent.html">percent</a><span class="token operator">: </span><a href="-probability/index.html">Probability</a></div><div class="brief "><p class="paragraph">Converts this floating-point percentage to a <a href="-probability/index.html">Probability</a>.</p></div><div class="symbol monospace"><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">.</span><a href="percent.html">percent</a><span class="token operator">: </span><a href="-probability/index.html">Probability</a></div><div class="brief "><p class="paragraph">Converts this integer percentage to a <a href="-probability/index.html">Probability</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1557114558%2FFunctions%2F1493795707" anchor-label="andKeys" id="-1557114558%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="and-keys.html"><span>and</span><wbr><span><span>Keys</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1557114558%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="and-keys.html">Key</a><span class="token punctuation">, </span><a href="and-keys.html">Value</a><span class="token punctuation">, </span><a href="and-keys.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="and-keys.html">Key</a><span class="token punctuation">, </span><a href="and-keys.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-map-value-spec/index.html">MapValueSpec</a><span class="token operator">&lt;</span><a href="and-keys.html">Key</a><span class="token punctuation">, </span><a href="and-keys.html">Value</a><span class="token punctuation">, </span><a href="and-keys.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="and-keys.html"><span class="token function">andKeys</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="and-keys.html">Key</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-entry-spec/index.html">MapEntrySpec</a><span class="token operator">&lt;</span><a href="and-keys.html">Key</a><span class="token punctuation">, </span><a href="and-keys.html">Value</a><span class="token punctuation">, </span><a href="and-keys.html">MapType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Completes this map rule by generating keys with <a href="and-keys.html">generator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="357752322%2FFunctions%2F1493795707" anchor-label="andValues" id="357752322%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="and-values.html"><span>and</span><wbr><span><span>Values</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="357752322%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="and-values.html">Key</a><span class="token punctuation">, </span><a href="and-values.html">Value</a><span class="token punctuation">, </span><a href="and-values.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="and-values.html">Key</a><span class="token punctuation">, </span><a href="and-values.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-map-key-spec/index.html">MapKeySpec</a><span class="token operator">&lt;</span><a href="and-values.html">Key</a><span class="token punctuation">, </span><a href="and-values.html">Value</a><span class="token punctuation">, </span><a href="and-values.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="and-values.html"><span class="token function">andValues</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="and-values.html">Value</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-entry-spec/index.html">MapEntrySpec</a><span class="token operator">&lt;</span><a href="and-values.html">Key</a><span class="token punctuation">, </span><a href="and-values.html">Value</a><span class="token punctuation">, </span><a href="and-values.html">MapType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Completes this map rule by generating values with <a href="and-values.html">generator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2015536172%2FFunctions%2F1493795707" anchor-label="div" id="2015536172%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="div.html"><span><span>div</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2015536172%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">inline operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt; </span><a href="-property-path/index.html">PropertyPath</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="div.html"><span class="token function">div</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">next<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-property1/index.html">KProperty1</a><span class="token operator">&lt;</span><a href="div.html">Intermediate</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-property-path/index.html">PropertyPath</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt; </span><a href="-property-path/index.html">PropertyPath</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="div.html"><span class="token function"><strike>div</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">next<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-property1/index.html">KProperty1</a><span class="token operator">&lt;</span><a href="div.html">Intermediate</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">intermediate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-property-path/index.html">PropertyPath</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Appends <a href="div.html">next</a> to this property path.</p></div><div class="symbol monospace"><span class="token keyword">inline operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-property1/index.html">KProperty1</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="div.html"><span class="token function">div</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">next<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-property1/index.html">KProperty1</a><span class="token operator">&lt;</span><a href="div.html">Intermediate</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-property-path/index.html">PropertyPath</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-property1/index.html">KProperty1</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Intermediate</a><span class="token operator">?</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="div.html"><span class="token function"><strike>div</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">next<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-property1/index.html">KProperty1</a><span class="token operator">&lt;</span><a href="div.html">Intermediate</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">root<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter ">intermediate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-property-path/index.html">PropertyPath</a><span class="token operator">&lt;</span><a href="div.html">Root</a><span class="token punctuation">, </span><a href="div.html">Value</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a nested property path using <code class="lang-kotlin">/</code>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1509615398%2FFunctions%2F1493795707" anchor-label="fake" id="1509615398%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fake.html"><span><span>fake</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1509615398%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt; </span><a href="fake.html"><span class="token function">fake</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">seed<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">noinline </span>configure<span class="token operator">: </span><a href="-fake-spec/index.html">FakeSpec</a><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="fake.html">T</a></div><div class="brief "><p class="paragraph">Generates fake data for <a href="fake.html">T</a> using the global Fiktion configuration.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt; </span><a href="fake.html"><span class="token function"><strike>fake</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter ">seed<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">configure<span class="token operator">: </span><a href="-fake-spec/index.html">FakeSpec</a><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="fake.html">T</a></div><div class="brief "><p class="paragraph">Generates fake data for <a href="fake.html">T</a> using the global Fiktion configuration and explicit <a href="fake.html">type</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1864126122%2FFunctions%2F1493795707" anchor-label="fake" id="-1864126122%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="fake.html"><span><span>fake</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1864126122%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt; </span><a href="-fiktion/index.html">Fiktion</a><span class="token punctuation">.</span><a href="fake.html"><span class="token function">fake</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">seed<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">noinline </span>configure<span class="token operator">: </span><a href="-fake-spec/index.html">FakeSpec</a><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="fake.html">T</a></div><div class="brief "><p class="paragraph">Generates fake data for <a href="fake.html">T</a> using this Fiktion instance.</p></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt; </span><a href="-fiktion/index.html">Fiktion</a><span class="token punctuation">.</span><a href="fake.html"><span class="token function"><strike>fake</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">type<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token punctuation">, </span></span><span class="parameter ">seed<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">configure<span class="token operator">: </span><a href="-fake-spec/index.html">FakeSpec</a><span class="token operator">&lt;</span><a href="fake.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="fake.html">T</a></div><div class="brief "><p class="paragraph">Generates fake data for <a href="fake.html">T</a> using this Fiktion instance and explicit <a href="fake.html">type</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-657785587%2FFunctions%2F1493795707" anchor-label="generatedArray" id="-657785587%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generated-array.html"><span>generated</span><wbr><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-657785587%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generated-array.html">T</a><span class="token operator">&gt; </span><a href="generated-array.html"><span class="token function">generatedArray</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">elements<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="generated-array.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a typed array from compiler-generated array metadata.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1625033708%2FFunctions%2F1493795707" anchor-label="generatedObjectArgumentUsesDefault" id="-1625033708%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generated-object-argument-uses-default.html"><span>generated</span><wbr><span>Object</span><wbr><span>Argument</span><wbr><span>Uses</span><wbr><span><span>Default</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1625033708%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="generated-object-argument-uses-default.html"><span class="token function">generatedObjectArgumentUsesDefault</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">arguments<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-fiktion-object-argument/index.html">FiktionObjectArgument</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Returns whether the generated constructor argument at <a href="generated-object-argument-uses-default.html">index</a> asks Kotlin to use the property's default value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1930067216%2FFunctions%2F1493795707" anchor-label="generatedObjectArgumentValue" id="-1930067216%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generated-object-argument-value.html"><span>generated</span><wbr><span>Object</span><wbr><span>Argument</span><wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1930067216%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="generated-object-argument-value.html"><span class="token function">generatedObjectArgumentValue</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">arguments<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-fiktion-object-argument/index.html">FiktionObjectArgument</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">index<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the generated constructor argument value at <a href="generated-object-argument-value.html">index</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1480601224%2FFunctions%2F1493795707" anchor-label="generates" id="1480601224%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generates.html"><span><span>generates</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1480601224%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt; </span><a href="-rule-name-target/index.html">RuleNameTarget</a><span class="token punctuation">.</span><a href="generates.html"><span class="token function">generates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="generates.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates <a href="generates.html">value</a> for this name target and infers the target value type from <a href="generates.html">value</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates.html"><span class="token function">generates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="generates.html">T</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates <a href="generates.html">value</a> for this rule target.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates.html"><span class="token function">generates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">auto<span class="token operator">: </span><a href="-auto/index.html">Auto</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="generates.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Uses Fiktion's automatic generation for this rule target.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesAutoCollection"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates.html">Element</a><span class="token punctuation">, </span><a href="generates.html">CollectionType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="generates.html">Element</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates.html">CollectionType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates.html"><span class="token function">generates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">auto<span class="token operator">: </span><a href="-auto/index.html">Auto</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-collection-generation-spec/index.html">CollectionGenerationSpec</a><span class="token operator">&lt;</span><a href="generates.html">Element</a><span class="token punctuation">, </span><a href="generates.html">CollectionType</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates.html">Element</a><span class="token punctuation">, </span><a href="generates.html">CollectionType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="generates.html">Element</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates.html">CollectionType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates.html"><span class="token function"><strike>generates</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">auto<span class="token operator">: </span><a href="-auto/index.html">Auto</a><span class="token punctuation">, </span></span><span class="parameter ">elementType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-collection-generation-spec/index.html">CollectionGenerationSpec</a><span class="token operator">&lt;</span><a href="generates.html">Element</a><span class="token punctuation">, </span><a href="generates.html">CollectionType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Uses Fiktion's automatic generation for each element of this collection rule target.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesAutoMap"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates.html">Key</a><span class="token punctuation">, </span><a href="generates.html">Value</a><span class="token punctuation">, </span><a href="generates.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates.html">Key</a><span class="token punctuation">, </span><a href="generates.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates.html"><span class="token function">generates</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">auto<span class="token operator">: </span><a href="-auto/index.html">Auto</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-generation-spec/index.html">MapGenerationSpec</a><span class="token operator">&lt;</span><a href="generates.html">Key</a><span class="token punctuation">, </span><a href="generates.html">Value</a><span class="token punctuation">, </span><a href="generates.html">MapType</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates.html">Key</a><span class="token punctuation">, </span><a href="generates.html">Value</a><span class="token punctuation">, </span><a href="generates.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates.html">Key</a><span class="token punctuation">, </span><a href="generates.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates.html"><span class="token function"><strike>generates</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">auto<span class="token operator">: </span><a href="-auto/index.html">Auto</a><span class="token punctuation">, </span></span><span class="parameter ">keyType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">valueType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-generation-spec/index.html">MapGenerationSpec</a><span class="token operator">&lt;</span><a href="generates.html">Key</a><span class="token punctuation">, </span><a href="generates.html">Value</a><span class="token punctuation">, </span><a href="generates.html">MapType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Uses Fiktion's automatic generation for each key and value of this map rule target.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-728321797%2FFunctions%2F1493795707" anchor-label="generatesBy" id="-728321797%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generates-by.html"><span>generates</span><wbr><span><span>By</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-728321797%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt; </span><a href="-rule-name-target/index.html">RuleNameTarget</a><span class="token punctuation">.</span><a href="generates-by.html"><span class="token function">generatesBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">noinline </span>generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates values for this name target and infers the target value type from <a href="generates-by.html">generator</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-by.html"><span class="token function">generatesBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates values for this rule target by invoking <a href="generates-by.html">generator</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt; </span><a href="-type-family-rule-target/index.html">TypeFamilyRuleTarget</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-by.html"><span class="token function">generatesBy</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-type-family-generator/index.html">TypeFamilyGenerator</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="generates-by.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates values for this type-family target by invoking <a href="generates-by.html">generator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="200472671%2FFunctions%2F1493795707" anchor-label="generatesEach" id="200472671%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generates-each.html"><span>generates</span><wbr><span><span>Each</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="200472671%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-each.html">Element</a><span class="token punctuation">, </span><a href="generates-each.html">CollectionType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-collection/index.html">Collection</a><span class="token operator">&lt;</span><a href="generates-each.html">Element</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-each.html">CollectionType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-each.html"><span class="token function">generatesEach</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="generates-each.html">Element</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-collection-generation-spec/index.html">CollectionGenerationSpec</a><span class="token operator">&lt;</span><a href="generates-each.html">Element</a><span class="token punctuation">, </span><a href="generates-each.html">CollectionType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates each element for this collection rule target by invoking <a href="generates-each.html">generator</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token punctuation">, </span><a href="generates-each.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-each.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-each.html"><span class="token function">generatesEach</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">noinline </span>generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-entry-spec/index.html">MapEntrySpec</a><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token punctuation">, </span><a href="generates-each.html">MapType</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token punctuation">, </span><a href="generates-each.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-each.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-each.html"><span class="token function"><strike>generatesEach</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-pair/index.html">Pair</a><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">keyType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">valueType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-entry-spec/index.html">MapEntrySpec</a><span class="token operator">&lt;</span><a href="generates-each.html">Key</a><span class="token punctuation">, </span><a href="generates-each.html">Value</a><span class="token punctuation">, </span><a href="generates-each.html">MapType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates each entry for this map rule target by invoking <a href="generates-each.html">generator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1219591560%2FFunctions%2F1493795707" anchor-label="generatesIn" id="1219591560%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generates-in.html"><span>generates</span><wbr><span><span>In</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1219591560%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesByteIn"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte/index.html">Byte</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte/index.html">Byte</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates byte values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-char-range/index.html">CharRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/index.html">Char</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates character values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesDoubleIn"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-floating-point-range/index.html">ClosedFloatingPointRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates double values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesFloatIn"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-floating-point-range/index.html">ClosedFloatingPointRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates float values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates integer values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-long-range/index.html">LongRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates long values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesShortIn"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short/index.html">Short</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-int-range/index.html">IntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-short/index.html">Short</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates short values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesUByteIn"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-byte/index.html">UByte</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates unsigned byte values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates unsigned integer values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-long-range/index.html">ULongRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates unsigned long values within <a href="generates-in.html">range</a>.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"generatesUShortIn"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">infix </span><span class="token keyword">fun </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-in.html"><span class="token function">generatesIn</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">range<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-u-int-range/index.html">UIntRange</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-short/index.html">UShort</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates unsigned short values within <a href="generates-in.html">range</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-59881098%2FFunctions%2F1493795707" anchor-label="generatesKeys" id="-59881098%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generates-keys.html"><span>generates</span><wbr><span><span>Keys</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-59881098%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token punctuation">, </span><a href="generates-keys.html">Value</a><span class="token punctuation">, </span><a href="generates-keys.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token punctuation">, </span><a href="generates-keys.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-keys.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-keys.html"><span class="token function">generatesKeys</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">noinline </span>generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-key-spec/index.html">MapKeySpec</a><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token punctuation">, </span><a href="generates-keys.html">Value</a><span class="token punctuation">, </span><a href="generates-keys.html">MapType</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token punctuation">, </span><a href="generates-keys.html">Value</a><span class="token punctuation">, </span><a href="generates-keys.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token punctuation">, </span><a href="generates-keys.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-keys.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-keys.html"><span class="token function"><strike>generatesKeys</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">keyType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">valueType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-key-spec/index.html">MapKeySpec</a><span class="token operator">&lt;</span><a href="generates-keys.html">Key</a><span class="token punctuation">, </span><a href="generates-keys.html">Value</a><span class="token punctuation">, </span><a href="generates-keys.html">MapType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates map keys for this rule target by invoking <a href="generates-keys.html">generator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="65875807%2FFunctions%2F1493795707" anchor-label="generatesOneOf" id="65875807%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generates-one-of.html"><span>generates</span><wbr><span>One</span><wbr><span><span>Of</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="65875807%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-one-of.html">T</a><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-one-of.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-one-of.html"><span class="token function">generatesOneOf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">values<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-iterable/index.html">Iterable</a><span class="token operator">&lt;</span><a href="generates-one-of.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-generation-spec/index.html">GenerationSpec</a><span class="token operator">&lt;</span><a href="generates-one-of.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates one value from <a href="generates-one-of.html">values</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="800772790%2FFunctions%2F1493795707" anchor-label="generatesValues" id="800772790%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generates-values.html"><span>generates</span><wbr><span><span>Values</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="800772790%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">infix inline </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-values.html">Key</a><span class="token punctuation">, </span><a href="generates-values.html">Value</a><span class="token punctuation">, </span><a href="generates-values.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates-values.html">Key</a><span class="token punctuation">, </span><a href="generates-values.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-values.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-values.html"><span class="token function">generatesValues</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">noinline </span>generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="generates-values.html">Value</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-value-spec/index.html">MapValueSpec</a><span class="token operator">&lt;</span><a href="generates-values.html">Key</a><span class="token punctuation">, </span><a href="generates-values.html">Value</a><span class="token punctuation">, </span><a href="generates-values.html">MapType</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="generates-values.html">Key</a><span class="token punctuation">, </span><a href="generates-values.html">Value</a><span class="token punctuation">, </span><a href="generates-values.html">MapType</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-map/index.html">Map</a><span class="token operator">&lt;</span><a href="generates-values.html">Key</a><span class="token punctuation">, </span><a href="generates-values.html">Value</a><span class="token operator">&gt;</span><span class="token operator">&gt; </span><a href="-rule-target/index.html">RuleTarget</a><span class="token operator">&lt;</span><a href="generates-values.html">MapType</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="generates-values.html"><span class="token function"><strike>generatesValues</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">generator<span class="token operator">: </span><a href="-generator/index.html">Generator</a><span class="token operator">&lt;</span><a href="generates-values.html">Value</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">keyType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">valueType<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.reflect/-k-type/index.html">KType</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-map-value-spec/index.html">MapValueSpec</a><span class="token operator">&lt;</span><a href="generates-values.html">Key</a><span class="token punctuation">, </span><a href="generates-values.html">Value</a><span class="token punctuation">, </span><a href="generates-values.html">MapType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Generates map values for this rule target by invoking <a href="generates-values.html">generator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
