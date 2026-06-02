@@ -5,11 +5,6 @@ package dev.s7a.fiktion
 import kotlin.random.Random
 
 /**
- * Default-value probability used when a defaultable property rule does not declare one explicitly.
- */
-private const val DEFAULT_VALUE_PROBABILITY = 0.5
-
-/**
  * Generates an object from registered construction [metadata].
  */
 internal fun generateObject(
@@ -26,12 +21,13 @@ internal fun generateObject(
             if (property.usesDefault(config = config, request = childRequest, seed = childSeed)) {
                 FiktionObjectDefault
             } else {
+                val valueSeed = if (property.hasDefault) childSeed.childSeed(DEFAULTABLE_VALUE_SEED_INDEX) else childSeed
                 FiktionObjectValue(
                     try {
                         generateValue(
                             request = childRequest,
                             config = config,
-                            seed = childSeed,
+                            seed = valueSeed,
                             depth = depth + 1,
                         )
                     } catch (cause: CannotGenerateException) {
@@ -55,11 +51,20 @@ private fun FiktionObjectProperty.usesDefault(
     request: GenerationRequest,
     seed: Long,
 ): Boolean {
-    if (!hasDefault) return false
-
     val rule = config.selectRule(request)
-    val defaultProbability = rule?.defaultProbability?.value ?: DEFAULT_VALUE_PROBABILITY
-    return Random(rule?.seed ?: seed).nextDouble() < defaultProbability
+    if (!hasDefault) {
+        if (rule?.defaultGenerates == true) {
+            throw CannotGenerateException(missingDefaultValueMessage(type = request.type, property = this))
+        }
+        return false
+    }
+
+    if (rule?.defaultGenerates == true) return true
+
+    if (rule != null && rule.precedence >= RulePrecedence.GLOBAL && rule.defaultProbability == null) return false
+    val probabilityRule = rule?.takeIf { selectedRule -> selectedRule.defaultProbability != null }
+    val defaultProbability = probabilityRule?.defaultProbability?.value ?: DEFAULT_CONSTRUCTOR_DEFAULT_PROBABILITY
+    return Random(probabilityRule?.seed ?: seed).nextDouble() < defaultProbability
 }
 
 /**
@@ -89,3 +94,5 @@ internal fun Long.childSeed(index: Int): Long = this xor ((index + 1).toLong() *
  * Odd constant used to spread deterministic child seeds.
  */
 private const val CHILD_SEED_STEP: Long = -7046029254386353131L
+private const val DEFAULTABLE_VALUE_SEED_INDEX: Int = 0
+private const val DEFAULT_CONSTRUCTOR_DEFAULT_PROBABILITY: Double = 0.5

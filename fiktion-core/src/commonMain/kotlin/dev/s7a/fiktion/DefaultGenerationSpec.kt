@@ -33,6 +33,10 @@ internal open class DefaultGenerationSpec<T>(
      */
     open val automaticallyGenerates: Boolean = false,
     /**
+     * Whether this spec should use the constructor default value.
+     */
+    open val defaultGenerates: Boolean = false,
+    /**
      * Precedence layer assigned while composing configurations.
      */
     open val precedence: RulePrecedence = RulePrecedence.GLOBAL,
@@ -64,6 +68,7 @@ internal open class DefaultGenerationSpec<T>(
             nullProbability = nullProbability,
             defaultProbability = defaultProbability,
             automaticallyGenerates = automaticallyGenerates,
+            defaultGenerates = defaultGenerates,
             precedence = precedence,
         )
 }

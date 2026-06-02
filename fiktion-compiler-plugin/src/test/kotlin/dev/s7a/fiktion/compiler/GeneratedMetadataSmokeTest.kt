@@ -5,6 +5,7 @@ import dev.s7a.fiktion.FakeType
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.Probability
+import dev.s7a.fiktion.default
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
 import dev.s7a.fiktion.invoke
@@ -189,39 +190,68 @@ class GeneratedMetadataSmokeTest {
 
     @Test
     fun `compiler plugin uses static constructor defaults and generated values`() {
-        assertEquals(GeneratedUserWithStaticDefault(id = "static-id"), fake<GeneratedUserWithStaticDefault>(seed = 0))
-        assertTrue(fake<GeneratedUserWithStaticDefault>(seed = 3).id != "static-id")
+        val defaultFiktion =
+            Fiktion {
+                GeneratedUserWithStaticDefault::id generates default
+            }
+        val generatedFiktion =
+            Fiktion {
+                GeneratedUserWithStaticDefault::id generates "generated-id"
+            }
+
+        assertEquals(GeneratedUserWithStaticDefault(id = "static-id"), defaultFiktion.fake(seed = 0))
+        assertEquals(GeneratedUserWithStaticDefault(id = "generated-id"), generatedFiktion.fake(seed = 0))
     }
 
     @Test
     fun `compiler plugin uses null constructor defaults`() {
-        assertEquals(GeneratedUserWithNullDefault(id = null), fake<GeneratedUserWithNullDefault>(seed = 0))
+        val fiktion =
+            Fiktion {
+                GeneratedUserWithNullDefault::id generates default
+            }
+
+        assertEquals(GeneratedUserWithNullDefault(id = null), fiktion.fake(seed = 0))
     }
 
     @Test
     fun `compiler plugin evaluates dynamic constructor defaults`() {
         dynamicDefaultIndex = 0
+        val defaultFiktion =
+            Fiktion {
+                GeneratedUserWithDynamicDefault::id generates default
+            }
 
-        assertEquals(GeneratedUserWithDynamicDefault(id = "dynamic-id-0"), fake<GeneratedUserWithDynamicDefault>(seed = 0))
-        assertEquals(GeneratedUserWithDynamicDefault(id = "dynamic-id-1"), fake<GeneratedUserWithDynamicDefault>(seed = 1))
+        assertEquals(GeneratedUserWithDynamicDefault(id = "dynamic-id-0"), defaultFiktion.fake(seed = 0))
+        assertEquals(GeneratedUserWithDynamicDefault(id = "dynamic-id-1"), defaultFiktion.fake(seed = 1))
         assertTrue(fake<GeneratedUserWithDynamicDefault>(seed = 3).id.startsWith("dynamic-id-").not())
     }
 
     @Test
     fun `compiler plugin supports split default decisions`() {
         dynamicDefaultIndex = 0
-        val generatedName = fake<GeneratedUserWithMultipleDefaults>(seed = 2)
-        val defaultName = fake<GeneratedUserWithMultipleDefaults>(seed = 3)
+        val defaultName =
+            Fiktion {
+                GeneratedUserWithMultipleDefaults::name generates default
+                GeneratedUserWithMultipleDefaults::label generates "generated-label"
+            }.fake<GeneratedUserWithMultipleDefaults>(seed = 0)
+        val defaultLabel =
+            Fiktion {
+                GeneratedUserWithMultipleDefaults::name generates "generated-name"
+                GeneratedUserWithMultipleDefaults::label generates default
+            }.fake<GeneratedUserWithMultipleDefaults>(seed = 0)
 
-        assertTrue(generatedName.name != "static-name")
-        assertTrue(generatedName.label.startsWith("dynamic-id-"))
         assertEquals("static-name", defaultName.name)
-        assertTrue(defaultName.label.startsWith("dynamic-id-").not())
+        assertEquals("generated-label", defaultName.label)
+        assertEquals("generated-name", defaultLabel.name)
+        assertTrue(defaultLabel.label.startsWith("dynamic-id-"))
     }
 
     @Test
     fun `compiler plugin evaluates constructor defaults that reference other properties`() {
-        val user = fake<GeneratedUserWithPropertyDefault>(seed = 0)
+        val user =
+            Fiktion {
+                GeneratedUserWithPropertyDefault::label generates default
+            }.fake<GeneratedUserWithPropertyDefault>(seed = 0)
 
         assertEquals("label-${user.id}", user.label)
     }

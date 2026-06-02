@@ -7,14 +7,14 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.4.0"
+    id("dev.s7a.fiktion") version "0.4.1"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.4.0")
-    testImplementation("dev.s7a:fiktion-addon-java:0.4.0") // optional JVM add-on
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.0") // optional kotlinx-datetime add-on
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.0") // optional detekt rules
+    testImplementation("dev.s7a:fiktion-core:0.4.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.1") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.1") // optional kotlinx-datetime add-on
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.1") // optional detekt rules
 }
 ```
 
@@ -287,6 +287,7 @@ Common rule forms:
 target generates value
 target generatesBy { /* FakeContext receiver */ }
 target generates auto
+target generates default
 target generatesIn 1..10
 target generatesOneOf listOf("a", "b")
 target generates value withSeed 123
@@ -294,7 +295,10 @@ target generates value orNullAt 0.3
 target generates value orDefaultAt 30.percent
 ```
 
-`Double` probabilities use `0.0..1.0`; `percent` helpers are available.
+Automatic nullable values generate either a non-null value or `null` with 50% probability. Automatic defaultable
+constructor arguments generate either an automatic value or the constructor default with 50% probability. `generates
+value` always returns that value unless `orNullAt` or `orDefaultAt` is set. `Double` probabilities use `0.0..1.0`;
+`percent` helpers are available. `generates default` requires a constructor argument with a default value.
 
 `withSeed` exists at two levels:
 

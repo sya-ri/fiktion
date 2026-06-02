@@ -6,7 +6,7 @@ Use the optional detekt rules artifact when a project wants style feedback for F
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.0")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.1")
 }
 ```
 
@@ -26,6 +26,7 @@ Fiktion import unless an existing direct or star import already covers it.
 - `AvoidMultipleConfigsForRuleTarget`: avoids multiple configs for the same rule target and config key. Report-only.
 - `AvoidMultipleGeneratorsForRuleTarget`: avoids multiple generators for the same rule target. Report-only.
 - `AvoidMultipleSeedsInFakeSpec`: avoids multiple `withSeed` declarations in the same Fiktion spec block. Report-only.
+- `AvoidNonPropertyRuleTargets`: avoids `type`, `typeFamily`, and `name` rule targets in local `fake { ... }` and scoped `Fiktion { ... }` rules when teams want explicit property-only rules. Report-only. Disabled by default.
 - `AvoidRandomInstanceInGenerator`: avoids `Random` instances inside generator lambdas. Supports autocorrect.
 - `AvoidRecursiveFakeInGenerator`: avoids recursive fake calls in same-type generators. Report-only.
 - `AvoidRuleDeclarationsInLoops`: avoids declaring rules inside loops. Report-only.
@@ -35,6 +36,8 @@ Fiktion import unless an existing direct or star import already covers it.
 - `PreferContainerPartFakeHelpers`: prefers `fakeElement`, `fakeKey`, and `fakeValue` in type-family generators. Supports autocorrect.
 - `PreferExplicitFakeSeedName`: prefers explicit `seed = ...` names for reified `fake<T>` calls. Supports autocorrect.
 - `PreferFixedConfigValue`: prefers fixed config values over equal-bound config ranges. Supports autocorrect.
+- `PreferFixedDefaultProbability`: prefers fixed generated values over `orDefaultAt 0.0`, `orDefaultAt 1.0`, `orDefaultAt 0.percent`, and `orDefaultAt 100.percent`. Supports autocorrect.
+- `PreferFixedNullProbability`: prefers fixed generated values over `orNullAt 0.0`, `orNullAt 1.0`, `orNullAt 0.percent`, and `orNullAt 100.percent`. Supports autocorrect.
 - `PreferGeneratesByForMutableValues`: prefers generator lambdas for mutable values. Supports autocorrect.
 - `PreferGeneratesForFixedValue`: prefers fixed values over generators that always produce a fixed value. Supports autocorrect.
 - `PreferGeneratesInForRange`: prefers `generatesIn` for range generators. Supports autocorrect.
@@ -79,6 +82,8 @@ environment lacks IntelliJ extension points required by tree replacement.
 
 Autocorrect import handling currently matters for:
 
+- `PreferFixedDefaultProbability`: may introduce `dev.s7a.fiktion.default` and `dev.s7a.fiktion.generates`.
+- `PreferFixedNullProbability`: may introduce `dev.s7a.fiktion.generates`.
 - `PreferGeneratesByForMutableValues`: may introduce `dev.s7a.fiktion.generatesBy`.
 - `PreferGeneratesForFixedValue`: may introduce `dev.s7a.fiktion.generates`.
 - `PreferGeneratesInForRange`: may introduce `dev.s7a.fiktion.generatesIn`.

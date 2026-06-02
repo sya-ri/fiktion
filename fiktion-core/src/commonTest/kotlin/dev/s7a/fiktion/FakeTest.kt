@@ -94,26 +94,23 @@ class FakeTest {
     }
 
     @Test
-    fun `fake does not generate nullable built-in Kotlin scalar values without configuration`() {
-        assertFailsWith<CannotGenerateException> {
-            fake<String?>()
-        }
-        assertFailsWith<CannotGenerateException> {
-            fake<Int?>()
-        }
+    fun `fake generates nullable built-in Kotlin scalar values or null without configuration`() {
+        val nullCount =
+            (0 until 1_000).count { seed ->
+                fake<String?>(seed = seed.toLong()) == null
+            }
+
+        assertTrue(nullCount in 400..600, "Expected about 50% nulls, but got $nullCount nulls.")
     }
 
     @Test
-    fun `fake does not generate nullable built-in Kotlin container values without configuration`() {
-        assertFailsWith<CannotGenerateException> {
-            fake<List<Int>?>()
-        }
-        assertFailsWith<CannotGenerateException> {
-            fake<Map<String, Int>?>()
-        }
-        assertFailsWith<CannotGenerateException> {
-            fake<Sequence<Int>?>()
-        }
+    fun `fake generates nullable built-in Kotlin container values or null without configuration`() {
+        val nullCount =
+            (0 until 1_000).count { seed ->
+                fake<List<Int>?>(seed = seed.toLong()) == null
+            }
+
+        assertTrue(nullCount in 400..600, "Expected about 50% null containers, but got $nullCount nulls.")
     }
 
     @Test

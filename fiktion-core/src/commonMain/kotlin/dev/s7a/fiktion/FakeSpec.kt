@@ -216,6 +216,13 @@ public class FakeSpec<Root> {
         property(property = this, value = typeOf<Value>()).generates(auto)
 
     /**
+     * Generates this property using its constructor default value.
+     */
+    @Suppress("DEPRECATION_ERROR", "UNUSED_PARAMETER")
+    public inline infix fun <reified Value> KProperty1<Root, Value>.generates(default: Default): GenerationSpec<Value> =
+        property(property = this, value = typeOf<Value>()).generates(default)
+
+    /**
      * Applies nested per-call configuration to this property.
      */
     @Suppress("DEPRECATION_ERROR")
@@ -265,6 +272,11 @@ public class FakeSpec<Root> {
      * Generates this nested property path using Fiktion's automatic generation.
      */
     public infix fun <Value> PropertyPath<Root, Value>.generates(auto: Auto): GenerationSpec<Value> = property(this) generates auto
+
+    /**
+     * Generates this nested property path using its constructor default value.
+     */
+    public infix fun <Value> PropertyPath<Root, Value>.generates(default: Default): GenerationSpec<Value> = property(this) generates default
 
     /**
      * Applies nested per-call configuration to this property path.

@@ -15,6 +15,7 @@ class GenerateValueClassTest {
             Fiktion {
                 register(userIdMetadata())
                 type<String>() generates "user-1"
+                type<UserId?>() generates auto orNullAt 0.0
             }
 
         val userId = fiktion.fake<UserId>(seed = 123)
@@ -28,6 +29,7 @@ class GenerateValueClassTest {
             Fiktion {
                 register(userIdMetadata())
                 type<String>() generates "user-1"
+                type<UserId?>() generates auto orNullAt 0.0
             }
 
         val userId = fiktion.fake<UserId?>(seed = 123)
@@ -57,6 +59,7 @@ class GenerateValueClassTest {
             Fiktion {
                 register(userIdMetadata())
                 type<String>() generates "generated"
+                type<UserId?>() generates auto orNullAt 0.0
                 UserId::value generates "configured"
             }
 

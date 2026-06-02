@@ -67,6 +67,21 @@ class DefaultGenerationSpecTest {
         assertFalse(stringSpec().snapshot().automaticallyGenerates)
     }
 
+    @Test
+    fun `snapshot preserves default generation`() {
+        val spec =
+            DefaultGenerationSpec<String>(
+                key = RuleKey.Type(typeOf<String>()),
+                matcher = RuleMatcher.Type(typeOf<String>()),
+                defaultGenerates = true,
+            )
+
+        val snapshot = spec.snapshot()
+
+        assertTrue(snapshot.defaultGenerates)
+        assertFalse(stringSpec().snapshot().defaultGenerates)
+    }
+
     /**
      * Creates a string generation spec for tests.
      */

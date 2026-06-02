@@ -10,7 +10,7 @@ detekt plugin dependency:
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.0")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.1")
 }
 ```
 
@@ -35,6 +35,7 @@ Rule Set ID: `fiktion`
 | [AvoidMultipleConfigsForRuleTarget](#avoidmultipleconfigsforruletarget) | Enabled | No | Avoid multiple configs for the same rule target and config key. |
 | [AvoidMultipleGeneratorsForRuleTarget](#avoidmultiplegeneratorsforruletarget) | Enabled | No | Avoid multiple generators for the same rule target. |
 | [AvoidMultipleSeedsInFakeSpec](#avoidmultipleseedsinfakespec) | Enabled | No | Avoid multiple withSeed declarations in the same Fiktion spec block. |
+| [AvoidNonPropertyRuleTargets](#avoidnonpropertyruletargets) | Disabled | No | Avoid non-property rule targets in `fake { ... }` and `Fiktion { ... }`. |
 | [AvoidRandomInstanceInGenerator](#avoidrandominstanceingenerator) | Enabled | Yes | Avoid Random instances inside generator lambdas. |
 | [AvoidRecursiveFakeInGenerator](#avoidrecursivefakeingenerator) | Enabled | No | Avoid recursive fake calls in same-type generators. |
 | [AvoidRuleDeclarationsInLoops](#avoidruledeclarationsinloops) | Enabled | No | Avoid declaring rules inside loops. |
@@ -44,6 +45,8 @@ Rule Set ID: `fiktion`
 | [PreferContainerPartFakeHelpers](#prefercontainerpartfakehelpers) | Enabled | Yes | Prefer container-part helpers in type-family generators. |
 | [PreferExplicitFakeSeedName](#preferexplicitfakeseedname) | Enabled | Yes | Prefer explicit seed names for fake calls. |
 | [PreferFixedConfigValue](#preferfixedconfigvalue) | Enabled | Yes | Prefer fixed config values over equal-bound config ranges. |
+| [PreferFixedDefaultProbability](#preferfixeddefaultprobability) | Enabled | Yes | Prefer fixed generated values over zero or full default probabilities. |
+| [PreferFixedNullProbability](#preferfixednullprobability) | Enabled | Yes | Prefer fixed generated values over zero or full null probabilities. |
 | [PreferGeneratesByForMutableValues](#prefergeneratesbyformutablevalues) | Enabled | Yes | Prefer generator lambdas for mutable values. |
 | [PreferGeneratesForFixedValue](#prefergeneratesforfixedvalue) | Enabled | Yes | Prefer fixed values over generators that always produce a fixed value. |
 | [PreferGeneratesInForRange](#prefergeneratesinforrange) | Enabled | Yes | Prefer generatesIn for range generators. |
@@ -103,6 +106,10 @@ fiktion:
   # Avoid multiple withSeed declarations in the same Fiktion spec block.
   AvoidMultipleSeedsInFakeSpec:
     active: true
+
+  # Avoid rule targets that do not explicitly target a property.
+  AvoidNonPropertyRuleTargets:
+    active: false
 
   # Avoid Random instances inside generator lambdas.
   AvoidRandomInstanceInGenerator:
@@ -270,6 +277,14 @@ fiktion:
 
   # Prefer fixed config values over equal-bound config ranges.
   PreferFixedConfigValue:
+    active: true
+
+  # Prefer fixed generated values over zero or full default probabilities.
+  PreferFixedDefaultProbability:
+    active: true
+
+  # Prefer fixed generated values over zero or full null probabilities.
+  PreferFixedNullProbability:
     active: true
 
   # Prefer generator lambdas for mutable values.
@@ -668,6 +683,47 @@ fake<User>(seed = 456)
 The rule is report-only because it cannot know which seed declaration should be kept. Use `PreferSeedParameter` when a
 single seed declaration can be moved to the `fake(seed = ...)` parameter.
 
+### AvoidNonPropertyRuleTargets
+
+This opt-in rule reports rule declarations in `fake { ... }` and `Fiktion { ... }` whose target is not an explicit
+property target. It is useful for teams that want local fake configuration to document the property being controlled
+instead of applying broad type, type-family, or property-name rules.
+
+#### Configuration options:
+
+This rule has no configuration options.
+
+#### Noncompliant Code:
+
+```kotlin
+fake<User> {
+    type<String>() generates "value"
+    typeFamily<List<*>>() generatesBy { fake(0) }
+    name<String>("id") generates "value"
+}
+```
+
+#### Compliant Code:
+
+```kotlin
+fake<User> {
+    User::id generates "value"
+    property<User, String>("id") generates "value"
+    (User::profile / Profile::nickname) generates "value"
+}
+
+Fiktion.configure {
+    type<String>() generates "value"
+}
+```
+
+#### Limitations
+
+This rule is disabled by default because it constrains public Fiktion APIs that are valid and useful in many projects.
+It only reports local `fake { ... }` and scoped `Fiktion { ... }` declarations; global configuration and addon-style
+configuration remain valid places for broad type, type-family, or name rules. The rule is report-only because rewriting
+broad type, type-family, or name rules to property rules requires project-specific intent.
+
 ### AvoidRandomInstanceInGenerator
 
 This rule reports `kotlin.random.Random`, `Random.Default`, and `Random(...)` inside generator lambdas. Use the
@@ -999,6 +1055,69 @@ It intentionally does not chase values stored in variables:
 val size = 2..2
 this using FiktionConfig.Collection.size(size)
 ```
+
+### PreferFixedDefaultProbability
+
+This rule reports `generates ... orDefaultAt ...` declarations whose default probability is fixed. Use the generated
+value directly for `0.0` or `0.percent`, and use `generates default` for `1.0` or `100.percent`.
+
+#### Configuration options:
+
+This rule has no configuration options.
+
+#### Noncompliant Code:
+
+```kotlin
+User::profile generates Profile(nickname = "generated") orDefaultAt 0.0
+User::profile generates Profile(nickname = "generated") orDefaultAt 100.percent
+```
+
+#### Compliant Code:
+
+```kotlin
+User::profile generates Profile(nickname = "generated")
+User::profile generates default
+```
+
+#### Limitations
+
+The rule only reports fixed probabilities attached to `generates` declarations. It intentionally skips `generatesBy`,
+`generatesOneOf`, and stored probability values. `generates default` still requires the selected constructor argument
+to have a default value at runtime.
+
+Auto-correct adds `import dev.s7a.fiktion.default` and `import dev.s7a.fiktion.generates` when needed.
+
+### PreferFixedNullProbability
+
+This rule reports `generates ... orNullAt ...` declarations whose null probability is fixed. Use the generated value
+directly for `0.0` or `0.percent`, and use `generates null` for `1.0` or `100.percent`.
+
+#### Configuration options:
+
+This rule has no configuration options.
+
+#### Noncompliant Code:
+
+```kotlin
+type<String?>() generates "value" orNullAt 0.0
+type<String?>() generates "value" orNullAt 100.percent
+```
+
+#### Compliant Code:
+
+```kotlin
+type<String?>() generates "value"
+type<String?>() generates null
+```
+
+#### Limitations
+
+The `1.0` and `100.percent` replacement is only reported when the rule target is explicitly nullable in PSI, such as
+`type<String?>()`, `name<String?>("name")`, or `property<User, Profile?>("profile")`, or when the generated value is
+already `null`. KProperty shorthand targets such as `User::profile` are skipped for non-null generated values because
+the rule does not use type resolution.
+
+Auto-correct adds `import dev.s7a.fiktion.generates` when needed.
 
 ### PreferGeneratesByForMutableValues
 
