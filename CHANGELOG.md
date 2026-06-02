@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Added `AvoidNonPropertyRuleTargets`, an opt-in detekt rule for teams that want Fiktion rules to target explicit
+  properties only.
+
 ## v0.4.0
 
 - Added `fiktion-detekt-rules`, an optional detekt rule set for keeping Fiktion DSL usage focused and consistent.
