@@ -237,6 +237,25 @@ class GenerateObjectTest {
     }
 
     @Test
+    fun `per-call property reference rules generate non-null values for nullable object properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                register(profileMetadata())
+                type<String>() generates "id"
+                type<Profile>() generates Profile(nickname = "fallback")
+            }
+        val notNullProfile = Profile(nickname = "per-call")
+
+        val user =
+            fiktion.fake<User>(seed = 123) {
+                User::optionalProfile generates notNullProfile
+            }
+
+        assertEquals(User(id = "id", optionalProfile = notNullProfile), user)
+    }
+
+    @Test
     fun `fake uses default values with configured probabilities`() {
         assertDefaultProfileCount(defaultProbability = 0.0, expectedRange = 0..0)
         assertDefaultProfileCount(defaultProbability = 0.3, expectedRange = 250..350)
