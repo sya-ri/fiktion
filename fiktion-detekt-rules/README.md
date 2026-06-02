@@ -24,347 +24,44 @@ covers it.
 
 Rule Set ID: `fiktion`
 
-| Rule | Default | Auto-correct | Summary |
+Checked cells mean the rule is enabled by default or supports auto-correct.
+
+| Rule | Enabled | Auto-correct | Summary |
 | ---- | ------- | ------------ | ------- |
-| [AvoidContainerPartOnStarProjectedUnknown](#avoidcontainerpartonstarprojectedunknown) | Enabled | No | Avoid element, key, or value targets on star-projected container targets. |
-| [AvoidEmptyOneOf](#avoidemptyoneof) | Enabled | No | Avoid empty oneOf value sets. |
-| [AvoidGlobalConfigureInLocalTest](#avoidglobalconfigureinlocaltest) | Enabled | No | Avoid global Fiktion.configure calls inside local test functions. |
-| [AvoidGlobalFiktionConfigureWithoutRestore](#avoidglobalfiktionconfigurewithoutrestore) | Enabled | No | Avoid stored Fiktion.configure snapshots without restore calls. |
-| [AvoidInvalidConfigRange](#avoidinvalidconfigrange) | Enabled | No | Avoid statically invalid Fiktion config ranges. |
-| [AvoidInvalidTypeFamilyFakeIndex](#avoidinvalidtypefamilyfakeindex) | Enabled | No | Avoid invalid fake indexes in type-family generators. |
-| [AvoidMultipleConfigsForRuleTarget](#avoidmultipleconfigsforruletarget) | Enabled | No | Avoid multiple configs for the same rule target and config key. |
-| [AvoidMultipleGeneratorsForRuleTarget](#avoidmultiplegeneratorsforruletarget) | Enabled | No | Avoid multiple generators for the same rule target. |
-| [AvoidMultipleSeedsInFakeSpec](#avoidmultipleseedsinfakespec) | Enabled | No | Avoid multiple withSeed declarations in the same Fiktion spec block. |
-| [AvoidNonPropertyRuleTargets](#avoidnonpropertyruletargets) | Disabled | No | Avoid non-property rule targets in `fake { ... }` and `Fiktion { ... }`. |
-| [AvoidRandomInstanceInGenerator](#avoidrandominstanceingenerator) | Enabled | Yes | Avoid Random instances inside generator lambdas. |
-| [AvoidRecursiveFakeInGenerator](#avoidrecursivefakeingenerator) | Enabled | No | Avoid recursive fake calls in same-type generators. |
-| [AvoidRuleDeclarationsInLoops](#avoidruledeclarationsinloops) | Enabled | No | Avoid declaring rules inside loops. |
-| [AvoidUnusedFiktionSnapshot](#avoidunusedfiktionsnapshot) | Enabled | No | Avoid discarding Fiktion.configure snapshots. |
-| [ForbiddenGeneratorCall](#forbiddengeneratorcall) | Enabled | No | Avoid configured calls inside generator lambdas. |
-| [PreferContainerConfigureHelpers](#prefercontainerconfigurehelpers) | Enabled | No | Prefer configureCollection or configureMap for container materialization rules. |
-| [PreferContainerPartFakeHelpers](#prefercontainerpartfakehelpers) | Enabled | Yes | Prefer container-part helpers in type-family generators. |
-| [PreferExplicitFakeSeedName](#preferexplicitfakeseedname) | Enabled | Yes | Prefer explicit seed names for fake calls. |
-| [PreferFixedConfigValue](#preferfixedconfigvalue) | Enabled | Yes | Prefer fixed config values over equal-bound config ranges. |
-| [PreferFixedDefaultProbability](#preferfixeddefaultprobability) | Enabled | Yes | Prefer fixed generated values over zero or full default probabilities. |
-| [PreferFixedNullProbability](#preferfixednullprobability) | Enabled | Yes | Prefer fixed generated values over zero or full null probabilities. |
-| [PreferGeneratesByForMutableValues](#prefergeneratesbyformutablevalues) | Enabled | Yes | Prefer generator lambdas for mutable values. |
-| [PreferGeneratesForFixedValue](#prefergeneratesforfixedvalue) | Enabled | Yes | Prefer fixed values over generators that always produce a fixed value. |
-| [PreferGeneratesInForRange](#prefergeneratesinforrange) | Enabled | Yes | Prefer generatesIn for range generators. |
-| [PreferGeneratesOneOf](#prefergeneratesoneof) | Enabled | Yes | Prefer generatesOneOf for oneOf generators. |
-| [PreferGroupedRuleTarget](#prefergroupedruletarget) | Enabled | Yes | Prefer grouped blocks for repeated rule targets. |
-| [PreferIndexedFakeInTypeFamilyLoop](#preferindexedfakeintypefamilyloop) | Enabled | Yes | Prefer indexed fake calls in type-family loops. |
-| [PreferInfixFiktionDsl](#preferinfixfiktiondsl) | Enabled | Yes | Prefer infix Fiktion DSL declarations over dot-call syntax. |
-| [PreferNamedTypeFamilyFakeArgumentIndex](#prefernamedtypefamilyfakeargumentindex) | Enabled | Yes | Prefer named argumentIndex in type-family fake helper calls. |
-| [PreferPropertyShorthand](#preferpropertyshorthand) | Enabled | Yes | Prefer KProperty shorthand rule targets. |
-| [PreferRuleTargetDeclarationOrder](#preferruletargetdeclarationorder) | Enabled | Yes | Prefer configs before generators in grouped target blocks. |
-| [PreferSeedParameter](#preferseedparameter) | Enabled | No | Prefer fake(seed = ...) over withSeed inside a fake block. |
-| [PreferThisUsingInFakeSpec](#preferthisusinginfakespec) | Enabled | Yes | Prefer this using ... over bare using(...) calls. |
-| [PreferTypeRuleForNonGeneric](#prefertyperulefornongeneric) | Enabled | Yes | Prefer exact type rules over non-generic type-family rules. |
-
-The following `detekt.yml` shows the default rule settings explicitly, so copy only the entries you want to customize:
-
-```yaml
-fiktion:
-  # Avoid element, key, or value targets on star-projected container targets.
-  AvoidContainerPartOnStarProjectedUnknown:
-    active: true
-
-  # Avoid oneOf calls that cannot select a value.
-  AvoidEmptyOneOf:
-    active: true
-
-  # Avoid global Fiktion.configure calls inside local test functions.
-  AvoidGlobalConfigureInLocalTest:
-    active: true
-    testAnnotations:
-      - Test
-      - kotlin.test.Test
-      - org.junit.Test
-    testNamePrefixes:
-      - test
-
-  # Avoid stored Fiktion.configure snapshots without restore calls.
-  AvoidGlobalFiktionConfigureWithoutRestore:
-    active: true
-
-  # Avoid statically invalid Fiktion config ranges.
-  AvoidInvalidConfigRange:
-    active: true
-
-  # Avoid fake(index) calls that exceed type-family type arguments.
-  AvoidInvalidTypeFamilyFakeIndex:
-    active: true
-
-  # Avoid overriding a config key for the same rule target.
-  AvoidMultipleConfigsForRuleTarget:
-    active: true
-
-  # Avoid overriding a generator for the same rule target.
-  AvoidMultipleGeneratorsForRuleTarget:
-    active: true
-
-  # Avoid multiple withSeed declarations in the same Fiktion spec block.
-  AvoidMultipleSeedsInFakeSpec:
-    active: true
-
-  # Avoid rule targets that do not explicitly target a property.
-  AvoidNonPropertyRuleTargets:
-    active: false
-
-  # Avoid Random instances inside generator lambdas.
-  AvoidRandomInstanceInGenerator:
-    active: true
-
-  # Avoid fake<T>() calls that can recursively generate the same type.
-  AvoidRecursiveFakeInGenerator:
-    active: true
-
-  # Avoid registering Fiktion rules from loop bodies.
-  AvoidRuleDeclarationsInLoops:
-    active: true
-    loopCalls:
-      - Array
-      - BooleanArray
-      - ByteArray
-      - CharArray
-      - DoubleArray
-      - FloatArray
-      - IntArray
-      - List
-      - LongArray
-      - MutableList
-      - ShortArray
-      - UByteArray
-      - UIntArray
-      - ULongArray
-      - UShortArray
-      - repeat
-      - all
-      - any
-      - associate
-      - associateBy
-      - associateWith
-      - count
-      - filter
-      - filterIndexed
-      - flatMap
-      - fold
-      - forEach
-      - forEachIndexed
-      - map
-      - mapIndexed
-      - none
-      - onEach
-      - reduce
-      - sumOf
-
-  # Avoid discarding Fiktion.configure snapshots.
-  AvoidUnusedFiktionSnapshot:
-    active: true
-
-  # Avoid configured calls inside generator lambdas.
-  ForbiddenGeneratorCall:
-    active: true
-    calls:
-      - Clock.System.now
-      - Date
-      - File.readBytes
-      - File.readText
-      - Files.readAllBytes
-      - Files.readString
-      - Instant.now
-      - LocalDate.now
-      - LocalDateTime.now
-      - ProcessBuilder
-      - Random.nextBoolean
-      - Random.nextBytes
-      - Random.nextDouble
-      - Random.nextFloat
-      - Random.nextInt
-      - Random.nextLong
-      - Runtime.getRuntime
-      - System.currentTimeMillis
-      - System.getenv
-      - System.getProperty
-      - System.nanoTime
-      - Thread.sleep
-      - UUID.randomUUID
-      - assertContains
-      - assertContentEquals
-      - assertEquals
-      - assertFails
-      - assertFailsWith
-      - assertFalse
-      - assertIs
-      - assertIsNot
-      - assertNotEquals
-      - assertNotNull
-      - assertNotSame
-      - assertNull
-      - assertSame
-      - assertTrue
-      - fail
-      - java.io.File.readBytes
-      - java.io.File.readText
-      - java.lang.System.currentTimeMillis
-      - java.lang.System.getenv
-      - java.lang.System.getProperty
-      - java.lang.System.nanoTime
-      - java.lang.Thread.sleep
-      - java.nio.file.Files.readAllBytes
-      - java.nio.file.Files.readString
-      - java.time.Instant.now
-      - java.time.LocalDate.now
-      - java.time.LocalDateTime.now
-      - java.util.Date
-      - java.util.UUID.randomUUID
-      - kotlin.random.Random.nextBoolean
-      - kotlin.random.Random.nextBytes
-      - kotlin.random.Random.nextDouble
-      - kotlin.random.Random.nextFloat
-      - kotlin.random.Random.nextInt
-      - kotlin.random.Random.nextLong
-      - kotlin.time.Clock.System.now
-      - kotlin.time.Instant.now
-      - kotlinx.datetime.Clock.System.now
-      - kotlinx.datetime.Instant.now
-
-  # Prefer configureCollection or configureMap for container materialization rules.
-  PreferContainerConfigureHelpers:
-    active: true
-    containerMaterializationCalls:
-      - Array
-      - List
-      - MutableList
-      - buildList
-      - listOf
-      - mapOf
-      - mutableListOf
-      - mutableMapOf
-      - mutableSetOf
-      - setOf
-      - toList
-      - toMap
-      - toMutableList
-      - toMutableMap
-      - toMutableSet
-      - toSet
-
-  # Prefer fakeElement, fakeKey, and fakeValue in type-family container generators.
-  PreferContainerPartFakeHelpers:
-    active: true
-    indexedLoopCalls:
-      - Array
-      - BooleanArray
-      - ByteArray
-      - CharArray
-      - DoubleArray
-      - FloatArray
-      - IntArray
-      - List
-      - LongArray
-      - MutableList
-      - ShortArray
-      - UByteArray
-      - UIntArray
-      - ULongArray
-      - UShortArray
-      - repeat
-
-  # Prefer explicit seed names for fake calls.
-  PreferExplicitFakeSeedName:
-    active: true
-
-  # Prefer fixed config values over equal-bound config ranges.
-  PreferFixedConfigValue:
-    active: true
-
-  # Prefer fixed generated values over zero or full default probabilities.
-  PreferFixedDefaultProbability:
-    active: true
-
-  # Prefer fixed generated values over zero or full null probabilities.
-  PreferFixedNullProbability:
-    active: true
-
-  # Prefer generator lambdas for mutable values.
-  PreferGeneratesByForMutableValues:
-    active: true
-    mutableFactoryCalls:
-      - mutableListOf
-      - mutableSetOf
-      - mutableMapOf
-
-  # Prefer fixed values over generators that always produce a fixed value.
-  PreferGeneratesForFixedValue:
-    active: true
-    constantGenerator: true
-    singleOneOf: true
-    singleGeneratesOneOf: true
-    includeNull: true
-
-  # Prefer range-specific generators.
-  PreferGeneratesInForRange:
-    active: true
-
-  # Prefer oneOf-specific generators.
-  PreferGeneratesOneOf:
-    active: true
-
-  # Prefer grouping repeated declarations for the same target.
-  PreferGroupedRuleTarget:
-    active: true
-
-  # Prefer passing loop indexes to fake calls in type-family loops.
-  PreferIndexedFakeInTypeFamilyLoop:
-    active: true
-    indexedLoopCalls:
-      - Array
-      - BooleanArray
-      - ByteArray
-      - CharArray
-      - DoubleArray
-      - FloatArray
-      - IntArray
-      - List
-      - LongArray
-      - MutableList
-      - ShortArray
-      - UByteArray
-      - UIntArray
-      - ULongArray
-      - UShortArray
-      - repeat
-
-  # Prefer infix Fiktion DSL declarations over dot-call syntax.
-  PreferInfixFiktionDsl:
-    active: true
-
-  # Prefer named argumentIndex in type-family fake helper calls.
-  PreferNamedTypeFamilyFakeArgumentIndex:
-    active: true
-
-  # Prefer KProperty shorthand targets.
-  PreferPropertyShorthand:
-    active: true
-
-  # Prefer configs before generators in grouped target blocks.
-  PreferRuleTargetDeclarationOrder:
-    active: true
-
-  # Prefer fake(seed = ...) over withSeed inside a fake block.
-  PreferSeedParameter:
-    active: true
-
-  # Prefer this using ... over bare using(...) calls.
-  PreferThisUsingInFakeSpec:
-    active: true
-
-  # Prefer type<T>() over non-generic typeFamily<T>().
-  PreferTypeRuleForNonGeneric:
-    active: true
-```
-
+| [AvoidContainerPartOnStarProjectedUnknown](#avoidcontainerpartonstarprojectedunknown) | ✅ |  | Avoid element, key, or value targets on star-projected container targets. |
+| [AvoidEmptyOneOf](#avoidemptyoneof) | ✅ |  | Avoid empty oneOf value sets. |
+| [AvoidGlobalConfigureInLocalTest](#avoidglobalconfigureinlocaltest) | ✅ |  | Avoid global Fiktion.configure calls inside local test functions. |
+| [AvoidGlobalFiktionConfigureWithoutRestore](#avoidglobalfiktionconfigurewithoutrestore) | ✅ |  | Avoid stored Fiktion.configure snapshots without restore calls. |
+| [AvoidInvalidConfigRange](#avoidinvalidconfigrange) | ✅ |  | Avoid statically invalid Fiktion config ranges. |
+| [AvoidInvalidTypeFamilyFakeIndex](#avoidinvalidtypefamilyfakeindex) | ✅ |  | Avoid invalid fake indexes in type-family generators. |
+| [AvoidMultipleConfigsForRuleTarget](#avoidmultipleconfigsforruletarget) | ✅ |  | Avoid multiple configs for the same rule target and config key. |
+| [AvoidMultipleGeneratorsForRuleTarget](#avoidmultiplegeneratorsforruletarget) | ✅ |  | Avoid multiple generators for the same rule target. |
+| [AvoidMultipleSeedsInFakeSpec](#avoidmultipleseedsinfakespec) | ✅ |  | Avoid multiple withSeed declarations in the same Fiktion spec block. |
+| [AvoidNonPropertyRuleTargets](#avoidnonpropertyruletargets) |  |  | Avoid non-property rule targets in `fake { ... }` and `Fiktion { ... }`. |
+| [AvoidRandomInstanceInGenerator](#avoidrandominstanceingenerator) | ✅ | ✅ | Avoid Random instances inside generator lambdas. |
+| [AvoidRecursiveFakeInGenerator](#avoidrecursivefakeingenerator) | ✅ |  | Avoid recursive fake calls in same-type generators. |
+| [AvoidRuleDeclarationsInLoops](#avoidruledeclarationsinloops) | ✅ |  | Avoid declaring rules inside loops. |
+| [AvoidUnusedFiktionSnapshot](#avoidunusedfiktionsnapshot) | ✅ |  | Avoid discarding Fiktion.configure snapshots. |
+| [ForbiddenGeneratorCall](#forbiddengeneratorcall) | ✅ |  | Avoid configured calls inside generator lambdas. |
+| [PreferContainerConfigureHelpers](#prefercontainerconfigurehelpers) | ✅ |  | Prefer configureCollection or configureMap for container materialization rules. |
+| [PreferContainerPartFakeHelpers](#prefercontainerpartfakehelpers) | ✅ | ✅ | Prefer container-part helpers in type-family generators. |
+| [PreferExplicitFakeSeedName](#preferexplicitfakeseedname) | ✅ | ✅ | Prefer explicit seed names for fake calls. |
+| [PreferFixedConfigValue](#preferfixedconfigvalue) | ✅ | ✅ | Prefer fixed config values over equal-bound config ranges. |
+| [PreferFixedDefaultProbability](#preferfixeddefaultprobability) | ✅ | ✅ | Prefer fixed generated values over zero or full default probabilities. |
+| [PreferFixedNullProbability](#preferfixednullprobability) | ✅ | ✅ | Prefer fixed generated values over zero or full null probabilities. |
+| [PreferGeneratesByForMutableValues](#prefergeneratesbyformutablevalues) | ✅ | ✅ | Prefer generator lambdas for mutable values. |
+| [PreferGeneratesForFixedValue](#prefergeneratesforfixedvalue) | ✅ | ✅ | Prefer fixed values over generators that always produce a fixed value. |
+| [PreferGeneratesInForRange](#prefergeneratesinforrange) | ✅ | ✅ | Prefer generatesIn for range generators. |
+| [PreferGeneratesOneOf](#prefergeneratesoneof) | ✅ | ✅ | Prefer generatesOneOf for oneOf generators. |
+| [PreferGroupedRuleTarget](#prefergroupedruletarget) | ✅ | ✅ | Prefer grouped blocks for repeated rule targets. |
+| [PreferIndexedFakeInTypeFamilyLoop](#preferindexedfakeintypefamilyloop) | ✅ | ✅ | Prefer indexed fake calls in type-family loops. |
+| [PreferInfixFiktionDsl](#preferinfixfiktiondsl) | ✅ | ✅ | Prefer infix Fiktion DSL declarations over dot-call syntax. |
+| [PreferNamedTypeFamilyFakeArgumentIndex](#prefernamedtypefamilyfakeargumentindex) | ✅ | ✅ | Prefer named argumentIndex in type-family fake helper calls. |
+| [PreferPropertyShorthand](#preferpropertyshorthand) | ✅ | ✅ | Prefer KProperty shorthand rule targets. |
+| [PreferRuleTargetDeclarationOrder](#preferruletargetdeclarationorder) | ✅ | ✅ | Prefer configs before generators in grouped target blocks. |
+| [PreferSeedParameter](#preferseedparameter) | ✅ |  | Prefer fake(seed = ...) over withSeed inside a fake block. |
+| [PreferThisUsingInFakeSpec](#preferthisusinginfakespec) | ✅ | ✅ | Prefer this using ... over bare using(...) calls. |
+| [PreferTypeRuleForNonGeneric](#prefertyperulefornongeneric) | ✅ | ✅ | Prefer exact type rules over non-generic type-family rules. |
 
 ### AvoidContainerPartOnStarProjectedUnknown
 
@@ -1563,3 +1260,309 @@ typeFamily<UserList>() generatesBy {
 ```
 
 Auto-correct adds `import dev.s7a.fiktion.type` when needed.
+
+## Default Configuration
+
+The following `detekt.yml` shows the default rule settings explicitly, so copy only the entries you want to customize:
+
+```yaml
+fiktion:
+  # Avoid element, key, or value targets on star-projected container targets.
+  AvoidContainerPartOnStarProjectedUnknown:
+    active: true
+
+  # Avoid oneOf calls that cannot select a value.
+  AvoidEmptyOneOf:
+    active: true
+
+  # Avoid global Fiktion.configure calls inside local test functions.
+  AvoidGlobalConfigureInLocalTest:
+    active: true
+    testAnnotations:
+      - Test
+      - kotlin.test.Test
+      - org.junit.Test
+    testNamePrefixes:
+      - test
+
+  # Avoid stored Fiktion.configure snapshots without restore calls.
+  AvoidGlobalFiktionConfigureWithoutRestore:
+    active: true
+
+  # Avoid statically invalid Fiktion config ranges.
+  AvoidInvalidConfigRange:
+    active: true
+
+  # Avoid fake(index) calls that exceed type-family type arguments.
+  AvoidInvalidTypeFamilyFakeIndex:
+    active: true
+
+  # Avoid overriding a config key for the same rule target.
+  AvoidMultipleConfigsForRuleTarget:
+    active: true
+
+  # Avoid overriding a generator for the same rule target.
+  AvoidMultipleGeneratorsForRuleTarget:
+    active: true
+
+  # Avoid multiple withSeed declarations in the same Fiktion spec block.
+  AvoidMultipleSeedsInFakeSpec:
+    active: true
+
+  # Avoid rule targets that do not explicitly target a property.
+  AvoidNonPropertyRuleTargets:
+    active: false
+
+  # Avoid Random instances inside generator lambdas.
+  AvoidRandomInstanceInGenerator:
+    active: true
+
+  # Avoid fake<T>() calls that can recursively generate the same type.
+  AvoidRecursiveFakeInGenerator:
+    active: true
+
+  # Avoid registering Fiktion rules from loop bodies.
+  AvoidRuleDeclarationsInLoops:
+    active: true
+    loopCalls:
+      - Array
+      - BooleanArray
+      - ByteArray
+      - CharArray
+      - DoubleArray
+      - FloatArray
+      - IntArray
+      - List
+      - LongArray
+      - MutableList
+      - ShortArray
+      - UByteArray
+      - UIntArray
+      - ULongArray
+      - UShortArray
+      - repeat
+      - all
+      - any
+      - associate
+      - associateBy
+      - associateWith
+      - count
+      - filter
+      - filterIndexed
+      - flatMap
+      - fold
+      - forEach
+      - forEachIndexed
+      - map
+      - mapIndexed
+      - none
+      - onEach
+      - reduce
+      - sumOf
+
+  # Avoid discarding Fiktion.configure snapshots.
+  AvoidUnusedFiktionSnapshot:
+    active: true
+
+  # Avoid configured calls inside generator lambdas.
+  ForbiddenGeneratorCall:
+    active: true
+    calls:
+      - Clock.System.now
+      - Date
+      - File.readBytes
+      - File.readText
+      - Files.readAllBytes
+      - Files.readString
+      - Instant.now
+      - LocalDate.now
+      - LocalDateTime.now
+      - ProcessBuilder
+      - Random.nextBoolean
+      - Random.nextBytes
+      - Random.nextDouble
+      - Random.nextFloat
+      - Random.nextInt
+      - Random.nextLong
+      - Runtime.getRuntime
+      - System.currentTimeMillis
+      - System.getenv
+      - System.getProperty
+      - System.nanoTime
+      - Thread.sleep
+      - UUID.randomUUID
+      - assertContains
+      - assertContentEquals
+      - assertEquals
+      - assertFails
+      - assertFailsWith
+      - assertFalse
+      - assertIs
+      - assertIsNot
+      - assertNotEquals
+      - assertNotNull
+      - assertNotSame
+      - assertNull
+      - assertSame
+      - assertTrue
+      - fail
+      - java.io.File.readBytes
+      - java.io.File.readText
+      - java.lang.System.currentTimeMillis
+      - java.lang.System.getenv
+      - java.lang.System.getProperty
+      - java.lang.System.nanoTime
+      - java.lang.Thread.sleep
+      - java.nio.file.Files.readAllBytes
+      - java.nio.file.Files.readString
+      - java.time.Instant.now
+      - java.time.LocalDate.now
+      - java.time.LocalDateTime.now
+      - java.util.Date
+      - java.util.UUID.randomUUID
+      - kotlin.random.Random.nextBoolean
+      - kotlin.random.Random.nextBytes
+      - kotlin.random.Random.nextDouble
+      - kotlin.random.Random.nextFloat
+      - kotlin.random.Random.nextInt
+      - kotlin.random.Random.nextLong
+      - kotlin.time.Clock.System.now
+      - kotlin.time.Instant.now
+      - kotlinx.datetime.Clock.System.now
+      - kotlinx.datetime.Instant.now
+
+  # Prefer configureCollection or configureMap for container materialization rules.
+  PreferContainerConfigureHelpers:
+    active: true
+    containerMaterializationCalls:
+      - Array
+      - List
+      - MutableList
+      - buildList
+      - listOf
+      - mapOf
+      - mutableListOf
+      - mutableMapOf
+      - mutableSetOf
+      - setOf
+      - toList
+      - toMap
+      - toMutableList
+      - toMutableMap
+      - toMutableSet
+      - toSet
+
+  # Prefer fakeElement, fakeKey, and fakeValue in type-family container generators.
+  PreferContainerPartFakeHelpers:
+    active: true
+    indexedLoopCalls:
+      - Array
+      - BooleanArray
+      - ByteArray
+      - CharArray
+      - DoubleArray
+      - FloatArray
+      - IntArray
+      - List
+      - LongArray
+      - MutableList
+      - ShortArray
+      - UByteArray
+      - UIntArray
+      - ULongArray
+      - UShortArray
+      - repeat
+
+  # Prefer explicit seed names for fake calls.
+  PreferExplicitFakeSeedName:
+    active: true
+
+  # Prefer fixed config values over equal-bound config ranges.
+  PreferFixedConfigValue:
+    active: true
+
+  # Prefer fixed generated values over zero or full default probabilities.
+  PreferFixedDefaultProbability:
+    active: true
+
+  # Prefer fixed generated values over zero or full null probabilities.
+  PreferFixedNullProbability:
+    active: true
+
+  # Prefer generator lambdas for mutable values.
+  PreferGeneratesByForMutableValues:
+    active: true
+    mutableFactoryCalls:
+      - mutableListOf
+      - mutableSetOf
+      - mutableMapOf
+
+  # Prefer fixed values over generators that always produce a fixed value.
+  PreferGeneratesForFixedValue:
+    active: true
+    constantGenerator: true
+    singleOneOf: true
+    singleGeneratesOneOf: true
+    includeNull: true
+
+  # Prefer range-specific generators.
+  PreferGeneratesInForRange:
+    active: true
+
+  # Prefer oneOf-specific generators.
+  PreferGeneratesOneOf:
+    active: true
+
+  # Prefer grouping repeated declarations for the same target.
+  PreferGroupedRuleTarget:
+    active: true
+
+  # Prefer passing loop indexes to fake calls in type-family loops.
+  PreferIndexedFakeInTypeFamilyLoop:
+    active: true
+    indexedLoopCalls:
+      - Array
+      - BooleanArray
+      - ByteArray
+      - CharArray
+      - DoubleArray
+      - FloatArray
+      - IntArray
+      - List
+      - LongArray
+      - MutableList
+      - ShortArray
+      - UByteArray
+      - UIntArray
+      - ULongArray
+      - UShortArray
+      - repeat
+
+  # Prefer infix Fiktion DSL declarations over dot-call syntax.
+  PreferInfixFiktionDsl:
+    active: true
+
+  # Prefer named argumentIndex in type-family fake helper calls.
+  PreferNamedTypeFamilyFakeArgumentIndex:
+    active: true
+
+  # Prefer KProperty shorthand targets.
+  PreferPropertyShorthand:
+    active: true
+
+  # Prefer configs before generators in grouped target blocks.
+  PreferRuleTargetDeclarationOrder:
+    active: true
+
+  # Prefer fake(seed = ...) over withSeed inside a fake block.
+  PreferSeedParameter:
+    active: true
+
+  # Prefer this using ... over bare using(...) calls.
+  PreferThisUsingInFakeSpec:
+    active: true
+
+  # Prefer type<T>() over non-generic typeFamily<T>().
+  PreferTypeRuleForNonGeneric:
+    active: true
+```
