@@ -44,7 +44,7 @@ kotlin {
 mavenPublishing {
     publishToMavenCentral()
     signAllPublications()
-    coordinates("dev.s7a", "fiktion-addon-arrow", version.toString())
+    coordinates("dev.s7a", "fiktion-addon-arrow-core", version.toString())
     configure(
         KotlinMultiplatform(
             javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
@@ -52,7 +52,7 @@ mavenPublishing {
         ),
     )
     pom {
-        name.set("fiktion-addon-arrow")
+        name.set("fiktion-addon-arrow-core")
         description.set("Fiktion add-on rules for Arrow Core types.")
         inceptionYear.set("2026")
         url.set("https://github.com/sya-ri/fiktion")

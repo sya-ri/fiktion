@@ -53,7 +53,7 @@ The repository currently contains:
 - `fiktion-core`: runtime APIs and built-in generators
 - `fiktion-compiler-plugin`: Kotlin compiler plugin for generated type metadata
 - `fiktion-gradle-plugin`: Gradle wiring for test source sets
-- `fiktion-addon-arrow`: rules for Arrow Core types
+- `fiktion-addon-arrow-core`: rules for Arrow Core types
 - `fiktion-addon-java`: rules for common Java/JVM standard library types
 - `fiktion-addon-kotlinx-datetime`: rules for `kotlinx-datetime` types
 - `fiktion-detekt-rules`: optional detekt rules for Fiktion DSL usage
@@ -72,7 +72,7 @@ dependencies {
     testImplementation("dev.s7a:fiktion-core:0.3.0")
 
     // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
-    testImplementation("dev.s7a:fiktion-addon-arrow:<unreleased>")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:<unreleased>")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
     testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
@@ -674,14 +674,14 @@ val fiktion = Fiktion {
 }
 ```
 
-## Arrow Add-On
+## Arrow Core Add-On
 
-Add `fiktion-addon-arrow` when tests need Arrow Core types such as `Option`, `Either`, `Ior`, `NonEmptyList`, or
+Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`, `Either`, `Ior`, `NonEmptyList`, or
 `NonEmptySet`:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow:<unreleased>")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:<unreleased>")
 }
 ```
 
@@ -706,7 +706,7 @@ It can also be installed explicitly:
 
 ```kotlin
 val fiktion = Fiktion {
-    install(ArrowFiktionAddon)
+    install(ArrowCoreFiktionAddon)
 }
 ```
 

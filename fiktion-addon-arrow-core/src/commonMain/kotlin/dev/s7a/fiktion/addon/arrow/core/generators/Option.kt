@@ -1,4 +1,4 @@
-package dev.s7a.fiktion.addon.arrow.generators
+package dev.s7a.fiktion.addon.arrow.core.generators
 
 import arrow.core.None
 import arrow.core.Option

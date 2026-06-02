@@ -2,13 +2,13 @@
 
 Add-ons are reusable bundles of rules and converters. They are lower precedence than per-call, instance, and global rules, and higher than built-ins.
 
-## Arrow Add-On Usage
+## Arrow Core Add-On Usage
 
 Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow:<unreleased>")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:<unreleased>")
 }
 ```
 
@@ -24,13 +24,13 @@ When the compiler plugin is not enabled for that source set, install explicitly:
 
 ```kotlin
 val fiktion = Fiktion {
-    install(ArrowFiktionAddon)
+    install(ArrowCoreFiktionAddon)
 }
 ```
 
-## Arrow Add-On Coverage
+## Arrow Core Add-On Coverage
 
-The Arrow add-on includes generation rules for `Option`, `Either`, `Ior`, `NonEmptyList`, and `NonEmptySet`.
+The Arrow Core add-on includes generation rules for `Option`, `Either`, `Ior`, `NonEmptyList`, and `NonEmptySet`.
 `NonEmptySet` follows normal set semantics, so duplicate generated values can make the final set smaller than
 `FiktionConfig.Collection.size`.
 

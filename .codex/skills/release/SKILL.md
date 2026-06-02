@@ -67,7 +67,7 @@ plugins {
 
 dependencies {
     testImplementation("dev.s7a:fiktion-core:x.y.z")
-    testImplementation("dev.s7a:fiktion-addon-arrow:x.y.z")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:x.y.z")
     testImplementation("dev.s7a:fiktion-addon-java:x.y.z")
     testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:x.y.z")
 }
@@ -76,7 +76,7 @@ dependencies {
 ## Artifacts
 
 - `dev.s7a:fiktion-core:x.y.z`
-- `dev.s7a:fiktion-addon-arrow:x.y.z`
+- `dev.s7a:fiktion-addon-arrow-core:x.y.z`
 - `dev.s7a:fiktion-addon-java:x.y.z`
 - `dev.s7a:fiktion-addon-kotlinx-datetime:x.y.z`
 - `dev.s7a:fiktion-compiler-plugin:x.y.z`

@@ -13,7 +13,7 @@ Prefer the repository source over memory when details matter:
 
 - Runtime API: `fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion`
 - Built-in generators: `fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/generators`
-- Arrow add-on: `fiktion-addon-arrow/src/commonMain/kotlin/dev/s7a/fiktion/addon/arrow`
+- Arrow Core add-on: `fiktion-addon-arrow-core/src/commonMain/kotlin/dev/s7a/fiktion/addon/arrow/core`
 - Java add-on: `fiktion-addon-java/src/main/kotlin/dev/s7a/fiktion/addon/java`
 - Gradle plugin: `fiktion-gradle-plugin/src/main/kotlin/dev/s7a/fiktion/gradle`
 - Compiler plugin: `fiktion-compiler-plugin/src/main/kotlin/dev/s7a/fiktion/compiler`
