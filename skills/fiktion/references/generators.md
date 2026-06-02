@@ -14,6 +14,11 @@ depth: Int
 index: Int
 ```
 
+Use `childContext(index, seedIndex = index)` when a public generator invokes user-supplied child generator lambdas.
+This gives each generated part a deterministic child seed, increments `depth`, and exposes the intended child
+`FakeContext.index` to the lambda. Use a distinct `seedIndex` when two generated parts share the same public index but
+need independent random streams, such as map keys and values.
+
 Use context methods and other generators instead of ad hoc randomness when possible. Generator defaults should read
 typed config keys through `config(...)`:
 

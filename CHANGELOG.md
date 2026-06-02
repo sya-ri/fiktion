@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Added `fiktion-detekt-rules`, an optional detekt rule set for keeping Fiktion DSL usage focused and consistent.
+- Added `fiktion-addon-arrow` with generation rules for Arrow Core `Option`, `Either`, `Ior`, `NonEmptyList`, and
+  `NonEmptySet`.
 
 ## v0.3.0
 
