@@ -205,6 +205,20 @@ class GenerateObjectTest {
     }
 
     @Test
+    fun `property reference rules generate non-null values for nullable object properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                type<String>() generates "id"
+                User::optionalProfile generates Profile(nickname = "generated")
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(User(id = "id", optionalProfile = Profile(nickname = "generated")), user)
+    }
+
+    @Test
     fun `per-call property reference rules generate null for nullable object properties`() {
         val fiktion =
             Fiktion {
