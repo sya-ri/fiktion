@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.4.1
 
 - Added `AvoidNonPropertyRuleTargets`, an opt-in detekt rule for teams that want Fiktion rules to target explicit
   properties only.
