@@ -24,6 +24,7 @@ public class FiktionRuleSetProvider : RuleSetProvider {
                     ::AvoidMultipleConfigsForRuleTarget,
                     ::AvoidMultipleGeneratorsForRuleTarget,
                     ::AvoidMultipleSeedsInFakeSpec,
+                    ::AvoidNonPropertyRuleTargets,
                     ::AvoidRandomInstanceInGenerator,
                     ::AvoidRecursiveFakeInGenerator,
                     ::AvoidRuleDeclarationsInLoops,
