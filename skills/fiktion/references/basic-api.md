@@ -7,13 +7,14 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.3.0"
+    id("dev.s7a.fiktion") version "0.4.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.3.0")
-    testImplementation("dev.s7a:fiktion-addon-java:0.3.0") // optional JVM add-on
-    detektPlugins("dev.s7a:fiktion-detekt-rules:<unreleased>") // optional detekt rules
+    testImplementation("dev.s7a:fiktion-core:0.4.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.0") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.0") // optional kotlinx-datetime add-on
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.0") // optional detekt rules
 }
 ```
 
