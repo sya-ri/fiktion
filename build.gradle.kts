@@ -16,7 +16,6 @@ group = "dev.s7a"
 version = "0.4.0"
 
 val dokkaOlderVersionsDir = layout.buildDirectory.dir("dokka/olderVersions")
-val dokkaVersionName = providers.gradleProperty("dokkaVersionName").orElse(project.version.toString())
 
 dependencies {
     subprojects.forEach {
@@ -29,7 +28,7 @@ dependencies {
 dokka {
     pluginsConfiguration {
         versioning {
-            version.set(dokkaVersionName)
+            version.set(project.version.toString())
             olderVersionsDir.set(dokkaOlderVersionsDir)
         }
     }
