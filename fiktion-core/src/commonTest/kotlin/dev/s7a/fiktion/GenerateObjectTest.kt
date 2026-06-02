@@ -269,6 +269,20 @@ class GenerateObjectTest {
     }
 
     @Test
+    fun `fake generates defaultable built-in properties when default probability is omitted`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultId())
+            }
+        val defaultCount =
+            (0 until 1_000).count { seed ->
+                fiktion.fake<User>(seed = seed.toLong()).id == "default-id"
+            }
+
+        assertTrue(defaultCount in 400..600, "Expected about 50% defaults, but got $defaultCount.")
+    }
+
+    @Test
     fun `fake generates nullable defaultable properties with non-null defaults from automatic values nulls or defaults`() {
         val defaultProfile = Profile(nickname = "default")
         val fiktion =
@@ -426,6 +440,20 @@ class GenerateObjectTest {
                 ),
         ) { values ->
             User(id = values[0].valueOrDefault(defaultValue = null) as String)
+        }
+
+    /**
+     * Returns metadata for constructing [User] with a defaultable id.
+     */
+    private fun userMetadataWithDefaultId(): FiktionObjectMetadata<User> =
+        FiktionObjectMetadata(
+            type = typeOf<User>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>(), hasDefault = true),
+                ),
+        ) { values ->
+            User(id = values[0].valueOrDefault(defaultValue = "default-id") as String)
         }
 
     /**

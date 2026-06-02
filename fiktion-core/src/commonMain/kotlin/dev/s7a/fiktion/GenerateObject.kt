@@ -61,9 +61,10 @@ private fun FiktionObjectProperty.usesDefault(
 
     if (rule?.defaultGenerates == true) return true
 
-    if (rule != null && rule.defaultProbability == null) return false
-    val defaultProbability = rule?.defaultProbability?.value ?: DEFAULT_CONSTRUCTOR_DEFAULT_PROBABILITY
-    return Random(rule?.seed ?: seed).nextDouble() < defaultProbability
+    if (rule != null && rule.precedence >= RulePrecedence.GLOBAL && rule.defaultProbability == null) return false
+    val probabilityRule = rule?.takeIf { selectedRule -> selectedRule.defaultProbability != null }
+    val defaultProbability = probabilityRule?.defaultProbability?.value ?: DEFAULT_CONSTRUCTOR_DEFAULT_PROBABILITY
+    return Random(probabilityRule?.seed ?: seed).nextDouble() < defaultProbability
 }
 
 /**
