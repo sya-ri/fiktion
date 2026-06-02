@@ -81,8 +81,6 @@ jobs:
           rsync -a --checksum --delete --exclude '.git' --exclude 'v*/' --exclude 'older/' build/dokka/html/ ../pages/
           if [ -d build/dokka/html/older ]; then
             rsync -a --checksum --delete build/dokka/html/older/ ../pages/older/
-          else
-            rm -rf ../pages/older
           fi
           if [[ "${version}" != *-SNAPSHOT ]]; then
             find ../pages -maxdepth 1 -type d -name 'v*' -exec rm -rf {} +
