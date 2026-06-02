@@ -276,8 +276,7 @@ public class FakeSpec<Root> {
     /**
      * Generates this nested property path using its constructor default value.
      */
-    public infix fun <Value> PropertyPath<Root, Value>.generates(default: Default): GenerationSpec<Value> =
-        property(this) generates default
+    public infix fun <Value> PropertyPath<Root, Value>.generates(default: Default): GenerationSpec<Value> = property(this) generates default
 
     /**
      * Applies nested per-call configuration to this property path.
