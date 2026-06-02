@@ -295,9 +295,10 @@ target generates value orNullAt 0.3
 target generates value orDefaultAt 30.percent
 ```
 
-`generates value` always returns that value for nullable rules unless `orNullAt` is set. `Double` probabilities use
-`0.0..1.0`; `percent` helpers are available. Constructor defaults are selected only when `generates default` or
-`orDefaultAt` is set. `generates default` requires a constructor argument with a default value.
+Automatic nullable values generate either a non-null value or `null` with 50% probability. Automatic defaultable
+constructor arguments generate either an automatic value or the constructor default with 50% probability. `generates
+value` always returns that value unless `orNullAt` or `orDefaultAt` is set. `Double` probabilities use `0.0..1.0`;
+`percent` helpers are available. `generates default` requires a constructor argument with a default value.
 
 `withSeed` exists at two levels:
 

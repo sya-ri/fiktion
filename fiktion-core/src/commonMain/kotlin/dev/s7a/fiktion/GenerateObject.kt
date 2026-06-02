@@ -21,12 +21,13 @@ internal fun generateObject(
             if (property.usesDefault(config = config, request = childRequest, seed = childSeed)) {
                 FiktionObjectDefault
             } else {
+                val valueSeed = if (property.hasDefault) childSeed.childSeed(DEFAULTABLE_VALUE_SEED_INDEX) else childSeed
                 FiktionObjectValue(
                     try {
                         generateValue(
                             request = childRequest,
                             config = config,
-                            seed = childSeed,
+                            seed = valueSeed,
                             depth = depth + 1,
                         )
                     } catch (cause: CannotGenerateException) {
@@ -60,8 +61,9 @@ private fun FiktionObjectProperty.usesDefault(
 
     if (rule?.defaultGenerates == true) return true
 
-    val defaultProbability = rule?.defaultProbability?.value ?: return false
-    return Random(rule.seed ?: seed).nextDouble() < defaultProbability
+    if (rule != null && rule.defaultProbability == null) return false
+    val defaultProbability = rule?.defaultProbability?.value ?: DEFAULT_CONSTRUCTOR_DEFAULT_PROBABILITY
+    return Random(rule?.seed ?: seed).nextDouble() < defaultProbability
 }
 
 /**
@@ -91,3 +93,5 @@ internal fun Long.childSeed(index: Int): Long = this xor ((index + 1).toLong() *
  * Odd constant used to spread deterministic child seeds.
  */
 private const val CHILD_SEED_STEP: Long = -7046029254386353131L
+private const val DEFAULTABLE_VALUE_SEED_INDEX: Int = 0
+private const val DEFAULT_CONSTRUCTOR_DEFAULT_PROBABILITY: Double = 0.5

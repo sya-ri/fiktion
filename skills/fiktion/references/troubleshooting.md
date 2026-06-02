@@ -62,15 +62,16 @@ name<String?>("nickname") generates null
 
 Without this, Kotlin may infer `Nothing?`, making the rule hard to match.
 
-## Nullable Rule Unexpectedly Returns The Generated Value
+## Explicit Nullable Rule Unexpectedly Returns The Generated Value
 
-Nullable rules do not generate `null` unless `orNullAt` is set:
+Automatic nullable generation can return `null`, but explicit nullable rules do not generate `null` unless `orNullAt`
+is set:
 
 ```kotlin
 type<String?>() generates "nickname"
 ```
 
-This always returns `"nickname"`. Add an explicit null probability when null should be a candidate:
+This always returns `"nickname"`. Add an explicit null probability when null should be a candidate for this rule:
 
 ```kotlin
 type<String?>() generates "nickname" orNullAt 30.percent
@@ -82,9 +83,10 @@ Use `generates null` when the intended value is always null:
 type<String?>() generates null
 ```
 
-## Constructor Default Is Not Used
+## Explicit Rule Does Not Use A Constructor Default
 
-Constructor defaults are not selected unless `generates default` or `orDefaultAt` is set:
+Automatic generation can select constructor defaults for defaultable arguments, but explicit generated values do not use
+constructor defaults unless `generates default` or `orDefaultAt` is set:
 
 ```kotlin
 User::profile generates default

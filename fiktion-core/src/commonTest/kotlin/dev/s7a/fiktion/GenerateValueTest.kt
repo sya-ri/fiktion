@@ -245,6 +245,15 @@ class GenerateValueTest {
     }
 
     @Test
+    fun `generateValue returns automatic values or null for nullable types without a matching rule`() {
+        val builder = DefaultFiktionBuilder()
+
+        val nullCount = countNulls(config = builder.build(), samples = 1_000)
+
+        assertTrue(nullCount in 400..600, "Expected about 50% nulls, but got $nullCount nulls.")
+    }
+
+    @Test
     fun `generateValue uses the configured null probability for nullable rules`() {
         val builder = DefaultFiktionBuilder()
 

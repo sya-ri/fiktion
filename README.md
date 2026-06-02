@@ -189,7 +189,8 @@ val index = fake<SearchIndex> {
 
 ## Nulls And Defaults
 
-Nullable values stay fixed unless you opt into nulls with a probability:
+Automatic nullable values generate either a non-null value or `null` with 50% probability. Explicit generated values stay
+fixed unless you opt into nulls with a probability:
 
 ```kotlin
 val user = fake<User> {
@@ -197,7 +198,8 @@ val user = fake<User> {
 }
 ```
 
-Constructor defaults stay unused unless you opt into them explicitly:
+Defaultable constructor arguments generate either an automatic value or the constructor default with 50% probability.
+Explicit generated values stay fixed unless you opt into defaults with a probability:
 
 ```kotlin
 val user = fake<User> {

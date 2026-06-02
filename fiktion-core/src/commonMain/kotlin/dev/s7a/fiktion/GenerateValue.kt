@@ -40,6 +40,10 @@ internal fun generateValue(
         )
     }
 
+    if (request.type.isMarkedNullable && context.random.nextDouble() < DEFAULT_NULL_PROBABILITY) {
+        return null
+    }
+
     return generateAutomaticValue(
         request = request,
         config = config,
@@ -70,7 +74,7 @@ internal fun generateAutomaticValue(
         )
     }
 
-    config.effectiveAutomaticRules().selectRule(request)?.let { rule ->
+    config.effectiveAutomaticRules().selectAutomaticRule(request)?.let { rule ->
         return generateFromRule(
             rule = rule,
             request = request,
@@ -200,6 +204,8 @@ private fun generateFromRule(
 
     return rule.generator(context)
 }
+
+private const val DEFAULT_NULL_PROBABILITY: Double = 0.5
 
 /**
  * Generates collection or map values when an exact `generates auto` rule targets a configured converter type.
