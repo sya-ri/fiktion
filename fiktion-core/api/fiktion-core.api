@@ -14,6 +14,11 @@ public final class dev/s7a/fiktion/CannotGenerateException : java/lang/RuntimeEx
 	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
+public final class dev/s7a/fiktion/ChildContextKt {
+	public static final fun childContext (Ldev/s7a/fiktion/FakeContext;II)Ldev/s7a/fiktion/FakeContext;
+	public static synthetic fun childContext$default (Ldev/s7a/fiktion/FakeContext;IIILjava/lang/Object;)Ldev/s7a/fiktion/FakeContext;
+}
+
 public final class dev/s7a/fiktion/CollectionElementTargetKt {
 	public static final fun getElement (Ldev/s7a/fiktion/FakeSpec;)Ldev/s7a/fiktion/RuleTarget;
 	public static final fun getElement (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/RuleTarget;
@@ -173,6 +178,7 @@ public final class dev/s7a/fiktion/FiktionConfig$Char {
 public final class dev/s7a/fiktion/FiktionConfig$Collection {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Collection;
 	public final fun getSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getUniqueElementStrategy ()Ldev/s7a/fiktion/FiktionConfig;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Companion {
@@ -373,6 +379,7 @@ public final class dev/s7a/fiktion/FiktionObjectValue : dev/s7a/fiktion/FiktionO
 
 public abstract class dev/s7a/fiktion/FiktionRuleBuilder {
 	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
+	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;Z)V
 	public final fun configureMap (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
@@ -528,7 +535,35 @@ public abstract interface class dev/s7a/fiktion/TypeFamilyRuleTarget {
 }
 
 public final class dev/s7a/fiktion/TypeFamilyRuleTargetKt {
+	public static final fun generates (Ldev/s7a/fiktion/TypeFamilyRuleTarget;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesBy (Ldev/s7a/fiktion/TypeFamilyRuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public abstract interface class dev/s7a/fiktion/UniqueElementStrategy {
+}
+
+public final class dev/s7a/fiktion/UniqueElementStrategy$BestEffort : dev/s7a/fiktion/UniqueElementStrategy {
+	public static final field INSTANCE Ldev/s7a/fiktion/UniqueElementStrategy$BestEffort;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/s7a/fiktion/UniqueElementStrategy$Exact : dev/s7a/fiktion/UniqueElementStrategy {
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun copy (I)Ldev/s7a/fiktion/UniqueElementStrategy$Exact;
+	public static synthetic fun copy$default (Ldev/s7a/fiktion/UniqueElementStrategy$Exact;IILjava/lang/Object;)Ldev/s7a/fiktion/UniqueElementStrategy$Exact;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxAttemptsPerElement ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/s7a/fiktion/UniqueGenerationKt {
+	public static final fun generateUniqueElements (ILdev/s7a/fiktion/UniqueElementStrategy;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
 }
 
 public final class dev/s7a/fiktion/generators/ArithmeticExceptionKt {

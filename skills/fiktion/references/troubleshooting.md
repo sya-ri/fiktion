@@ -9,7 +9,8 @@ Fixes:
 - Ensure the Gradle plugin is applied and enabled for the source set.
 - Ensure `fiktion-core` is on the test/runtime classpath.
 - Call `fake<T>()` or `Fiktion.fake<T>()` directly from a compiler-plugin-enabled source set when relying on generated metadata. Wrapper functions around `fake<T>()` are not metadata collection entry points, so metadata for `T` may not be generated.
-- Add missing add-on dependency, e.g. `fiktion-addon-java` for common JVM types.
+- Add missing add-on dependency, e.g. `fiktion-addon-java` for common JVM types or `fiktion-addon-kotlinx-datetime`
+  for `kotlinx-datetime` types.
 - Add an explicit rule:
 
 ```kotlin
@@ -101,7 +102,9 @@ Use seeds:
 fake<User>(seed = 123)
 ```
 
-Inside generators, use the provided `random`, `seed`, `index`, and existing generators instead of global randomness. For sibling values, use separate indexes in `TypeFamilyGenerationContext.fake(index)`.
+Inside generators, use the provided `random`, `seed`, `index`, and existing generators instead of global randomness. For
+sibling values of the same type-family argument, vary `index` while keeping `argumentIndex` fixed, such as
+`fake(index = 1, argumentIndex = 0)`.
 
 ## Review Checklist For Fiktion Code
 

@@ -2,13 +2,45 @@
 
 Add-ons are reusable bundles of rules and converters. They are lower precedence than per-call, instance, and global rules, and higher than built-ins.
 
+## Arrow Core Add-On Usage
+
+Install dependency:
+
+```kotlin
+dependencies {
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.0")
+}
+```
+
+With the Fiktion Gradle/compiler plugin enabled for the source set, add-ons on the compilation classpath are registered automatically before `fake<T>()` calls:
+
+```kotlin
+val option = fake<arrow.core.Option<Int>>()
+val either = fake<arrow.core.Either<String, Int>>()
+val items = fake<arrow.core.NonEmptyList<String>>()
+```
+
+When the compiler plugin is not enabled for that source set, install explicitly:
+
+```kotlin
+val fiktion = Fiktion {
+    install(ArrowCoreFiktionAddon)
+}
+```
+
+## Arrow Core Add-On Coverage
+
+The Arrow Core add-on includes generation rules for `Option`, `Either`, `Ior`, `NonEmptyList`, and `NonEmptySet`.
+`NonEmptySet` follows normal set semantics, so duplicate generated values can make the final set smaller than
+`FiktionConfig.Collection.size`.
+
 ## Java Add-On Usage
 
 Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.0")
 }
 ```
 
@@ -45,6 +77,43 @@ Broad categories:
 - `java.text`, `java.math`, `java.regex`, `java.logging`, `java.security`, `java.zip`, `java.sql`
 
 Generic Java containers use `typeFamily` rules and `configureCollection` / `configureMap` converters so `fake<ArrayList<Int>>()`, `fake<Optional<User>>()`, and similar calls can generate nested values.
+
+## kotlinx-datetime Add-On Usage
+
+Install dependency:
+
+```kotlin
+dependencies {
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.0")
+}
+```
+
+With the Fiktion Gradle/compiler plugin enabled for the source set, add-ons on the compilation classpath are registered automatically before `fake<T>()` calls:
+
+```kotlin
+val date = fake<kotlinx.datetime.LocalDate>()
+val timeZone = fake<kotlinx.datetime.TimeZone>()
+val period = fake<kotlinx.datetime.DatePeriod>()
+```
+
+When the compiler plugin is not enabled for that source set, install explicitly:
+
+```kotlin
+val fiktion = Fiktion {
+    install(KotlinxDatetimeFiktionAddon)
+}
+```
+
+## kotlinx-datetime Add-On Coverage
+
+The kotlinx-datetime add-on includes generation rules for common multiplatform date/time types:
+
+- `Instant`, `LocalDate`, `LocalTime`, `LocalDateTime`, `TimeZone`, and `UtcOffset`
+- `DatePeriod` and `DateTimePeriod`
+- `Month` and `DayOfWeek`
+
+Use `KotlinxDatetimeFiktionConfig` to configure generated date/time parts such as local date fields, local time fields,
+UTC offset hours, period components, and instant epoch seconds/nanoseconds.
 
 ## Create A Custom Add-On
 

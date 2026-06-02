@@ -53,8 +53,10 @@ The repository currently contains:
 - `fiktion-core`: runtime APIs and built-in generators
 - `fiktion-compiler-plugin`: Kotlin compiler plugin for generated type metadata
 - `fiktion-gradle-plugin`: Gradle wiring for test source sets
+- `fiktion-addon-arrow-core`: rules for Arrow Core types
 - `fiktion-addon-java`: rules for common Java/JVM standard library types
 - `fiktion-addon-kotlinx-datetime`: rules for `kotlinx-datetime` types
+- `fiktion-detekt-rules`: optional detekt rules for Fiktion DSL usage
 
 ## Install
 
@@ -63,19 +65,28 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.3.0"
+    id("dev.s7a.fiktion") version "0.4.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.3.0")
+    testImplementation("dev.s7a:fiktion-core:0.4.0")
+
+    // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.0")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.0")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.3.0")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.0")
+
+    // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.0")
 }
 ```
+
+If detekt is not configured yet, follow the
+[official detekt Gradle setup](https://detekt.dev/docs/gettingstarted/gradle/) before adding `fiktion-detekt-rules`.
 
 Fiktion is enabled for test source sets by default, including JVM `test` and Multiplatform source sets such as
 `commonTest` and `jvmTest`.
@@ -287,6 +298,30 @@ val names = fake<List<String>> {
 }
 ```
 
+Sets use normal set semantics by default, so duplicate generated elements can collapse and make the final set smaller
+than `FiktionConfig.Collection.size`. Use `UniqueElementStrategy.Exact` when a set must contain the configured number of
+distinct values:
+
+```kotlin
+val labels = fake<Set<String>> {
+    this using FiktionConfig.Collection.size(3)
+    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 16))
+}
+```
+
+Exact set generation retries candidate values up to `size * maxAttemptsPerElement`. If Fiktion cannot produce enough
+distinct values within that bound, generation fails instead of silently returning a smaller set.
+
+Custom collection converters can opt into the same distinct-element generation:
+
+```kotlin
+val fiktion = Fiktion {
+    configureCollection<CustomSet<*>>(unique = true) { elements ->
+        CustomSet(elements)
+    }
+}
+```
+
 Container target configuration narrows defaults to values generated below collection and map roots:
 
 ```kotlin
@@ -330,6 +365,24 @@ val user = fake<User> {
 
 Configuration keys are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects such as
 `JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
+
+## Detekt Rules
+
+Fiktion often has several equivalent DSL forms. `fiktion-detekt-rules` helps teams keep those choices consistent by
+recommending the narrower or more direct form when two forms express the same intent. This is useful for shared test
+code because the rule feedback appears during normal linting, before the style spreads through fixtures and helpers.
+
+Add it as a detekt plugin dependency. If detekt is not configured in the project yet, follow the
+[official detekt Gradle setup](https://detekt.dev/docs/gettingstarted/gradle/) first. The rules are published under the
+`fiktion` rule set.
+
+```kotlin
+dependencies {
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.0")
+}
+```
+
+See [fiktion-detekt-rules](fiktion-detekt-rules/README.md) for rule details.
 
 ## Test Framework Integration
 
@@ -598,7 +651,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.3.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.0")
 }
 ```
 
@@ -621,6 +674,42 @@ val fiktion = Fiktion {
 }
 ```
 
+## Arrow Core Add-On
+
+Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`, `Either`, `Ior`, `NonEmptyList`, or
+`NonEmptySet`:
+
+```kotlin
+dependencies {
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.0")
+}
+```
+
+With the Gradle plugin enabled, the add-on is registered automatically before `fake<T>()` calls:
+
+```kotlin
+import arrow.core.Either
+import arrow.core.NonEmptyList
+import arrow.core.Option
+
+val option = fake<Option<Int>>()
+val either = fake<Either<String, Int>>()
+val items = fake<NonEmptyList<String>>()
+```
+
+`NonEmptyList` and `NonEmptySet` use collection converters with a minimum size of `1`. `NonEmptySet` also follows normal
+set semantics by default: duplicate generated values collapse, so the final set size can be smaller than
+`FiktionConfig.Collection.size`. Use `FiktionConfig.Collection.uniqueElementStrategy` when exact distinct sizes are
+required.
+
+It can also be installed explicitly:
+
+```kotlin
+val fiktion = Fiktion {
+    install(ArrowCoreFiktionAddon)
+}
+```
+
 ## kotlinx-datetime Add-On
 
 Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types such as `Instant`, `LocalDate`,
@@ -628,7 +717,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.3.0")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.0")
 }
 ```
 

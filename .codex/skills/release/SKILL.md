@@ -67,17 +67,21 @@ plugins {
 
 dependencies {
     testImplementation("dev.s7a:fiktion-core:x.y.z")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:x.y.z")
     testImplementation("dev.s7a:fiktion-addon-java:x.y.z")
     testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:x.y.z")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:x.y.z")
 }
 ```
 
 ## Artifacts
 
 - `dev.s7a:fiktion-core:x.y.z`
+- `dev.s7a:fiktion-addon-arrow-core:x.y.z`
 - `dev.s7a:fiktion-addon-java:x.y.z`
 - `dev.s7a:fiktion-addon-kotlinx-datetime:x.y.z`
 - `dev.s7a:fiktion-compiler-plugin:x.y.z`
+- `dev.s7a:fiktion-detekt-rules:x.y.z`
 - Gradle plugin `dev.s7a.fiktion` version `x.y.z`
 ````
 

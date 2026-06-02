@@ -7,12 +7,14 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.3.0"
+    id("dev.s7a.fiktion") version "0.4.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.3.0")
-    testImplementation("dev.s7a:fiktion-addon-java:0.3.0") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-core:0.4.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.0") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.0") // optional kotlinx-datetime add-on
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.0") // optional detekt rules
 }
 ```
 
@@ -529,6 +531,20 @@ val fiktion = Fiktion {
     this using FiktionConfig.Int.range(-200..200)
     this using FiktionConfig.Collection.size(3)
 }
+```
+
+When a config key accepts a range, prefer the fixed-value shorthand for equal bounds:
+
+```kotlin
+this using FiktionConfig.Collection.size(2)
+this using FiktionConfig.Int.range(42)
+```
+
+instead of:
+
+```kotlin
+this using FiktionConfig.Collection.size(2..2)
+this using FiktionConfig.Int.range(42..42)
 ```
 
 Global, instance, and add-on builder configs apply to every generated value matching the config key's scope. Per-call

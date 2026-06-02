@@ -15,3 +15,10 @@ public sealed interface TypeFamilyRuleTarget<T>
  */
 public infix fun <T> TypeFamilyRuleTarget<T>.generatesBy(generator: TypeFamilyGenerator<T>): GenerationSpec<T> =
     (this as DefaultTypeFamilyRuleTarget<T>).generatesBy(generator)
+
+/**
+ * Uses Fiktion's automatic generation for this type-family target.
+ */
+@Suppress("UNUSED_PARAMETER")
+public infix fun <T> TypeFamilyRuleTarget<T>.generates(auto: Auto): GenerationSpec<T> =
+    (this as DefaultTypeFamilyRuleTarget<T>).generatesAutomatically()
