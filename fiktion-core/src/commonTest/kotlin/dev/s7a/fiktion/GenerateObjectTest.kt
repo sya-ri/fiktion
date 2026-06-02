@@ -191,6 +191,71 @@ class GenerateObjectTest {
     }
 
     @Test
+    fun `property reference rules generate null for nullable object properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                type<String>() generates "id"
+                User::optionalProfile generates null
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(User(id = "id", optionalProfile = null), user)
+    }
+
+    @Test
+    fun `property reference rules generate non-null values for nullable object properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                type<String>() generates "id"
+                User::optionalProfile generates Profile(nickname = "generated")
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(User(id = "id", optionalProfile = Profile(nickname = "generated")), user)
+    }
+
+    @Test
+    fun `per-call property reference rules generate null for nullable object properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                register(profileMetadata())
+                type<String>() generates "id"
+                type<Profile>() generates Profile(nickname = "generated")
+            }
+
+        val user =
+            fiktion.fake<User>(seed = 123) {
+                User::optionalProfile generates null
+            }
+
+        assertEquals(User(id = "id", optionalProfile = null), user)
+    }
+
+    @Test
+    fun `per-call property reference rules generate non-null values for nullable object properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                register(profileMetadata())
+                type<String>() generates "id"
+                type<Profile>() generates Profile(nickname = "fallback")
+            }
+        val notNullProfile = Profile(nickname = "per-call")
+
+        val user =
+            fiktion.fake<User>(seed = 123) {
+                User::optionalProfile generates notNullProfile
+            }
+
+        assertEquals(User(id = "id", optionalProfile = notNullProfile), user)
+    }
+
+    @Test
     fun `fake uses default values with configured probabilities`() {
         assertDefaultProfileCount(defaultProbability = 0.0, expectedRange = 0..0)
         assertDefaultProfileCount(defaultProbability = 0.3, expectedRange = 250..350)
@@ -199,8 +264,138 @@ class GenerateObjectTest {
     }
 
     @Test
-    fun `fake uses fifty percent as the default value probability`() {
+    fun `fake generates defaultable properties when default probability is omitted`() {
         assertDefaultProfileCount(defaultProbability = null, expectedRange = 400..600)
+    }
+
+    @Test
+    fun `fake generates defaultable built-in properties when default probability is omitted`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultId())
+            }
+        val defaultCount =
+            (0 until 1_000).count { seed ->
+                fiktion.fake<User>(seed = seed.toLong()).id == "default-id"
+            }
+
+        assertTrue(defaultCount in 400..600, "Expected about 50% defaults, but got $defaultCount.")
+    }
+
+    @Test
+    fun `fake generates nullable defaultable properties with non-null defaults from automatic values nulls or defaults`() {
+        val defaultProfile = Profile(nickname = "default")
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultOptionalProfile(defaultProfile))
+                register(profileMetadata())
+                type<String>() generates "id"
+            }
+        val generatedProfile = Profile(nickname = "id")
+        val users = (0 until 1_000).map { seed -> fiktion.fake<User>(seed = seed.toLong()) }
+        val defaultCount = users.count { user -> user.optionalProfile == defaultProfile }
+        val nullCount = users.count { user -> user.optionalProfile == null }
+        val generatedCount = users.count { user -> user.optionalProfile == generatedProfile }
+
+        assertTrue(defaultCount in 400..600, "Expected about 50% defaults, but got $defaultCount.")
+        assertTrue(nullCount in 150..350, "Expected about 25% nulls, but got $nullCount.")
+        assertTrue(generatedCount in 150..350, "Expected about 25% generated values, but got $generatedCount.")
+    }
+
+    @Test
+    fun `fake generates nullable defaultable properties with null defaults from automatic values or nulls`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultOptionalProfile(defaultValue = null))
+                register(profileMetadata())
+                type<String>() generates "id"
+            }
+        val generatedProfile = Profile(nickname = "id")
+        val users = (0 until 1_000).map { seed -> fiktion.fake<User>(seed = seed.toLong()) }
+        val nullCount = users.count { user -> user.optionalProfile == null }
+        val generatedCount = users.count { user -> user.optionalProfile == generatedProfile }
+
+        assertTrue(nullCount in 650..850, "Expected about 75% nulls, but got $nullCount.")
+        assertTrue(generatedCount in 150..350, "Expected about 25% generated values, but got $generatedCount.")
+    }
+
+    @Test
+    fun `explicit generated values do not use nullable defaults or nulls implicitly`() {
+        val generatedProfile = Profile(nickname = "generated")
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultOptionalProfile(defaultValue = Profile(nickname = "default")))
+                type<String>() generates "id"
+                User::optionalProfile generates generatedProfile
+            }
+
+        val users = (0 until 1_000).map { seed -> fiktion.fake<User>(seed = seed.toLong()) }
+
+        assertTrue(users.all { user -> user.optionalProfile == generatedProfile })
+    }
+
+    @Test
+    fun `property reference rules generate constructor defaults for defaultable properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultProfile())
+                type<String>() generates "id"
+                User::profile generates default
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(User(id = "id", profile = Profile(nickname = "default")), user)
+    }
+
+    @Test
+    fun `type rules generate constructor defaults for defaultable properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultProfile())
+                type<String>() generates "id"
+                type<Profile>() generates default
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(User(id = "id", profile = Profile(nickname = "default")), user)
+    }
+
+    @Test
+    fun `per-call property reference rules generate constructor defaults for defaultable properties`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithDefaultProfile())
+                type<String>() generates "id"
+                type<Profile>() generates Profile(nickname = "generated")
+            }
+
+        val user =
+            fiktion.fake<User>(seed = 123) {
+                User::profile generates default
+            }
+
+        assertEquals(User(id = "id", profile = Profile(nickname = "default")), user)
+    }
+
+    @Test
+    fun `fake reports constructor argument when default is requested for a non-defaultable property`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithProfile())
+                type<String>() generates "id"
+                User::profile generates default
+            }
+
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                fiktion.fake<User>(seed = 123)
+            }
+
+        assertTrue(error.message.orEmpty().contains("Rule requested the constructor default for profile"))
+        assertTrue(error.message.orEmpty().contains("has no default value"))
+        assertTrue(error.message.orEmpty().contains("generates default"))
     }
 
     @Test
@@ -245,6 +440,20 @@ class GenerateObjectTest {
                 ),
         ) { values ->
             User(id = values[0].valueOrDefault(defaultValue = null) as String)
+        }
+
+    /**
+     * Returns metadata for constructing [User] with a defaultable id.
+     */
+    private fun userMetadataWithDefaultId(): FiktionObjectMetadata<User> =
+        FiktionObjectMetadata(
+            type = typeOf<User>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>(), hasDefault = true),
+                ),
+        ) { values ->
+            User(id = values[0].valueOrDefault(defaultValue = "default-id") as String)
         }
 
     /**
@@ -343,9 +552,11 @@ class GenerateObjectTest {
         val fiktion =
             Fiktion {
                 register(userMetadataWithDefaultProfile())
+                register(profileMetadata())
                 type<String>() generates "id"
-                val spec = property<User, Profile>("profile") generates Profile(nickname = "generated")
-                if (defaultProbability != null) spec orDefaultAt defaultProbability
+                if (defaultProbability != null) {
+                    property<User, Profile>("profile") generates Profile(nickname = "generated") orDefaultAt defaultProbability
+                }
             }
 
         val defaultCount =

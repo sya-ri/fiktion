@@ -12,6 +12,7 @@ internal fun DefaultGenerationSpec<*>.prefixedBy(prefix: List<PathRuleSegment>):
         nullProbability = nullProbability,
         defaultProbability = defaultProbability,
         automaticallyGenerates = automaticallyGenerates,
+        defaultGenerates = defaultGenerates,
         precedence = precedence,
     )
 

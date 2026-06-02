@@ -4,6 +4,14 @@
 
 - Added `AvoidNonPropertyRuleTargets`, an opt-in detekt rule for teams that want Fiktion rules to target explicit
   properties only.
+- Added `PreferFixedNullProbability`, a detekt rule that rewrites `orNullAt 0.0`/`0.percent` to the fixed generated
+  value and `orNullAt 1.0`/`100.percent` to `generates null` when the target is explicitly nullable.
+- Added `generates default` for selecting constructor default values explicitly.
+- Added `PreferFixedDefaultProbability`, a detekt rule that rewrites `orDefaultAt 0.0`/`0.percent` to the fixed
+  generated value and `orDefaultAt 1.0`/`100.percent` to `generates default`.
+- Changed nullable rules so `generates value` always returns that value unless `orNullAt` is set explicitly.
+- Changed automatic nullable and defaultable generation to use `null` or constructor defaults with 50% probability while
+  keeping explicit `generates value` rules fixed unless `orNullAt` or `orDefaultAt` is set.
 
 ## v0.4.0
 

@@ -45,6 +45,8 @@ Rule Set ID: `fiktion`
 | [PreferContainerPartFakeHelpers](#prefercontainerpartfakehelpers) | Enabled | Yes | Prefer container-part helpers in type-family generators. |
 | [PreferExplicitFakeSeedName](#preferexplicitfakeseedname) | Enabled | Yes | Prefer explicit seed names for fake calls. |
 | [PreferFixedConfigValue](#preferfixedconfigvalue) | Enabled | Yes | Prefer fixed config values over equal-bound config ranges. |
+| [PreferFixedDefaultProbability](#preferfixeddefaultprobability) | Enabled | Yes | Prefer fixed generated values over zero or full default probabilities. |
+| [PreferFixedNullProbability](#preferfixednullprobability) | Enabled | Yes | Prefer fixed generated values over zero or full null probabilities. |
 | [PreferGeneratesByForMutableValues](#prefergeneratesbyformutablevalues) | Enabled | Yes | Prefer generator lambdas for mutable values. |
 | [PreferGeneratesForFixedValue](#prefergeneratesforfixedvalue) | Enabled | Yes | Prefer fixed values over generators that always produce a fixed value. |
 | [PreferGeneratesInForRange](#prefergeneratesinforrange) | Enabled | Yes | Prefer generatesIn for range generators. |
@@ -275,6 +277,14 @@ fiktion:
 
   # Prefer fixed config values over equal-bound config ranges.
   PreferFixedConfigValue:
+    active: true
+
+  # Prefer fixed generated values over zero or full default probabilities.
+  PreferFixedDefaultProbability:
+    active: true
+
+  # Prefer fixed generated values over zero or full null probabilities.
+  PreferFixedNullProbability:
     active: true
 
   # Prefer generator lambdas for mutable values.
@@ -1045,6 +1055,69 @@ It intentionally does not chase values stored in variables:
 val size = 2..2
 this using FiktionConfig.Collection.size(size)
 ```
+
+### PreferFixedDefaultProbability
+
+This rule reports `generates ... orDefaultAt ...` declarations whose default probability is fixed. Use the generated
+value directly for `0.0` or `0.percent`, and use `generates default` for `1.0` or `100.percent`.
+
+#### Configuration options:
+
+This rule has no configuration options.
+
+#### Noncompliant Code:
+
+```kotlin
+User::profile generates Profile(nickname = "generated") orDefaultAt 0.0
+User::profile generates Profile(nickname = "generated") orDefaultAt 100.percent
+```
+
+#### Compliant Code:
+
+```kotlin
+User::profile generates Profile(nickname = "generated")
+User::profile generates default
+```
+
+#### Limitations
+
+The rule only reports fixed probabilities attached to `generates` declarations. It intentionally skips `generatesBy`,
+`generatesOneOf`, and stored probability values. `generates default` still requires the selected constructor argument
+to have a default value at runtime.
+
+Auto-correct adds `import dev.s7a.fiktion.default` and `import dev.s7a.fiktion.generates` when needed.
+
+### PreferFixedNullProbability
+
+This rule reports `generates ... orNullAt ...` declarations whose null probability is fixed. Use the generated value
+directly for `0.0` or `0.percent`, and use `generates null` for `1.0` or `100.percent`.
+
+#### Configuration options:
+
+This rule has no configuration options.
+
+#### Noncompliant Code:
+
+```kotlin
+type<String?>() generates "value" orNullAt 0.0
+type<String?>() generates "value" orNullAt 100.percent
+```
+
+#### Compliant Code:
+
+```kotlin
+type<String?>() generates "value"
+type<String?>() generates null
+```
+
+#### Limitations
+
+The `1.0` and `100.percent` replacement is only reported when the rule target is explicitly nullable in PSI, such as
+`type<String?>()`, `name<String?>("name")`, or `property<User, Profile?>("profile")`, or when the generated value is
+already `null`. KProperty shorthand targets such as `User::profile` are skipped for non-null generated values because
+the rule does not use type resolution.
+
+Auto-correct adds `import dev.s7a.fiktion.generates` when needed.
 
 ### PreferGeneratesByForMutableValues
 

@@ -24,6 +24,17 @@ public final class dev/s7a/fiktion/CollectionElementTargetKt {
 	public static final fun getElement (Ldev/s7a/fiktion/RuleTarget;)Ldev/s7a/fiktion/RuleTarget;
 }
 
+public final class dev/s7a/fiktion/Default {
+	public static final field INSTANCE Ldev/s7a/fiktion/Default;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class dev/s7a/fiktion/DefaultKt {
+	public static final fun getDefault ()Ldev/s7a/fiktion/Default;
+}
+
 public abstract interface annotation class dev/s7a/fiktion/ExperimentalFiktionApi : java/lang/annotation/Annotation {
 }
 
@@ -85,6 +96,7 @@ public final class dev/s7a/fiktion/FakeProperty {
 public final class dev/s7a/fiktion/FakeSpec {
 	public fun <init> ()V
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun invoke (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
@@ -382,6 +394,7 @@ public abstract class dev/s7a/fiktion/FiktionRuleBuilder {
 	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;Z)V
 	public final fun configureMap (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
+	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generatesBy (Ldev/s7a/fiktion/PropertyPath;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun name (Ljava/lang/String;)Ldev/s7a/fiktion/RuleNameTarget;
@@ -491,6 +504,7 @@ public abstract interface class dev/s7a/fiktion/RuleTarget {
 
 public final class dev/s7a/fiktion/RuleTargetKt {
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesBy (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generatesByteIn (Ldev/s7a/fiktion/RuleTarget;Lkotlin/ranges/IntRange;)Ldev/s7a/fiktion/GenerationSpec;

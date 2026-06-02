@@ -76,4 +76,13 @@ internal class DefaultRuleTarget<T>(
         config.add(spec)
         return spec
     }
+
+    /**
+     * Registers constructor default generation for this target.
+     */
+    fun generatesDefault(): DefaultGenerationSpec<T> {
+        val spec = DefaultGenerationSpec<T>(key = key, matcher = matcher, defaultGenerates = true)
+        config.add(spec)
+        return spec
+    }
 }

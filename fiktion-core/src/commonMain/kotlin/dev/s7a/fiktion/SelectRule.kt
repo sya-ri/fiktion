@@ -21,6 +21,30 @@ internal fun Iterable<DefaultGenerationSpec<*>>.selectRule(request: GenerationRe
         }
 
 /**
+ * Selects an automatic rule for [request], allowing built-in and add-on rules for non-null types to generate the
+ * non-null side of nullable automatic generation.
+ */
+internal fun Iterable<DefaultGenerationSpec<*>>.selectAutomaticRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
+    selectRule(request) ?: if (request.type.isMarkedNullable) selectNullableAutomaticRule(request) else null
+
+private fun Iterable<DefaultGenerationSpec<*>>.selectNullableAutomaticRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
+    filter { rule -> rule.matcher.matchesNullableAutomaticRequest(request) }
+        .fold(initial = null) { selected, candidate ->
+            when {
+                selected == null -> candidate
+                candidate.hasHigherPriorityThan(selected) -> candidate
+                else -> selected
+            }
+        }
+
+private fun RuleMatcher.matchesNullableAutomaticRequest(request: GenerationRequest): Boolean =
+    when (this) {
+        is RuleMatcher.Type -> request.type.nonNullTypeId() == type.nonNullTypeId()
+        is RuleMatcher.TypeFamily -> request.type.classifier == type.classifier
+        else -> false
+    }
+
+/**
  * Selects the effective config value for [key] and [request].
  */
 @Suppress("UNCHECKED_CAST")

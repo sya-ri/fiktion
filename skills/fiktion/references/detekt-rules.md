@@ -36,6 +36,8 @@ Fiktion import unless an existing direct or star import already covers it.
 - `PreferContainerPartFakeHelpers`: prefers `fakeElement`, `fakeKey`, and `fakeValue` in type-family generators. Supports autocorrect.
 - `PreferExplicitFakeSeedName`: prefers explicit `seed = ...` names for reified `fake<T>` calls. Supports autocorrect.
 - `PreferFixedConfigValue`: prefers fixed config values over equal-bound config ranges. Supports autocorrect.
+- `PreferFixedDefaultProbability`: prefers fixed generated values over `orDefaultAt 0.0`, `orDefaultAt 1.0`, `orDefaultAt 0.percent`, and `orDefaultAt 100.percent`. Supports autocorrect.
+- `PreferFixedNullProbability`: prefers fixed generated values over `orNullAt 0.0`, `orNullAt 1.0`, `orNullAt 0.percent`, and `orNullAt 100.percent`. Supports autocorrect.
 - `PreferGeneratesByForMutableValues`: prefers generator lambdas for mutable values. Supports autocorrect.
 - `PreferGeneratesForFixedValue`: prefers fixed values over generators that always produce a fixed value. Supports autocorrect.
 - `PreferGeneratesInForRange`: prefers `generatesIn` for range generators. Supports autocorrect.
@@ -80,6 +82,8 @@ environment lacks IntelliJ extension points required by tree replacement.
 
 Autocorrect import handling currently matters for:
 
+- `PreferFixedDefaultProbability`: may introduce `dev.s7a.fiktion.default` and `dev.s7a.fiktion.generates`.
+- `PreferFixedNullProbability`: may introduce `dev.s7a.fiktion.generates`.
 - `PreferGeneratesByForMutableValues`: may introduce `dev.s7a.fiktion.generatesBy`.
 - `PreferGeneratesForFixedValue`: may introduce `dev.s7a.fiktion.generates`.
 - `PreferGeneratesInForRange`: may introduce `dev.s7a.fiktion.generatesIn`.

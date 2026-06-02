@@ -33,6 +33,8 @@ internal enum class FiktionOperation(
     GeneratesBy("generatesBy"),
     GeneratesIn("generatesIn"),
     GeneratesOneOf("generatesOneOf"),
+    OrDefaultAt("orDefaultAt"),
+    OrNullAt("orNullAt"),
     Using("using"),
 }
 

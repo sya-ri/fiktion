@@ -5,6 +5,7 @@ package dev.s7a.fiktion
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -225,12 +226,27 @@ class GenerateValueTest {
     }
 
     @Test
-    fun `generateValue uses fifty percent as the default null probability for nullable rules`() {
+    fun `generateValue returns the generated value when nullable rules omit null probability`() {
         val builder = DefaultFiktionBuilder()
 
         with(builder) {
             type<String?>() generates "value"
         }
+
+        val value =
+            generateValue(
+                request = GenerationRequest(type = typeOf<String?>()),
+                config = builder.build(),
+                seed = 123,
+                depth = 0,
+            )
+
+        assertEquals("value", value)
+    }
+
+    @Test
+    fun `generateValue returns automatic values or null for nullable types without a matching rule`() {
+        val builder = DefaultFiktionBuilder()
 
         val nullCount = countNulls(config = builder.build(), samples = 1_000)
 
@@ -267,6 +283,28 @@ class GenerateValueTest {
             )
 
         assertEquals("value", value)
+    }
+
+    @Test
+    fun `generateValue reports default generation without a constructor argument`() {
+        val builder = DefaultFiktionBuilder()
+
+        with(builder) {
+            type<String>() generates default
+        }
+
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                generateValue(
+                    request = GenerationRequest(type = typeOf<String>()),
+                    config = builder.build(),
+                    seed = 123,
+                    depth = 0,
+                )
+            }
+
+        assertTrue(error.message.orEmpty().contains("Rule requested a constructor default"))
+        assertTrue(error.message.orEmpty().contains("no constructor argument default is available"))
     }
 
     @Test
