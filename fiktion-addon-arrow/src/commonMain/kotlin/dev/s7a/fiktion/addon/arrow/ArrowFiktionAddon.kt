@@ -14,6 +14,7 @@ import dev.s7a.fiktion.addon.arrow.generators.ior
 import dev.s7a.fiktion.addon.arrow.generators.nonEmptyList
 import dev.s7a.fiktion.addon.arrow.generators.nonEmptySet
 import dev.s7a.fiktion.addon.arrow.generators.option
+import dev.s7a.fiktion.generates
 import dev.s7a.fiktion.generatesBy
 
 /**

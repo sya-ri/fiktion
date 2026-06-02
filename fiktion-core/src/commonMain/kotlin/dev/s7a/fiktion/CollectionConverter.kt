@@ -12,6 +12,10 @@ internal data class CollectionConverter(
      * Converts generated elements into the final collection.
      */
     val convert: (List<Any?>) -> Any,
+    /**
+     * Whether this collection requires distinct generated elements.
+     */
+    val unique: Boolean = false,
 )
 
 /**

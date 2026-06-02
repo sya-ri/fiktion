@@ -2,6 +2,8 @@
 
 package dev.s7a.fiktion
 
+import kotlin.reflect.KType
+
 /**
  * Null probability used when a nullable rule does not declare one explicitly.
  */
@@ -211,21 +213,33 @@ private fun generateAutomaticContainerValue(
 ): Any? {
     config.selectCollectionConverter(request)?.let { converter ->
         val elementType = request.type.typeArgument(index = 0) ?: return null
+        val size = context.config(FiktionConfig.Collection.size).random(context.random)
         val elements =
-            List(context.config(FiktionConfig.Collection.size).random(context.random)) { index ->
-                generateValue(
-                    request =
-                        GenerationRequest(
-                            type = elementType,
-                            containerParts =
-                                request.containerParts +
-                                    ContainerPart(kind = ContainerPart.Kind.Collection, container = request.type),
-                            index = index,
-                        ),
-                    config = config,
-                    seed = seed.childSeed(index),
-                    depth = depth + 1,
-                )
+            if (converter.unique) {
+                generateUniqueElements(
+                    size = size,
+                    strategy = context.config(FiktionConfig.Collection.uniqueElementStrategy),
+                ) { index ->
+                    generateCollectionElement(
+                        request = request,
+                        config = config,
+                        seed = seed,
+                        depth = depth,
+                        elementType = elementType,
+                        index = index,
+                    )
+                }
+            } else {
+                List(size) { index ->
+                    generateCollectionElement(
+                        request = request,
+                        config = config,
+                        seed = seed,
+                        depth = depth,
+                        elementType = elementType,
+                        index = index,
+                    )
+                }
             }
         return converter.convert(elements)
     }
@@ -267,3 +281,25 @@ private fun generateAutomaticContainerValue(
 
     return null
 }
+
+private fun generateCollectionElement(
+    request: GenerationRequest,
+    config: FiktionConfigState,
+    seed: Long,
+    depth: Int,
+    elementType: KType,
+    index: Int,
+): Any? =
+    generateValue(
+        request =
+            GenerationRequest(
+                type = elementType,
+                containerParts =
+                    request.containerParts +
+                        ContainerPart(kind = ContainerPart.Kind.Collection, container = request.type),
+                index = index,
+            ),
+        config = config,
+        seed = seed.childSeed(index),
+        depth = depth + 1,
+    )

@@ -3,6 +3,7 @@ package dev.s7a.fiktion
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalFiktionApi::class)
@@ -71,6 +72,107 @@ class GenerateCollectionTest {
         assertEquals(2, value.size)
         value += "extra"
         assertEquals(3, value.size)
+    }
+
+    @Test
+    fun `fake keeps best-effort set size by default`() {
+        val fiktion =
+            Fiktion {
+                type<Set<Boolean>> {
+                    this using FiktionConfig.Collection.size(3)
+                    element generatesBy { index % 2 == 0 }
+                }
+            }
+
+        val value = fiktion.fake<Set<Boolean>>(seed = 123)
+
+        assertEquals(2, value.size)
+    }
+
+    @Test
+    fun `fake retries set generation when exact unique element generation is configured`() {
+        val fiktion =
+            Fiktion {
+                type<Set<String>> {
+                    this using FiktionConfig.Collection.size(3)
+                    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
+                    element generatesBy { "item-${index / 2}" }
+                }
+            }
+
+        val value = fiktion.fake<Set<String>>(seed = 123)
+
+        assertEquals(setOf("item-0", "item-1", "item-2"), value)
+    }
+
+    @Test
+    fun `fake fails exact unique element generation when distinct values cannot fill requested size`() {
+        val fiktion =
+            Fiktion {
+                type<Set<Boolean>> {
+                    this using FiktionConfig.Collection.size(3)
+                    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
+                    element generatesBy { index % 2 == 0 }
+                }
+            }
+
+        assertFailsWith<CannotGenerateException> {
+            fiktion.fake<Set<Boolean>>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `generates auto retries set generation when exact unique element generation is configured`() {
+        val fiktion =
+            Fiktion {
+                type<Set<String>> {
+                    this generates auto
+                    this using FiktionConfig.Collection.size(3)
+                    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
+                    element generatesBy { "item-${index / 2}" }
+                }
+            }
+
+        val value = fiktion.fake<Set<String>>(seed = 123)
+
+        assertEquals(setOf("item-0", "item-1", "item-2"), value)
+    }
+
+    @Test
+    fun `generates auto retries custom unique collection generation when exact unique element generation is configured`() {
+        val fiktion =
+            Fiktion {
+                configureCollection<CustomSet<*>>(unique = true) { elements ->
+                    CustomSet(elements)
+                }
+                type<CustomSet<String>> {
+                    this generates auto
+                    this using FiktionConfig.Collection.size(3)
+                    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
+                    element generatesBy { "item-${index / 2}" }
+                }
+            }
+
+        val value = fiktion.fake<CustomSet<String>>(seed = 123)
+
+        assertEquals(setOf("item-0", "item-1", "item-2"), value.toSet())
+    }
+
+    @Test
+    fun `generates auto can target type families`() {
+        val fiktion =
+            Fiktion {
+                configureCollection<CustomCollection<*>> { elements ->
+                    CustomCollection(elements)
+                }
+                typeFamily<CustomCollection<*>>() generates auto
+                this using FiktionConfig.Collection.size(2)
+                type<String>() generatesBy { "item-$index" }
+            }
+
+        val value = fiktion.fake<CustomCollection<String>>(seed = 123)
+
+        assertEquals(listOf("item-0", "item-1"), value.toList())
     }
 
     @Test
@@ -211,3 +313,7 @@ class GenerateCollectionTest {
 private class CustomCollection<T>(
     private val values: List<T>,
 ) : Collection<T> by values
+
+private class CustomSet<T>(
+    values: List<T>,
+) : Set<T> by values.toSet()

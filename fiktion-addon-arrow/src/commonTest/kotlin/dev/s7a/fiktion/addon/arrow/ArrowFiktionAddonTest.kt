@@ -8,6 +8,7 @@ import arrow.core.Option
 import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.FiktionConfig
+import dev.s7a.fiktion.UniqueElementStrategy
 import dev.s7a.fiktion.addon.arrow.generators.either
 import dev.s7a.fiktion.addon.arrow.generators.ior
 import dev.s7a.fiktion.addon.arrow.generators.nonEmptyList
@@ -110,6 +111,40 @@ class ArrowFiktionAddonTest {
     }
 
     @Test
+    fun `installed arrow add-on retries non-empty set generation when exact unique element generation is configured`() {
+        val fiktion =
+            Fiktion {
+                install(ArrowFiktionAddon)
+                type<NonEmptySet<String>> {
+                    this using FiktionConfig.Collection.size(3)
+                    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
+                    element generatesBy { "item-${index / 2}" }
+                }
+            }
+
+        val value = fiktion.fake<NonEmptySet<String>>(seed = 123)
+
+        assertEquals(setOf("item-0", "item-1", "item-2"), value.toSet())
+    }
+
+    @Test
+    fun `installed arrow add-on fails exact non-empty set generation when distinct values cannot fill requested size`() {
+        val fiktion =
+            Fiktion {
+                install(ArrowFiktionAddon)
+                type<NonEmptySet<Boolean>> {
+                    this using FiktionConfig.Collection.size(3)
+                    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
+                    element generatesBy { index % 2 == 0 }
+                }
+            }
+
+        assertFailsWith<CannotGenerateException> {
+            fiktion.fake<NonEmptySet<Boolean>>(seed = 123)
+        }
+    }
+
+    @Test
     fun `direct arrow generators create expected shapes`() {
         val fiktion =
             Fiktion {
@@ -165,6 +200,21 @@ class ArrowFiktionAddonTest {
             is Ior.Both -> assertEquals(0 to 1, ior.leftValue to ior.rightValue)
         }
         assertEquals(listOf(0, 1, 2), fiktion.fake<NonEmptyList<Int>>(seed = 123).toList())
+        assertEquals(setOf(0, 1, 2), fiktion.fake<NonEmptySet<Int>>(seed = 123).toSet())
+    }
+
+    @Test
+    fun `direct non-empty set generator retries duplicates when exact unique element generation is configured`() {
+        val fiktion =
+            Fiktion {
+                type<NonEmptySet<Int>> {
+                    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 2))
+                    this generatesBy {
+                        nonEmptySet(size = 3) { index / 2 }
+                    }
+                }
+            }
+
         assertEquals(setOf(0, 1, 2), fiktion.fake<NonEmptySet<Int>>(seed = 123).toSet())
     }
 }

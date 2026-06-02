@@ -241,8 +241,11 @@ public sealed class FiktionRuleBuilder protected constructor() {
      * Configures how generated elements are materialized as collection type [CollectionType].
      */
     @Suppress("DEPRECATION_ERROR")
-    public inline fun <reified CollectionType : Collection<*>> configureCollection(noinline convert: (List<Any?>) -> CollectionType) {
-        configureCollection(type = typeOf<CollectionType>(), convert = convert)
+    public inline fun <reified CollectionType : Collection<*>> configureCollection(
+        unique: Boolean = false,
+        noinline convert: (List<Any?>) -> CollectionType,
+    ) {
+        configureCollection(type = typeOf<CollectionType>(), convert = convert, unique = unique)
     }
 
     /**
@@ -259,12 +262,30 @@ public sealed class FiktionRuleBuilder protected constructor() {
      * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [type] and
      * the converter type consistent.
      */
-    @Deprecated("Use the reified configureCollection<CollectionType>(convert) overload.", level = DeprecationLevel.ERROR)
+    @Deprecated(
+        "Use the reified configureCollection<CollectionType>(convert) overload. This overload will be removed in 1.0.0.",
+        level = DeprecationLevel.ERROR,
+    )
     public fun configureCollection(
         type: KType,
         convert: (List<Any?>) -> Collection<*>,
     ) {
-        mutableConfig.add(CollectionConverter(classifier = type.classifier, convert = convert))
+        mutableConfig.add(CollectionConverter(classifier = type.classifier, convert = convert, unique = false))
+    }
+
+    /**
+     * Configures how generated elements are materialized as collection type [type].
+     *
+     * This low-level overload is intended for callers that already carry a [KType]. The caller must keep [type] and
+     * the converter type consistent.
+     */
+    @Deprecated("Use the reified configureCollection<CollectionType>(unique, convert) overload.", level = DeprecationLevel.ERROR)
+    public fun configureCollection(
+        type: KType,
+        convert: (List<Any?>) -> Collection<*>,
+        unique: Boolean,
+    ) {
+        mutableConfig.add(CollectionConverter(classifier = type.classifier, convert = convert, unique = unique))
     }
 
     /**

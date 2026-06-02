@@ -5,6 +5,8 @@
 - Added `fiktion-detekt-rules`, an optional detekt rule set for keeping Fiktion DSL usage focused and consistent.
 - Added `fiktion-addon-arrow` with generation rules for Arrow Core `Option`, `Either`, `Ior`, `NonEmptyList`, and
   `NonEmptySet`.
+- Added `FiktionConfig.Collection.uniqueElementStrategy` plus unique/minimum-size collection converter support for
+  opt-in exact distinct-element generation.
 
 ## v0.3.0
 
