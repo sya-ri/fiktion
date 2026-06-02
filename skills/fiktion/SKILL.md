@@ -15,6 +15,7 @@ Prefer the repository source over memory when details matter:
 - Built-in generators: `fiktion-core/src/commonMain/kotlin/dev/s7a/fiktion/generators`
 - Arrow Core add-on: `fiktion-addon-arrow-core/src/commonMain/kotlin/dev/s7a/fiktion/addon/arrow/core`
 - Java add-on: `fiktion-addon-java/src/main/kotlin/dev/s7a/fiktion/addon/java`
+- kotlinx-datetime add-on: `fiktion-addon-kotlinx-datetime/src/commonMain/kotlin/dev/s7a/fiktion/addon/kotlinx/datetime`
 - Gradle plugin: `fiktion-gradle-plugin/src/main/kotlin/dev/s7a/fiktion/gradle`
 - Compiler plugin: `fiktion-compiler-plugin/src/main/kotlin/dev/s7a/fiktion/compiler`
 - Detekt rules: `fiktion-detekt-rules/src/main/kotlin/dev/s7a/fiktion/detekt`
@@ -28,7 +29,7 @@ Read only the file needed for the task:
 
 - Basic usage, rule precedence, target selection, collections/maps, nulls/defaults, compiler plugin, Gradle config: `references/basic-api.md`
 - Built-in generator functions and generator-writing patterns: `references/generators.md`
-- Java add-on usage, automatic add-on registration, and custom add-on authoring: `references/addons.md`
+- Add-on usage, automatic add-on registration, and custom add-on authoring: `references/addons.md`
 - Detekt rule authoring and available Fiktion rules: `references/detekt-rules.md`
 - Common failures, error messages, and review checklist: `references/troubleshooting.md`
 
