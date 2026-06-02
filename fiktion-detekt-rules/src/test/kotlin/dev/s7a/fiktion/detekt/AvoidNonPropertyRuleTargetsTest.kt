@@ -51,19 +51,20 @@ class AvoidNonPropertyRuleTargetsTest {
     }
 
     @Test
-    fun `reports non property targets in Fiktion configure`() {
+    fun `reports non property rule targets in fake configuration`() {
         val findings =
             rule.lint(
                 """
-                fun configure() {
-                    Fiktion.configure {
+                fun build() {
+                    fake<User> {
                         type<String>() generates "value"
+                        name<String>("id") generates "value"
                     }
                 }
                 """.trimIndent(),
             )
 
-        assertEquals(1, findings.size)
+        assertEquals(2, findings.size)
         assertEquals(
             "Use an explicit property target instead of `type<String>()`.",
             findings[0].message,
@@ -97,13 +98,20 @@ class AvoidNonPropertyRuleTargetsTest {
     }
 
     @Test
-    fun `does not report matching code outside Fiktion configuration scopes`() {
+    fun `does not report non property targets in global configuration scopes`() {
         val findings =
             rule.lint(
                 """
-                fun buildRules() {
+                fun configure() {
                     type<String>() generates "value"
                     name<String>("id") generates "value"
+                }
+
+                fun global() {
+                    Fiktion.configure {
+                        type<String>() generates "value"
+                        name<String>("id") generates "value"
+                    }
                 }
                 """.trimIndent(),
             )

@@ -26,7 +26,7 @@ Fiktion import unless an existing direct or star import already covers it.
 - `AvoidMultipleConfigsForRuleTarget`: avoids multiple configs for the same rule target and config key. Report-only.
 - `AvoidMultipleGeneratorsForRuleTarget`: avoids multiple generators for the same rule target. Report-only.
 - `AvoidMultipleSeedsInFakeSpec`: avoids multiple `withSeed` declarations in the same Fiktion spec block. Report-only.
-- `AvoidNonPropertyRuleTargets`: avoids `type`, `typeFamily`, and `name` rule targets when teams want explicit property-only rules. Report-only. Disabled by default.
+- `AvoidNonPropertyRuleTargets`: avoids `type`, `typeFamily`, and `name` rule targets in local `fake { ... }` and scoped `Fiktion { ... }` rules when teams want explicit property-only rules. Report-only. Disabled by default.
 - `AvoidRandomInstanceInGenerator`: avoids `Random` instances inside generator lambdas. Supports autocorrect.
 - `AvoidRecursiveFakeInGenerator`: avoids recursive fake calls in same-type generators. Report-only.
 - `AvoidRuleDeclarationsInLoops`: avoids declaring rules inside loops. Report-only.

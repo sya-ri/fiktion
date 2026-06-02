@@ -9,22 +9,23 @@ import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtCallableReferenceExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtExpression
+import org.jetbrains.kotlin.psi.KtLambdaExpression
 import org.jetbrains.kotlin.psi.KtParenthesizedExpression
 import org.jetbrains.kotlin.psi.KtThisExpression
 
 /**
- * Reports Fiktion rule targets that do not explicitly target a property.
+ * Reports non-property Fiktion rule targets in local fake configuration scopes.
  */
 public class AvoidNonPropertyRuleTargets(
     config: Config,
 ) : Rule(
         config = config,
-        description = "Avoid Fiktion rule targets that do not explicitly target a property.",
+        description = "Avoid non-property Fiktion rule targets in fake and scoped Fiktion configuration.",
     ) {
     override fun visitBinaryExpression(expression: KtBinaryExpression) {
         super.visitBinaryExpression(expression)
 
-        if (!expression.isInsideFiktionConfigurationScope()) return
+        if (!expression.isInsidePropertyOnlyRuleScope()) return
         if (!expression.usesInfixOperation(RESTRICTED_OPERATIONS)) return
         val target = expression.left ?: return
         if (target is KtThisExpression) return
@@ -36,7 +37,7 @@ public class AvoidNonPropertyRuleTargets(
     override fun visitCallExpression(expression: KtCallExpression) {
         super.visitCallExpression(expression)
 
-        if (!expression.isInsideFiktionConfigurationScope()) return
+        if (!expression.isInsidePropertyOnlyRuleScope()) return
         if (expression.isNonPropertyTargetBlock()) {
             reportTarget(expression = expression, target = expression)
             return
@@ -72,6 +73,17 @@ private enum class RuleTargetKind {
 
 private fun KtCallExpression.isNonPropertyTargetBlock(): Boolean =
     lambdaArguments.isNotEmpty() && ruleTargetKind() == RuleTargetKind.NON_PROPERTY
+
+private fun KtExpression.isInsidePropertyOnlyRuleScope(): Boolean =
+    generateSequence(parent) { element -> element.parent }
+        .any { element ->
+            element is KtLambdaExpression && element.isPropertyOnlyRuleLambda()
+        }
+
+private fun KtLambdaExpression.isPropertyOnlyRuleLambda(): Boolean {
+    val call = containingCallExpression() ?: return false
+    return call.hasCallee(FiktionCall.Fake) || call.calleeExpression?.text == FIKTION_OBJECT_NAME
+}
 
 private fun KtExpression.ruleTargetKind(): RuleTargetKind =
     when (this) {
@@ -126,4 +138,5 @@ private val RESTRICTED_OPERATIONS = FIKTION_GENERATOR_OPERATIONS + FiktionOperat
 
 private val RESTRICTED_OPERATION_NAMES = RESTRICTED_OPERATIONS.map { operation -> operation.text }.toSet()
 
+private const val FIKTION_OBJECT_NAME = "Fiktion"
 private const val PROPERTY_PATH_OPERATION = "/"

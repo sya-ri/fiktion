@@ -35,7 +35,7 @@ Rule Set ID: `fiktion`
 | [AvoidMultipleConfigsForRuleTarget](#avoidmultipleconfigsforruletarget) | Enabled | No | Avoid multiple configs for the same rule target and config key. |
 | [AvoidMultipleGeneratorsForRuleTarget](#avoidmultiplegeneratorsforruletarget) | Enabled | No | Avoid multiple generators for the same rule target. |
 | [AvoidMultipleSeedsInFakeSpec](#avoidmultipleseedsinfakespec) | Enabled | No | Avoid multiple withSeed declarations in the same Fiktion spec block. |
-| [AvoidNonPropertyRuleTargets](#avoidnonpropertyruletargets) | Disabled | No | Avoid rule targets that do not explicitly target a property. |
+| [AvoidNonPropertyRuleTargets](#avoidnonpropertyruletargets) | Disabled | No | Avoid non-property rule targets in `fake { ... }` and `Fiktion { ... }`. |
 | [AvoidRandomInstanceInGenerator](#avoidrandominstanceingenerator) | Enabled | Yes | Avoid Random instances inside generator lambdas. |
 | [AvoidRecursiveFakeInGenerator](#avoidrecursivefakeingenerator) | Enabled | No | Avoid recursive fake calls in same-type generators. |
 | [AvoidRuleDeclarationsInLoops](#avoidruledeclarationsinloops) | Enabled | No | Avoid declaring rules inside loops. |
@@ -675,9 +675,9 @@ single seed declaration can be moved to the `fake(seed = ...)` parameter.
 
 ### AvoidNonPropertyRuleTargets
 
-This opt-in rule reports Fiktion rule declarations whose target is not an explicit property target. It is useful for
-teams that want fake configuration to document the property being controlled instead of applying broad type, type-family,
-or property-name rules.
+This opt-in rule reports rule declarations in `fake { ... }` and `Fiktion { ... }` whose target is not an explicit
+property target. It is useful for teams that want local fake configuration to document the property being controlled
+instead of applying broad type, type-family, or property-name rules.
 
 #### Configuration options:
 
@@ -686,24 +686,33 @@ This rule has no configuration options.
 #### Noncompliant Code:
 
 ```kotlin
-type<String>() generates "value"
-typeFamily<List<*>>() generatesBy { fake(0) }
-name<String>("id") generates "value"
+fake<User> {
+    type<String>() generates "value"
+    typeFamily<List<*>>() generatesBy { fake(0) }
+    name<String>("id") generates "value"
+}
 ```
 
 #### Compliant Code:
 
 ```kotlin
-User::id generates "value"
-property<User, String>("id") generates "value"
-(User::profile / Profile::nickname) generates "value"
+fake<User> {
+    User::id generates "value"
+    property<User, String>("id") generates "value"
+    (User::profile / Profile::nickname) generates "value"
+}
+
+Fiktion.configure {
+    type<String>() generates "value"
+}
 ```
 
 #### Limitations
 
 This rule is disabled by default because it constrains public Fiktion APIs that are valid and useful in many projects.
-Enable it only when a project intentionally wants property-only rule declarations. The rule is report-only because
-rewriting broad type, type-family, or name rules to property rules requires project-specific intent.
+It only reports local `fake { ... }` and scoped `Fiktion { ... }` declarations; global configuration and addon-style
+configuration remain valid places for broad type, type-family, or name rules. The rule is report-only because rewriting
+broad type, type-family, or name rules to property rules requires project-specific intent.
 
 ### AvoidRandomInstanceInGenerator
 
