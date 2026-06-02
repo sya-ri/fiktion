@@ -5,11 +5,6 @@ package dev.s7a.fiktion
 import kotlin.random.Random
 
 /**
- * Default-value probability used when a defaultable property rule does not declare one explicitly.
- */
-private const val DEFAULT_VALUE_PROBABILITY = 0.5
-
-/**
  * Generates an object from registered construction [metadata].
  */
 internal fun generateObject(
@@ -55,11 +50,18 @@ private fun FiktionObjectProperty.usesDefault(
     request: GenerationRequest,
     seed: Long,
 ): Boolean {
-    if (!hasDefault) return false
-
     val rule = config.selectRule(request)
-    val defaultProbability = rule?.defaultProbability?.value ?: DEFAULT_VALUE_PROBABILITY
-    return Random(rule?.seed ?: seed).nextDouble() < defaultProbability
+    if (!hasDefault) {
+        if (rule?.defaultGenerates == true) {
+            throw CannotGenerateException(missingDefaultValueMessage(type = request.type, property = this))
+        }
+        return false
+    }
+
+    if (rule?.defaultGenerates == true) return true
+
+    val defaultProbability = rule?.defaultProbability?.value ?: return false
+    return Random(rule.seed ?: seed).nextDouble() < defaultProbability
 }
 
 /**

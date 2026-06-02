@@ -34,6 +34,8 @@ public class FiktionRuleSetProvider : RuleSetProvider {
                     ::PreferContainerPartFakeHelpers,
                     ::PreferExplicitFakeSeedName,
                     ::PreferFixedConfigValue,
+                    ::PreferFixedDefaultProbability,
+                    ::PreferFixedNullProbability,
                     ::PreferGeneratesByForMutableValues,
                     ::PreferGeneratesForFixedValue,
                     ::PreferGeneratesInForRange,

@@ -62,6 +62,46 @@ name<String?>("nickname") generates null
 
 Without this, Kotlin may infer `Nothing?`, making the rule hard to match.
 
+## Nullable Rule Unexpectedly Returns The Generated Value
+
+Nullable rules do not generate `null` unless `orNullAt` is set:
+
+```kotlin
+type<String?>() generates "nickname"
+```
+
+This always returns `"nickname"`. Add an explicit null probability when null should be a candidate:
+
+```kotlin
+type<String?>() generates "nickname" orNullAt 30.percent
+```
+
+Use `generates null` when the intended value is always null:
+
+```kotlin
+type<String?>() generates null
+```
+
+## Constructor Default Is Not Used
+
+Constructor defaults are not selected unless `generates default` or `orDefaultAt` is set:
+
+```kotlin
+User::profile generates default
+User::profile generates Profile(nickname = "generated") orDefaultAt 30.percent
+```
+
+`generates default` only works when the selected constructor argument has a default value. If the argument has no
+default, Fiktion reports that the rule requested a constructor default for an argument with no default value. Generate
+an explicit value instead:
+
+```kotlin
+User::profile generates Profile(nickname = "generated")
+```
+
+Top-level rules such as `type<Profile>() generates default` only make sense when they are selected while generating a
+defaultable constructor argument. A top-level `fake<Profile>()` request has no constructor argument default to select.
+
 ## Map Key And Value Rules
 
 Use `key generatesBy { ... }` and `value generatesBy { ... }` when defining generated map parts:

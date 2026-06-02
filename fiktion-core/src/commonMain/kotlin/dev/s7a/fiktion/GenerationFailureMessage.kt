@@ -73,3 +73,32 @@ internal fun objectArgumentGenerationMessage(
     type<${property.type}>() generatesBy { ... }
     property<$type, ${property.type}>("${property.name}") generatesBy { ... }
     """.trimIndent()
+
+/**
+ * Returns the message used when a rule requests a constructor default for a property that has none.
+ */
+internal fun missingDefaultValueMessage(
+    type: KType,
+    property: FiktionObjectProperty,
+): String =
+    """
+    Cannot generate $type.
+
+    Rule requested the constructor default for ${property.name}: ${property.type}, but that constructor argument has no default value.
+
+    Use `generates default` only for constructor arguments with default values, or generate an explicit value:
+    property<$type, ${property.type}>("${property.name}") generatesBy { ... }
+    """.trimIndent()
+
+/**
+ * Returns the message used when a rule requests a constructor default outside constructor argument generation.
+ */
+internal fun defaultValueWithoutConstructorArgumentMessage(type: KType): String =
+    """
+    Cannot generate $type.
+
+    Rule requested a constructor default, but no constructor argument default is available for this generation request.
+
+    Use `generates default` only for constructor arguments with default values, or generate an explicit value:
+    type<$type>() generatesBy { ... }
+    """.trimIndent()

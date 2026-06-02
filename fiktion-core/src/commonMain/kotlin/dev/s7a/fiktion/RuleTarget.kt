@@ -162,3 +162,9 @@ public infix fun <T> RuleTarget<T>.generatesOneOf(values: Iterable<T>): Generati
  */
 @Suppress("UNUSED_PARAMETER")
 public infix fun <T> RuleTarget<T>.generates(auto: Auto): GenerationSpec<T> = (this as DefaultRuleTarget<T>).generatesAutomatically()
+
+/**
+ * Uses the constructor default value for this rule target.
+ */
+@Suppress("UNUSED_PARAMETER")
+public infix fun <T> RuleTarget<T>.generates(default: Default): GenerationSpec<T> = (this as DefaultRuleTarget<T>).generatesDefault()

@@ -287,6 +287,7 @@ Common rule forms:
 target generates value
 target generatesBy { /* FakeContext receiver */ }
 target generates auto
+target generates default
 target generatesIn 1..10
 target generatesOneOf listOf("a", "b")
 target generates value withSeed 123
@@ -294,7 +295,9 @@ target generates value orNullAt 0.3
 target generates value orDefaultAt 30.percent
 ```
 
-`Double` probabilities use `0.0..1.0`; `percent` helpers are available.
+`generates value` always returns that value for nullable rules unless `orNullAt` is set. `Double` probabilities use
+`0.0..1.0`; `percent` helpers are available. Constructor defaults are selected only when `generates default` or
+`orDefaultAt` is set. `generates default` requires a constructor argument with a default value.
 
 `withSeed` exists at two levels:
 

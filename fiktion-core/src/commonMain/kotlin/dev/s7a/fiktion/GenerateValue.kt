@@ -5,11 +5,6 @@ package dev.s7a.fiktion
 import kotlin.reflect.KType
 
 /**
- * Null probability used when a nullable rule does not declare one explicitly.
- */
-private const val DEFAULT_NULL_PROBABILITY = 0.5
-
-/**
  * Generates a single value for [request] using [config].
  */
 internal fun generateValue(
@@ -163,8 +158,13 @@ private fun generateFromRule(
     context: FakeContext,
 ): Any? {
     if (request.type.isMarkedNullable) {
-        val nullProbability = rule.nullProbability?.value ?: DEFAULT_NULL_PROBABILITY
-        if (context.random.nextDouble() < nullProbability) return null
+        rule.nullProbability?.let { nullProbability ->
+            if (context.random.nextDouble() < nullProbability.value) return null
+        }
+    }
+
+    if (rule.defaultGenerates) {
+        throw CannotGenerateException(defaultValueWithoutConstructorArgumentMessage(request.type))
     }
 
     if (rule.automaticallyGenerates) {
