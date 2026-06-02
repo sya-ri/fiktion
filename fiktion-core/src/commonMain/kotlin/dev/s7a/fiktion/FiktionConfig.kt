@@ -241,6 +241,9 @@ public class FiktionConfig<Scope, Value : Any>
         public object Collection {
             public val size: FiktionConfig<KotlinCollection<*>, ClosedRange<KotlinInt>> =
                 FiktionConfig(0..5)
+
+            public val uniqueElementStrategy: FiktionConfig<KotlinCollection<*>, UniqueElementStrategy> =
+                FiktionConfig(UniqueElementStrategy.BestEffort)
         }
 
         /**
@@ -310,3 +313,31 @@ public operator fun <Scope, Value : Any> FiktionConfig<Scope, Value>.invoke(valu
 public operator fun <Scope, Value : Comparable<Value>> FiktionConfig<Scope, ClosedRange<Value>>.invoke(
     value: Value,
 ): FiktionConfigSetting<Scope, ClosedRange<Value>> = invoke(value..value)
+
+/**
+ * Strategy for generating distinct values for set-like collections.
+ */
+public sealed interface UniqueElementStrategy {
+    /**
+     * Generates the configured number of candidates and materializes them as a set.
+     *
+     * Duplicate candidates collapse, so the final set size can be smaller than the configured collection size.
+     */
+    public data object BestEffort : UniqueElementStrategy
+
+    /**
+     * Retries candidate generation until the requested number of distinct values is reached.
+     *
+     * Generation fails if fewer than the requested number of distinct values are produced after
+     * `requestedSize * maxAttemptsPerElement` attempts.
+     */
+    public data class Exact(
+        val maxAttemptsPerElement: KotlinInt = 16,
+    ) : UniqueElementStrategy {
+        init {
+            require(maxAttemptsPerElement > 0) {
+                "maxAttemptsPerElement must be positive, but was $maxAttemptsPerElement."
+            }
+        }
+    }
+}

@@ -25,4 +25,13 @@ internal class DefaultTypeFamilyRuleTarget<T>(
         config.add(spec)
         return spec
     }
+
+    /**
+     * Registers automatic generation for this type-family target.
+     */
+    fun generatesAutomatically(): DefaultGenerationSpec<T> {
+        val spec = DefaultGenerationSpec<T>(key = key, matcher = matcher, automaticallyGenerates = true)
+        config.add(spec)
+        return spec
+    }
 }

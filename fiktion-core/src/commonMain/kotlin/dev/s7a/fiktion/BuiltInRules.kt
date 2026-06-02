@@ -96,10 +96,10 @@ private val BUILT_IN_CONFIG: FiktionConfigState by lazy {
             configureCollection<MutableList<*>> { elements ->
                 elements.toMutableList()
             }
-            configureCollection<Set<*>> { elements ->
+            configureCollection<Set<*>>(unique = true) { elements ->
                 elements.toSet()
             }
-            configureCollection<MutableSet<*>> { elements ->
+            configureCollection<MutableSet<*>>(unique = true) { elements ->
                 elements.toMutableSet()
             }
             configureMap<Map<*, *>> { entries ->

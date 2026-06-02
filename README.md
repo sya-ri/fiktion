@@ -298,6 +298,30 @@ val names = fake<List<String>> {
 }
 ```
 
+Sets use normal set semantics by default, so duplicate generated elements can collapse and make the final set smaller
+than `FiktionConfig.Collection.size`. Use `UniqueElementStrategy.Exact` when a set must contain the configured number of
+distinct values:
+
+```kotlin
+val labels = fake<Set<String>> {
+    this using FiktionConfig.Collection.size(3)
+    this using FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(maxAttemptsPerElement = 16))
+}
+```
+
+Exact set generation retries candidate values up to `size * maxAttemptsPerElement`. If Fiktion cannot produce enough
+distinct values within that bound, generation fails instead of silently returning a smaller set.
+
+Custom collection converters can opt into the same distinct-element generation:
+
+```kotlin
+val fiktion = Fiktion {
+    configureCollection<CustomSet<*>>(unique = true) { elements ->
+        CustomSet(elements)
+    }
+}
+```
+
 Container target configuration narrows defaults to values generated below collection and map roots:
 
 ```kotlin
@@ -673,8 +697,10 @@ val either = fake<Either<String, Int>>()
 val items = fake<NonEmptyList<String>>()
 ```
 
-`NonEmptySet` follows normal set semantics: duplicate generated values collapse, so the final set size can be smaller
-than `FiktionConfig.Collection.size`.
+`NonEmptyList` and `NonEmptySet` use collection converters with a minimum size of `1`. `NonEmptySet` also follows normal
+set semantics by default: duplicate generated values collapse, so the final set size can be smaller than
+`FiktionConfig.Collection.size`. Use `FiktionConfig.Collection.uniqueElementStrategy` when exact distinct sizes are
+required.
 
 It can also be installed explicitly:
 
