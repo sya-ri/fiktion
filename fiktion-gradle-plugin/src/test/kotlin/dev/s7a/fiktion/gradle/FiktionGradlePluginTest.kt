@@ -64,6 +64,86 @@ class FiktionGradlePluginTest {
     }
 
     @Test
+    fun `plugin and core work together in a consumer JVM test project`() {
+        val repository = Path.of(System.getProperty("user.dir")).parent
+        val directory = Files.createTempDirectory("fiktion-consumer-jvm-test")
+        directory.resolve("settings.gradle.kts").writeText(
+            """
+            pluginManagement {
+                includeBuild("${repository.toString().replace("\\", "\\\\")}")
+                repositories {
+                    gradlePluginPortal()
+                    mavenCentral()
+                }
+            }
+
+            dependencyResolutionManagement {
+                repositories {
+                    mavenCentral()
+                }
+            }
+
+            rootProject.name = "fiktion-consumer-jvm-test"
+            includeBuild("${repository.toString().replace("\\", "\\\\")}")
+            """.trimIndent(),
+        )
+        directory.resolve("build.gradle.kts").writeText(
+            """
+            plugins {
+                kotlin("jvm") version "2.3.21"
+                id("dev.s7a.fiktion")
+            }
+
+            dependencies {
+                testImplementation("dev.s7a:fiktion-core:0.4.1")
+                testImplementation(kotlin("test"))
+            }
+            """.trimIndent(),
+        )
+        Files.createDirectories(directory.resolve("src/test/kotlin/com/example"))
+        directory.resolve("src/test/kotlin/com/example/FiktionConsumerTest.kt").writeText(
+            """
+            package com.example
+
+            import dev.s7a.fiktion.fake
+            import dev.s7a.fiktion.generates
+            import kotlin.test.Test
+            import kotlin.test.assertEquals
+
+            data class User(
+                val id: String,
+                val profile: Profile,
+            )
+
+            data class Profile(
+                val displayName: String,
+            )
+
+            class FiktionConsumerTest {
+                @Test
+                fun fakeGeneratesConsumerModels() {
+                    val user = fake<User>(seed = 123) {
+                        User::id generates "user-1"
+                    }
+
+                    assertEquals("user-1", user.id)
+                    assertEquals(user, fake<User>(seed = 123) { User::id generates "user-1" })
+                }
+            }
+            """.trimIndent(),
+        )
+
+        val result =
+            GradleRunner
+                .create()
+                .withProjectDir(directory.toFile())
+                .withArguments("test", "--stacktrace")
+                .build()
+
+        assertEquals(SUCCESS, result.task(":test")?.outcome)
+    }
+
+    @Test
     fun `plugin reads automatic add-on indexes from class directories`() {
         val directory = Files.createTempDirectory("fiktion-addon-index-directory")
         directory
