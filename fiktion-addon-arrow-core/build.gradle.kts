@@ -11,15 +11,9 @@ plugins {
 kotlin {
     jvm()
     js {
-        browser {
-            testTask {
-                failOnNoDiscoveredTests = false
-            }
-        }
         nodejs()
     }
     wasmJs {
-        browser()
         nodejs()
     }
     linuxX64()
