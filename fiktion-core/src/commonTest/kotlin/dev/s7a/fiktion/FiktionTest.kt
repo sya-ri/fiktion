@@ -63,9 +63,10 @@ class FiktionTest {
         val empty = Fiktion()
 
         assertEquals(User(id = "registered-id"), registered.fake<User>())
-        val error = assertFailsWith<CannotGenerateException> {
-            empty.fake<User>(seed = 1)
-        }
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                empty.fake<User>(seed = 1)
+            }
         val message = error.message.orEmpty()
         assertTrue(message.contains("fake<T>() or Fiktion.fake<T>() is called directly"))
         assertFalse(message.contains("local"))
