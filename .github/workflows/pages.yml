@@ -71,7 +71,7 @@ jobs:
 
       - name: Build Dokka HTML
         working-directory: source
-        run: ./gradlew :dokkaGeneratePublicationHtml --stacktrace
+        run: ./gradlew :dokkaGeneratePublicationHtml --no-build-cache --rerun-tasks --stacktrace
 
       - name: Prepare Pages content
         working-directory: source
