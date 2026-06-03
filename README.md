@@ -48,6 +48,12 @@ You get:
 Fiktion is pre-release. The core behavior is usable, but API names and compiler-generated metadata internals may change
 before 1.0.
 
+The everyday test DSL is the compatibility priority: `fake<T>()`, property and name rules, generator configuration,
+add-on installation, and built-in generator helpers are intended to stay source-compatible across ordinary 0.x patch
+releases. APIs marked with `@ExperimentalFiktionApi` are lower-level integration points for compiler-generated
+metadata, automatic add-on registration, and runtime metadata construction. They may change more freely before 1.0 as
+the compiler plugin and metadata model settle.
+
 The repository currently contains:
 
 - `fiktion-core`: runtime APIs and built-in generators
