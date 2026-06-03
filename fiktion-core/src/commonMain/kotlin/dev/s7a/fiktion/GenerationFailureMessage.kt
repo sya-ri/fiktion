@@ -16,8 +16,9 @@ internal fun missingGenerationMessage(type: KType): String =
     Fiktion can automatically generate constructor metadata for supported Kotlin classes when the compiler plugin is enabled.
     If this type should be generated automatically, check that:
     - the Fiktion compiler plugin is applied to this source set
+    - fake<T>() or Fiktion.fake<T>() is called directly from a compiler-plugin-enabled source set
     - the type has a supported primary constructor
-    - the type is not abstract, an interface, inner, local, or annotation class
+    - the type is not abstract, an interface, inner, or annotation class
     - the primary constructor is not private, protected, vararg, or otherwise unsupported
 
     To generate this type manually, add an explicit rule:
