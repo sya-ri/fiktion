@@ -567,6 +567,7 @@ objects without annotations.
 Supported shapes include:
 
 - regular classes and data classes with supported primary constructors
+- local classes with supported primary constructors
 - value classes with one constructor value
 - enum classes
 - sealed classes and sealed interfaces
@@ -576,7 +577,7 @@ Shapes that should be configured explicitly are skipped:
 
 - abstract classes and interfaces
 - fun interfaces and annotation classes
-- inner classes and local classes
+- inner classes
 - classes without a primary constructor
 - private or protected primary constructors
 - vararg or otherwise unsupported constructor parameters
