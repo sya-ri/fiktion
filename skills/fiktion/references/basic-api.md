@@ -6,7 +6,7 @@ Typical JVM test setup:
 
 ```kotlin
 plugins {
-    kotlin("jvm") version "2.3.21"
+    kotlin("jvm") version "2.4.0"
     id("dev.s7a.fiktion") version "0.4.1"
 }
 
