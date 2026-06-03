@@ -97,6 +97,8 @@ If detekt is not configured yet, follow the
 Fiktion is enabled for test source sets by default, including JVM `test` and Multiplatform source sets such as
 `commonTest` and `jvmTest`.
 
+Runnable sample projects live in [`examples/`](examples/).
+
 ## Basic Usage
 
 Generate a value with `fake<T>()`:
