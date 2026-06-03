@@ -802,5 +802,4 @@ val user = fake<User> {
 
 ## Development
 
-Local `./gradlew build` skips browser test execution unless `-Pfiktion.enableBrowserTests=true` is provided. CI enables
-browser tests and installs Chrome before running Gradle.
+Run `./gradlew build` locally to execute the same JVM, Node.js, Wasm Node.js, and native checks used by CI.
