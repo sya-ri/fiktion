@@ -95,4 +95,126 @@ class GenerationFailureMessageTest {
             defaultValueWithoutConstructorArgumentMessage(typeOf<String>()),
         )
     }
+
+    @Test
+    fun `missing generation message reports root request exactly`() {
+        val message =
+            missingGenerationMessage(
+                request = GenerationRequest(type = typeOf<TextMessage>()),
+                config = FiktionConfigState(),
+            )
+
+        assertEquals(
+            """
+            Cannot generate ${typeOf<TextMessage>()}.
+
+            No generation rule or generated metadata was found for ${typeOf<TextMessage>()}.
+
+            Generation request:
+            - type: ${typeOf<TextMessage>()}
+
+            Current Fiktion configuration:
+            - installed add-ons: none
+            - registered metadata entries: 0
+            - explicit generation rules: 0
+            - explicit generator configs: 0
+
+            Fiktion can automatically generate constructor metadata for supported Kotlin classes when the compiler plugin is enabled.
+            If this type should be generated automatically, check that:
+            - the Fiktion compiler plugin is applied to this source set
+            - fake<T>() or Fiktion.fake<T>() is called directly from a compiler-plugin-enabled source set
+            - wrapper functions around fake<T>() are not hiding the direct fake<T>() call from the compiler plugin
+            - the type has a supported primary constructor
+            - the type is not abstract, an interface, fun interface, inner, or annotation class
+            - the primary constructor is not private, protected, vararg, or otherwise unsupported
+
+            If this type comes from a library, install or explicitly register an add-on for that library when one exists.
+
+            To generate this request manually, add one of:
+            - type<${typeOf<TextMessage>()}>() generatesBy { ... }
+            """.trimIndent(),
+            message,
+        )
+    }
+
+    @Test
+    fun `missing generation message reports property request exactly`() {
+        val message =
+            missingGenerationMessage(
+                request =
+                    GenerationRequest(
+                        type = typeOf<Profile>(),
+                        owner = typeOf<User>(),
+                        propertyName = "profile",
+                        pathSegments =
+                            listOf(
+                                PathRuleSegment(
+                                    ownerId = typeOf<User>().nonNullTypeId(),
+                                    name = "profile",
+                                    valueId = typeOf<Profile>().nonNullTypeId(),
+                                ),
+                            ),
+                    ),
+                config =
+                    FiktionConfigState(
+                        rules =
+                            listOf(
+                                DefaultGenerationSpec(
+                                    key = RuleKey.Type(typeOf<String>()),
+                                    matcher = RuleMatcher.Type(typeOf<String>()),
+                                    generator = { "id" },
+                                ),
+                            ),
+                        metadata = mapOf(typeOf<User>().nonNullTypeId() to userMetadataForFailureMessageTest()),
+                    ),
+            )
+
+        assertEquals(
+            """
+            Cannot generate ${typeOf<Profile>()}.
+
+            No generation rule or generated metadata was found for ${typeOf<Profile>()}.
+
+            Generation request:
+            - type: ${typeOf<Profile>()}
+            - owner: ${typeOf<User>()}
+            - property: profile
+            - path: profile
+
+            Current Fiktion configuration:
+            - installed add-ons: none
+            - registered metadata entries: 1
+            - explicit generation rules: 1
+            - explicit generator configs: 0
+
+            Fiktion can automatically generate constructor metadata for supported Kotlin classes when the compiler plugin is enabled.
+            If this type should be generated automatically, check that:
+            - the Fiktion compiler plugin is applied to this source set
+            - fake<T>() or Fiktion.fake<T>() is called directly from a compiler-plugin-enabled source set
+            - wrapper functions around fake<T>() are not hiding the direct fake<T>() call from the compiler plugin
+            - the type has a supported primary constructor
+            - the type is not abstract, an interface, fun interface, inner, or annotation class
+            - the primary constructor is not private, protected, vararg, or otherwise unsupported
+
+            If this type comes from a library, install or explicitly register an add-on for that library when one exists.
+
+            To generate this request manually, add one of:
+            - type<${typeOf<Profile>()}>() generatesBy { ... }
+            - property<${typeOf<User>()}, ${typeOf<Profile>()}>("profile") generatesBy { ... }
+            - name<${typeOf<Profile>()}>("profile") generatesBy { ... }
+            """.trimIndent(),
+            message,
+        )
+    }
 }
+
+private fun userMetadataForFailureMessageTest(): FiktionObjectMetadata<User> =
+    FiktionObjectMetadata(
+        type = typeOf<User>(),
+        properties =
+            listOf(
+                FiktionObjectProperty(name = "profile", type = typeOf<Profile>()),
+            ),
+    ) { values ->
+        User(id = "id", profile = values[0].valueOrDefault(defaultValue = null) as Profile)
+    }
