@@ -33,9 +33,7 @@ kotlin {
         }
     }
 
-    abiValidation {
-        enabled.set(true)
-    }
+    abiValidation()
 }
 
 mavenPublishing {

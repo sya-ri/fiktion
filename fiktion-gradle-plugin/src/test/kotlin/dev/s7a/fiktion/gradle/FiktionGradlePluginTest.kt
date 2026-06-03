@@ -90,7 +90,7 @@ class FiktionGradlePluginTest {
         directory.resolve("build.gradle.kts").writeText(
             """
             plugins {
-                kotlin("jvm") version "2.3.21"
+                kotlin("jvm") version "2.4.0"
                 id("dev.s7a.fiktion")
             }
 
@@ -228,7 +228,7 @@ class FiktionGradlePluginTest {
         directory.resolve("build.gradle.kts").writeText(
             """
             plugins {
-                kotlin("jvm") version "2.3.21" apply false
+                kotlin("jvm") version "2.4.0" apply false
                 id("dev.s7a.fiktion") apply false
             }
             """.trimIndent(),
@@ -354,7 +354,7 @@ class FiktionGradlePluginTest {
         directory.resolve("build.gradle.kts").writeText(
             """
             plugins {
-                kotlin("jvm") version "2.3.21" apply false
+                kotlin("jvm") version "2.4.0" apply false
                 id("dev.s7a.fiktion") apply false
             }
             """.trimIndent(),
