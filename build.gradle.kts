@@ -1,4 +1,5 @@
 import dev.detekt.gradle.extensions.DetektExtension
+import org.gradle.api.tasks.PathSensitivity
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
@@ -35,7 +36,6 @@ dokka {
 }
 
 val prepareDokkaVersioning by tasks.registering {
-    outputs.dir(dokkaOlderVersionsDir)
     doLast {
         dokkaOlderVersionsDir.get().asFile.mkdirs()
     }
@@ -43,6 +43,9 @@ val prepareDokkaVersioning by tasks.registering {
 
 tasks.matching { it.name == "dokkaGenerateHtml" || it.name == "dokkaGeneratePublicationHtml" }.configureEach {
     dependsOn(prepareDokkaVersioning)
+    inputs.dir(dokkaOlderVersionsDir)
+        .withPropertyName("dokkaOlderVersions")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 tasks.register("printVersion") {
