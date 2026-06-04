@@ -1,0 +1,657 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>dev.s7a.fiktion.detekt</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../index.html" tabindex="1">
+                    fiktion
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;dev.s7a.fiktion.detekt/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0" title="0.4.1"><span class="versions-dropdown-button-text">0.4.1</span></div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+<a href="../../../../fiktion-detekt-rules/dev.s7a.fiktion.detekt/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.4.2"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.4.2</span></a><a href="index.html" class="dropdown--option dropdown--option_active dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.4.1"><span class="dropdown--option-icon dropdown--option-icon_selected"></span><span class="dropdown--option-text">0.4.1</span></a><a href="../../../0.4.0/fiktion-detekt-rules/dev.s7a.fiktion.detekt/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.4.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.4.0</span></a><a href="../../../../not-found-version.html?v=0.3.0" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.3.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.3.0</span></a><a href="../../../../not-found-version.html?v=0.2.4" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.4"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.4</span></a><a href="../../../../not-found-version.html?v=0.2.3" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.3"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.3</span></a><a href="../../../../not-found-version.html?v=0.2.2" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.2"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.2</span></a><a href="../../../../not-found-version.html?v=0.2.1" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.1"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.1</span></a><a href="../../../../not-found-version.html?v=0.2.0" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.0</span></a><a href="../../../../not-found-version.html?v=0.1.0" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.1.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.1.0</span></a></div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true" data-filter=":fiktion-detekt-rules/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":fiktion-detekt-rules/main" data-filter=":fiktion-detekt-rules/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    fiktion
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageids="fiktion-detekt-rules::dev.s7a.fiktion.detekt////PointingToDeclaration//2056259414">
+  <div class="breadcrumbs"><a href="../index.html">fiktion-detekt-rules</a><span class="delimiter">/</span><span class="current">dev.s7a.fiktion.detekt</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-23354729%2FClasslikes%2F2056259414" anchor-label="AvoidContainerPartOnStarProjectedUnknown" id="-23354729%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-container-part-on-star-projected-unknown/index.html"><span>Avoid</span><wbr><span>Container</span><wbr><span>Part</span><wbr><span>On</span><wbr><span>Star</span><wbr><span>Projected</span><wbr><span><span>Unknown</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-23354729%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-container-part-on-star-projected-unknown/index.html">AvoidContainerPartOnStarProjectedUnknown</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports container-part targets selected from star-projected rule targets.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-40284252%2FClasslikes%2F2056259414" anchor-label="AvoidEmptyOneOf" id="-40284252%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-empty-one-of/index.html"><span>Avoid</span><wbr><span>Empty</span><wbr><span>One</span><wbr><span><span>Of</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-40284252%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-empty-one-of/index.html">AvoidEmptyOneOf</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports oneOf calls that cannot select a value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="106034783%2FClasslikes%2F2056259414" anchor-label="AvoidGlobalConfigureInLocalTest" id="106034783%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-global-configure-in-local-test/index.html"><span>Avoid</span><wbr><span>Global</span><wbr><span>Configure</span><wbr><span>In</span><wbr><span>Local</span><wbr><span><span>Test</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="106034783%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-global-configure-in-local-test/index.html">AvoidGlobalConfigureInLocalTest</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports global Fiktion.configure calls inside local test functions.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-474733087%2FClasslikes%2F2056259414" anchor-label="AvoidGlobalFiktionConfigureWithoutRestore" id="-474733087%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-global-fiktion-configure-without-restore/index.html"><span>Avoid</span><wbr><span>Global</span><wbr><span>Fiktion</span><wbr><span>Configure</span><wbr><span>Without</span><wbr><span><span>Restore</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-474733087%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-global-fiktion-configure-without-restore/index.html">AvoidGlobalFiktionConfigureWithoutRestore</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports stored Fiktion.configure snapshots that are not restored in the same block.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-740040688%2FClasslikes%2F2056259414" anchor-label="AvoidInvalidConfigRange" id="-740040688%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-invalid-config-range/index.html"><span>Avoid</span><wbr><span>Invalid</span><wbr><span>Config</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-740040688%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-invalid-config-range/index.html">AvoidInvalidConfigRange</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports statically invalid Fiktion config ranges.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2132584244%2FClasslikes%2F2056259414" anchor-label="AvoidInvalidTypeFamilyFakeIndex" id="-2132584244%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-invalid-type-family-fake-index/index.html"><span>Avoid</span><wbr><span>Invalid</span><wbr><span>Type</span><wbr><span>Family</span><wbr><span>Fake</span><wbr><span><span>Index</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2132584244%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-invalid-type-family-fake-index/index.html">AvoidInvalidTypeFamilyFakeIndex</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports <code class="lang-kotlin">fake(index)</code> calls whose argument index is outside the requested type-family arguments.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1366509441%2FClasslikes%2F2056259414" anchor-label="AvoidMultipleConfigsForRuleTarget" id="-1366509441%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-multiple-configs-for-rule-target/index.html"><span>Avoid</span><wbr><span>Multiple</span><wbr><span>Configs</span><wbr><span>For</span><wbr><span>Rule</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1366509441%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-multiple-configs-for-rule-target/index.html">AvoidMultipleConfigsForRuleTarget</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports rule targets that configure the same config key multiple times in the same scope.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2015444680%2FClasslikes%2F2056259414" anchor-label="AvoidMultipleGeneratorsForRuleTarget" id="2015444680%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-multiple-generators-for-rule-target/index.html"><span>Avoid</span><wbr><span>Multiple</span><wbr><span>Generators</span><wbr><span>For</span><wbr><span>Rule</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2015444680%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-multiple-generators-for-rule-target/index.html">AvoidMultipleGeneratorsForRuleTarget</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports rule targets that register multiple generators in the same scope.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-194350745%2FClasslikes%2F2056259414" anchor-label="AvoidMultipleSeedsInFakeSpec" id="-194350745%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-multiple-seeds-in-fake-spec/index.html"><span>Avoid</span><wbr><span>Multiple</span><wbr><span>Seeds</span><wbr><span>In</span><wbr><span>Fake</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-194350745%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-multiple-seeds-in-fake-spec/index.html">AvoidMultipleSeedsInFakeSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports repeated seed declarations in the same Fiktion spec block.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1381090800%2FClasslikes%2F2056259414" anchor-label="AvoidNonPropertyRuleTargets" id="1381090800%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-non-property-rule-targets/index.html"><span>Avoid</span><wbr><span>Non</span><wbr><span>Property</span><wbr><span>Rule</span><wbr><span><span>Targets</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1381090800%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-non-property-rule-targets/index.html">AvoidNonPropertyRuleTargets</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports non-property Fiktion rule targets in local fake configuration scopes.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1114692088%2FClasslikes%2F2056259414" anchor-label="AvoidRandomInstanceInGenerator" id="1114692088%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-random-instance-in-generator/index.html"><span>Avoid</span><wbr><span>Random</span><wbr><span>Instance</span><wbr><span>In</span><wbr><span><span>Generator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1114692088%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-random-instance-in-generator/index.html">AvoidRandomInstanceInGenerator</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports random instances inside generator lambdas.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="483447245%2FClasslikes%2F2056259414" anchor-label="AvoidRecursiveFakeInGenerator" id="483447245%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-recursive-fake-in-generator/index.html"><span>Avoid</span><wbr><span>Recursive</span><wbr><span>Fake</span><wbr><span>In</span><wbr><span><span>Generator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="483447245%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-recursive-fake-in-generator/index.html">AvoidRecursiveFakeInGenerator</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports recursive fake calls inside same-type generators.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1381838695%2FClasslikes%2F2056259414" anchor-label="AvoidRuleDeclarationsInLoops" id="-1381838695%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-rule-declarations-in-loops/index.html"><span>Avoid</span><wbr><span>Rule</span><wbr><span>Declarations</span><wbr><span>In</span><wbr><span><span>Loops</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1381838695%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-rule-declarations-in-loops/index.html">AvoidRuleDeclarationsInLoops</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports Fiktion rule declarations inside loops.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1546909628%2FClasslikes%2F2056259414" anchor-label="AvoidUnusedFiktionSnapshot" id="-1546909628%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-avoid-unused-fiktion-snapshot/index.html"><span>Avoid</span><wbr><span>Unused</span><wbr><span>Fiktion</span><wbr><span><span>Snapshot</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1546909628%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-avoid-unused-fiktion-snapshot/index.html">AvoidUnusedFiktionSnapshot</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports discarded Fiktion.configure snapshots.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-687060034%2FClasslikes%2F2056259414" anchor-label="FiktionRuleSetProvider" id="-687060034%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-rule-set-provider/index.html"><span>Fiktion</span><wbr><span>Rule</span><wbr><span>Set</span><wbr><span><span>Provider</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-687060034%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-fiktion-rule-set-provider/index.html">FiktionRuleSetProvider</a> : <span data-unresolved-link="dev.detekt.api/RuleSetProvider///PointingToDeclaration/">RuleSetProvider</span></div><div class="brief "><p class="paragraph">Provides Fiktion-specific detekt rules.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1870445791%2FClasslikes%2F2056259414" anchor-label="ForbiddenGeneratorCall" id="-1870445791%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-forbidden-generator-call/index.html"><span>Forbidden</span><wbr><span>Generator</span><wbr><span><span>Call</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1870445791%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-forbidden-generator-call/index.html">ForbiddenGeneratorCall</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports configured calls inside generator lambdas.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2028457913%2FClasslikes%2F2056259414" anchor-label="PreferContainerConfigureHelpers" id="2028457913%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-container-configure-helpers/index.html"><span>Prefer</span><wbr><span>Container</span><wbr><span>Configure</span><wbr><span><span>Helpers</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2028457913%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-container-configure-helpers/index.html">PreferContainerConfigureHelpers</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports type-family container generators that can use configureCollection or configureMap.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1832965901%2FClasslikes%2F2056259414" anchor-label="PreferContainerPartFakeHelpers" id="1832965901%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-container-part-fake-helpers/index.html"><span>Prefer</span><wbr><span>Container</span><wbr><span>Part</span><wbr><span>Fake</span><wbr><span><span>Helpers</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1832965901%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-container-part-fake-helpers/index.html">PreferContainerPartFakeHelpers</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports raw type-family fake calls where a container-part helper should be used.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="765020292%2FClasslikes%2F2056259414" anchor-label="PreferExplicitFakeSeedName" id="765020292%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-explicit-fake-seed-name/index.html"><span>Prefer</span><wbr><span>Explicit</span><wbr><span>Fake</span><wbr><span>Seed</span><wbr><span><span>Name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="765020292%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-explicit-fake-seed-name/index.html">PreferExplicitFakeSeedName</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports fake calls that pass seed positionally.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-116225682%2FClasslikes%2F2056259414" anchor-label="PreferFixedConfigValue" id="-116225682%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-fixed-config-value/index.html"><span>Prefer</span><wbr><span>Fixed</span><wbr><span>Config</span><wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-116225682%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-fixed-config-value/index.html">PreferFixedConfigValue</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports fixed Fiktion config ranges that can be written as fixed values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="68924497%2FClasslikes%2F2056259414" anchor-label="PreferFixedDefaultProbability" id="68924497%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-fixed-default-probability/index.html"><span>Prefer</span><wbr><span>Fixed</span><wbr><span>Default</span><wbr><span><span>Probability</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="68924497%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-fixed-default-probability/index.html">PreferFixedDefaultProbability</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports fixed default probabilities that can be written as fixed generated values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1292403567%2FClasslikes%2F2056259414" anchor-label="PreferFixedNullProbability" id="1292403567%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-fixed-null-probability/index.html"><span>Prefer</span><wbr><span>Fixed</span><wbr><span>Null</span><wbr><span><span>Probability</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1292403567%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-fixed-null-probability/index.html">PreferFixedNullProbability</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports fixed null probabilities that can be written as fixed generated values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="771727685%2FClasslikes%2F2056259414" anchor-label="PreferGeneratesByForMutableValues" id="771727685%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-generates-by-for-mutable-values/index.html"><span>Prefer</span><wbr><span>Generates</span><wbr><span>By</span><wbr><span>For</span><wbr><span>Mutable</span><wbr><span><span>Values</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="771727685%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-generates-by-for-mutable-values/index.html">PreferGeneratesByForMutableValues</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports fixed mutable values that should be created by generator lambdas.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-990313407%2FClasslikes%2F2056259414" anchor-label="PreferGeneratesForFixedValue" id="-990313407%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-generates-for-fixed-value/index.html"><span>Prefer</span><wbr><span>Generates</span><wbr><span>For</span><wbr><span>Fixed</span><wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-990313407%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-generates-for-fixed-value/index.html">PreferGeneratesForFixedValue</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports Fiktion generators that can be written as fixed values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="241220226%2FClasslikes%2F2056259414" anchor-label="PreferGeneratesInForRange" id="241220226%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-generates-in-for-range/index.html"><span>Prefer</span><wbr><span>Generates</span><wbr><span>In</span><wbr><span>For</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="241220226%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-generates-in-for-range/index.html">PreferGeneratesInForRange</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports range generators that can be written with generatesIn.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-242477238%2FClasslikes%2F2056259414" anchor-label="PreferGeneratesOneOf" id="-242477238%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-generates-one-of/index.html"><span>Prefer</span><wbr><span>Generates</span><wbr><span>One</span><wbr><span><span>Of</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-242477238%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-generates-one-of/index.html">PreferGeneratesOneOf</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports oneOf generators that can be written with generatesOneOf.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="766150606%2FClasslikes%2F2056259414" anchor-label="PreferGroupedRuleTarget" id="766150606%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-grouped-rule-target/index.html"><span>Prefer</span><wbr><span>Grouped</span><wbr><span>Rule</span><wbr><span><span>Target</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="766150606%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-grouped-rule-target/index.html">PreferGroupedRuleTarget</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports adjacent rules that target the same Fiktion rule target.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-569991636%2FClasslikes%2F2056259414" anchor-label="PreferIndexedFakeInTypeFamilyLoop" id="-569991636%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-indexed-fake-in-type-family-loop/index.html"><span>Prefer</span><wbr><span>Indexed</span><wbr><span>Fake</span><wbr><span>In</span><wbr><span>Type</span><wbr><span>Family</span><wbr><span><span>Loop</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-569991636%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-indexed-fake-in-type-family-loop/index.html">PreferIndexedFakeInTypeFamilyLoop</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports repeated type-argument fake calls in type-family loops.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="289516616%2FClasslikes%2F2056259414" anchor-label="PreferInfixFiktionDsl" id="289516616%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-infix-fiktion-dsl/index.html"><span>Prefer</span><wbr><span>Infix</span><wbr><span>Fiktion</span><wbr><span><span>Dsl</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="289516616%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-infix-fiktion-dsl/index.html">PreferInfixFiktionDsl</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports dot-call Fiktion DSL operations that can be written as infix declarations.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1805787072%2FClasslikes%2F2056259414" anchor-label="PreferNamedTypeFamilyFakeArgumentIndex" id="-1805787072%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-named-type-family-fake-argument-index/index.html"><span>Prefer</span><wbr><span>Named</span><wbr><span>Type</span><wbr><span>Family</span><wbr><span>Fake</span><wbr><span>Argument</span><wbr><span><span>Index</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1805787072%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-named-type-family-fake-argument-index/index.html">PreferNamedTypeFamilyFakeArgumentIndex</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports type-family fake helper calls that pass argumentIndex positionally.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1547087037%2FClasslikes%2F2056259414" anchor-label="PreferPropertyShorthand" id="-1547087037%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-property-shorthand/index.html"><span>Prefer</span><wbr><span>Property</span><wbr><span><span>Shorthand</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1547087037%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-property-shorthand/index.html">PreferPropertyShorthand</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports property(...) rule targets that can use the KProperty shorthand.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1061610920%2FClasslikes%2F2056259414" anchor-label="PreferRuleTargetDeclarationOrder" id="1061610920%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-rule-target-declaration-order/index.html"><span>Prefer</span><wbr><span>Rule</span><wbr><span>Target</span><wbr><span>Declaration</span><wbr><span><span>Order</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1061610920%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-rule-target-declaration-order/index.html">PreferRuleTargetDeclarationOrder</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports grouped target blocks that declare generators before configs.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-424610335%2FClasslikes%2F2056259414" anchor-label="PreferSeedParameter" id="-424610335%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-seed-parameter/index.html"><span>Prefer</span><wbr><span>Seed</span><wbr><span><span>Parameter</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-424610335%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-seed-parameter/index.html">PreferSeedParameter</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports fake calls that can pass their seed as a named call parameter.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1279432866%2FClasslikes%2F2056259414" anchor-label="PreferThisUsingInFakeSpec" id="-1279432866%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-this-using-in-fake-spec/index.html"><span>Prefer</span><wbr><span>This</span><wbr><span>Using</span><wbr><span>In</span><wbr><span>Fake</span><wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1279432866%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-this-using-in-fake-spec/index.html">PreferThisUsingInFakeSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports bare using(...) calls that should use explicit receiver infix syntax.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1587471492%2FClasslikes%2F2056259414" anchor-label="PreferTypeRuleForNonGeneric" id="-1587471492%2FClasslikes%2F2056259414" data-filterable-set=":fiktion-detekt-rules/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-detekt-rules/main" data-filterable-set=":fiktion-detekt-rules/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-prefer-type-rule-for-non-generic/index.html"><span>Prefer</span><wbr><span>Type</span><wbr><span>Rule</span><wbr><span>For</span><wbr><span>Non</span><wbr><span><span>Generic</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1587471492%2FClasslikes%2F2056259414"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-detekt-rules/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="-prefer-type-rule-for-non-generic/index.html">PreferTypeRuleForNonGeneric</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">config<span class="token operator">: </span><span data-unresolved-link="dev.detekt.api/Config///PointingToDeclaration/">Config</span></span></span><span class="token punctuation">)</span> : <span data-unresolved-link="dev.detekt.api/Rule///PointingToDeclaration/">Rule</span></div><div class="brief "><p class="paragraph">Reports non-generic type-family targets that can be written as exact type targets.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
