@@ -117,10 +117,8 @@ class GenerateSealedTest {
 
         assertTrue(error.message.orEmpty().contains("TextMessage"))
         assertTrue(error.message.orEmpty().contains("No generation rule or generated metadata was found"))
-        assertTrue(error.message.orEmpty().contains("Fiktion compiler plugin is applied"))
-        assertTrue(error.message.orEmpty().contains("type<"))
-        assertTrue(error.message.orEmpty().contains("TextMessage"))
-        assertTrue(error.message.orEmpty().contains("generatesBy { ... }"))
+        assertTrue(error.message.orEmpty().contains("Generation request:"))
+        assertTrue(error.message.orEmpty().contains("Current Fiktion configuration:"))
     }
 
     @Test

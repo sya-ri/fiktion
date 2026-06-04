@@ -1,3 +1,5 @@
+@file:OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import com.vanniktech.maven.publish.SourcesJar
@@ -11,15 +13,9 @@ plugins {
 kotlin {
     jvm()
     js {
-        browser {
-            testTask {
-                failOnNoDiscoveredTests = false
-            }
-        }
         nodejs()
     }
     wasmJs {
-        browser()
         nodejs()
     }
     linuxX64()

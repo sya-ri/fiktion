@@ -16,15 +16,9 @@ plugins {
 kotlin {
     jvm()
     js {
-        browser {
-            testTask {
-                failOnNoDiscoveredTests = false
-            }
-        }
         nodejs()
     }
     wasmJs {
-        browser()
         nodejs()
     }
     linuxX64()
@@ -39,9 +33,7 @@ kotlin {
         }
     }
 
-    abiValidation {
-        enabled.set(true)
-    }
+    abiValidation()
 }
 
 mavenPublishing {

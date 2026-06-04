@@ -48,6 +48,12 @@ You get:
 Fiktion is pre-release. The core behavior is usable, but API names and compiler-generated metadata internals may change
 before 1.0.
 
+The everyday test DSL is the compatibility priority: `fake<T>()`, property and name rules, generator configuration,
+add-on installation, and built-in generator helpers are intended to stay source-compatible across ordinary 0.x patch
+releases. APIs marked with `@ExperimentalFiktionApi` are lower-level integration points for compiler-generated
+metadata, automatic add-on registration, and runtime metadata construction. They may change more freely before 1.0 as
+the compiler plugin and metadata model settle.
+
 The repository currently contains:
 
 - `fiktion-core`: runtime APIs and built-in generators
@@ -64,24 +70,24 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 
 ```kotlin
 plugins {
-    kotlin("jvm") version "2.3.21"
-    id("dev.s7a.fiktion") version "0.4.1"
+    kotlin("jvm") version "2.4.0"
+    id("dev.s7a.fiktion") version "0.4.2"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.4.1")
+    testImplementation("dev.s7a:fiktion-core:0.4.2")
 
     // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.2")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.4.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.2")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.1")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.2")
 
     // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.1")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.2")
 }
 ```
 
@@ -90,6 +96,8 @@ If detekt is not configured yet, follow the
 
 Fiktion is enabled for test source sets by default, including JVM `test` and Multiplatform source sets such as
 `commonTest` and `jvmTest`.
+
+Runnable sample projects live in [`examples/`](examples/).
 
 ## Basic Usage
 
@@ -381,7 +389,7 @@ Add it as a detekt plugin dependency. If detekt is not configured in the project
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.1")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.2")
 }
 ```
 
@@ -567,6 +575,7 @@ objects without annotations.
 Supported shapes include:
 
 - regular classes and data classes with supported primary constructors
+- local classes with supported primary constructors
 - value classes with one constructor value
 - enum classes
 - sealed classes and sealed interfaces
@@ -576,7 +585,7 @@ Shapes that should be configured explicitly are skipped:
 
 - abstract classes and interfaces
 - fun interfaces and annotation classes
-- inner classes and local classes
+- inner classes
 - classes without a primary constructor
 - private or protected primary constructors
 - vararg or otherwise unsupported constructor parameters
@@ -654,7 +663,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.4.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.4.2")
 }
 ```
 
@@ -684,7 +693,7 @@ Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.2")
 }
 ```
 
@@ -720,7 +729,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.1")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.2")
 }
 ```
 
@@ -794,5 +803,4 @@ val user = fake<User> {
 
 ## Development
 
-Local `./gradlew build` skips browser test execution unless `-Pfiktion.enableBrowserTests=true` is provided. CI enables
-browser tests and installs Chrome before running Gradle.
+Run `./gradlew build` locally to execute the same JVM, Node.js, Wasm Node.js, and native checks used by CI.

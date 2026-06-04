@@ -1,4 +1,5 @@
 import dev.detekt.gradle.extensions.DetektExtension
+import org.gradle.api.tasks.PathSensitivity
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform) apply false
@@ -13,7 +14,7 @@ plugins {
 }
 
 group = "dev.s7a"
-version = "0.4.1"
+version = "0.4.2"
 
 val dokkaOlderVersionsDir = layout.buildDirectory.dir("dokka/olderVersions")
 
@@ -35,7 +36,6 @@ dokka {
 }
 
 val prepareDokkaVersioning by tasks.registering {
-    outputs.dir(dokkaOlderVersionsDir)
     doLast {
         dokkaOlderVersionsDir.get().asFile.mkdirs()
     }
@@ -43,6 +43,9 @@ val prepareDokkaVersioning by tasks.registering {
 
 tasks.matching { it.name == "dokkaGenerateHtml" || it.name == "dokkaGeneratePublicationHtml" }.configureEach {
     dependsOn(prepareDokkaVersioning)
+    inputs.dir(dokkaOlderVersionsDir)
+        .withPropertyName("dokkaOlderVersions")
+        .withPathSensitivity(PathSensitivity.RELATIVE)
 }
 
 tasks.register("printVersion") {
@@ -64,12 +67,6 @@ subprojects {
     }
 
     plugins.withId("org.jetbrains.kotlin.multiplatform") {
-        tasks.matching { it.name.endsWith("BrowserTest") }.configureEach {
-            onlyIf {
-                providers.gradleProperty("fiktion.enableBrowserTests").getOrElse("false").toBoolean()
-            }
-        }
-
         extensions.configure<DetektExtension>("detekt") {
             source.from("src")
         }

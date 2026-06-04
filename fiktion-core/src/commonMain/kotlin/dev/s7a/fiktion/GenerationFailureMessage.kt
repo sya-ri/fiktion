@@ -5,24 +5,99 @@ package dev.s7a.fiktion
 import kotlin.reflect.KType
 
 /**
- * Returns the message used when no rule or generated metadata can generate [type].
+ * Returns the message used when no rule or generated metadata can generate a request.
  */
-internal fun missingGenerationMessage(type: KType): String =
-    """
-    Cannot generate $type.
+internal fun missingGenerationMessage(
+    request: GenerationRequest,
+    config: FiktionConfigState,
+): String {
+    val type = request.type
+    val requestContext = request.contextLines().indentContinuationLines()
+    val configurationContext = config.contextLines().indentContinuationLines()
+    val ruleHints = request.ruleHintLines().indentContinuationLines()
 
-    No generation rule or generated metadata was found for $type.
+    return """
+        Cannot generate $type.
 
-    Fiktion can automatically generate constructor metadata for supported Kotlin classes when the compiler plugin is enabled.
-    If this type should be generated automatically, check that:
-    - the Fiktion compiler plugin is applied to this source set
-    - the type has a supported primary constructor
-    - the type is not abstract, an interface, inner, local, or annotation class
-    - the primary constructor is not private, protected, vararg, or otherwise unsupported
+        No generation rule or generated metadata was found for $type.
 
-    To generate this type manually, add an explicit rule:
-    type<$type>() generatesBy { ... }
-    """.trimIndent()
+        Generation request:
+        $requestContext
+
+        Current Fiktion configuration:
+        $configurationContext
+
+        Fiktion can automatically generate constructor metadata for supported Kotlin classes when the compiler plugin is enabled.
+        If this type should be generated automatically, check that:
+        - the Fiktion compiler plugin is applied to this source set
+        - fake<T>() or Fiktion.fake<T>() is called directly from a compiler-plugin-enabled source set
+        - wrapper functions around fake<T>() are not hiding the direct fake<T>() call from the compiler plugin
+        - the type has a supported primary constructor
+        - the type is not abstract, an interface, fun interface, inner, or annotation class
+        - the primary constructor is not private, protected, vararg, or otherwise unsupported
+
+        If this type comes from a library, install or explicitly register an add-on for that library when one exists.
+
+        To generate this request manually, add one of:
+        $ruleHints
+        """.trimIndent()
+}
+
+private fun String.indentContinuationLines(): String = replace("\n", "\n        ")
+
+/**
+ * Returns request context lines for generation diagnostics.
+ */
+private fun GenerationRequest.contextLines(): String =
+    buildList {
+        add("- type: $type")
+        owner?.let { owner -> add("- owner: $owner") }
+        propertyName?.let { name -> add("- property: $name") }
+        if (pathSegments.isNotEmpty()) {
+            add("- path: ${pathSegments.joinToString(separator = ".") { segment -> segment.name }}")
+        }
+        if (containerParts.isNotEmpty()) {
+            add("- container part: ${containerParts.joinToString(separator = " -> ") { part -> part.render() }}")
+        }
+        if (index != 0) {
+            add("- container index: $index")
+        }
+    }.joinToString(separator = "\n")
+
+/**
+ * Returns configuration context lines for generation diagnostics.
+ */
+private fun FiktionConfigState.contextLines(): String =
+    buildList {
+        add("- installed add-ons: ${addons.map { addon -> addon.id }.ifEmpty { listOf("none") }.joinToString()}")
+        add("- registered metadata entries: ${metadata.size}")
+        add("- explicit generation rules: ${rules.size}")
+        add("- explicit generator configs: ${configs.size}")
+    }.joinToString(separator = "\n")
+
+/**
+ * Returns explicit rule examples for [GenerationRequest].
+ */
+private fun GenerationRequest.ruleHintLines(): String =
+    buildList {
+        add("- type<$type>() generatesBy { ... }")
+        if (owner != null && propertyName != null) {
+            add("- property<$owner, $type>(\"$propertyName\") generatesBy { ... }")
+        }
+        if (propertyName != null) {
+            add("- name<$type>(\"$propertyName\") generatesBy { ... }")
+        }
+    }.joinToString(separator = "\n")
+
+/**
+ * Renders a container part for diagnostics.
+ */
+private fun ContainerPart.render(): String =
+    when (kind) {
+        ContainerPart.Kind.Collection -> "element of $container"
+        ContainerPart.Kind.MapKey -> "key of $container"
+        ContainerPart.Kind.MapValue -> "value of $container"
+    }
 
 /**
  * Returns the message used when sealed metadata has no selectable concrete subtypes.

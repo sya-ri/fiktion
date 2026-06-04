@@ -11,6 +11,8 @@ Fixes:
 - Call `fake<T>()` or `Fiktion.fake<T>()` directly from a compiler-plugin-enabled source set when relying on generated metadata. Wrapper functions around `fake<T>()` are not metadata collection entry points, so metadata for `T` may not be generated.
 - Add missing add-on dependency, e.g. `fiktion-addon-java` for common JVM types or `fiktion-addon-kotlinx-datetime`
   for `kotlinx-datetime` types.
+- For unsupported shapes such as abstract classes, interfaces, annotation classes, inner classes, private/protected
+  primary constructors, or vararg constructor parameters, provide an explicit rule.
 - Add an explicit rule:
 
 ```kotlin

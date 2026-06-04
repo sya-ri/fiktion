@@ -85,7 +85,7 @@ internal fun generateAutomaticValue(
         )
     }
 
-    throw CannotGenerateException(missingGenerationMessage(request.type))
+    throw CannotGenerateException(missingGenerationMessage(request = request, config = config))
 }
 
 /**

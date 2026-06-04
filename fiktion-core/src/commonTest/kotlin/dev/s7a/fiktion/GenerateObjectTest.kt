@@ -87,13 +87,22 @@ class GenerateObjectTest {
                 fiktion.fake<User>(seed = 123)
             }
 
-        assertTrue(error.message.orEmpty().contains("Failed while generating constructor argument profile"))
-        assertTrue(error.message.orEmpty().contains("type<"))
-        assertTrue(error.message.orEmpty().contains("Profile"))
-        assertTrue(error.message.orEmpty().contains("property<"))
-        assertTrue(error.message.orEmpty().contains("User"))
-        assertTrue(error.message.orEmpty().contains("\"profile\""))
-        assertTrue(error.message.orEmpty().contains("generatesBy { ... }"))
+        assertEquals(
+            """
+            Cannot generate ${typeOf<User>()}.
+
+            Failed while generating constructor argument profile: ${typeOf<Profile>()}.
+
+            Add a rule for the nested type or property:
+            type<${typeOf<Profile>()}>() generatesBy { ... }
+            property<${typeOf<User>()}, ${typeOf<Profile>()}>("profile") generatesBy { ... }
+            """.trimIndent(),
+            error.message,
+        )
+        val causeMessage = error.cause?.message.orEmpty()
+        assertTrue(causeMessage.contains("Generation request:"))
+        assertTrue(causeMessage.contains("- property: profile"))
+        assertTrue(causeMessage.contains("Current Fiktion configuration:"))
         assertTrue(error.cause is CannotGenerateException)
     }
 

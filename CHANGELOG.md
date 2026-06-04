@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.2
+
+- Added richer generation failure diagnostics with request context, current configuration details, add-on guidance, and
+  explicit type, property, or name rule examples.
+- Added a runnable JVM example project under `examples/jvm-basic` that demonstrates using published Fiktion artifacts
+  from a standalone consumer build.
+- Changed the Kotlin build and documented consumer examples to Kotlin 2.4.0.
+- Changed documentation to clarify 0.x API stability boundaries, local class metadata support, direct `fake<T>()`
+  compiler-plugin entry points, and unsupported shapes that need explicit rules.
+
 ## v0.4.1
 
 - Added `AvoidNonPropertyRuleTargets`, an opt-in detekt rule for teams that want Fiktion rules to target explicit
