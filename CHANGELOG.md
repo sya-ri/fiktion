@@ -6,6 +6,7 @@
   explicit type, property, or name rule examples.
 - Added a runnable JVM example project under `examples/jvm-basic` that demonstrates using published Fiktion artifacts
   from a standalone consumer build.
+- Changed the Kotlin build and documented consumer examples to Kotlin 2.4.0.
 - Changed documentation to clarify 0.x API stability boundaries, local class metadata support, direct `fake<T>()`
   compiler-plugin entry points, and unsupported shapes that need explicit rules.
 
