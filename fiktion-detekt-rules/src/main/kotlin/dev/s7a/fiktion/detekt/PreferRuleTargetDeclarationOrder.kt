@@ -77,8 +77,7 @@ private fun KtExpression.groupedTargetDeclaration(): GroupedTargetDeclaration? {
 
 private fun List<GroupedTargetDeclaration?>.hasGeneratorBefore(declaration: GroupedTargetDeclaration): Boolean =
     takeWhile { candidate -> candidate != declaration }
-        .filterNotNull()
-        .any { candidate -> candidate.operation in FIKTION_GENERATOR_OPERATIONS }
+        .any { candidate -> candidate?.operation in FIKTION_GENERATOR_OPERATIONS }
 
 private fun reorderedReplacement(declarations: List<GroupedTargetDeclaration>): TextReplacement {
     val configs = declarations.filter { declaration -> declaration.operation == FiktionOperation.Using }
@@ -91,8 +90,7 @@ private fun reorderedReplacement(declarations: List<GroupedTargetDeclaration>): 
         endOffset = last.textRange.endOffset,
         text =
             (configs + generators)
-                .map { declaration -> declaration.expression.text.trimStart() }
-                .joinToString(separator = "\n$indent"),
+                .joinToString(separator = "\n$indent") { declaration -> declaration.expression.text.trimStart() },
     )
 }
 

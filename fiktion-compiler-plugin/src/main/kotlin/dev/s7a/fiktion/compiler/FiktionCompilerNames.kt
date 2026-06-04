@@ -18,12 +18,12 @@ internal const val FIKTION_FAKE_FUNCTION: String = "$FIKTION_PACKAGE.fake"
 /**
  * Generated top-level registrar function name.
  */
-internal const val FIKTION_GENERATED_REGISTRAR_NAME: String = "\$fiktionRegisterGeneratedMetadata"
+internal const val FIKTION_GENERATED_REGISTRAR_NAME: String = $$"$fiktionRegisterGeneratedMetadata"
 
 /**
  * Generated top-level registrar initialized field name.
  */
-internal const val FIKTION_GENERATED_REGISTRAR_FIELD_NAME: String = "\$fiktionGeneratedMetadataRegistered"
+internal const val FIKTION_GENERATED_REGISTRAR_FIELD_NAME: String = $$"$fiktionGeneratedMetadataRegistered"
 
 /**
  * Returns a top-level callable id.
