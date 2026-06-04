@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Added Qodana configuration for the recommended JVM inspection profile, excluding explicit visibility modifier
+  findings because public ABI declarations intentionally keep visibility explicit.
+
 ## v0.4.2
 
 - Added richer generation failure diagnostics with request context, current configuration details, add-on guidance, and
