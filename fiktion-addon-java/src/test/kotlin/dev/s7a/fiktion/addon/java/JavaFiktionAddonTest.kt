@@ -9,8 +9,11 @@ import dev.s7a.fiktion.addon.java.generators.atomicReference
 import dev.s7a.fiktion.addon.java.generators.completableFuture
 import dev.s7a.fiktion.addon.java.generators.concurrentHashMap
 import dev.s7a.fiktion.addon.java.generators.concurrentLinkedQueue
+import dev.s7a.fiktion.addon.java.generators.concurrentMap
 import dev.s7a.fiktion.addon.java.generators.concurrentSkipListMap
+import dev.s7a.fiktion.addon.java.generators.concurrentSkipListSet
 import dev.s7a.fiktion.addon.java.generators.copyOnWriteArrayList
+import dev.s7a.fiktion.addon.java.generators.deque
 import dev.s7a.fiktion.addon.java.generators.enumMap
 import dev.s7a.fiktion.addon.java.generators.enumSet
 import dev.s7a.fiktion.addon.java.generators.hashMap
@@ -19,13 +22,16 @@ import dev.s7a.fiktion.addon.java.generators.identityHashMap
 import dev.s7a.fiktion.addon.java.generators.linkedHashMap
 import dev.s7a.fiktion.addon.java.generators.linkedHashSet
 import dev.s7a.fiktion.addon.java.generators.linkedList
+import dev.s7a.fiktion.addon.java.generators.navigableMap
+import dev.s7a.fiktion.addon.java.generators.navigableSet
 import dev.s7a.fiktion.addon.java.generators.optional
 import dev.s7a.fiktion.addon.java.generators.priorityQueue
 import dev.s7a.fiktion.addon.java.generators.queue
+import dev.s7a.fiktion.addon.java.generators.sortedMap
+import dev.s7a.fiktion.addon.java.generators.sortedSet
 import dev.s7a.fiktion.addon.java.generators.treeMap
 import dev.s7a.fiktion.addon.java.generators.treeSet
 import dev.s7a.fiktion.addon.java.generators.weakHashMap
-import dev.s7a.fiktion.auto
 import dev.s7a.fiktion.element
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
@@ -609,6 +615,9 @@ class JavaFiktionAddonTest {
                 type<ArrayDeque<Int>>() generatesBy {
                     arrayDeque { int() }
                 }
+                type<Deque<Int>>() generatesBy {
+                    deque { int() }
+                }
                 type<Queue<Int>>() generatesBy {
                     queue { int() }
                 }
@@ -626,6 +635,12 @@ class JavaFiktionAddonTest {
                 }
                 type<TreeSet<Int>>() generatesBy {
                     treeSet { int() }
+                }
+                type<SortedSet<Int>>() generatesBy {
+                    sortedSet { int() }
+                }
+                type<NavigableSet<Int>>() generatesBy {
+                    navigableSet { int() }
                 }
                 type<PriorityQueue<Int>>() generatesBy {
                     priorityQueue { int() }
@@ -663,6 +678,18 @@ class JavaFiktionAddonTest {
                         value = { long() },
                     )
                 }
+                type<SortedMap<Int, Long>>() generatesBy {
+                    sortedMap(
+                        key = { int() },
+                        value = { long() },
+                    )
+                }
+                type<NavigableMap<Int, Long>>() generatesBy {
+                    navigableMap(
+                        key = { int() },
+                        value = { long() },
+                    )
+                }
                 type<EnumSet<JavaAddonStatus>>() generatesBy {
                     enumSet { JavaAddonStatus.ACTIVE }
                 }
@@ -678,8 +705,17 @@ class JavaFiktionAddonTest {
                         value = { long() },
                     )
                 }
+                type<ConcurrentMap<Int, Long>>() generatesBy {
+                    concurrentMap(
+                        key = { int() },
+                        value = { long() },
+                    )
+                }
                 type<ConcurrentLinkedQueue<Int>>() generatesBy {
                     concurrentLinkedQueue { int() }
+                }
+                type<ConcurrentSkipListSet<Int>>() generatesBy {
+                    concurrentSkipListSet { int() }
                 }
                 type<ConcurrentSkipListMap<Int, Long>>() generatesBy {
                     concurrentSkipListMap(
@@ -699,12 +735,15 @@ class JavaFiktionAddonTest {
             }
 
         assertTrue(fiktion.fake<ArrayDeque<Int>>(seed = 123).isNotEmpty())
+        assertTrue(fiktion.fake<Deque<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<Queue<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<ArrayList<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<LinkedList<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<HashSet<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<LinkedHashSet<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<TreeSet<Int>>(seed = 123).isNotEmpty())
+        assertTrue(fiktion.fake<SortedSet<Int>>(seed = 123).isNotEmpty())
+        assertTrue(fiktion.fake<NavigableSet<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<PriorityQueue<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<CopyOnWriteArrayList<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<HashMap<Int, Long>>(seed = 123).isNotEmpty())
@@ -712,10 +751,14 @@ class JavaFiktionAddonTest {
         assertTrue(fiktion.fake<IdentityHashMap<Int, Long>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<WeakHashMap<Int, Long>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<TreeMap<Int, Long>>(seed = 123).isNotEmpty())
+        assertTrue(fiktion.fake<SortedMap<Int, Long>>(seed = 123).isNotEmpty())
+        assertTrue(fiktion.fake<NavigableMap<Int, Long>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<EnumSet<JavaAddonStatus>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<EnumMap<JavaAddonStatus, Long>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<ConcurrentHashMap<Int, Long>>(seed = 123).isNotEmpty())
+        assertTrue(fiktion.fake<ConcurrentMap<Int, Long>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<ConcurrentLinkedQueue<Int>>(seed = 123).isNotEmpty())
+        assertTrue(fiktion.fake<ConcurrentSkipListSet<Int>>(seed = 123).isNotEmpty())
         assertTrue(fiktion.fake<ConcurrentSkipListMap<Int, Long>>(seed = 123).isNotEmpty())
         assertEquals(fiktion.fake<AtomicReference<Int>>(seed = 123).get(), fiktion.fake<AtomicReference<Int>>(seed = 123).get())
         assertEquals(fiktion.fake<Optional<Int>>(seed = 123), fiktion.fake<Optional<Int>>(seed = 123))

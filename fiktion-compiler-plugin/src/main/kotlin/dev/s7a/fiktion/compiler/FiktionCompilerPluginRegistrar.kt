@@ -15,10 +15,10 @@ public class FiktionCompilerPluginRegistrar : CompilerPluginRegistrar() {
     override val supportsK2: Boolean = true
 
     override fun ExtensionStorage.registerExtensions(configuration: CompilerConfiguration) {
-        if (!configuration.get(FiktionCompilerConfiguration.enabled, true)) return
+        if (!configuration[FiktionCompilerConfiguration.enabled, true]) return
         IrGenerationExtension.registerExtension(
             FiktionIrGenerationExtension(
-                automaticAddons = configuration.get(FiktionCompilerConfiguration.automaticAddons, emptyList()),
+                automaticAddons = configuration[FiktionCompilerConfiguration.automaticAddons, emptyList()],
             ),
         )
     }

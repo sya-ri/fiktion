@@ -329,7 +329,7 @@ public class FakeSpec<Root> {
         )
 
     internal fun <Element> collectionElementTarget(collectionType: KType): RuleTarget<Element> =
-        DefaultRuleTarget<Element>(
+        DefaultRuleTarget(
             config = mutableConfig,
             key = RuleKey.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.Collection, container = collectionType))),
             matcher =
@@ -340,7 +340,7 @@ public class FakeSpec<Root> {
         )
 
     internal fun <Key> mapKeyTarget(mapType: KType): RuleTarget<Key> =
-        DefaultRuleTarget<Key>(
+        DefaultRuleTarget(
             config = mutableConfig,
             key = RuleKey.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapKey, container = mapType))),
             matcher = RuleMatcher.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapKey, container = mapType))),
@@ -348,7 +348,7 @@ public class FakeSpec<Root> {
         )
 
     internal fun <Value> mapValueTarget(mapType: KType): RuleTarget<Value> =
-        DefaultRuleTarget<Value>(
+        DefaultRuleTarget(
             config = mutableConfig,
             key = RuleKey.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapValue, container = mapType))),
             matcher = RuleMatcher.Container(parts = listOf(ContainerPart(kind = ContainerPart.Kind.MapValue, container = mapType))),

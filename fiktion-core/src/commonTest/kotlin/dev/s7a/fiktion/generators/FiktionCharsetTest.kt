@@ -44,6 +44,7 @@ class FiktionCharsetTest {
         assertEquals("abcdefghijklmnopqrstuvwxyz", FiktionCharset.LowercaseAlpha.chars)
         assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", FiktionCharset.UppercaseAlpha.chars)
         assertEquals("0123456789", FiktionCharset.Numeric.chars)
+        assertEquals("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", FiktionCharset.UppercaseAlphaNumeric.chars)
         assertEquals(
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
             FiktionCharset.AlphaNumeric.chars,
