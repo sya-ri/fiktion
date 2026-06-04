@@ -71,7 +71,7 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Add-on object classes to register before fake calls.
      */
-    private val automaticAddons: List<String>,
+    automaticAddons: List<String>,
 ) : IrElementTransformerVoidWithContext() {
     /**
      * Runtime symbols needed by generated registration calls.
@@ -441,14 +441,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         val classType = candidate.irClass.defaultType
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = classType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = classType)
         val arguments = function.addValueParameter("values", argumentsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -471,14 +464,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         val classType = candidate.irClass.defaultType
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = classType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = classType)
         function.addValueParameter("values", argumentsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -501,14 +487,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         val classType = candidate.metadataType
         val valueType = pluginContext.irBuiltIns.anyNType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(valueType, classType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = classType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = classType)
         val value = function.addValueParameter("value", valueType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -531,14 +510,7 @@ internal class FiktionGeneratedMetadataRegistrar(
     ): ConstructorLambda {
         val elementsType = symbols.anyListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(elementsType, arrayType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = arrayType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = arrayType)
         val elements = function.addValueParameter("elements", elementsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -576,6 +548,23 @@ internal class FiktionGeneratedMetadataRegistrar(
             IrStatementOrigin.LAMBDA,
             function,
         ) as IrExpression
+
+    /**
+     * Builds a local anonymous function used by generated constructor lambdas.
+     */
+    private fun buildLocalLambda(
+        parent: IrDeclarationParent,
+        returnType: IrType,
+    ): IrSimpleFunction =
+        pluginContext.irFactory
+            .buildFun {
+                name = Name.special("<anonymous>")
+                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+                visibility = DescriptorVisibilities.LOCAL
+                this.returnType = returnType
+            }.also { function ->
+                function.parent = parent
+            }
 
     /**
      * Returns a constructor call for [candidate] reading generated values from [arguments].
