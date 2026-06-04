@@ -64,6 +64,6 @@ internal class DefaultFiktionBuilder private constructor(
     }
 
     internal fun installAutomaticAddons() {
-        automaticAddons().forEach { addon -> install(addon) }
+        GlobalFiktion.automaticAddons().forEach(::install)
     }
 }

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFiktionApi::class)
-
 package dev.s7a.fiktion.detekt
 
 import dev.s7a.fiktion.ExperimentalFiktionApi
@@ -11,6 +9,7 @@ import dev.s7a.fiktion.valueOrDefault
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@OptIn(ExperimentalFiktionApi::class)
 class PreferFixedDefaultProbabilityTest {
     @Test
     fun `zero default probability is equivalent to the fixed generated value`() {

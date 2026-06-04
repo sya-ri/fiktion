@@ -1,8 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.ExperimentalFiktionApi
-import dev.s7a.fiktion.registerAutomaticAddon as registerAutomaticAddonInternal
-
 /**
  * Configured fake data generator.
  */
@@ -32,7 +29,7 @@ public sealed interface Fiktion {
          * snapshots and is not removed by [FiktionSnapshot.restore].
          */
         @ExperimentalFiktionApi
-        public fun <T> registerGeneratedMetadata(metadata: FiktionTypeMetadata<T>) {
+        public fun <T> register(metadata: FiktionTypeMetadata<T>) {
             GlobalFiktion.registerGenerated(metadata)
         }
 
@@ -40,8 +37,8 @@ public sealed interface Fiktion {
          * Registers [addon] so compiler-generated calls can install it automatically.
          */
         @ExperimentalFiktionApi
-        public fun registerAutomaticAddon(addon: FiktionAddon) {
-            registerAutomaticAddonInternal(addon)
+        public fun register(addon: FiktionAddon) {
+            GlobalFiktion.registerAutomaticAddon(addon)
         }
     }
 }
