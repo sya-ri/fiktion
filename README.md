@@ -71,23 +71,23 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.4.2"
+    id("dev.s7a.fiktion") version "0.5.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.4.2")
+    testImplementation("dev.s7a:fiktion-core:0.5.0")
 
     // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.2")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.0")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.4.2")
+    testImplementation("dev.s7a:fiktion-addon-java:0.5.0")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.2")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.0")
 
     // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.2")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.0")
 }
 ```
 
@@ -389,7 +389,7 @@ Add it as a detekt plugin dependency. If detekt is not configured in the project
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.2")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.0")
 }
 ```
 
@@ -663,7 +663,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.4.2")
+    testImplementation("dev.s7a:fiktion-addon-java:0.5.0")
 }
 ```
 
@@ -693,7 +693,7 @@ Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.4.2")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.0")
 }
 ```
 
@@ -729,7 +729,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.4.2")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.0")
 }
 ```
 

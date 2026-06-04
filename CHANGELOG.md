@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.5.0
 
 - Added Qodana configuration for the recommended JVM inspection profile, excluding explicit visibility modifier
   findings because public ABI declarations intentionally keep visibility explicit.

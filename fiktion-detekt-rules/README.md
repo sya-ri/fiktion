@@ -10,7 +10,7 @@ detekt plugin dependency:
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.4.2")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.0")
 }
 ```
 
