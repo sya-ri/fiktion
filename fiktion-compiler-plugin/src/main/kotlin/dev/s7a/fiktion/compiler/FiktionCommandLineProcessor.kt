@@ -44,7 +44,7 @@ public class FiktionCommandLineProcessor : CommandLineProcessor {
             AUTOMATIC_ADDON_OPTION -> {
                 configuration.put(
                     FiktionCompilerConfiguration.automaticAddons,
-                    configuration.get(FiktionCompilerConfiguration.automaticAddons, emptyList()) + value,
+                    configuration[FiktionCompilerConfiguration.automaticAddons, emptyList()] + value,
                 )
             }
 

@@ -47,7 +47,7 @@ public class PreferRuleTargetDeclarationOrder(
             ),
         )
         if (autoCorrect && declarations.all { declaration -> declaration != null }) {
-            replacements += expression.reorderedReplacement(declarations.filterNotNull())
+            replacements += reorderedReplacement(declarations.filterNotNull())
         }
     }
 
@@ -80,7 +80,7 @@ private fun List<GroupedTargetDeclaration?>.hasGeneratorBefore(declaration: Grou
         .filterNotNull()
         .any { candidate -> candidate.operation in FIKTION_GENERATOR_OPERATIONS }
 
-private fun KtBlockExpression.reorderedReplacement(declarations: List<GroupedTargetDeclaration>): TextReplacement {
+private fun reorderedReplacement(declarations: List<GroupedTargetDeclaration>): TextReplacement {
     val configs = declarations.filter { declaration -> declaration.operation == FiktionOperation.Using }
     val generators = declarations.filter { declaration -> declaration.operation in FIKTION_GENERATOR_OPERATIONS }
     val first = declarations.first().expression
