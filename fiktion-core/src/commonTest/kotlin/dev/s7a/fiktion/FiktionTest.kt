@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-import dev.s7a.fiktion.ExperimentalFiktionApi
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -114,15 +113,15 @@ class FiktionTest {
     }
 
     @Test
-    fun `registerGeneratedMetadata registers metadata for top-level fake calls`() {
-        Fiktion.registerGeneratedMetadata(constantMetadata { GeneratedUser(id = "generated-user") })
+    fun `register registers generated metadata for top-level fake calls`() {
+        Fiktion.register(constantMetadata { GeneratedUser(id = "generated-user") })
 
         assertEquals(GeneratedUser(id = "generated-user"), fake<GeneratedUser>())
     }
 
     @Test
     fun `snapshot restore does not remove generated metadata`() {
-        Fiktion.registerGeneratedMetadata(constantMetadata { RestoredGeneratedUser(id = "generated-user") })
+        Fiktion.register(constantMetadata { RestoredGeneratedUser(id = "generated-user") })
 
         val snapshot =
             Fiktion.configure {
@@ -139,10 +138,10 @@ class FiktionTest {
     }
 
     @Test
-    fun `registerAutomaticAddon applies to isolated instances created before registration`() {
+    fun `register applies automatic add-ons to isolated instances created before registration`() {
         val fiktion = Fiktion()
 
-        Fiktion.registerAutomaticAddon(AutomaticAddonTestAddon)
+        Fiktion.register(AutomaticAddonTestAddon)
 
         assertEquals(AutomaticAddonValue(id = "automatic-addon"), fiktion.fake<AutomaticAddonValue>())
     }
@@ -154,7 +153,7 @@ class FiktionTest {
                 type<AutomaticAddonAutoValue>() generates auto
             }
 
-        Fiktion.registerAutomaticAddon(AutomaticAddonAutoTestAddon)
+        Fiktion.register(AutomaticAddonAutoTestAddon)
 
         assertEquals(AutomaticAddonAutoValue(id = "automatic-addon-auto"), fiktion.fake<AutomaticAddonAutoValue>())
     }

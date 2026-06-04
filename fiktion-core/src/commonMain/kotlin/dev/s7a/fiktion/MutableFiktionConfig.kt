@@ -1,12 +1,14 @@
-@file:OptIn(ExperimentalFiktionApi::class)
-
 package dev.s7a.fiktion
 
 /**
  * Mutable builder-side representation of [FiktionConfigState].
  */
+@OptIn(ExperimentalFiktionApi::class)
 internal class MutableFiktionConfig(
-    seed: Long? = null,
+    /**
+     * Root seed configured for the resulting snapshot.
+     */
+    var seed: Long? = null,
     addons: List<InstalledAddon> = emptyList(),
     rules: List<DefaultGenerationSpec<*>> = emptyList(),
     configs: List<DefaultConfigSpec<*>> = emptyList(),
@@ -14,11 +16,6 @@ internal class MutableFiktionConfig(
     mapConverters: List<MapConverter> = emptyList(),
     metadata: Map<String, FiktionTypeMetadata<*>> = emptyMap(),
 ) {
-    /**
-     * Root seed configured for the resulting snapshot.
-     */
-    var seed: Long? = seed
-
     /**
      * Installed add-on buffer.
      */

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFiktionApi::class)
-
 package dev.s7a.fiktion
 
 import dev.s7a.fiktion.generators.FiktionCharset
@@ -8,6 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalFiktionApi::class)
 class FiktionConfigTest {
     @Test
     fun `instance config changes built-in generator defaults`() {
