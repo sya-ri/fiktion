@@ -36,6 +36,11 @@ class GenerationSpecTest {
     }
 
     @Test
+    fun `double percent converts a percentage to a probability`() {
+        assertEquals(Probability(0.125), 12.5.percent)
+    }
+
+    @Test
     fun `orDefaultAt stores a probability value and returns the same spec`() {
         val rule = stringSpec()
 

@@ -430,7 +430,7 @@ public object JavaFiktionAddon : FiktionAddon {
                 }
             }
             configureCollection<PriorityBlockingQueue<*>> { elements ->
-                PriorityBlockingQueue<Any>(1, compareBy(Any::toString)).apply {
+                PriorityBlockingQueue(1, compareBy(Any::toString)).apply {
                     addAll(elements.filterNotNull())
                 }
             }
