@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.4.2
 
 - Added richer generation failure diagnostics with request context, current configuration details, add-on guidance, and
   explicit type, property, or name rule examples.
