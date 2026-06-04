@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.ir.builders.irBlock
 import org.jetbrains.kotlin.ir.builders.irBlockBody
 import org.jetbrains.kotlin.ir.builders.irCall
 import org.jetbrains.kotlin.ir.builders.irCallConstructor
+import org.jetbrains.kotlin.ir.builders.irEqeqeq
 import org.jetbrains.kotlin.ir.builders.irGet
 import org.jetbrains.kotlin.ir.builders.irGetField
 import org.jetbrains.kotlin.ir.builders.irGetObjectValue
@@ -70,7 +71,7 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Add-on object classes to register before fake calls.
      */
-    private val automaticAddons: List<String>,
+    automaticAddons: List<String>,
 ) : IrElementTransformerVoidWithContext() {
     /**
      * Runtime symbols needed by generated registration calls.
@@ -154,7 +155,7 @@ internal class FiktionGeneratedMetadataRegistrar(
                 )
                 +builder.irSetField(null, initializedField, builder.irBoolean(true))
                 automaticAddonClasses.forEach { addonClass ->
-                    +builder.registerAutomaticAddon(addonClass)
+                    +builder.registerAddon(addonClass)
                 }
                 candidates.forEach { candidate ->
                     candidate.arrayTypes().forEach { (arrayType, elementType) ->
@@ -212,7 +213,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         candidate: FiktionGeneratedMetadataCandidate,
         metadata: IrExpression,
     ): IrExpression =
-        irCall(symbols.registerGeneratedMetadata).apply {
+        irCall(symbols.registerMetadata).apply {
             setTypeArgument(0, candidate.metadataType)
             setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
             setRegularArgument(0, metadata)
@@ -226,7 +227,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         elementType: IrType,
         constructor: IrExpression,
     ): IrExpression =
-        irCall(symbols.registerGeneratedMetadata).apply {
+        irCall(symbols.registerMetadata).apply {
             setTypeArgument(0, arrayType)
             setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
             setRegularArgument(0, arrayMetadata(arrayType = arrayType, elementType = elementType, constructor = constructor))
@@ -235,8 +236,8 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns an automatic add-on registration call.
      */
-    private fun DeclarationIrBuilder.registerAutomaticAddon(addonClass: IrClassSymbol): IrExpression =
-        irCall(symbols.registerAutomaticAddon).apply {
+    private fun DeclarationIrBuilder.registerAddon(addonClass: IrClassSymbol): IrExpression =
+        irCall(symbols.registerAddon).apply {
             setDispatchReceiver(irGetObjectValue(symbols.fiktionCompanionType, symbols.fiktionCompanionClass))
             setRegularArgument(0, irGetObjectValue(addonClass.owner.defaultType, addonClass))
         }
@@ -440,14 +441,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         val classType = candidate.irClass.defaultType
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = classType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = classType)
         val arguments = function.addValueParameter("values", argumentsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -470,14 +464,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         val classType = candidate.irClass.defaultType
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = classType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = classType)
         function.addValueParameter("values", argumentsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -500,14 +487,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         val classType = candidate.metadataType
         val valueType = pluginContext.irBuiltIns.anyNType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(valueType, classType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = classType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = classType)
         val value = function.addValueParameter("value", valueType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
@@ -530,21 +510,19 @@ internal class FiktionGeneratedMetadataRegistrar(
     ): ConstructorLambda {
         val elementsType = symbols.anyListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(elementsType, arrayType)
-        val function =
-            pluginContext.irFactory.buildFun {
-                name = Name.special("<anonymous>")
-                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
-                visibility = DescriptorVisibilities.LOCAL
-                returnType = arrayType
-            }
-        function.parent = parent
+        val function = buildLocalLambda(parent = parent, returnType = arrayType)
         val elements = function.addValueParameter("elements", elementsType)
         function.body =
             DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
                 +irReturn(
-                    irCall(symbols.generatedArray).apply {
+                    irCall(symbols.toTypedArray).apply {
                         setTypeArgument(0, elementType)
-                        setRegularArgument(0, irGet(elements))
+                        setExtensionReceiver(
+                            irAs(
+                                irGet(elements),
+                                pluginContext.irBuiltIns.collectionClass.typeWith(elementType),
+                            ),
+                        )
                     },
                 )
             }
@@ -570,6 +548,23 @@ internal class FiktionGeneratedMetadataRegistrar(
             IrStatementOrigin.LAMBDA,
             function,
         ) as IrExpression
+
+    /**
+     * Builds a local anonymous function used by generated constructor lambdas.
+     */
+    private fun buildLocalLambda(
+        parent: IrDeclarationParent,
+        returnType: IrType,
+    ): IrSimpleFunction =
+        pluginContext.irFactory
+            .buildFun {
+                name = Name.special("<anonymous>")
+                origin = IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA
+                visibility = DescriptorVisibilities.LOCAL
+                this.returnType = returnType
+            }.also { function ->
+                function.parent = parent
+            }
 
     /**
      * Returns a constructor call for [candidate] reading generated values from [arguments].
@@ -658,10 +653,10 @@ internal class FiktionGeneratedMetadataRegistrar(
         arguments: IrValueParameter,
         index: Int,
     ): IrExpression =
-        irCall(symbols.generatedObjectArgumentUsesDefault).apply {
-            setRegularArgument(0, irGet(arguments))
-            setRegularArgument(1, irInt(index))
-        }
+        irEqeqeq(
+            generatedObjectArgument(arguments = arguments, index = index),
+            irGetObjectValue(symbols.objectDefaultType, symbols.objectDefaultClass),
+        )
 
     /**
      * Returns a generated constructor argument read from [arguments] at [index] and cast to [type].
@@ -672,12 +667,28 @@ internal class FiktionGeneratedMetadataRegistrar(
         type: IrType,
     ): IrExpression {
         val value =
-            irCall(symbols.generatedObjectArgumentValue).apply {
-                setRegularArgument(0, irGet(arguments))
-                setRegularArgument(1, irInt(index))
+            irCall(symbols.objectValueGetter).apply {
+                setDispatchReceiver(
+                    irAs(
+                        generatedObjectArgument(arguments = arguments, index = index),
+                        symbols.objectValueType,
+                    ),
+                )
             }
         return irAs(value, type)
     }
+
+    /**
+     * Returns a generated constructor argument from [arguments] at [index].
+     */
+    private fun DeclarationIrBuilder.generatedObjectArgument(
+        arguments: IrValueParameter,
+        index: Int,
+    ): IrExpression =
+        irCall(symbols.listGet).apply {
+            setDispatchReceiver(irGet(arguments))
+            setRegularArgument(0, irInt(index))
+        }
 
     /**
      * Returns a boolean constant.
@@ -799,6 +810,13 @@ private fun IrMemberAccessExpression<*>.setDispatchReceiver(expression: IrExpres
 }
 
 /**
+ * Sets the extension receiver value.
+ */
+private fun IrMemberAccessExpression<*>.setExtensionReceiver(expression: IrExpression) {
+    arguments[extensionReceiverParameter] = expression
+}
+
+/**
  * Regular parameters in declaration order.
  */
 private val IrMemberAccessExpression<*>.regularParameters: List<IrValueParameter>
@@ -809,6 +827,12 @@ private val IrMemberAccessExpression<*>.regularParameters: List<IrValueParameter
  */
 private val IrMemberAccessExpression<*>.dispatchReceiverParameter: IrValueParameter
     get() = functionSymbol.owner.parameters.single { parameter -> parameter.kind == IrParameterKind.DispatchReceiver }
+
+/**
+ * Extension receiver parameter.
+ */
+private val IrMemberAccessExpression<*>.extensionReceiverParameter: IrValueParameter
+    get() = functionSymbol.owner.parameters.single { parameter -> parameter.kind == IrParameterKind.ExtensionReceiver }
 
 /**
  * Function symbol targeted by this member access expression.

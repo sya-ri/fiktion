@@ -14,6 +14,7 @@ import java.util.zip.ZipFile
 /**
  * Gradle plugin that wires the Fiktion compiler plugin into Kotlin compilations.
  */
+@Suppress("unused")
 public class FiktionGradlePlugin :
     Plugin<Project>,
     KotlinCompilerPluginSupportPlugin {

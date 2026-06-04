@@ -47,7 +47,7 @@ public class PreferRuleTargetDeclarationOrder(
             ),
         )
         if (autoCorrect && declarations.all { declaration -> declaration != null }) {
-            replacements += expression.reorderedReplacement(declarations.filterNotNull())
+            replacements += reorderedReplacement(declarations.filterNotNull())
         }
     }
 
@@ -77,10 +77,9 @@ private fun KtExpression.groupedTargetDeclaration(): GroupedTargetDeclaration? {
 
 private fun List<GroupedTargetDeclaration?>.hasGeneratorBefore(declaration: GroupedTargetDeclaration): Boolean =
     takeWhile { candidate -> candidate != declaration }
-        .filterNotNull()
-        .any { candidate -> candidate.operation in FIKTION_GENERATOR_OPERATIONS }
+        .any { candidate -> candidate?.operation in FIKTION_GENERATOR_OPERATIONS }
 
-private fun KtBlockExpression.reorderedReplacement(declarations: List<GroupedTargetDeclaration>): TextReplacement {
+private fun reorderedReplacement(declarations: List<GroupedTargetDeclaration>): TextReplacement {
     val configs = declarations.filter { declaration -> declaration.operation == FiktionOperation.Using }
     val generators = declarations.filter { declaration -> declaration.operation in FIKTION_GENERATOR_OPERATIONS }
     val first = declarations.first().expression
@@ -91,8 +90,7 @@ private fun KtBlockExpression.reorderedReplacement(declarations: List<GroupedTar
         endOffset = last.textRange.endOffset,
         text =
             (configs + generators)
-                .map { declaration -> declaration.expression.text.trimStart() }
-                .joinToString(separator = "\n$indent"),
+                .joinToString(separator = "\n$indent") { declaration -> declaration.expression.text.trimStart() },
     )
 }
 

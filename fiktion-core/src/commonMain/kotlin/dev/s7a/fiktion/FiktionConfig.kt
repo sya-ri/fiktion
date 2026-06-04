@@ -2,8 +2,6 @@ package dev.s7a.fiktion
 
 import dev.s7a.fiktion.generators.FiktionCharset
 import kotlin.ranges.ClosedRange
-import kotlin.reflect.KType
-import kotlin.reflect.typeOf
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.Array as KotlinArray
 import kotlin.Byte as KotlinByte
@@ -35,263 +33,252 @@ import kotlin.time.Instant as KotlinInstant
 /**
  * Typed key for configuring built-in and add-on generators.
  */
-public class FiktionConfig<Scope, Value : Any>
-    @PublishedApi
-    internal constructor(
-        /**
-         * Generated value type this configuration applies to.
-         */
-        internal val scopeType: KType,
-        /**
-         * Value used when no matching configuration is registered.
-         */
-        public val defaultValue: Value,
-    ) {
-        public companion object {
-            public inline operator fun <reified Scope, Value : Any> invoke(defaultValue: Value): FiktionConfig<Scope, Value> =
-                FiktionConfig(scopeType = typeOf<Scope>(), defaultValue = defaultValue)
-        }
-
-        /**
-         * Integer generator configuration.
-         */
-        public object Int {
-            public val range: FiktionConfig<KotlinInt, ClosedRange<KotlinInt>> =
-                FiktionConfig(KotlinInt.MIN_VALUE..KotlinInt.MAX_VALUE)
-        }
-
-        /**
-         * Integer range generator configuration.
-         */
-        public object IntRange {
-            public val bounds: FiktionConfig<KotlinIntRange, ClosedRange<KotlinInt>> =
-                FiktionConfig(KotlinInt.MIN_VALUE..KotlinInt.MAX_VALUE)
-        }
-
-        /**
-         * Integer progression generator configuration.
-         */
-        public object IntProgression {
-            public val bounds: FiktionConfig<KotlinIntProgression, ClosedRange<KotlinInt>> =
-                FiktionConfig(-100..100)
-
-            public val step: FiktionConfig<KotlinIntProgression, ClosedRange<KotlinInt>> =
-                FiktionConfig(1..5)
-        }
-
-        /**
-         * Byte generator configuration.
-         */
-        public object Byte {
-            public val range: FiktionConfig<KotlinByte, ClosedRange<KotlinInt>> =
-                FiktionConfig(KotlinByte.MIN_VALUE..KotlinByte.MAX_VALUE)
-        }
-
-        /**
-         * Short generator configuration.
-         */
-        public object Short {
-            public val range: FiktionConfig<KotlinShort, ClosedRange<KotlinInt>> =
-                FiktionConfig(KotlinShort.MIN_VALUE..KotlinShort.MAX_VALUE)
-        }
-
-        /**
-         * Long generator configuration.
-         */
-        public object Long {
-            public val range: FiktionConfig<KotlinLong, ClosedRange<KotlinLong>> =
-                FiktionConfig(KotlinLong.MIN_VALUE..KotlinLong.MAX_VALUE)
-        }
-
-        /**
-         * Long range generator configuration.
-         */
-        public object LongRange {
-            public val bounds: FiktionConfig<KotlinLongRange, ClosedRange<KotlinLong>> =
-                FiktionConfig(KotlinLong.MIN_VALUE..KotlinLong.MAX_VALUE)
-        }
-
-        /**
-         * Long progression generator configuration.
-         */
-        public object LongProgression {
-            public val bounds: FiktionConfig<KotlinLongProgression, ClosedRange<KotlinLong>> =
-                FiktionConfig(-100L..100L)
-
-            public val step: FiktionConfig<KotlinLongProgression, ClosedRange<KotlinLong>> =
-                FiktionConfig(1L..5L)
-        }
-
-        /**
-         * Unsigned byte generator configuration.
-         */
-        public object UByte {
-            public val range: FiktionConfig<KotlinUByte, ClosedRange<KotlinUInt>> =
-                FiktionConfig(KotlinUByte.MIN_VALUE..KotlinUByte.MAX_VALUE)
-        }
-
-        /**
-         * Unsigned short generator configuration.
-         */
-        public object UShort {
-            public val range: FiktionConfig<KotlinUShort, ClosedRange<KotlinUInt>> =
-                FiktionConfig(KotlinUShort.MIN_VALUE..KotlinUShort.MAX_VALUE)
-        }
-
-        /**
-         * Unsigned integer generator configuration.
-         */
-        public object UInt {
-            public val range: FiktionConfig<KotlinUInt, ClosedRange<KotlinUInt>> =
-                FiktionConfig(KotlinUInt.MIN_VALUE..KotlinUInt.MAX_VALUE)
-        }
-
-        /**
-         * Unsigned integer range generator configuration.
-         */
-        public object UIntRange {
-            public val bounds: FiktionConfig<KotlinUIntRange, ClosedRange<KotlinUInt>> =
-                FiktionConfig(KotlinUInt.MIN_VALUE..KotlinUInt.MAX_VALUE)
-        }
-
-        /**
-         * Unsigned integer progression generator configuration.
-         */
-        public object UIntProgression {
-            public val bounds: FiktionConfig<KotlinUIntProgression, ClosedRange<KotlinUInt>> =
-                FiktionConfig(0u..100u)
-
-            public val step: FiktionConfig<KotlinUIntProgression, ClosedRange<KotlinInt>> =
-                FiktionConfig(1..5)
-        }
-
-        /**
-         * Unsigned long generator configuration.
-         */
-        public object ULong {
-            public val range: FiktionConfig<KotlinULong, ClosedRange<KotlinULong>> =
-                FiktionConfig(KotlinULong.MIN_VALUE..KotlinULong.MAX_VALUE)
-        }
-
-        /**
-         * Unsigned long range generator configuration.
-         */
-        public object ULongRange {
-            public val bounds: FiktionConfig<KotlinULongRange, ClosedRange<KotlinULong>> =
-                FiktionConfig(KotlinULong.MIN_VALUE..KotlinULong.MAX_VALUE)
-        }
-
-        /**
-         * Unsigned long progression generator configuration.
-         */
-        public object ULongProgression {
-            public val bounds: FiktionConfig<KotlinULongProgression, ClosedRange<KotlinULong>> =
-                FiktionConfig(0uL..100uL)
-
-            public val step: FiktionConfig<KotlinULongProgression, ClosedRange<KotlinLong>> =
-                FiktionConfig(1L..5L)
-        }
-
-        /**
-         * Float generator configuration.
-         */
-        public object Float {
-            public val range: FiktionConfig<KotlinFloat, ClosedRange<KotlinFloat>> =
-                FiktionConfig(0.0f..1.0f)
-        }
-
-        /**
-         * Double generator configuration.
-         */
-        public object Double {
-            public val range: FiktionConfig<KotlinDouble, ClosedRange<KotlinDouble>> =
-                FiktionConfig(0.0..1.0)
-        }
-
-        /**
-         * Character generator configuration.
-         */
-        public object Char {
-            public val charset: FiktionConfig<KotlinChar, FiktionCharset> =
-                FiktionConfig(FiktionCharset.AlphaNumeric)
-
-            public val rangeCharsets: FiktionConfig<CharRange, List<FiktionCharset>> =
-                FiktionConfig(
-                    listOf(FiktionCharset.LowercaseAlpha, FiktionCharset.UppercaseAlpha, FiktionCharset.Numeric),
-                )
-
-            public val step: FiktionConfig<KotlinCharProgression, ClosedRange<KotlinInt>> =
-                FiktionConfig(1..5)
-        }
-
-        /**
-         * String generator configuration.
-         */
-        public object String {
-            public val length: FiktionConfig<KotlinString, ClosedRange<KotlinInt>> =
-                FiktionConfig(1..32)
-
-            public val charset: FiktionConfig<KotlinString, FiktionCharset> =
-                FiktionConfig(FiktionCharset.AlphaNumeric)
-        }
-
-        /**
-         * Collection generator configuration.
-         */
-        public object Collection {
-            public val size: FiktionConfig<KotlinCollection<*>, ClosedRange<KotlinInt>> =
-                FiktionConfig(0..5)
-
-            public val uniqueElementStrategy: FiktionConfig<KotlinCollection<*>, UniqueElementStrategy> =
-                FiktionConfig(UniqueElementStrategy.BestEffort)
-        }
-
-        /**
-         * Map generator configuration.
-         */
-        public object Map {
-            public val size: FiktionConfig<KotlinMap<*, *>, ClosedRange<KotlinInt>> =
-                FiktionConfig(0..5)
-        }
-
-        /**
-         * Array generator configuration.
-         */
-        public object Array {
-            public val size: FiktionConfig<KotlinArray<*>, ClosedRange<KotlinInt>> =
-                FiktionConfig(1..3)
-        }
-
-        /**
-         * Regex generator configuration.
-         */
-        public object Regex {
-            public val length: FiktionConfig<kotlin.text.Regex, ClosedRange<KotlinInt>> =
-                FiktionConfig(8..8)
-
-            public val charset: FiktionConfig<kotlin.text.Regex, FiktionCharset> =
-                FiktionConfig(FiktionCharset.AlphaNumeric)
-        }
-
-        /**
-         * Duration generator configuration.
-         */
-        public object Duration {
-            public val range: FiktionConfig<KotlinDuration, ClosedRange<KotlinDuration>> =
-                FiktionConfig((-3_153_600_000_000L).milliseconds..3_153_600_000_000L.milliseconds)
-        }
-
-        /**
-         * Instant generator configuration.
-         */
-        public object Instant {
-            public val epochSeconds: FiktionConfig<KotlinInstant, ClosedRange<KotlinLong>> =
-                FiktionConfig(946_684_800L..<4_102_444_800L)
-
-            public val nanosecond: FiktionConfig<KotlinInstant, ClosedRange<KotlinInt>> =
-                FiktionConfig(0..<1_000_000_000)
-        }
+public class FiktionConfig<Scope, Value : Any>(
+    /**
+     * Value used when no matching configuration is registered.
+     */
+    public val defaultValue: Value,
+) {
+    /**
+     * Integer generator configuration.
+     */
+    public object Int {
+        public val range: FiktionConfig<KotlinInt, ClosedRange<KotlinInt>> =
+            FiktionConfig(KotlinInt.MIN_VALUE..KotlinInt.MAX_VALUE)
     }
+
+    /**
+     * Integer range generator configuration.
+     */
+    public object IntRange {
+        public val bounds: FiktionConfig<KotlinIntRange, ClosedRange<KotlinInt>> =
+            FiktionConfig(KotlinInt.MIN_VALUE..KotlinInt.MAX_VALUE)
+    }
+
+    /**
+     * Integer progression generator configuration.
+     */
+    public object IntProgression {
+        public val bounds: FiktionConfig<KotlinIntProgression, ClosedRange<KotlinInt>> =
+            FiktionConfig(-100..100)
+
+        public val step: FiktionConfig<KotlinIntProgression, ClosedRange<KotlinInt>> =
+            FiktionConfig(1..5)
+    }
+
+    /**
+     * Byte generator configuration.
+     */
+    public object Byte {
+        public val range: FiktionConfig<KotlinByte, ClosedRange<KotlinInt>> =
+            FiktionConfig(KotlinByte.MIN_VALUE..KotlinByte.MAX_VALUE)
+    }
+
+    /**
+     * Short generator configuration.
+     */
+    public object Short {
+        public val range: FiktionConfig<KotlinShort, ClosedRange<KotlinInt>> =
+            FiktionConfig(KotlinShort.MIN_VALUE..KotlinShort.MAX_VALUE)
+    }
+
+    /**
+     * Long generator configuration.
+     */
+    public object Long {
+        public val range: FiktionConfig<KotlinLong, ClosedRange<KotlinLong>> =
+            FiktionConfig(KotlinLong.MIN_VALUE..KotlinLong.MAX_VALUE)
+    }
+
+    /**
+     * Long range generator configuration.
+     */
+    public object LongRange {
+        public val bounds: FiktionConfig<KotlinLongRange, ClosedRange<KotlinLong>> =
+            FiktionConfig(KotlinLong.MIN_VALUE..KotlinLong.MAX_VALUE)
+    }
+
+    /**
+     * Long progression generator configuration.
+     */
+    public object LongProgression {
+        public val bounds: FiktionConfig<KotlinLongProgression, ClosedRange<KotlinLong>> =
+            FiktionConfig(-100L..100L)
+
+        public val step: FiktionConfig<KotlinLongProgression, ClosedRange<KotlinLong>> =
+            FiktionConfig(1L..5L)
+    }
+
+    /**
+     * Unsigned byte generator configuration.
+     */
+    public object UByte {
+        public val range: FiktionConfig<KotlinUByte, ClosedRange<KotlinUInt>> =
+            FiktionConfig(KotlinUByte.MIN_VALUE..KotlinUByte.MAX_VALUE)
+    }
+
+    /**
+     * Unsigned short generator configuration.
+     */
+    public object UShort {
+        public val range: FiktionConfig<KotlinUShort, ClosedRange<KotlinUInt>> =
+            FiktionConfig(KotlinUShort.MIN_VALUE..KotlinUShort.MAX_VALUE)
+    }
+
+    /**
+     * Unsigned integer generator configuration.
+     */
+    public object UInt {
+        public val range: FiktionConfig<KotlinUInt, ClosedRange<KotlinUInt>> =
+            FiktionConfig(KotlinUInt.MIN_VALUE..KotlinUInt.MAX_VALUE)
+    }
+
+    /**
+     * Unsigned integer range generator configuration.
+     */
+    public object UIntRange {
+        public val bounds: FiktionConfig<KotlinUIntRange, ClosedRange<KotlinUInt>> =
+            FiktionConfig(KotlinUInt.MIN_VALUE..KotlinUInt.MAX_VALUE)
+    }
+
+    /**
+     * Unsigned integer progression generator configuration.
+     */
+    public object UIntProgression {
+        public val bounds: FiktionConfig<KotlinUIntProgression, ClosedRange<KotlinUInt>> =
+            FiktionConfig(0u..100u)
+
+        public val step: FiktionConfig<KotlinUIntProgression, ClosedRange<KotlinInt>> =
+            FiktionConfig(1..5)
+    }
+
+    /**
+     * Unsigned long generator configuration.
+     */
+    public object ULong {
+        public val range: FiktionConfig<KotlinULong, ClosedRange<KotlinULong>> =
+            FiktionConfig(KotlinULong.MIN_VALUE..KotlinULong.MAX_VALUE)
+    }
+
+    /**
+     * Unsigned long range generator configuration.
+     */
+    public object ULongRange {
+        public val bounds: FiktionConfig<KotlinULongRange, ClosedRange<KotlinULong>> =
+            FiktionConfig(KotlinULong.MIN_VALUE..KotlinULong.MAX_VALUE)
+    }
+
+    /**
+     * Unsigned long progression generator configuration.
+     */
+    public object ULongProgression {
+        public val bounds: FiktionConfig<KotlinULongProgression, ClosedRange<KotlinULong>> =
+            FiktionConfig(0uL..100uL)
+
+        public val step: FiktionConfig<KotlinULongProgression, ClosedRange<KotlinLong>> =
+            FiktionConfig(1L..5L)
+    }
+
+    /**
+     * Float generator configuration.
+     */
+    public object Float {
+        public val range: FiktionConfig<KotlinFloat, ClosedRange<KotlinFloat>> =
+            FiktionConfig(0.0f..1.0f)
+    }
+
+    /**
+     * Double generator configuration.
+     */
+    public object Double {
+        public val range: FiktionConfig<KotlinDouble, ClosedRange<KotlinDouble>> =
+            FiktionConfig(0.0..1.0)
+    }
+
+    /**
+     * Character generator configuration.
+     */
+    public object Char {
+        public val charset: FiktionConfig<KotlinChar, FiktionCharset> =
+            FiktionConfig(FiktionCharset.AlphaNumeric)
+
+        public val rangeCharsets: FiktionConfig<CharRange, List<FiktionCharset>> =
+            FiktionConfig(
+                listOf(FiktionCharset.LowercaseAlpha, FiktionCharset.UppercaseAlpha, FiktionCharset.Numeric),
+            )
+
+        public val step: FiktionConfig<KotlinCharProgression, ClosedRange<KotlinInt>> =
+            FiktionConfig(1..5)
+    }
+
+    /**
+     * String generator configuration.
+     */
+    public object String {
+        public val length: FiktionConfig<KotlinString, ClosedRange<KotlinInt>> =
+            FiktionConfig(1..32)
+
+        public val charset: FiktionConfig<KotlinString, FiktionCharset> =
+            FiktionConfig(FiktionCharset.AlphaNumeric)
+    }
+
+    /**
+     * Collection generator configuration.
+     */
+    public object Collection {
+        public val size: FiktionConfig<KotlinCollection<*>, ClosedRange<KotlinInt>> =
+            FiktionConfig(0..5)
+
+        public val uniqueElementStrategy: FiktionConfig<KotlinCollection<*>, UniqueElementStrategy> =
+            FiktionConfig(UniqueElementStrategy.BestEffort)
+    }
+
+    /**
+     * Map generator configuration.
+     */
+    public object Map {
+        public val size: FiktionConfig<KotlinMap<*, *>, ClosedRange<KotlinInt>> =
+            FiktionConfig(0..5)
+    }
+
+    /**
+     * Array generator configuration.
+     */
+    public object Array {
+        public val size: FiktionConfig<KotlinArray<*>, ClosedRange<KotlinInt>> =
+            FiktionConfig(1..3)
+    }
+
+    /**
+     * Regex generator configuration.
+     */
+    public object Regex {
+        public val length: FiktionConfig<kotlin.text.Regex, ClosedRange<KotlinInt>> =
+            FiktionConfig(8..8)
+
+        public val charset: FiktionConfig<kotlin.text.Regex, FiktionCharset> =
+            FiktionConfig(FiktionCharset.AlphaNumeric)
+    }
+
+    /**
+     * Duration generator configuration.
+     */
+    public object Duration {
+        public val range: FiktionConfig<KotlinDuration, ClosedRange<KotlinDuration>> =
+            FiktionConfig((-3_153_600_000_000L).milliseconds..3_153_600_000_000L.milliseconds)
+    }
+
+    /**
+     * Instant generator configuration.
+     */
+    public object Instant {
+        public val epochSeconds: FiktionConfig<KotlinInstant, ClosedRange<KotlinLong>> =
+            FiktionConfig(946_684_800L..<4_102_444_800L)
+
+        public val nanosecond: FiktionConfig<KotlinInstant, ClosedRange<KotlinInt>> =
+            FiktionConfig(0..<1_000_000_000)
+    }
+}
 
 /**
  * Typed generator configuration value.

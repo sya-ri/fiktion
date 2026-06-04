@@ -52,7 +52,7 @@ public class PreferGroupedRuleTarget(
             ),
         )
         if (autoCorrect) {
-            replacements += group.replacement() ?: return
+            replacements += group.replacement()
             needsInvokeImport = needsInvokeImport || group.any { statement -> statement.requiresInvokeImport }
         }
     }
@@ -110,7 +110,7 @@ private fun List<KtExpression>.groupAdjacent(): List<List<GroupableRuleStatement
     return groups
 }
 
-private fun List<GroupableRuleStatement>.replacement(): TextReplacement? {
+private fun List<GroupableRuleStatement>.replacement(): TextReplacement {
     val first = first()
     val last = last()
     val indent = first.expression.lineIndent()

@@ -3,12 +3,6 @@
 package dev.s7a.fiktion
 
 /**
- * Creates a typed array from compiler-generated array metadata.
- */
-@ExperimentalFiktionApi
-public inline fun <reified T> generatedArray(elements: List<Any?>): Array<T> = Array(elements.size) { index -> elements[index] as T }
-
-/**
  * Generates an array from registered construction [metadata].
  */
 internal fun generateArray(

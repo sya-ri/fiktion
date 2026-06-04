@@ -11,6 +11,11 @@ import kotlin.concurrent.atomics.ExperimentalAtomicApi
 @OptIn(ExperimentalAtomicApi::class)
 internal object GlobalFiktion {
     /**
+     * Add-ons registered by code that runs on every supported platform.
+     */
+    private val automaticAddons = AtomicReference<List<FiktionAddon>>(emptyList())
+
+    /**
      * Atomic state for the current user-controlled global configuration.
      */
     private val current = AtomicReference(GlobalFiktionState(version = 0, config = DefaultFiktionBuilder().build()))
@@ -55,6 +60,22 @@ internal object GlobalFiktion {
             if (generatedMetadata.compareAndSet(previous, next)) return
         }
     }
+
+    /**
+     * Registers an add-on so compiler-generated calls can install it automatically.
+     */
+    fun registerAutomaticAddon(addon: FiktionAddon) {
+        while (true) {
+            val previous = automaticAddons.load()
+            val next = previous.filterNot { installed -> installed.id == addon.id } + addon
+            if (automaticAddons.compareAndSet(previous, next)) return
+        }
+    }
+
+    /**
+     * Returns add-ons discoverable on the current platform.
+     */
+    fun automaticAddons(): List<FiktionAddon> = automaticAddons.load()
 
     /**
      * Restores [previous] if [installed] is still current, unless [force] is enabled.

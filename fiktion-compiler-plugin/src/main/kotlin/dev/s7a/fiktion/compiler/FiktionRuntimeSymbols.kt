@@ -5,12 +5,14 @@ package dev.s7a.fiktion.compiler
 
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
+import org.jetbrains.kotlin.ir.declarations.IrProperty
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.classOrNull
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.name.ClassId
@@ -46,45 +48,112 @@ internal class FiktionRuntimeSymbols(
     val fiktionCompanionType: IrType = fiktionCompanionClass.owner.defaultType
 
     /**
-     * `Fiktion.registerGeneratedMetadata` companion function.
+     * `FiktionTypeMetadata` class.
      */
-    val registerGeneratedMetadata: IrSimpleFunctionSymbol =
+    private val typeMetadataClass: IrClassSymbol =
+        requireNotNull(pluginContext.referenceClass(classId("$FIKTION_PACKAGE.FiktionTypeMetadata")))
+
+    /**
+     * `FiktionAddon` class.
+     */
+    private val addonClass: IrClassSymbol =
+        requireNotNull(pluginContext.referenceClass(classId("$FIKTION_PACKAGE.FiktionAddon")))
+
+    /**
+     * `Fiktion.register` companion function for generated metadata.
+     */
+    val registerMetadata: IrSimpleFunctionSymbol =
         fiktionCompanionClass.owner.declarations
             .filterIsInstance<IrSimpleFunction>()
-            .single { function -> function.name == Name.identifier("registerGeneratedMetadata") }
-            .symbol
+            .single { function ->
+                function.name == Name.identifier("register") &&
+                    function.parameters.any { parameter ->
+                        parameter.kind == IrParameterKind.Regular &&
+                            parameter.type.classOrNull == typeMetadataClass
+                    }
+            }.symbol
 
     /**
-     * `Fiktion.registerAutomaticAddon` companion function.
+     * `Fiktion.register` companion function for automatic addons.
      */
-    val registerAutomaticAddon: IrSimpleFunctionSymbol =
+    val registerAddon: IrSimpleFunctionSymbol =
         fiktionCompanionClass.owner.declarations
             .filterIsInstance<IrSimpleFunction>()
-            .single { function -> function.name == Name.identifier("registerAutomaticAddon") }
-            .symbol
+            .single { function ->
+                function.name == Name.identifier("register") &&
+                    function.parameters.any { parameter ->
+                        parameter.kind == IrParameterKind.Regular &&
+                            parameter.type.classOrNull == addonClass
+                    }
+            }.symbol
 
     /**
-     * `generatedObjectArgumentValue` top-level function.
+     * `List.get` member function.
      */
-    val generatedObjectArgumentValue: IrSimpleFunctionSymbol =
-        pluginContext.referenceFunctions(callableId(FIKTION_PACKAGE, "generatedObjectArgumentValue")).single()
+    val listGet: IrSimpleFunctionSymbol =
+        pluginContext.irBuiltIns.listClass.owner.declarations
+            .filterIsInstance<IrSimpleFunction>()
+            .single { function ->
+                function.name == Name.identifier("get") &&
+                    function.parameters.any { parameter -> parameter.kind == IrParameterKind.DispatchReceiver } &&
+                    function.parameters.count { parameter -> parameter.kind == IrParameterKind.Regular } == 1
+            }.symbol
 
     /**
-     * `generatedObjectArgumentUsesDefault` top-level function.
+     * `FiktionObjectDefault` object class.
      */
-    val generatedObjectArgumentUsesDefault: IrSimpleFunctionSymbol =
-        pluginContext.referenceFunctions(callableId(FIKTION_PACKAGE, "generatedObjectArgumentUsesDefault")).single()
+    val objectDefaultClass: IrClassSymbol =
+        requireNotNull(
+            pluginContext.referenceClass(classId("$FIKTION_PACKAGE.FiktionObjectDefault")),
+        )
 
     /**
-     * `generatedArray` top-level function.
+     * `FiktionObjectDefault` object type.
      */
-    val generatedArray: IrSimpleFunctionSymbol =
-        pluginContext.referenceFunctions(callableId(FIKTION_PACKAGE, "generatedArray")).single()
+    val objectDefaultType: IrType = objectDefaultClass.owner.defaultType
+
+    /**
+     * `FiktionObjectValue` type.
+     */
+    private val objectValueClass: IrClassSymbol =
+        requireNotNull(
+            pluginContext.referenceClass(classId("$FIKTION_PACKAGE.FiktionObjectValue")),
+        )
+
+    /**
+     * `FiktionObjectValue` type.
+     */
+    val objectValueType: IrType = objectValueClass.owner.defaultType
+
+    /**
+     * `FiktionObjectValue.value` property getter.
+     */
+    val objectValueGetter: IrSimpleFunctionSymbol =
+        requireNotNull(
+            objectValueClass.owner.declarations
+                .filterIsInstance<IrProperty>()
+                .single { property -> property.name == Name.identifier("value") }
+                .getter,
+        ).symbol
 
     /**
      * `typeOf` top-level function.
      */
     val typeOf: IrSimpleFunctionSymbol = pluginContext.referenceFunctions(callableId("kotlin.reflect", "typeOf")).single()
+
+    /**
+     * `Collection<T>.toTypedArray` extension function.
+     */
+    val toTypedArray: IrSimpleFunctionSymbol =
+        pluginContext
+            .referenceFunctions(callableId("kotlin.collections", "toTypedArray"))
+            .single { function ->
+                function.owner.parameters
+                    .singleOrNull { parameter -> parameter.kind == IrParameterKind.ExtensionReceiver }
+                    ?.type
+                    ?.classOrNull == pluginContext.irBuiltIns.collectionClass &&
+                    function.owner.returnType.classOrNull == pluginContext.irBuiltIns.arrayClass
+            }
 
     /**
      * `listOf` top-level function.

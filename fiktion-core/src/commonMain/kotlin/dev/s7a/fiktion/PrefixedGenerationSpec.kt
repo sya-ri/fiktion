@@ -4,7 +4,7 @@ package dev.s7a.fiktion
  * Returns this generation spec scoped below [prefix].
  */
 internal fun DefaultGenerationSpec<*>.prefixedBy(prefix: List<PathRuleSegment>): DefaultGenerationSpec<*> =
-    DefaultGenerationSpec<Any?>(
+    DefaultGenerationSpec(
         key = key.prefixedBy(prefix),
         matcher = matcher.prefixedBy(prefix = prefix, allowRootTarget = false),
         generator = generator,

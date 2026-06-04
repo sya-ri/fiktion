@@ -1,6 +1,5 @@
 package dev.s7a.fiktion
 
-import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
 /**

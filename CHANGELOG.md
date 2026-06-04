@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.5.0
+
+- Added Qodana configuration for the recommended JVM inspection profile, excluding explicit visibility modifier
+  findings because public ABI declarations intentionally keep visibility explicit.
+- Changed kotlinx-datetime `TimeZone` generation to pick from the available zone IDs instead of always returning UTC.
+- Added Java add-on coverage for collection and map generator helpers that were previously only kept alive by unused
+  suppressions.
+- Cleaned up Qodana inspection findings for unused imports, explicit type arguments, unused receiver parameters, and
+  deprecated Kotlin compiler configuration access.
+- Changed compiler-generated metadata registration APIs from `Fiktion.registerGeneratedMetadata(...)` and
+  `Fiktion.registerAutomaticAddon(...)` to overloaded `Fiktion.register(...)` entry points.
+- Changed `FiktionConfig` construction to use a regular constructor and removed the stored scope type from
+  configuration keys.
+- Removed compiler-generated runtime helper APIs that are now generated directly by the compiler plugin:
+  `generatedArray(...)`, `generatedObjectArgumentValue(...)`, and `generatedObjectArgumentUsesDefault(...)`.
+
 ## v0.4.2
 
 - Added richer generation failure diagnostics with request context, current configuration details, add-on guidance, and

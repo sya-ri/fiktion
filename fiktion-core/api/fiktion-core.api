@@ -139,8 +139,8 @@ public final class dev/s7a/fiktion/Fiktion$Companion {
 	public final fun configure (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/FiktionSnapshot;
 	public final fun invoke (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/Fiktion;
 	public static synthetic fun invoke$default (Ldev/s7a/fiktion/Fiktion$Companion;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ldev/s7a/fiktion/Fiktion;
-	public final fun registerAutomaticAddon (Ldev/s7a/fiktion/FiktionAddon;)V
-	public final fun registerGeneratedMetadata (Ldev/s7a/fiktion/FiktionTypeMetadata;)V
+	public final fun register (Ldev/s7a/fiktion/FiktionAddon;)V
+	public final fun register (Ldev/s7a/fiktion/FiktionTypeMetadata;)V
 }
 
 public abstract interface class dev/s7a/fiktion/FiktionAddon {
@@ -165,8 +165,7 @@ public abstract class dev/s7a/fiktion/FiktionBuilder : dev/s7a/fiktion/FiktionRu
 }
 
 public final class dev/s7a/fiktion/FiktionConfig {
-	public static final field Companion Ldev/s7a/fiktion/FiktionConfig$Companion;
-	public fun <init> (Lkotlin/reflect/KType;Ljava/lang/Object;)V
+	public fun <init> (Ljava/lang/Object;)V
 	public final fun getDefaultValue ()Ljava/lang/Object;
 }
 
@@ -191,9 +190,6 @@ public final class dev/s7a/fiktion/FiktionConfig$Collection {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Collection;
 	public final fun getSize ()Ldev/s7a/fiktion/FiktionConfig;
 	public final fun getUniqueElementStrategy ()Ldev/s7a/fiktion/FiktionConfig;
-}
-
-public final class dev/s7a/fiktion/FiktionConfig$Companion {
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Double {
@@ -438,14 +434,6 @@ public final class dev/s7a/fiktion/FiktionValueMetadata : dev/s7a/fiktion/Fiktio
 	public final fun getPropertyName ()Ljava/lang/String;
 	public fun getType ()Lkotlin/reflect/KType;
 	public final fun getUnderlyingType ()Lkotlin/reflect/KType;
-}
-
-public final class dev/s7a/fiktion/GeneratedObjectArgumentUsesDefaultKt {
-	public static final fun generatedObjectArgumentUsesDefault (Ljava/util/List;I)Z
-}
-
-public final class dev/s7a/fiktion/GeneratedObjectArgumentValueKt {
-	public static final fun generatedObjectArgumentValue (Ljava/util/List;I)Ljava/lang/Object;
 }
 
 public abstract interface class dev/s7a/fiktion/GenerationSpec {

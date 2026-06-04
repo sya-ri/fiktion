@@ -20,6 +20,14 @@ Use short, descriptive titles without agent-specific prefixes. Keep changes focu
 
 Renovate is configured to open dependency update pull requests against `release/0.x`.
 
+## Quality Checks
+
+Run Qodana locally with the repository `qodana.yaml` configuration:
+
+```shell
+docker run -it -v "$PWD":/data/project jetbrains/qodana-jvm-community:2026.1
+```
+
 ## Publishing
 
 Publish pull requests target `main` from `release/0.x`. Merge the publish pull request with a merge commit only when the

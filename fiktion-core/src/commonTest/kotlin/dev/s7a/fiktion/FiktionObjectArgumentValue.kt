@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFiktionApi::class)
-
 package dev.s7a.fiktion
 
 /**
