@@ -129,6 +129,55 @@ class GenerateObjectTest {
     }
 
     @Test
+    fun `nested path rules override property name and type rules in the same layer`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithProfile())
+                register(profileMetadata())
+                type<String>() generates "type-string"
+                name("nickname") generates "name-nickname"
+                property<Profile, String>("nickname") generates "property-nickname"
+                property(User::profile / Profile::nickname) generates "path-nickname"
+                User::id generates "user-id"
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(
+            User(
+                id = "user-id",
+                profile = Profile(nickname = "path-nickname"),
+            ),
+            user,
+        )
+    }
+
+    @Test
+    fun `per-call name rules override builder property rules from a lower precedence layer`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithProfile())
+                register(profileMetadata())
+                type<String>() generates "type-string"
+                property<Profile, String>("nickname") generates "builder-property-nickname"
+                User::id generates "user-id"
+            }
+
+        val user =
+            fiktion.fake<User>(seed = 123) {
+                name("nickname") generates "per-call-name-nickname"
+            }
+
+        assertEquals(
+            User(
+                id = "user-id",
+                profile = Profile(nickname = "per-call-name-nickname"),
+            ),
+            user,
+        )
+    }
+
+    @Test
     fun `per-call nested property blocks configure generated nested object properties`() {
         val fiktion =
             Fiktion {
