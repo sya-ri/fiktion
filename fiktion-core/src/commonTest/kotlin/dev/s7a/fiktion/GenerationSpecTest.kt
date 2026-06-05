@@ -3,6 +3,7 @@ package dev.s7a.fiktion
 import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotSame
 import kotlin.test.assertSame
 
 class GenerationSpecTest {
@@ -57,6 +58,42 @@ class GenerationSpecTest {
         rule orDefaultAt 0.4
 
         assertEquals(Probability(0.4), rule.defaultProbability)
+    }
+
+    @Test
+    fun `snapshot keeps values when the original spec changes`() {
+        val rule = stringSpec()
+        rule withSeed 123
+        rule orNullAt 30.percent
+        rule orDefaultAt 40.percent
+
+        val snapshot = rule.snapshot()
+
+        rule withSeed 456
+        rule orNullAt 50.percent
+        rule orDefaultAt 60.percent
+
+        assertNotSame(rule, snapshot)
+        assertEquals(123, snapshot.seed)
+        assertEquals(30.percent, snapshot.nullProbability)
+        assertEquals(40.percent, snapshot.defaultProbability)
+    }
+
+    @Test
+    fun `mutating a snapshot does not change the original spec`() {
+        val rule = stringSpec()
+        rule withSeed 123
+        rule orNullAt 30.percent
+        rule orDefaultAt 40.percent
+        val snapshot = rule.snapshot()
+
+        snapshot withSeed 456
+        snapshot orNullAt 50.percent
+        snapshot orDefaultAt 60.percent
+
+        assertEquals(123, rule.seed)
+        assertEquals(30.percent, rule.nullProbability)
+        assertEquals(40.percent, rule.defaultProbability)
     }
 
     /**
