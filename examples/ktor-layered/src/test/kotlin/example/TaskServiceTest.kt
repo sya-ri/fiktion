@@ -13,7 +13,6 @@ class TaskServiceTest {
             val repository = InMemoryTaskRepository()
             val service =
                 TaskService(
-                    idGenerator = TaskIdGenerator { taskId("00000000-0000-0000-0000-000000000101") },
                     repository = repository,
                 )
             val command =
@@ -24,10 +23,9 @@ class TaskServiceTest {
 
             val task = service.createTask(command)
 
-            assertEquals(taskId("00000000-0000-0000-0000-000000000101"), task.id)
             assertEquals("Write the Ktor sample", task.title)
             assertEquals("Show service-layer tests with Fiktion", task.description)
             assertEquals(TaskStatus.Open, task.status)
-            assertEquals(task, repository.findById(taskId("00000000-0000-0000-0000-000000000101")))
+            assertEquals(task, repository.findById(task.id))
         }
 }

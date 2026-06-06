@@ -31,7 +31,6 @@ class TaskRoutesTest {
                     AppDependencies(
                         taskService =
                             TaskService(
-                                idGenerator = TaskIdGenerator { taskId("00000000-0000-0000-0000-000000000399") },
                                 repository = InMemoryTaskRepository(listOf(existingTask)),
                             ),
                     ),
@@ -60,7 +59,6 @@ class TaskRoutesTest {
                     AppDependencies(
                         taskService =
                             TaskService(
-                                idGenerator = TaskIdGenerator { taskId("00000000-0000-0000-0000-000000000302") },
                                 repository = InMemoryTaskRepository(),
                             ),
                     ),
@@ -74,14 +72,9 @@ class TaskRoutesTest {
                 }
 
             assertEquals(HttpStatusCode.Created, response.status)
-            assertEquals(
-                TaskResponse(
-                    id = taskId("00000000-0000-0000-0000-000000000302"),
-                    title = "Build layered sample",
-                    description = "Keep DI manual",
-                    status = "open",
-                ),
-                Json.decodeFromString<TaskResponse>(response.bodyAsText()),
-            )
+            val task = Json.decodeFromString<TaskResponse>(response.bodyAsText())
+            assertEquals("Build layered sample", task.title)
+            assertEquals("Keep DI manual", task.description)
+            assertEquals("open", task.status)
         }
 }

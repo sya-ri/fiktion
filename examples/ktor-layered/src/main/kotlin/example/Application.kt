@@ -37,7 +37,6 @@ fun defaultDependencies(): AppDependencies {
     val repository = InMemoryTaskRepository()
     return AppDependencies(
         taskService = TaskService(
-            idGenerator = RandomTaskIdGenerator(),
             repository = repository,
         ),
     )

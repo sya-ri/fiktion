@@ -4,7 +4,6 @@ package example
  * Application service that owns task use cases.
  */
 class TaskService(
-    private val idGenerator: TaskIdGenerator,
     private val repository: TaskRepository,
 ) {
     /**
@@ -25,7 +24,7 @@ class TaskService(
     suspend fun createTask(command: CreateTaskCommand): Task {
         val task =
             Task(
-                id = idGenerator.nextId(),
+                id = TaskId.random(),
                 title = command.title,
                 description = command.description,
                 status = TaskStatus.Open,
