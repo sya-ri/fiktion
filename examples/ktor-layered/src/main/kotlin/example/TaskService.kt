@@ -33,21 +33,3 @@ class TaskService(
         return repository.save(task)
     }
 }
-
-/**
- * Supplies task identifiers so tests can inject deterministic IDs without replacing the service.
- */
-fun interface TaskIdGenerator {
-    /**
-     * Returns the next identifier for a task being created.
-     */
-    fun nextId(): TaskId
-}
-
-/**
- * Production id generator backed by random UUIDs.
- */
-class RandomTaskIdGenerator : TaskIdGenerator {
-    override fun nextId(): TaskId =
-        TaskId.random()
-}

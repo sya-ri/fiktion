@@ -31,13 +31,6 @@ fun Application.module(dependencies: AppDependencies = defaultDependencies()) {
 }
 
 /**
- * Manual dependency container for the sample application.
- */
-data class AppDependencies(
-    val taskService: TaskService,
-)
-
-/**
  * Builds production dependencies for the sample application.
  */
 fun defaultDependencies(): AppDependencies {
