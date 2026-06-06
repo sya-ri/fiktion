@@ -1,5 +1,5 @@
 [versions]
-arrow = "2.2.2.1"
+arrow = "2.2.3"
 detekt = "2.0.0-alpha.3"
 dokka = "2.2.0"
 gradlePluginPublish = "2.1.1"
