@@ -1,4 +1,0 @@
-interface:
-  display_name: "Fiktion Detekt Rules"
-  short_description: "Author Fiktion detekt rules"
-  default_prompt: "Use $fiktion-detekt-rules to implement and test a Fiktion detekt rule."
