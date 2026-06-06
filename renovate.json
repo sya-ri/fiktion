@@ -8,13 +8,5 @@
   ],
   "labels": [
     "dependencies"
-  ],
-  "packageRules": [
-    {
-      "groupName": "Gradle and Kotlin",
-      "matchManagers": [
-        "gradle"
-      ]
-    }
   ]
 }
