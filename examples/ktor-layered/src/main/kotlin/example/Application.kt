@@ -8,12 +8,18 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 
+/**
+ * Starts the sample server on port 8080.
+ */
 fun main() {
     embeddedServer(Netty, port = 8080) {
         module()
     }.start(wait = true)
 }
 
+/**
+ * Installs Ktor plugins and wires routes with manually supplied dependencies.
+ */
 fun Application.module(dependencies: AppDependencies = defaultDependencies()) {
     install(ContentNegotiation) {
         json()
@@ -24,10 +30,16 @@ fun Application.module(dependencies: AppDependencies = defaultDependencies()) {
     }
 }
 
+/**
+ * Manual dependency container for the sample application.
+ */
 data class AppDependencies(
     val taskService: TaskService,
 )
 
+/**
+ * Builds production dependencies for the sample application.
+ */
 fun defaultDependencies(): AppDependencies {
     val repository = InMemoryTaskRepository()
     return AppDependencies(

@@ -1,17 +1,27 @@
 package example
 
-import java.util.UUID
-
+/**
+ * Application service that owns task use cases.
+ */
 class TaskService(
     private val idGenerator: TaskIdGenerator,
     private val repository: TaskRepository,
 ) {
+    /**
+     * Lists tasks in repository order.
+     */
     suspend fun listTasks(): List<Task> =
         repository.findAll()
 
-    suspend fun getTask(id: String): Task? =
+    /**
+     * Finds one task by id.
+     */
+    suspend fun getTask(id: TaskId): Task? =
         repository.findById(id)
 
+    /**
+     * Creates an open task from a service-layer command.
+     */
     suspend fun createTask(command: CreateTaskCommand): Task {
         val task =
             Task(
@@ -24,11 +34,20 @@ class TaskService(
     }
 }
 
+/**
+ * Supplies task identifiers so tests can inject deterministic IDs without replacing the service.
+ */
 fun interface TaskIdGenerator {
-    fun nextId(): String
+    /**
+     * Returns the next identifier for a task being created.
+     */
+    fun nextId(): TaskId
 }
 
+/**
+ * Production id generator backed by random UUIDs.
+ */
 class RandomTaskIdGenerator : TaskIdGenerator {
-    override fun nextId(): String =
-        UUID.randomUUID().toString()
+    override fun nextId(): TaskId =
+        TaskId.random()
 }

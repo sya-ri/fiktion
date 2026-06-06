@@ -18,9 +18,10 @@ class TaskRoutesTest {
     @Test
     fun returnsTasksFromInjectedDependencies() =
         testApplication {
+            val existingTaskId = taskId("00000000-0000-0000-0000-000000000301")
             val existingTask =
-                fake<Task>(seed = 20) {
-                    Task::id generates "task-existing"
+                fake<Task> {
+                    Task::id generates existingTaskId
                     Task::title generates "Document route tests"
                     Task::description generates "Use Fiktion for route fixtures"
                     Task::status generates TaskStatus.Completed
@@ -30,19 +31,19 @@ class TaskRoutesTest {
                     AppDependencies(
                         taskService =
                             TaskService(
-                                idGenerator = TaskIdGenerator { "unused" },
+                                idGenerator = TaskIdGenerator { taskId("00000000-0000-0000-0000-000000000399") },
                                 repository = InMemoryTaskRepository(listOf(existingTask)),
                             ),
                     ),
                 )
             }
 
-            val response = client.get("/tasks/task-existing")
+            val response = client.get("/tasks/$existingTaskId")
 
             assertEquals(HttpStatusCode.OK, response.status)
             assertEquals(
                 TaskResponse(
-                    id = "task-existing",
+                    id = existingTaskId,
                     title = "Document route tests",
                     description = "Use Fiktion for route fixtures",
                     status = "completed",
@@ -59,7 +60,7 @@ class TaskRoutesTest {
                     AppDependencies(
                         taskService =
                             TaskService(
-                                idGenerator = TaskIdGenerator { "task-from-route" },
+                                idGenerator = TaskIdGenerator { taskId("00000000-0000-0000-0000-000000000302") },
                                 repository = InMemoryTaskRepository(),
                             ),
                     ),
@@ -75,7 +76,7 @@ class TaskRoutesTest {
             assertEquals(HttpStatusCode.Created, response.status)
             assertEquals(
                 TaskResponse(
-                    id = "task-from-route",
+                    id = taskId("00000000-0000-0000-0000-000000000302"),
                     title = "Build layered sample",
                     description = "Keep DI manual",
                     status = "open",

@@ -9,6 +9,9 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import kotlinx.serialization.Serializable
 
+/**
+ * Registers task HTTP routes.
+ */
 fun Route.taskRoutes(taskService: TaskService) {
     route("/tasks") {
         get {
@@ -16,7 +19,7 @@ fun Route.taskRoutes(taskService: TaskService) {
         }
 
         get("/{id}") {
-            val id = call.parameters["id"]
+            val id = call.parameters["id"]?.let { TaskId.parseOrNull(it) }
             val task = id?.let { taskService.getTask(it) }
 
             if (task == null) {
@@ -41,15 +44,21 @@ fun Route.taskRoutes(taskService: TaskService) {
     }
 }
 
+/**
+ * JSON request body for creating a task.
+ */
 @Serializable
 data class CreateTaskRequest(
     val title: String,
     val description: String? = null,
 )
 
+/**
+ * JSON response body for task resources.
+ */
 @Serializable
 data class TaskResponse(
-    val id: String,
+    val id: TaskId,
     val title: String,
     val description: String?,
     val status: String,
