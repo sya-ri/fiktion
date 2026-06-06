@@ -1,4 +1,4 @@
 interface:
   display_name: "Fiktion"
-  short_description: "Use and extend Fiktion fake data APIs"
+  short_description: "Use Fiktion fake data APIs"
   default_prompt: "Use $fiktion to configure fake data generation for Kotlin tests."

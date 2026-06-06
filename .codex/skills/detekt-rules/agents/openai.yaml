@@ -1,0 +1,4 @@
+interface:
+  display_name: "Detekt Rules"
+  short_description: "Author repository detekt rules"
+  default_prompt: "Use $detekt-rules to implement and test a detekt rule."

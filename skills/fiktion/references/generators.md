@@ -148,37 +148,34 @@ char(FiktionCharset.Numeric)
 
 Inspect `FiktionCharset.kt` for the current constants. Current built-ins cover lowercase ASCII letters, uppercase ASCII letters, digits, alpha combinations, and alpha-numeric combinations.
 
-## Writing New Core Generators
+## Project-Local Generator Functions
 
-Follow the existing pattern:
-
-- Place each public generator in `generators/Xxx.kt`.
-- Use `FakeContext` receiver.
-- Prefer overload order with explicit min/max first, range overload second, default overload last when that is safer.
-- Prefer existing generators inside new generators.
-- Keep constants private to the file unless shared by multiple files.
-- Add tests in `fiktion-core/src/commonTest/kotlin/dev/s7a/fiktion/generators/XxxTest.kt`.
-- Add a built-in rule in `BuiltInRules.kt` only when `fake<T>()` should work without configuration.
-- Add a default-generation test confirming `fake<T>()` works without custom settings for built-in types.
-- Update ABI when public API changes.
-
-Example:
+Use generator functions when a project needs reusable domain-specific fake values:
 
 ```kotlin
-package dev.s7a.fiktion.generators
-
 import dev.s7a.fiktion.FakeContext
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.generatesBy
+import dev.s7a.fiktion.generators.FiktionCharset
+import dev.s7a.fiktion.generators.string
+import dev.s7a.fiktion.type
 
 public fun FakeContext.token(length: Int = 32): Token =
     Token(value = string(length = length, charset = FiktionCharset.AlphaNumeric))
 ```
 
-Built-in rule:
+Register project-local generators with an isolated or global configuration when `fake<T>()` should use them
+automatically:
 
 ```kotlin
-type<Token>() generatesBy {
-    token()
+val fiktion = Fiktion {
+    type<Token>() generatesBy {
+        token()
+    }
 }
+
+val token = fiktion.fake<Token>()
 ```
 
 ## Type Family Generators

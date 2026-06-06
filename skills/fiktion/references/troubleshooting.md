@@ -160,6 +160,4 @@ When reviewing or refactoring:
 - Confirm `generates auto` for collection/map uses size constraints when test expectations rely on size.
 - Confirm custom collection/map types have converters.
 - Confirm generated values for maps avoid null keys/values when target Java type forbids them.
-- Confirm new public APIs have tests and ABI updates.
-- Confirm tests cover default `fake<T>()` generation for new built-ins/add-on built-ins.
-- Confirm docs/README and skill references are updated when API names change.
+- Confirm reusable project-local generator functions are covered by the project's tests when their output matters.
