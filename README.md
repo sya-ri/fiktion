@@ -97,6 +97,24 @@ If detekt is not configured yet, follow the
 Fiktion is enabled for test source sets by default, including JVM `test` and Multiplatform source sets such as
 `commonTest` and `jvmTest`.
 
+### Kotlin Compatibility
+
+Fiktion `0.5.0` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
+The repository is tested with a consumer project using Kotlin `2.4.0`.
+
+The compiler plugin uses Kotlin compiler APIs, so compatibility is verified per consumer Kotlin version instead of
+assuming all future compiler releases work automatically. Maintainers can run the same check locally with:
+
+```shell
+./gradlew publishToMavenLocal
+./gradlew -p compatibility/jvm-consumer test -Pconsumer.kotlin.version=2.4.0
+```
+
+Kotlin `2.3.x` and `2.2.x` are not supported by artifacts built with Kotlin `2.4.0`. Kotlin `2.3.0` fails to load the
+compiler plugin because the Kotlin compiler API is not binary-compatible with the `2.4.0`-built plugin. Supporting
+multiple Kotlin compiler lines requires publishing compiler-plugin artifacts per Kotlin version and selecting the
+matching artifact from the Gradle plugin.
+
 Runnable sample projects live in [`examples/`](examples/).
 
 ## Basic Usage
