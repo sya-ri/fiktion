@@ -62,6 +62,12 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
+    tasks.withType<org.gradle.plugins.signing.Sign>().configureEach {
+        onlyIf {
+            gradle.startParameter.taskNames.none { it.equals("publishToMavenLocal", ignoreCase = true) }
+        }
+    }
+
     extensions.configure<DetektExtension>("detekt") {
         config.setFrom(rootProject.files("detekt.yml"))
     }
