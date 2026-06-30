@@ -310,6 +310,11 @@ Use typed generator configuration when you want to keep Fiktion's default genera
 formats:
 
 ```kotlin
+import dev.s7a.fiktion.FiktionConfig
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.invoke
+
 val fiktion = Fiktion {
     this using FiktionConfig.Int.range(-200..200)
     this using FiktionConfig.String.length(8)
@@ -326,6 +331,11 @@ val names = fake<List<String>> {
     this using FiktionConfig.Collection.size(5)
 }
 ```
+
+`this using ...` is a `FakeSpec` member inside the `fake` lambda, so it does not need a separate `using` import. The
+`FiktionConfig.Collection.size(5)` shorthand uses Fiktion's `invoke` operator extension, so import `dev.s7a.fiktion.invoke`
+or use `import dev.s7a.fiktion.*`. Use `FiktionConfig.Collection.size` for `List`, `Set`, and other collection types,
+and `FiktionConfig.Map.size` for maps.
 
 Sets use normal set semantics by default, so duplicate generated elements can collapse and make the final set smaller
 than `FiktionConfig.Collection.size`. Use `UniqueElementStrategy.Exact` when a set must contain the configured number of

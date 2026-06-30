@@ -500,6 +500,11 @@ Use typed generator configuration when the built-in or add-on generator should s
 sizes, or formatting defaults:
 
 ```kotlin
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionConfig
+import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.invoke
+
 val user = fake<User> {
     User::id using FiktionConfig.String.length(12)
 }
@@ -536,6 +541,11 @@ val fiktion = Fiktion {
     this using FiktionConfig.Collection.size(3)
 }
 ```
+
+`this using ...` is available as a member inside `fake` and `Fiktion` configuration lambdas, so callers do not need a
+separate `using` import for root config. The `FiktionConfig.Collection.size(5)` shorthand uses Fiktion's `invoke`
+operator extension, so import `dev.s7a.fiktion.invoke` or use `import dev.s7a.fiktion.*`. Use
+`FiktionConfig.Collection.size` for `List`, `Set`, and other collection types, and `FiktionConfig.Map.size` for maps.
 
 When a config key accepts a range, prefer the fixed-value shorthand for equal bounds:
 
