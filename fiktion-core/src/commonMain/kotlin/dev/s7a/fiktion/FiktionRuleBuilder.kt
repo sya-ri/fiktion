@@ -1,5 +1,3 @@
-@file:Suppress("ktlint:standard:max-line-length")
-
 package dev.s7a.fiktion
 
 import kotlin.reflect.KProperty1
@@ -303,7 +301,15 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -315,7 +321,16 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -339,7 +354,17 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -365,7 +390,18 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -393,7 +429,19 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -423,7 +471,20 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -455,7 +516,21 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -489,7 +564,22 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -525,7 +615,23 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -563,7 +669,24 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -603,7 +726,25 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -645,7 +786,26 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+        reified D16,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -689,7 +849,27 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+        reified D16,
+        reified D17,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -735,7 +915,28 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+        reified D16,
+        reified D17,
+        reified D18,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -783,7 +984,29 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+        reified D16,
+        reified D17,
+        reified D18,
+        reified D19,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -833,7 +1056,30 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19, reified D20> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+        reified D16,
+        reified D17,
+        reified D18,
+        reified D19,
+        reified D20,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -885,7 +1131,31 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19, reified D20, reified D21> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+        reified D16,
+        reified D17,
+        reified D18,
+        reified D19,
+        reified D20,
+        reified D21,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
@@ -939,7 +1209,32 @@ public sealed class FiktionRuleBuilder protected constructor() {
     /**
      * Targets this property with values generated from typed dependencies in declaration order.
      */
-    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19, reified D20, reified D21, reified D22> KProperty1<Owner, Value>.dependsOn(
+    public inline fun <
+        reified Owner,
+        reified Value,
+        reified D1,
+        reified D2,
+        reified D3,
+        reified D4,
+        reified D5,
+        reified D6,
+        reified D7,
+        reified D8,
+        reified D9,
+        reified D10,
+        reified D11,
+        reified D12,
+        reified D13,
+        reified D14,
+        reified D15,
+        reified D16,
+        reified D17,
+        reified D18,
+        reified D19,
+        reified D20,
+        reified D21,
+        reified D22,
+    > KProperty1<Owner, Value>.dependsOn(
         dependency1: KProperty1<Owner, D1>,
         dependency2: KProperty1<Owner, D2>,
         dependency3: KProperty1<Owner, D3>,
