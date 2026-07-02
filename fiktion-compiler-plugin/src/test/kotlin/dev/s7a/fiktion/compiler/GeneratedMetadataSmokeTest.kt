@@ -1,6 +1,7 @@
 package dev.s7a.fiktion.compiler
 
 import dev.s7a.fiktion.CannotGenerateException
+import dev.s7a.fiktion.ExperimentalFiktionApi
 import dev.s7a.fiktion.FakeType
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.FiktionConfig
@@ -8,6 +9,7 @@ import dev.s7a.fiktion.Probability
 import dev.s7a.fiktion.default
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
+import dev.s7a.fiktion.generatesBy
 import dev.s7a.fiktion.invoke
 import dev.s7a.fiktion.using
 import java.util.concurrent.atomic.AtomicReference
@@ -17,6 +19,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 
+@OptIn(ExperimentalFiktionApi::class)
 class GeneratedMetadataSmokeTest {
     @Test
     fun `compiler plugin registers generated metadata before fake calls`() {
@@ -54,6 +57,44 @@ class GeneratedMetadataSmokeTest {
 
         assertEquals(type, fake<FakeType>(seed = 123))
         assertTrue(type.id.isNotBlank())
+    }
+
+    @Test
+    fun `compiler plugin generated metadata supports dependent property rules`() {
+        val user =
+            fake<GeneratedDependentUser>(seed = 123) {
+                GeneratedDependentUser::id generates "user-1"
+                GeneratedDependentUser::email.dependsOn(GeneratedDependentUser::id) generatesBy { id ->
+                    "$id@example.test"
+                }
+            }
+
+        assertEquals(GeneratedDependentUser(id = "user-1", email = "user-1@example.test"), user)
+    }
+
+    @Test
+    fun `compiler plugin generated metadata supports dependent property rules with different dependency types`() {
+        val label =
+            fake<GeneratedDependentUserLabel>(seed = 123) {
+                GeneratedDependentUserLabel::id generates "user-1"
+                GeneratedDependentUserLabel::score generates 42
+                GeneratedDependentUserLabel::label
+                    .dependsOn(
+                        GeneratedDependentUserLabel::id,
+                        GeneratedDependentUserLabel::score,
+                    ).generatesBy { id, score ->
+                        "$id:$score"
+                    }
+            }
+
+        assertEquals(
+            GeneratedDependentUserLabel(
+                id = "user-1",
+                score = 42,
+                label = "user-1:42",
+            ),
+            label,
+        )
     }
 
     @Test
@@ -440,6 +481,38 @@ private data class GeneratedUser(
      * User identifier generated from built-in String generation.
      */
     val id: String,
+)
+
+/**
+ * Smoke-test model for property rules that depend on compiler-generated metadata.
+ */
+private data class GeneratedDependentUser(
+    /**
+     * User identifier used by another generated property.
+     */
+    val id: String,
+    /**
+     * Email generated from [id].
+     */
+    val email: String,
+)
+
+/**
+ * Smoke-test model for property rules with multiple dependency types.
+ */
+private data class GeneratedDependentUserLabel(
+    /**
+     * User identifier used by a dependent label.
+     */
+    val id: String,
+    /**
+     * User score used by a dependent label.
+     */
+    val score: Int,
+    /**
+     * Label generated from [id] and [score].
+     */
+    val label: String,
 )
 
 /**
