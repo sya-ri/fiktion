@@ -25,10 +25,13 @@ internal fun Iterable<DefaultGenerationSpec<*>>.selectRule(request: GenerationRe
  * non-null side of nullable automatic generation.
  */
 internal fun Iterable<DefaultGenerationSpec<*>>.selectAutomaticRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
-    selectRule(request) ?: if (request.type.isMarkedNullable) selectNullableAutomaticRule(request) else null
+    selectRule(request) ?: if (request.type.isMarkedNullable) selectNullableNonNullRule(request) else null
 
-private fun Iterable<DefaultGenerationSpec<*>>.selectNullableAutomaticRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
-    filter { rule -> rule.matcher.matchesNullableAutomaticRequest(request) }
+/**
+ * Selects a non-null type or type-family rule for the non-null branch of a nullable generation request.
+ */
+internal fun Iterable<DefaultGenerationSpec<*>>.selectNullableNonNullRule(request: GenerationRequest): DefaultGenerationSpec<*>? =
+    filter { rule -> rule.matcher.matchesNullableNonNullRequest(request) }
         .fold(initial = null) { selected, candidate ->
             when {
                 selected == null -> candidate
@@ -37,7 +40,7 @@ private fun Iterable<DefaultGenerationSpec<*>>.selectNullableAutomaticRule(reque
             }
         }
 
-private fun RuleMatcher.matchesNullableAutomaticRequest(request: GenerationRequest): Boolean =
+private fun RuleMatcher.matchesNullableNonNullRequest(request: GenerationRequest): Boolean =
     when (this) {
         is RuleMatcher.Type -> request.type.nonNullTypeId() == type.nonNullTypeId()
         is RuleMatcher.TypeFamily -> request.type.classifier == type.classifier
