@@ -45,6 +45,7 @@ internal fun generateValue(
                 contextSeed = nullableNonNullSeed,
                 depth = depth,
                 context = request.toFakeContext(config = config, seed = nullableNonNullSeed, depth = depth),
+                dependencyValues = null,
             )
         }
     }
@@ -304,6 +305,7 @@ private fun generateAutomaticContainerValue(
                     config = config,
                     seed = seed.childSeed(index * 2),
                     depth = depth + 1,
+                    dependencyValues = null,
                 ) to
                     generateValue(
                         request =
@@ -317,6 +319,7 @@ private fun generateAutomaticContainerValue(
                         config = config,
                         seed = seed.childSeed(index * 2 + 1),
                         depth = depth + 1,
+                        dependencyValues = null,
                     )
             }
         return converter.convert(entries)
@@ -345,4 +348,5 @@ private fun generateCollectionElement(
         config = config,
         seed = seed.childSeed(index),
         depth = depth + 1,
+        dependencyValues = null,
     )

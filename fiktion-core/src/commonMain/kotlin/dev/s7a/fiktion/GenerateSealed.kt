@@ -27,6 +27,7 @@ internal fun generateSealed(
             config = config,
             seed = seed.childSeed(index = 0),
             depth = depth + 1,
+            dependencyValues = null,
         )
     } catch (cause: CannotGenerateException) {
         throw CannotGenerateException(

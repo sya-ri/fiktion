@@ -26,7 +26,14 @@ internal fun <T> generateFake(
                 rulePrecedence = RulePrecedence.PER_CALL,
             )
     val request = GenerationRequest(type = type)
-    val value = generateValue(request = request, config = config, seed = rootSeed, depth = 0)
+    val value =
+        generateValue(
+            request = request,
+            config = config,
+            seed = rootSeed,
+            depth = 0,
+            dependencyValues = null,
+        )
     @Suppress("UNCHECKED_CAST")
     return value as T
 }

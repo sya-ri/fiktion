@@ -70,6 +70,7 @@ public class TypeFamilyGenerationContext internal constructor(
             config = config,
             seed = context.seed.childSeed(seedIndex),
             depth = context.depth + 1,
+            dependencyValues = null,
         )
 
     /**
