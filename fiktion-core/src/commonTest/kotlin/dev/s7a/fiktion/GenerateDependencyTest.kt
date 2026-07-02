@@ -150,6 +150,24 @@ class GenerateDependencyTest {
     }
 
     @Test
+    fun `dependent property fails when metadata dependency type does not match declaration`() {
+        val fiktion =
+            Fiktion {
+                register(mismatchedDependencyMetadata())
+                MismatchedDependency::label.dependsOn(MismatchedDependency::id) generatesBy { id ->
+                    id
+                }
+            }
+
+        val error =
+            assertFailsWith<CannotGenerateException> {
+                fiktion.fake<MismatchedDependency>()
+            }
+
+        assertTrue(error.hasMessageContaining("dependency property type does not match"))
+    }
+
+    @Test
     fun `dependent property fails when dependency used constructor default`() {
         val fiktion =
             Fiktion {
@@ -378,6 +396,21 @@ class GenerateDependencyTest {
             )
         }
 
+    private fun mismatchedDependencyMetadata(): FiktionObjectMetadata<MismatchedDependency> =
+        FiktionObjectMetadata(
+            type = typeOf<MismatchedDependency>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<Int>()),
+                    FiktionObjectProperty(name = "label", type = typeOf<String>()),
+                ),
+        ) { values ->
+            MismatchedDependency(
+                id = values[0].valueOrDefault(defaultValue = null).toString(),
+                label = values[1].valueOrDefault(defaultValue = null) as String,
+            )
+        }
+
     private fun defaultDependencyMetadata(): FiktionObjectMetadata<DefaultDependency> =
         FiktionObjectMetadata(
             type = typeOf<DefaultDependency>(),
@@ -480,6 +513,11 @@ private data class ManyDependency(
 
 private data class NullableDependency(
     val id: String?,
+    val label: String,
+)
+
+private data class MismatchedDependency(
+    val id: String,
     val label: String,
 )
 

@@ -223,6 +223,24 @@ internal fun dependencyOrderMessage(
     """.trimIndent()
 
 /**
+ * Returns the message used when dependency metadata does not match the declared dependency property type.
+ */
+internal fun dependencyTypeMismatchMessage(
+    owner: KType,
+    target: FiktionObjectProperty,
+    dependency: DependentProperty,
+    property: FiktionObjectProperty,
+): String =
+    """
+    Cannot generate $owner.
+
+    Dependency ${dependency.name}: ${dependency.value} for ${target.name}: ${target.type} resolved to constructor property ${property.name}: ${property.type}.
+
+    The dependency property type does not match the generated constructor metadata.
+    Check that registered metadata for $owner is up to date.
+    """.trimIndent()
+
+/**
  * Returns the message used when a dependency used a constructor default value.
  */
 internal fun dependencyDefaultValueMessage(

@@ -66,9 +66,23 @@ private fun DefaultDependentGenerationSpec<*>.resolveDependencyValues(
     arguments: List<FiktionObjectArgument>,
 ): List<Any?> =
     dependencies.map { dependency ->
+        if (dependency.owner != owner) {
+            throw CannotGenerateException(unknownDependencyPropertyMessage(owner = owner, target = target, dependency = dependency))
+        }
         val dependencyIndex = properties.indexOfFirst { property -> property.name == dependency.name }
         if (dependencyIndex == -1) {
             throw CannotGenerateException(unknownDependencyPropertyMessage(owner = owner, target = target, dependency = dependency))
+        }
+        val dependencyProperty = properties[dependencyIndex]
+        if (dependency.value != null && dependencyProperty.type != dependency.value) {
+            throw CannotGenerateException(
+                dependencyTypeMismatchMessage(
+                    owner = owner,
+                    target = target,
+                    dependency = dependency,
+                    property = dependencyProperty,
+                ),
+            )
         }
         if (dependencyIndex >= arguments.size) {
             throw CannotGenerateException(dependencyOrderMessage(owner = owner, target = target, dependency = dependency))

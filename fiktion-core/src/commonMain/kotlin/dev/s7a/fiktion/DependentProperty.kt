@@ -15,7 +15,7 @@ internal data class DependentProperty(
      */
     val name: String,
     /**
-     * Dependency property value type.
+     * Dependency property value type, when the declaration preserved it.
      */
-    val value: KType,
+    val value: KType?,
 )

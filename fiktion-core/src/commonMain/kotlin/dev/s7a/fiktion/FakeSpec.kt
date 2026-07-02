@@ -68,7 +68,8 @@ public class FakeSpec<Root> {
     internal fun <Value> dependencyTarget(
         property: KProperty1<Root, Value>,
         value: KType,
-        dependencies: List<KProperty1<Root, *>>,
+        dependencies: Array<out KProperty1<Root, *>>,
+        dependencyTypes: List<KType?>,
     ): DependentRuleTarget<Value> =
         DependentRuleTarget(
             DefaultDependentRuleTarget(
@@ -76,8 +77,8 @@ public class FakeSpec<Root> {
                 key = RuleKey.Property(rootType, property.name, value),
                 matcher = RuleMatcher.Property(rootType, property.name, value),
                 dependencies =
-                    dependencies.map { dependency ->
-                        DependentProperty(owner = rootType, name = dependency.name, value = typeOf<Any?>())
+                    dependencies.mapIndexed { index, dependency ->
+                        DependentProperty(owner = rootType, name = dependency.name, value = dependencyTypes.getOrNull(index))
                     },
             ),
         )
@@ -202,7 +203,8 @@ public class FakeSpec<Root> {
         dependencyTarget(
             property = this,
             value = typeOf<Value>(),
-            dependencies = dependencies.toList(),
+            dependencies = dependencies,
+            dependencyTypes = emptyList(),
         )
 
     /**
@@ -210,7 +212,15 @@ public class FakeSpec<Root> {
      */
     public inline fun <reified Value, reified D1> KProperty1<Root, Value>.dependsOn(
         dependency1: KProperty1<Root, D1>,
-    ): DependentRuleTarget1<Value, D1> = DependentRuleTarget1(this.dependsOn(*arrayOf(dependency1)))
+    ): DependentRuleTarget1<Value, D1> =
+        DependentRuleTarget1(
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies = arrayOf(dependency1),
+                dependencyTypes = listOf(typeOf<D1>()),
+            ),
+        )
 
     /**
      * Targets this root property with values generated from typed dependencies in declaration order.
@@ -218,7 +228,15 @@ public class FakeSpec<Root> {
     public inline fun <reified Value, reified D1, reified D2> KProperty1<Root, Value>.dependsOn(
         dependency1: KProperty1<Root, D1>,
         dependency2: KProperty1<Root, D2>,
-    ): DependentRuleTarget2<Value, D1, D2> = DependentRuleTarget2(this.dependsOn(*arrayOf(dependency1, dependency2)))
+    ): DependentRuleTarget2<Value, D1, D2> =
+        DependentRuleTarget2(
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies = arrayOf(dependency1, dependency2),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>()),
+            ),
+        )
 
     /**
      * Targets this root property with values generated from typed dependencies in declaration order.
@@ -227,7 +245,15 @@ public class FakeSpec<Root> {
         dependency1: KProperty1<Root, D1>,
         dependency2: KProperty1<Root, D2>,
         dependency3: KProperty1<Root, D3>,
-    ): DependentRuleTarget3<Value, D1, D2, D3> = DependentRuleTarget3(this.dependsOn(*arrayOf(dependency1, dependency2, dependency3)))
+    ): DependentRuleTarget3<Value, D1, D2, D3> =
+        DependentRuleTarget3(
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies = arrayOf(dependency1, dependency2, dependency3),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>(), typeOf<D3>()),
+            ),
+        )
 
     /**
      * Targets this root property with values generated from typed dependencies in declaration order.
@@ -238,7 +264,20 @@ public class FakeSpec<Root> {
         dependency3: KProperty1<Root, D3>,
         dependency4: KProperty1<Root, D4>,
     ): DependentRuleTarget4<Value, D1, D2, D3, D4> =
-        DependentRuleTarget4(this.dependsOn(*arrayOf(dependency1, dependency2, dependency3, dependency4)))
+        DependentRuleTarget4(
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies = arrayOf(dependency1, dependency2, dependency3, dependency4),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                    ),
+            ),
+        )
 
     /**
      * Targets this root property with values generated from typed dependencies in declaration order.
@@ -250,7 +289,28 @@ public class FakeSpec<Root> {
         dependency4: KProperty1<Root, D4>,
         dependency5: KProperty1<Root, D5>,
     ): DependentRuleTarget5<Value, D1, D2, D3, D4, D5> =
-        DependentRuleTarget5(this.dependsOn(*arrayOf(dependency1, dependency2, dependency3, dependency4, dependency5)))
+        DependentRuleTarget5(
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                    ),
+            ),
+        )
 
     /**
      * Targets this root property with values generated from typed dependencies in declaration order.
@@ -272,15 +332,27 @@ public class FakeSpec<Root> {
         dependency6: KProperty1<Root, D6>,
     ): DependentRuleTarget6<Value, D1, D2, D3, D4, D5, D6> =
         DependentRuleTarget6(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                    ),
             ),
         )
 
@@ -306,16 +378,29 @@ public class FakeSpec<Root> {
         dependency7: KProperty1<Root, D7>,
     ): DependentRuleTarget7<Value, D1, D2, D3, D4, D5, D6, D7> =
         DependentRuleTarget7(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                    ),
             ),
         )
 
@@ -343,17 +428,31 @@ public class FakeSpec<Root> {
         dependency8: KProperty1<Root, D8>,
     ): DependentRuleTarget8<Value, D1, D2, D3, D4, D5, D6, D7, D8> =
         DependentRuleTarget8(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                    ),
             ),
         )
 
@@ -383,18 +482,33 @@ public class FakeSpec<Root> {
         dependency9: KProperty1<Root, D9>,
     ): DependentRuleTarget9<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9> =
         DependentRuleTarget9(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                    ),
             ),
         )
 
@@ -426,19 +540,35 @@ public class FakeSpec<Root> {
         dependency10: KProperty1<Root, D10>,
     ): DependentRuleTarget10<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10> =
         DependentRuleTarget10(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                    ),
             ),
         )
 
@@ -472,20 +602,37 @@ public class FakeSpec<Root> {
         dependency11: KProperty1<Root, D11>,
     ): DependentRuleTarget11<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11> =
         DependentRuleTarget11(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                    ),
             ),
         )
 
@@ -521,21 +668,39 @@ public class FakeSpec<Root> {
         dependency12: KProperty1<Root, D12>,
     ): DependentRuleTarget12<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12> =
         DependentRuleTarget12(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                    ),
             ),
         )
 
@@ -573,22 +738,41 @@ public class FakeSpec<Root> {
         dependency13: KProperty1<Root, D13>,
     ): DependentRuleTarget13<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13> =
         DependentRuleTarget13(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                    ),
             ),
         )
 
@@ -628,23 +812,43 @@ public class FakeSpec<Root> {
         dependency14: KProperty1<Root, D14>,
     ): DependentRuleTarget14<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14> =
         DependentRuleTarget14(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                    ),
             ),
         )
 
@@ -686,24 +890,45 @@ public class FakeSpec<Root> {
         dependency15: KProperty1<Root, D15>,
     ): DependentRuleTarget15<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15> =
         DependentRuleTarget15(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                    ),
             ),
         )
 
@@ -747,25 +972,47 @@ public class FakeSpec<Root> {
         dependency16: KProperty1<Root, D16>,
     ): DependentRuleTarget16<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16> =
         DependentRuleTarget16(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                    dependency16,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                    ),
             ),
         )
 
@@ -811,26 +1058,49 @@ public class FakeSpec<Root> {
         dependency17: KProperty1<Root, D17>,
     ): DependentRuleTarget17<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17> =
         DependentRuleTarget17(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                    dependency16,
-                    dependency17,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                    ),
             ),
         )
 
@@ -878,27 +1148,51 @@ public class FakeSpec<Root> {
         dependency18: KProperty1<Root, D18>,
     ): DependentRuleTarget18<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18> =
         DependentRuleTarget18(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                    dependency16,
-                    dependency17,
-                    dependency18,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                    ),
             ),
         )
 
@@ -948,28 +1242,53 @@ public class FakeSpec<Root> {
         dependency19: KProperty1<Root, D19>,
     ): DependentRuleTarget19<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19> =
         DependentRuleTarget19(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                    dependency16,
-                    dependency17,
-                    dependency18,
-                    dependency19,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                    ),
             ),
         )
 
@@ -1021,29 +1340,55 @@ public class FakeSpec<Root> {
         dependency20: KProperty1<Root, D20>,
     ): DependentRuleTarget20<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20> =
         DependentRuleTarget20(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                    dependency16,
-                    dependency17,
-                    dependency18,
-                    dependency19,
-                    dependency20,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                        dependency20,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                        typeOf<D20>(),
+                    ),
             ),
         )
 
@@ -1097,30 +1442,57 @@ public class FakeSpec<Root> {
         dependency21: KProperty1<Root, D21>,
     ): DependentRuleTarget21<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21> =
         DependentRuleTarget21(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                    dependency16,
-                    dependency17,
-                    dependency18,
-                    dependency19,
-                    dependency20,
-                    dependency21,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                        dependency20,
+                        dependency21,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                        typeOf<D20>(),
+                        typeOf<D21>(),
+                    ),
             ),
         )
 
@@ -1176,31 +1548,59 @@ public class FakeSpec<Root> {
         dependency22: KProperty1<Root, D22>,
     ): DependentRuleTarget22<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21, D22> =
         DependentRuleTarget22(
-            this.dependsOn(
-                *arrayOf(
-                    dependency1,
-                    dependency2,
-                    dependency3,
-                    dependency4,
-                    dependency5,
-                    dependency6,
-                    dependency7,
-                    dependency8,
-                    dependency9,
-                    dependency10,
-                    dependency11,
-                    dependency12,
-                    dependency13,
-                    dependency14,
-                    dependency15,
-                    dependency16,
-                    dependency17,
-                    dependency18,
-                    dependency19,
-                    dependency20,
-                    dependency21,
-                    dependency22,
-                ),
+            dependencyTarget(
+                property = this,
+                value = typeOf<Value>(),
+                dependencies =
+                    arrayOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                        dependency20,
+                        dependency21,
+                        dependency22,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                        typeOf<D20>(),
+                        typeOf<D21>(),
+                        typeOf<D22>(),
+                    ),
             ),
         )
 
