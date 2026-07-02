@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:max-line-length")
+
 package dev.s7a.fiktion
 
 import kotlin.reflect.KProperty1
@@ -251,6 +253,1113 @@ public sealed class FiktionRuleBuilder protected constructor() {
     public inline fun <reified T> typeFamily(): TypeFamilyRuleTarget<T> = typeFamily(typeOf<T>()) as TypeFamilyRuleTarget<T>
 
     /**
+     * Targets this property with values generated from dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value> KProperty1<Owner, Value>.dependsOn(
+        vararg dependencies: KProperty1<Owner, *>,
+    ): DependentRuleTarget<Value> =
+        dependencyTarget(
+            property = this,
+            owner = typeOf<Owner>(),
+            value = typeOf<Value>(),
+            dependencies = dependencies.toList(),
+            dependencyTypes = List(size = dependencies.size) { typeOf<Any?>() },
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+    ): DependentRuleTarget1<Value, D1> =
+        DependentRuleTarget1(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies = listOf(dependency1),
+                dependencyTypes = listOf(typeOf<D1>()),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+    ): DependentRuleTarget2<Value, D1, D2> =
+        DependentRuleTarget2(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies = listOf(dependency1, dependency2),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>()),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+    ): DependentRuleTarget3<Value, D1, D2, D3> =
+        DependentRuleTarget3(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies = listOf(dependency1, dependency2, dependency3),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>(), typeOf<D3>()),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+    ): DependentRuleTarget4<Value, D1, D2, D3, D4> =
+        DependentRuleTarget4(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies = listOf(dependency1, dependency2, dependency3, dependency4),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>(), typeOf<D3>(), typeOf<D4>()),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+    ): DependentRuleTarget5<Value, D1, D2, D3, D4, D5> =
+        DependentRuleTarget5(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies = listOf(dependency1, dependency2, dependency3, dependency4, dependency5),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>(), typeOf<D3>(), typeOf<D4>(), typeOf<D5>()),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+    ): DependentRuleTarget6<Value, D1, D2, D3, D4, D5, D6> =
+        DependentRuleTarget6(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies = listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>(), typeOf<D3>(), typeOf<D4>(), typeOf<D5>(), typeOf<D6>()),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+    ): DependentRuleTarget7<Value, D1, D2, D3, D4, D5, D6, D7> =
+        DependentRuleTarget7(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies = listOf(dependency1, dependency2, dependency3, dependency4, dependency5, dependency6, dependency7),
+                dependencyTypes = listOf(typeOf<D1>(), typeOf<D2>(), typeOf<D3>(), typeOf<D4>(), typeOf<D5>(), typeOf<D6>(), typeOf<D7>()),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+    ): DependentRuleTarget8<Value, D1, D2, D3, D4, D5, D6, D7, D8> =
+        DependentRuleTarget8(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+    ): DependentRuleTarget9<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9> =
+        DependentRuleTarget9(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+    ): DependentRuleTarget10<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10> =
+        DependentRuleTarget10(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+    ): DependentRuleTarget11<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11> =
+        DependentRuleTarget11(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+    ): DependentRuleTarget12<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12> =
+        DependentRuleTarget12(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+    ): DependentRuleTarget13<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13> =
+        DependentRuleTarget13(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+    ): DependentRuleTarget14<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14> =
+        DependentRuleTarget14(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+    ): DependentRuleTarget15<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15> =
+        DependentRuleTarget15(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+        dependency16: KProperty1<Owner, D16>,
+    ): DependentRuleTarget16<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16> =
+        DependentRuleTarget16(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+        dependency16: KProperty1<Owner, D16>,
+        dependency17: KProperty1<Owner, D17>,
+    ): DependentRuleTarget17<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17> =
+        DependentRuleTarget17(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+        dependency16: KProperty1<Owner, D16>,
+        dependency17: KProperty1<Owner, D17>,
+        dependency18: KProperty1<Owner, D18>,
+    ): DependentRuleTarget18<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18> =
+        DependentRuleTarget18(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+        dependency16: KProperty1<Owner, D16>,
+        dependency17: KProperty1<Owner, D17>,
+        dependency18: KProperty1<Owner, D18>,
+        dependency19: KProperty1<Owner, D19>,
+    ): DependentRuleTarget19<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19> =
+        DependentRuleTarget19(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19, reified D20> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+        dependency16: KProperty1<Owner, D16>,
+        dependency17: KProperty1<Owner, D17>,
+        dependency18: KProperty1<Owner, D18>,
+        dependency19: KProperty1<Owner, D19>,
+        dependency20: KProperty1<Owner, D20>,
+    ): DependentRuleTarget20<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20> =
+        DependentRuleTarget20(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                        dependency20,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                        typeOf<D20>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19, reified D20, reified D21> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+        dependency16: KProperty1<Owner, D16>,
+        dependency17: KProperty1<Owner, D17>,
+        dependency18: KProperty1<Owner, D18>,
+        dependency19: KProperty1<Owner, D19>,
+        dependency20: KProperty1<Owner, D20>,
+        dependency21: KProperty1<Owner, D21>,
+    ): DependentRuleTarget21<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21> =
+        DependentRuleTarget21(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                        dependency20,
+                        dependency21,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                        typeOf<D20>(),
+                        typeOf<D21>(),
+                    ),
+            ),
+        )
+
+    /**
+     * Targets this property with values generated from typed dependencies in declaration order.
+     */
+    public inline fun <reified Owner, reified Value, reified D1, reified D2, reified D3, reified D4, reified D5, reified D6, reified D7, reified D8, reified D9, reified D10, reified D11, reified D12, reified D13, reified D14, reified D15, reified D16, reified D17, reified D18, reified D19, reified D20, reified D21, reified D22> KProperty1<Owner, Value>.dependsOn(
+        dependency1: KProperty1<Owner, D1>,
+        dependency2: KProperty1<Owner, D2>,
+        dependency3: KProperty1<Owner, D3>,
+        dependency4: KProperty1<Owner, D4>,
+        dependency5: KProperty1<Owner, D5>,
+        dependency6: KProperty1<Owner, D6>,
+        dependency7: KProperty1<Owner, D7>,
+        dependency8: KProperty1<Owner, D8>,
+        dependency9: KProperty1<Owner, D9>,
+        dependency10: KProperty1<Owner, D10>,
+        dependency11: KProperty1<Owner, D11>,
+        dependency12: KProperty1<Owner, D12>,
+        dependency13: KProperty1<Owner, D13>,
+        dependency14: KProperty1<Owner, D14>,
+        dependency15: KProperty1<Owner, D15>,
+        dependency16: KProperty1<Owner, D16>,
+        dependency17: KProperty1<Owner, D17>,
+        dependency18: KProperty1<Owner, D18>,
+        dependency19: KProperty1<Owner, D19>,
+        dependency20: KProperty1<Owner, D20>,
+        dependency21: KProperty1<Owner, D21>,
+        dependency22: KProperty1<Owner, D22>,
+    ): DependentRuleTarget22<Value, D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21, D22> =
+        DependentRuleTarget22(
+            dependencyTarget(
+                property = this,
+                owner = typeOf<Owner>(),
+                value = typeOf<Value>(),
+                dependencies =
+                    listOf(
+                        dependency1,
+                        dependency2,
+                        dependency3,
+                        dependency4,
+                        dependency5,
+                        dependency6,
+                        dependency7,
+                        dependency8,
+                        dependency9,
+                        dependency10,
+                        dependency11,
+                        dependency12,
+                        dependency13,
+                        dependency14,
+                        dependency15,
+                        dependency16,
+                        dependency17,
+                        dependency18,
+                        dependency19,
+                        dependency20,
+                        dependency21,
+                        dependency22,
+                    ),
+                dependencyTypes =
+                    listOf(
+                        typeOf<D1>(),
+                        typeOf<D2>(),
+                        typeOf<D3>(),
+                        typeOf<D4>(),
+                        typeOf<D5>(),
+                        typeOf<D6>(),
+                        typeOf<D7>(),
+                        typeOf<D8>(),
+                        typeOf<D9>(),
+                        typeOf<D10>(),
+                        typeOf<D11>(),
+                        typeOf<D12>(),
+                        typeOf<D13>(),
+                        typeOf<D14>(),
+                        typeOf<D15>(),
+                        typeOf<D16>(),
+                        typeOf<D17>(),
+                        typeOf<D18>(),
+                        typeOf<D19>(),
+                        typeOf<D20>(),
+                        typeOf<D21>(),
+                        typeOf<D22>(),
+                    ),
+            ),
+        )
+
+    /**
      * Configures how generated elements are materialized as collection type [CollectionType].
      */
     @Suppress("DEPRECATION_ERROR")
@@ -355,6 +1464,29 @@ public sealed class FiktionRuleBuilder protected constructor() {
         // Keeps this overload distinct from name(regex: Regex), which returns RuleNameTarget.
         typed: Unit = Unit,
     ): RuleTarget<Value> = name(regex = regex, value = typeOf<Value>()) as RuleTarget<Value>
+
+    /**
+     * Creates a dependent rule target using [property] for replacement and lookup.
+     */
+    @PublishedApi
+    internal fun <Owner, Value> dependencyTarget(
+        property: KProperty1<Owner, Value>,
+        owner: KType,
+        value: KType,
+        dependencies: List<KProperty1<Owner, *>>,
+        dependencyTypes: List<KType>,
+    ): DependentRuleTarget<Value> =
+        DependentRuleTarget(
+            DefaultDependentRuleTarget(
+                config = mutableConfig,
+                key = RuleKey.Property(owner, property.name, value),
+                matcher = RuleMatcher.Property(owner, property.name, value),
+                dependencies =
+                    dependencies.zip(dependencyTypes) { dependency, dependencyType ->
+                        DependentProperty(owner = owner, name = dependency.name, value = dependencyType)
+                    },
+            ),
+        )
 
     /**
      * Targets a nested property path represented as raw path segments.

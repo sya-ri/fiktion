@@ -12,6 +12,7 @@ internal fun generateValue(
     config: FiktionConfigState,
     seed: Long,
     depth: Int,
+    dependencyValues: List<Any?>? = null,
 ): Any? {
     val rule = config.selectRule(request)
 
@@ -26,6 +27,7 @@ internal fun generateValue(
             contextSeed = contextSeed,
             depth = depth,
             context = context,
+            dependencyValues = dependencyValues,
         )
     }
 
@@ -106,6 +108,7 @@ internal fun generateAutomaticValue(
             contextSeed = seed,
             depth = depth,
             context = context,
+            dependencyValues = null,
         )
     }
 
@@ -184,6 +187,7 @@ private fun generateFromRule(
     contextSeed: Long,
     depth: Int,
     context: FakeContext,
+    dependencyValues: List<Any?>?,
 ): Any? {
     if (request.type.isMarkedNullable) {
         rule.nullProbability?.let { nullProbability ->
@@ -212,6 +216,15 @@ private fun generateFromRule(
             seed = contextSeed,
             depth = depth,
             context = context,
+        )
+    }
+
+    if (rule is DefaultDependentGenerationSpec<*>) {
+        return rule.generate(
+            context = context,
+            values =
+                dependencyValues
+                    ?: throw CannotGenerateException(dependencyRuleWithoutObjectContextMessage(request = request)),
         )
     }
 

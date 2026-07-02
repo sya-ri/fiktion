@@ -35,6 +35,120 @@ public final class dev/s7a/fiktion/DefaultKt {
 	public static final fun getDefault ()Ldev/s7a/fiktion/Default;
 }
 
+public final class dev/s7a/fiktion/DependentRuleTarget {
+	public final fun generatesBy (Lkotlin/jvm/functions/Function2;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget1 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function2;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget10 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function11;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget11 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function12;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget12 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function13;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget13 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function14;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget14 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function15;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget15 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function16;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget16 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function17;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget17 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function18;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget18 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function19;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget19 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function20;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget2 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function3;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget20 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function21;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget21 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function22;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget22 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/FunctionN;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget3 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function4;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget4 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function5;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget5 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function6;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget6 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function7;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget7 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function8;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget8 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function9;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget9 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function10;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
 public abstract interface annotation class dev/s7a/fiktion/ExperimentalFiktionApi : java/lang/annotation/Annotation {
 }
 
@@ -95,6 +209,7 @@ public final class dev/s7a/fiktion/FakeProperty {
 
 public final class dev/s7a/fiktion/FakeSpec {
 	public fun <init> ()V
+	public final fun dependencyTarget (Lkotlin/reflect/KProperty1;Lkotlin/reflect/KType;Ljava/util/List;Ljava/util/List;)Ldev/s7a/fiktion/DependentRuleTarget;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
@@ -389,6 +504,7 @@ public abstract class dev/s7a/fiktion/FiktionRuleBuilder {
 	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
 	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;Z)V
 	public final fun configureMap (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
+	public final fun dependencyTarget (Lkotlin/reflect/KProperty1;Lkotlin/reflect/KType;Lkotlin/reflect/KType;Ljava/util/List;Ljava/util/List;)Ldev/s7a/fiktion/DependentRuleTarget;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
