@@ -8,7 +8,7 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates an integer across the full integer range.
  */
-public fun FakeContext.int(): Int = int(config(FiktionConfig.Int.range))
+public fun FakeContext.int(): Int = FiktionConfig.Int.range()
 
 /**
  * Generates an integer from [min] to [max].

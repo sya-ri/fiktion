@@ -8,7 +8,10 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates an unsigned byte across the full unsigned byte range.
  */
-public fun FakeContext.ubyte(): UByte = ubyte(config(FiktionConfig.UByte.range))
+public fun FakeContext.ubyte(): UByte =
+    FiktionConfig.UByte
+        .range()
+        .toUByte()
 
 /**
  * Generates an unsigned byte from [min] to [max].

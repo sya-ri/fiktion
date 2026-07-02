@@ -8,4 +8,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates an unsigned integer array.
  */
-public fun FakeContext.uintArray(size: Int = int(config(FiktionConfig.Array.size))): UIntArray = UIntArray(size) { uint() }
+public fun FakeContext.uintArray(size: Int = FiktionConfig.Array.size()): UIntArray = UIntArray(size) { uint() }

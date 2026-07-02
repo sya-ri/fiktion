@@ -15,7 +15,7 @@ public fun FakeContext.childContext(
             path = path,
             depth = depth + 1,
             index = index,
-            config = context.config,
+            configState = context.configState,
             request = context.request,
         )
     }

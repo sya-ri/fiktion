@@ -6,4 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a character array.
  */
-public fun FakeContext.charArray(size: Int = int(config(FiktionConfig.Array.size))): CharArray = CharArray(size) { char() }
+public fun FakeContext.charArray(size: Int = FiktionConfig.Array.size()): CharArray = CharArray(size) { char() }

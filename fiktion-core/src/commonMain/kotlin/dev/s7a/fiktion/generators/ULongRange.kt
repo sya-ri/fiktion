@@ -7,10 +7,7 @@ import dev.s7a.fiktion.requireFiktionConfiguration
 /**
  * Generates a finite unsigned long range.
  */
-public fun FakeContext.ulongRange(): ULongRange =
-    config(FiktionConfig.ULongRange.bounds).let { range ->
-        ulongRange(range.start, range.endInclusive)
-    }
+public fun FakeContext.ulongRange(): ULongRange = FiktionConfig.ULongRange.bounds()
 
 /**
  * Generates a finite unsigned long range from [min] to [max].

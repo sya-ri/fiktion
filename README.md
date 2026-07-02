@@ -351,6 +351,33 @@ val fiktion = Fiktion {
 val users = fiktion.fake<List<User>>()
 ```
 
+`range(...)`, `length(...)`, and `size(...)` reset the current candidate range. In custom generators and add-ons, sample
+from the composed candidates with `FiktionConfig.Int.range()`, `FiktionConfig.String.length()`, or
+`FiktionConfig.Collection.size()`. Config keys such as `min`, `max`, `minLength`, `maxLength`, `minSize`, and `maxSize`
+remove candidates below or above the configured edge. `excluding`, `excludingLengths`, `excludingSizes`,
+`excludingBounds`, `excludingSteps`, `excludingEpochSeconds`, and `excludingNanoseconds` are ordinary config keys that
+replace the excluded ranges for the candidate set.
+Matching configs are applied from lower precedence to higher precedence, and configs in the same scope apply in
+declaration order:
+
+```kotlin
+val score = fake<Int> {
+    this using FiktionConfig.Int.range(10..20)
+    this using FiktionConfig.Int.min(15) // 15..20
+    this using FiktionConfig.Int.max(18) // 15..18
+    this using FiktionConfig.Int.excluding(listOf(16..17)) // 15, 18
+}
+
+val title = fake<String> {
+    this using FiktionConfig.String.minLength(12)
+    this using FiktionConfig.String.maxLength(24)
+}
+```
+
+The same pattern is available for numeric generators, range/progression bounds, progression steps, string and regex
+lengths, collection/map/array sizes, `Duration`, and `Instant` epoch-second/nanosecond parts. Invalid composed ranges,
+negative lengths or sizes, and non-positive steps fail with `FiktionConfigurationException`.
+
 Per-call configuration is scoped to the generated root type:
 
 ```kotlin
@@ -359,10 +386,8 @@ val names = fake<List<String>> {
 }
 ```
 
-`this using ...` is a `FakeSpec` member inside the `fake` lambda, so it does not need a separate `using` import. The
-`FiktionConfig.Collection.size(5)` shorthand uses Fiktion's `invoke` operator extension, so import `dev.s7a.fiktion.invoke`
-or use `import dev.s7a.fiktion.*`. Use `FiktionConfig.Collection.size` for `List`, `Set`, and other collection types,
-and `FiktionConfig.Map.size` for maps.
+`this using ...` is a `FakeSpec` member inside the `fake` lambda, so it does not need a separate `using` import. Use
+`FiktionConfig.Collection.size` for `List`, `Set`, and other collection types, and `FiktionConfig.Map.size` for maps.
 
 Sets use normal set semantics by default, so duplicate generated elements can collapse and make the final set smaller
 than `FiktionConfig.Collection.size`. Use `UniqueElementStrategy.Exact` when a set must contain the configured number of
@@ -393,24 +418,28 @@ Container target configuration narrows defaults to values generated below collec
 ```kotlin
 val counts = fake<List<Int>> {
     this using FiktionConfig.Collection.size(5)
-    element using FiktionConfig.Int.range(10..20)
+    element using FiktionConfig.Int.min(10)
+    element using FiktionConfig.Int.max(20)
 }
 
 val labels = fake<Map<String, List<Int>>> {
     this using FiktionConfig.Map.size(2)
-    key using FiktionConfig.String.length(4)
+    key using FiktionConfig.String.minLength(4)
+    key using FiktionConfig.String.maxLength(8)
     value.element using FiktionConfig.Int.range(10..20)
 }
 
 val groups = fake<List<Map<String, Int>>> {
     element {
         key using FiktionConfig.String.length(4)
-        value using FiktionConfig.Int.range(10..20)
+        value using FiktionConfig.Int.min(10)
+        value using FiktionConfig.Int.max(20)
     }
 }
 
 val catalog = fake<Catalog> {
-    property(Catalog::counts).element using FiktionConfig.Int.range(10..20)
+    property(Catalog::counts).element using FiktionConfig.Int.min(10)
+    property(Catalog::counts).element using FiktionConfig.Int.max(20)
 }
 
 val indexed = fake<Map<String, Int>> {
@@ -425,12 +454,13 @@ Property configuration narrows a generator default to one property:
 
 ```kotlin
 val user = fake<User> {
-    User::id using FiktionConfig.String.length(12)
+    this using FiktionConfig.String.length(4..16)
+    User::id using FiktionConfig.String.minLength(12)
 }
 ```
 
-Configuration keys are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects such as
-`JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
+Configuration keys and helpers are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects
+such as `JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
 
 ## Detekt Rules
 
@@ -846,7 +876,13 @@ public object CustomFiktionAddon : FiktionAddon {
             }
 
             typeFamily<CustomList<*>>() generatesBy {
-                CustomList(List(int(config(FiktionConfig.Collection.size))) { index -> fakeElement(index) })
+                val size = FiktionConfig.Collection.size()
+                CustomList(List(size) { index -> fakeElement(index) })
+            }
+
+            typeFamily<CustomMap<*, *>>() generatesBy {
+                val size = FiktionConfig.Map.size()
+                CustomMap(List(size) { index -> fakeKey(index) to fakeValue(index) }.toMap())
             }
         }
     }

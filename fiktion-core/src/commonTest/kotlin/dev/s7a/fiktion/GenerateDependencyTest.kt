@@ -274,7 +274,7 @@ class GenerateDependencyTest {
                         val context = this as DefaultFakeContext
                         generateValue(
                             request = GenerationRequest(type = typeOf<RecursiveNode>()),
-                            config = context.config,
+                            config = context.configState,
                             seed = seed.childSeed(0),
                             depth = depth,
                         ) as RecursiveNode
@@ -306,7 +306,7 @@ class GenerateDependencyTest {
                         val context = this as DefaultFakeContext
                         generateValue(
                             request = GenerationRequest(type = typeOf<UnaryRecursiveDependency>()),
-                            config = context.config,
+                            config = context.configState,
                             seed = seed.childSeed(0),
                             depth = depth,
                         ) as UnaryRecursiveDependency
@@ -342,7 +342,7 @@ class GenerateDependencyTest {
                         val context = this as DefaultFakeContext
                         generateValue(
                             request = GenerationRequest(type = typeOf<BinaryRecursiveDependency>()),
-                            config = context.config,
+                            config = context.configState,
                             seed = seed.childSeed(0),
                             depth = depth,
                         ) as BinaryRecursiveDependency
@@ -382,7 +382,7 @@ class GenerateDependencyTest {
                         val context = this as DefaultFakeContext
                         generateValue(
                             request = GenerationRequest(type = typeOf<TernaryRecursiveDependency>()),
-                            config = context.config,
+                            config = context.configState,
                             seed = seed.childSeed(0),
                             depth = depth,
                         ) as TernaryRecursiveDependency

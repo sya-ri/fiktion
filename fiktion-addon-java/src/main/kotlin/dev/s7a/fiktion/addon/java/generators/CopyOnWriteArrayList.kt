@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList
  * Generates a Java copy-on-write array list using [element].
  */
 public fun <T> FakeContext.copyOnWriteArrayList(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): CopyOnWriteArrayList<T> = CopyOnWriteArrayList(list(size = size, element = element))
 
@@ -19,6 +19,6 @@ public fun <T> FakeContext.copyOnWriteArrayList(
  * Generates a Java copy-on-write array list from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.copyOnWriteArrayList(): CopyOnWriteArrayList<Any?> =
-    copyOnWriteArrayList(size = int(config(FiktionConfig.Collection.size))) {
+    copyOnWriteArrayList(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }

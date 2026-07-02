@@ -12,7 +12,7 @@ import dev.s7a.fiktion.generators.int
  * Generates an Arrow non-empty set using [element].
  */
 public fun <T> FakeContext.nonEmptySet(
-    size: Int = int(config(FiktionConfig.Collection.size)).coerceAtLeast(1),
+    size: Int = FiktionConfig.Collection.size().coerceAtLeast(1),
     element: FakeContext.() -> T,
 ): NonEmptySet<T> {
     require(size >= 1) { "size must be at least 1." }
@@ -32,8 +32,8 @@ public fun <T> FakeContext.nonEmptySet(
 internal fun TypeFamilyGenerationContext.nonEmptySet(): NonEmptySet<Any?> {
     val elements =
         generateUniqueElements(
-            size = int(config(FiktionConfig.Collection.size)).coerceAtLeast(1),
-            strategy = config(FiktionConfig.Collection.uniqueElementStrategy),
+            size = FiktionConfig.Collection.size().coerceAtLeast(1),
+            strategy = context.config(FiktionConfig.Collection.uniqueElementStrategy),
         ) { index ->
             fakeElement(index)
         }

@@ -8,4 +8,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates an unsigned long array.
  */
-public fun FakeContext.ulongArray(size: Int = int(config(FiktionConfig.Array.size))): ULongArray = ULongArray(size) { ulong() }
+public fun FakeContext.ulongArray(size: Int = FiktionConfig.Array.size()): ULongArray = ULongArray(size) { ulong() }

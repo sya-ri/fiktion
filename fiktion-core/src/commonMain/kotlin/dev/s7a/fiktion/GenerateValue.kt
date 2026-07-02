@@ -75,7 +75,7 @@ private fun GenerationRequest.toFakeContext(
         path = path,
         depth = depth,
         index = index,
-        config = config,
+        configState = config,
         request = this,
     )
 }
@@ -261,7 +261,7 @@ private fun generateFromRule(
             TypeFamilyGenerationContext(
                 context = context,
                 requestedType = request.type,
-                config = config,
+                configState = config,
                 request = request,
             ),
         )
@@ -293,12 +293,12 @@ private fun generateAutomaticContainerValue(
 ): Any? {
     config.selectCollectionConverter(request)?.let { converter ->
         val elementType = request.type.typeArgument(index = 0) ?: return null
-        val size = context.config(FiktionConfig.Collection.size).random(context.random)
+        val size = context(context) { FiktionConfig.Collection.size() }
         val elements =
             if (converter.unique) {
                 generateUniqueElements(
                     size = size,
-                    strategy = context.config(FiktionConfig.Collection.uniqueElementStrategy),
+                    strategy = context(context) { FiktionConfig.Collection.uniqueElementStrategy.get() },
                 ) { index ->
                     generateCollectionElement(
                         request = request,
@@ -328,7 +328,7 @@ private fun generateAutomaticContainerValue(
         val keyType = request.type.typeArgument(index = 0) ?: return null
         val valueType = request.type.typeArgument(index = 1) ?: return null
         val entries =
-            List(context.config(FiktionConfig.Map.size).random(context.random)) { index ->
+            List(context(context) { FiktionConfig.Map.size() }) { index ->
                 generateValue(
                     request =
                         GenerationRequest(

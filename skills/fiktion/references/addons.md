@@ -134,12 +134,14 @@ public object CustomFiktionAddon : FiktionAddon {
             }
 
             typeFamily<CustomList<*>>() generatesBy {
-                CustomList(List(int(config(FiktionConfig.Collection.size))) { index -> fakeElement(index) })
+                val size = FiktionConfig.Collection.size()
+                CustomList(List(size) { index -> fakeElement(index) })
             }
 
             typeFamily<CustomMap<*, *>>() generatesBy {
+                val size = FiktionConfig.Map.size()
                 CustomMap(
-                    List(int(config(FiktionConfig.Map.size))) { index -> fakeKey(index) to fakeValue(index) }.toMap(),
+                    List(size) { index -> fakeKey(index) to fakeValue(index) }.toMap(),
                 )
             }
 
@@ -166,6 +168,8 @@ For generic collection-like and map-like type-family generators, use `fakeElemen
 derive separate key/value seeds, and allow user container-target configuration such as
 `type<CustomList<Int>>().element using FiktionConfig.Int.range(10..20)` and
 `type<CustomMap<String, Int>>().key using FiktionConfig.String.length(4)` to apply to generated parts.
+Read collection-like sizes with `FiktionConfig.Collection.size()` and map-like sizes with
+`FiktionConfig.Map.size()` so user `minSize`, `maxSize`, and `excludingSizes` configuration is preserved.
 
 ## Automatic Add-On Registration
 

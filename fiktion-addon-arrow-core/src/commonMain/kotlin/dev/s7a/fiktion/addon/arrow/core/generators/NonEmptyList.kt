@@ -11,7 +11,7 @@ import dev.s7a.fiktion.generators.int
  * Generates an Arrow non-empty list using [element].
  */
 public fun <T> FakeContext.nonEmptyList(
-    size: Int = int(config(FiktionConfig.Collection.size)).coerceAtLeast(1),
+    size: Int = FiktionConfig.Collection.size().coerceAtLeast(1),
     element: FakeContext.() -> T,
 ): NonEmptyList<T> {
     require(size >= 1) { "size must be at least 1." }
@@ -25,7 +25,7 @@ public fun <T> FakeContext.nonEmptyList(
  * Generates an Arrow non-empty list from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.nonEmptyList(): NonEmptyList<Any?> {
-    val size = int(config(FiktionConfig.Collection.size)).coerceAtLeast(1)
+    val size = FiktionConfig.Collection.size().coerceAtLeast(1)
     return NonEmptyList(
         head = fakeElement(0),
         tail = List(size - 1) { index -> fakeElement(index + 1) },

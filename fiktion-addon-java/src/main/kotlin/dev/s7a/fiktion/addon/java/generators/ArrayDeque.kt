@@ -11,7 +11,7 @@ import java.util.ArrayDeque
  * Generates a Java array deque using [element].
  */
 public fun <T> FakeContext.arrayDeque(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): ArrayDeque<T> = ArrayDeque(list(size = size, element = element).filterNotNull())
 
@@ -19,6 +19,6 @@ public fun <T> FakeContext.arrayDeque(
  * Generates a Java array deque from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.arrayDeque(): ArrayDeque<Any?> =
-    arrayDeque(size = int(config(FiktionConfig.Collection.size))) {
+    arrayDeque(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }

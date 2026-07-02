@@ -7,7 +7,7 @@ import dev.s7a.fiktion.requireFiktionConfiguration
 /**
  * Generates a finite character range.
  */
-public fun FakeContext.charRange(): CharRange = charRange(oneOf(config(FiktionConfig.Char.rangeCharsets)))
+public fun FakeContext.charRange(): CharRange = charRange(oneOf(FiktionConfig.Char.rangeCharsets.get()))
 
 /**
  * Generates a finite character range inside [charset].

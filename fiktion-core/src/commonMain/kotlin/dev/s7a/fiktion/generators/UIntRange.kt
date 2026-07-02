@@ -7,10 +7,7 @@ import dev.s7a.fiktion.requireFiktionConfiguration
 /**
  * Generates a finite unsigned integer range.
  */
-public fun FakeContext.uintRange(): UIntRange =
-    config(FiktionConfig.UIntRange.bounds).let { range ->
-        uintRange(range.start, range.endInclusive)
-    }
+public fun FakeContext.uintRange(): UIntRange = FiktionConfig.UIntRange.bounds()
 
 /**
  * Generates a finite unsigned integer range from [min] to [max].

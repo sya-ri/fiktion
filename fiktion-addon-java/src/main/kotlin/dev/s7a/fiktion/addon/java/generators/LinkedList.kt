@@ -11,7 +11,7 @@ import java.util.LinkedList
  * Generates a Java linked list using [element].
  */
 public fun <T> FakeContext.linkedList(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): LinkedList<T> = LinkedList(list(size = size, element = element))
 
@@ -19,6 +19,6 @@ public fun <T> FakeContext.linkedList(
  * Generates a Java linked list from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.linkedList(): LinkedList<Any?> =
-    linkedList(size = int(config(FiktionConfig.Collection.size))) {
+    linkedList(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }

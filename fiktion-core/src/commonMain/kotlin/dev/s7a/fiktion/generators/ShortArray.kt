@@ -6,4 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a short array.
  */
-public fun FakeContext.shortArray(size: Int = int(config(FiktionConfig.Array.size))): ShortArray = ShortArray(size) { short() }
+public fun FakeContext.shortArray(size: Int = FiktionConfig.Array.size()): ShortArray = ShortArray(size) { short() }

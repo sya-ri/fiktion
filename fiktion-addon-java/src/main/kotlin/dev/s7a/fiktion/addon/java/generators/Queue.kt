@@ -12,7 +12,7 @@ import java.util.Queue
  * Generates a Java queue using [element].
  */
 public fun <T> FakeContext.queue(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): Queue<T> = ArrayDeque(list(size = size, element = element).filterNotNull())
 

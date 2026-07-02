@@ -47,6 +47,15 @@ Read only the file needed for the user's task:
 - Prefer property references in per-call rules: `User::id generates "user-1"`.
 - Use typed generator configuration to adjust default generator behavior:
   `this using FiktionConfig.Int.range(-200..200)` or `User::id using FiktionConfig.String.length(12..12)`.
+- Use candidate-range config helpers to shape generated values: `range`, `length`, and `size` reset the candidate range;
+  `min`/`max` remove candidates outside one edge; `excluding`, `excludingLengths`, `excludingSizes`, `excludingBounds`,
+  `excludingSteps`, `excludingEpochSeconds`, and `excludingNanoseconds` are ordinary config keys that replace the
+  excluded ranges for the candidate set.
+- In custom generators and add-ons, sample from composed candidates with `FiktionConfig.Int.range()`,
+  `FiktionConfig.String.length()`, or `FiktionConfig.Collection.size()`.
+- When several configs with the same scope match, they apply from lower precedence to higher precedence and, within the
+  same scope, in declaration order. For example, `range(10..20)` then `min(15)` becomes `15..20`, while `min(15)` then
+  `range(10..20)` becomes `10..20` because `range` resets candidates.
 - Prefer fixed config values over equal-bound config ranges:
   `FiktionConfig.Collection.size(2)` instead of `FiktionConfig.Collection.size(2..2)`.
 - Use `element`, `key`, and `value` inside collection/map fake blocks when configuring generated container

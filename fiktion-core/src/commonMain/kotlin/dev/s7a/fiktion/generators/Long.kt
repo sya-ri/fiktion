@@ -8,7 +8,7 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates a long across the full long range.
  */
-public fun FakeContext.long(): Long = long(config(FiktionConfig.Long.range))
+public fun FakeContext.long(): Long = FiktionConfig.Long.range()
 
 /**
  * Generates a long from [min] to [max].

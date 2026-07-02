@@ -10,7 +10,7 @@ import java.util.NavigableSet
  * Generates a Java navigable set using [element].
  */
 public fun <T : Any> FakeContext.navigableSet(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): NavigableSet<T> = treeSet(size = size, element = element)
 

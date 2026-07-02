@@ -51,7 +51,14 @@ public fun <T, Value : Any> RuleTarget<T>.using(
  * Configures built-in or add-on generator behavior for this rule target.
  */
 public infix fun <T, Value : Any> RuleTarget<T>.using(value: FiktionConfigSetting<in T, Value>) {
-    (this as DefaultRuleTarget<T>).config(configKey = value.key, value = value.value)
+    (this as DefaultRuleTarget<T>).config(value)
+}
+
+/**
+ * Configures built-in or add-on generator behavior for this rule target.
+ */
+public infix fun <T> RuleTarget<T>.using(value: FiktionConfigSettingGroup<in T>) {
+    (this as DefaultRuleTarget<T>).config(value)
 }
 
 /**

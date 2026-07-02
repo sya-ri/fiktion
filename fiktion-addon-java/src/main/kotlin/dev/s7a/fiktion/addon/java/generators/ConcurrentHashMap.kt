@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Generates a Java concurrent hash map using [key] and [value].
  */
 public fun <K, V> FakeContext.concurrentHashMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): ConcurrentHashMap<K & Any, V & Any> =
@@ -28,7 +28,7 @@ public fun <K, V> FakeContext.concurrentHashMap(
  */
 internal fun TypeFamilyGenerationContext.concurrentHashMap(): ConcurrentHashMap<Any, Any> =
     concurrentHashMap(
-        size = int(config(FiktionConfig.Map.size)),
+        size = FiktionConfig.Map.size(),
         key = {
             fakeKey(index)
         },
