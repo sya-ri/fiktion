@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.5.1
+
+- Fixed nullable type rule selection so nullable targets can use the most specific matching rules.
+- Changed the Arrow Core add-on build to target Arrow 2.2.3.
+- Changed the Gradle wrapper used by the project to 9.6.1.
+- Changed the Maven publishing plugin used by the build to 0.37.0.
+- Updated GitHub Actions workflow dependencies to use `actions/checkout` v7.
+- Documented Kotlin compatibility, `FiktionConfig` invoke imports, and bundled Fiktion skill scopes more clearly.
+
 ## v0.5.0
 
 - Added Qodana configuration for the recommended JVM inspection profile, excluding explicit visibility modifier
