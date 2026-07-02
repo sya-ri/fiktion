@@ -39,6 +39,23 @@ class GenerateDependencyTest {
     }
 
     @Test
+    fun `multiple dependent properties can share the same dependency value`() {
+        val fiktion =
+            Fiktion {
+                register(sharedDependencyMetadata())
+                SharedDependency::id generates "user-1"
+                SharedDependency::label.dependsOn(SharedDependency::id) generatesBy { id ->
+                    "label:$id"
+                }
+                SharedDependency::slug.dependsOn(SharedDependency::id) generatesBy { id ->
+                    "slug:$id"
+                }
+            }
+
+        assertEquals(SharedDependency(id = "user-1", label = "label:user-1", slug = "slug:user-1"), fiktion.fake<SharedDependency>())
+    }
+
+    @Test
     fun `dependent property supports typed arity twenty two`() {
         val fiktion =
             Fiktion {
@@ -274,6 +291,115 @@ class GenerateDependencyTest {
     }
 
     @Test
+    fun `single dependency property stays scoped to each recursive object frame`() {
+        val fiktion =
+            Fiktion {
+                register(unaryRecursiveDependencyMetadata())
+                UnaryRecursiveDependency::id generatesBy { "id-$depth" }
+                UnaryRecursiveDependency::label.dependsOn(UnaryRecursiveDependency::id) generatesBy { id ->
+                    "$id:$depth"
+                }
+                UnaryRecursiveDependency::child generatesBy {
+                    if (depth >= 3) {
+                        null
+                    } else {
+                        val context = this as DefaultFakeContext
+                        generateValue(
+                            request = GenerationRequest(type = typeOf<UnaryRecursiveDependency>()),
+                            config = context.config,
+                            seed = seed.childSeed(0),
+                            depth = depth,
+                        ) as UnaryRecursiveDependency
+                    }
+                }
+            }
+
+        val root = fiktion.fake<UnaryRecursiveDependency>(seed = 123)
+        val child = root.child ?: error("Expected a recursive child")
+        val grandchild = child.child ?: error("Expected a recursive grandchild")
+
+        assertEquals("id-1:1", root.label)
+        assertEquals("id-2:2", child.label)
+        assertEquals("id-3:3", grandchild.label)
+    }
+
+    @Test
+    fun `two dependency property stays scoped to each recursive object frame`() {
+        val fiktion =
+            Fiktion {
+                register(binaryRecursiveDependencyMetadata())
+                BinaryRecursiveDependency::first generatesBy { "first-$depth" }
+                BinaryRecursiveDependency::second generatesBy { "second-$depth" }
+                BinaryRecursiveDependency::label
+                    .dependsOn(BinaryRecursiveDependency::first, BinaryRecursiveDependency::second)
+                    .generatesBy { first, second ->
+                        "$first:$second:$depth"
+                    }
+                BinaryRecursiveDependency::child generatesBy {
+                    if (depth >= 3) {
+                        null
+                    } else {
+                        val context = this as DefaultFakeContext
+                        generateValue(
+                            request = GenerationRequest(type = typeOf<BinaryRecursiveDependency>()),
+                            config = context.config,
+                            seed = seed.childSeed(0),
+                            depth = depth,
+                        ) as BinaryRecursiveDependency
+                    }
+                }
+            }
+
+        val root = fiktion.fake<BinaryRecursiveDependency>(seed = 123)
+        val child = root.child ?: error("Expected a recursive child")
+        val grandchild = child.child ?: error("Expected a recursive grandchild")
+
+        assertEquals("first-1:second-1:1", root.label)
+        assertEquals("first-2:second-2:2", child.label)
+        assertEquals("first-3:second-3:3", grandchild.label)
+    }
+
+    @Test
+    fun `three dependency property stays scoped to each recursive object frame`() {
+        val fiktion =
+            Fiktion {
+                register(ternaryRecursiveDependencyMetadata())
+                TernaryRecursiveDependency::first generatesBy { "first-$depth" }
+                TernaryRecursiveDependency::second generatesBy { "second-$depth" }
+                TernaryRecursiveDependency::third generatesBy { "third-$depth" }
+                TernaryRecursiveDependency::label
+                    .dependsOn(
+                        TernaryRecursiveDependency::first,
+                        TernaryRecursiveDependency::second,
+                        TernaryRecursiveDependency::third,
+                    ).generatesBy { first, second, third ->
+                        "$first:$second:$third:$depth"
+                    }
+                TernaryRecursiveDependency::child generatesBy {
+                    if (depth >= 3) {
+                        null
+                    } else {
+                        val context = this as DefaultFakeContext
+                        generateValue(
+                            request = GenerationRequest(type = typeOf<TernaryRecursiveDependency>()),
+                            config = context.config,
+                            seed = seed.childSeed(0),
+                            depth = depth,
+                        ) as TernaryRecursiveDependency
+                    }
+                }
+            }
+
+        val root = fiktion.fake<TernaryRecursiveDependency>(seed = 123)
+        val child = root.child ?: error("Expected a recursive child")
+        val grandchild = child.child ?: error("Expected a recursive grandchild")
+
+        assertEquals("first-1:second-1:third-1:1", root.label)
+        assertEquals("first-2:second-2:third-2:2", child.label)
+        assertEquals("first-3:second-3:third-3:3", grandchild.label)
+    }
+
+    @Test
     fun `recursive dependency order cycle fails before recursive generation`() {
         val fiktion =
             Fiktion {
@@ -321,6 +447,23 @@ class GenerateDependencyTest {
                 firstName = values[0].valueOrDefault(defaultValue = null) as String,
                 lastName = values[1].valueOrDefault(defaultValue = null) as String,
                 displayName = values[2].valueOrDefault(defaultValue = null) as String,
+            )
+        }
+
+    private fun sharedDependencyMetadata(): FiktionObjectMetadata<SharedDependency> =
+        FiktionObjectMetadata(
+            type = typeOf<SharedDependency>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "label", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "slug", type = typeOf<String>()),
+                ),
+        ) { values ->
+            SharedDependency(
+                id = values[0].valueOrDefault(defaultValue = null) as String,
+                label = values[1].valueOrDefault(defaultValue = null) as String,
+                slug = values[2].valueOrDefault(defaultValue = null) as String,
             )
         }
 
@@ -458,6 +601,63 @@ class GenerateDependencyTest {
             )
         }
 
+    private fun unaryRecursiveDependencyMetadata(): FiktionObjectMetadata<UnaryRecursiveDependency> =
+        FiktionObjectMetadata(
+            type = typeOf<UnaryRecursiveDependency>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "id", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "label", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "child", type = typeOf<UnaryRecursiveDependency?>()),
+                ),
+        ) { values ->
+            UnaryRecursiveDependency(
+                id = values[0].valueOrDefault(defaultValue = null) as String,
+                label = values[1].valueOrDefault(defaultValue = null) as String,
+                child = values[2].valueOrDefault(defaultValue = null) as UnaryRecursiveDependency?,
+            )
+        }
+
+    private fun binaryRecursiveDependencyMetadata(): FiktionObjectMetadata<BinaryRecursiveDependency> =
+        FiktionObjectMetadata(
+            type = typeOf<BinaryRecursiveDependency>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "first", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "second", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "label", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "child", type = typeOf<BinaryRecursiveDependency?>()),
+                ),
+        ) { values ->
+            BinaryRecursiveDependency(
+                first = values[0].valueOrDefault(defaultValue = null) as String,
+                second = values[1].valueOrDefault(defaultValue = null) as String,
+                label = values[2].valueOrDefault(defaultValue = null) as String,
+                child = values[3].valueOrDefault(defaultValue = null) as BinaryRecursiveDependency?,
+            )
+        }
+
+    private fun ternaryRecursiveDependencyMetadata(): FiktionObjectMetadata<TernaryRecursiveDependency> =
+        FiktionObjectMetadata(
+            type = typeOf<TernaryRecursiveDependency>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "first", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "second", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "third", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "label", type = typeOf<String>()),
+                    FiktionObjectProperty(name = "child", type = typeOf<TernaryRecursiveDependency?>()),
+                ),
+        ) { values ->
+            TernaryRecursiveDependency(
+                first = values[0].valueOrDefault(defaultValue = null) as String,
+                second = values[1].valueOrDefault(defaultValue = null) as String,
+                third = values[2].valueOrDefault(defaultValue = null) as String,
+                label = values[3].valueOrDefault(defaultValue = null) as String,
+                child = values[4].valueOrDefault(defaultValue = null) as TernaryRecursiveDependency?,
+            )
+        }
+
     private fun recursiveOrderCycleMetadata(): FiktionObjectMetadata<RecursiveOrderCycle> =
         FiktionObjectMetadata(
             type = typeOf<RecursiveOrderCycle>(),
@@ -483,6 +683,12 @@ private data class PersonName(
     val firstName: String,
     val lastName: String,
     val displayName: String,
+)
+
+private data class SharedDependency(
+    val id: String,
+    val label: String,
+    val slug: String,
 )
 
 private data class ManyDependency(
@@ -535,6 +741,27 @@ private data class RecursiveNode(
     val id: String,
     val label: String,
     val child: RecursiveNode?,
+)
+
+private data class UnaryRecursiveDependency(
+    val id: String,
+    val label: String,
+    val child: UnaryRecursiveDependency?,
+)
+
+private data class BinaryRecursiveDependency(
+    val first: String,
+    val second: String,
+    val label: String,
+    val child: BinaryRecursiveDependency?,
+)
+
+private data class TernaryRecursiveDependency(
+    val first: String,
+    val second: String,
+    val third: String,
+    val label: String,
+    val child: TernaryRecursiveDependency?,
 )
 
 private data class RecursiveOrderCycle(
