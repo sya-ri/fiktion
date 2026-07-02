@@ -595,6 +595,31 @@ User::id generates "user-1"
 Property references such as `User::id generates "user-1"` are the concise form for owner-specific property rules.
 `property<User, String>("id")` is the equivalent explicit form when the owner and value type should be spelled out.
 
+Property rules can depend on constructor properties generated earlier for the same object:
+
+```kotlin
+val user = fake<User> {
+    User::id generates "user-1"
+    User::email.dependsOn(User::id) generatesBy { id ->
+        "$id@example.test"
+    }
+}
+```
+
+Multiple dependencies are passed to the generator in declaration order:
+
+```kotlin
+val profile = fake<Profile> {
+    Profile::displayName.dependsOn(Profile::firstName, Profile::lastName) generatesBy { first, last ->
+        "$first $last"
+    }
+}
+```
+
+`dependsOn` only reads direct constructor properties of the same object, and the dependency must be generated before the
+dependent property. If the dependency used a constructor default value, Fiktion cannot observe that value and fails the
+generation.
+
 ## Compiler Plugin
 
 The compiler plugin generates runtime metadata for Kotlin types in enabled source sets. This is what lets Fiktion create

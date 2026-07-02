@@ -20,6 +20,7 @@ internal fun generateArray(
                 config = config,
                 seed = seed.childSeed(index),
                 depth = depth + 1,
+                dependencyValues = null,
             )
         }
 

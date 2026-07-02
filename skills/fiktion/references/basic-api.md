@@ -269,6 +269,32 @@ Fiktion {
 
 Prefer reified targets in shared configuration when they make the owner/value type obvious, especially for name rules or regex rules.
 
+Property rules can depend on direct constructor properties generated earlier for the same object:
+
+```kotlin
+fake<User> {
+    User::id generates "user-1"
+    User::email.dependsOn(User::id) generatesBy { id ->
+        "$id@example.test"
+    }
+}
+```
+
+Multiple dependencies are passed to the generator in declaration order:
+
+```kotlin
+fake<Profile> {
+    Profile::displayName.dependsOn(Profile::firstName, Profile::lastName) generatesBy { first, last ->
+        "$first $last"
+    }
+}
+```
+
+Use `dependsOn` only for direct constructor properties of the same generated object. The dependency must be generated
+before the dependent property; if the dependency used a constructor default value, Fiktion cannot observe that value and
+generation fails. The typed overloads should share the same registration path as `dependsOn(vararg dependencies)` so
+typed and untyped dependency rules behave consistently.
+
 Type-family targets are for generic families:
 
 ```kotlin
