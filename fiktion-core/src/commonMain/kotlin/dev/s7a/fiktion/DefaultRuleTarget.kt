@@ -57,6 +57,15 @@ internal class DefaultRuleTarget<T>(
     }
 
     /**
+     * Registers candidate selection for this target.
+     */
+    fun generatesOneOf(values: List<T>): DefaultOneOfGenerationSpec<T> {
+        val spec = DefaultOneOfGenerationSpec(key = key, matcher = matcher, values = values)
+        config.add(spec)
+        return spec
+    }
+
+    /**
      * Registers [value] for [configKey] on this target.
      */
     fun <Value : Any> config(

@@ -34,4 +34,28 @@ public sealed interface GenerationSpec<out T> {
      * runtime path.
      */
     public infix fun orDefaultAt(probability: Probability): GenerationSpec<T>
+
+    /**
+     * Excludes [value] from selection candidates for this generation rule.
+     *
+     * Multiple exclusions are cumulative. Generation fails with [FiktionConfigurationException] if all candidates are
+     * excluded.
+     */
+    public infix fun excluding(value: @UnsafeVariance T): GenerationSpec<T>
+
+    /**
+     * Excludes [values] from selection candidates for this generation rule.
+     *
+     * Multiple exclusions are cumulative. Generation fails with [FiktionConfigurationException] if all candidates are
+     * excluded.
+     */
+    public infix fun excluding(values: Iterable<@UnsafeVariance T>): GenerationSpec<T>
+
+    /**
+     * Excludes value candidates matching [predicate] from this generation rule.
+     *
+     * Multiple exclusions are cumulative. Generation fails with [FiktionConfigurationException] if all candidates are
+     * excluded.
+     */
+    public infix fun excluding(predicate: (@UnsafeVariance T) -> Boolean): GenerationSpec<T>
 }

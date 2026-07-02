@@ -213,6 +213,33 @@ val index = fake<SearchIndex> {
 }
 ```
 
+Selection-based generators can exclude candidates before choosing a value:
+
+```kotlin
+val user = fake<User> {
+    User::status generates auto excluding Status.DELETED
+    User::role generates auto excluding Role.ADMIN excluding Role.OWNER
+    User::status generates auto excluding { status -> status.name.startsWith("DEPRECATED_") }
+    SearchIndex::aliases generatesOneOf listOf("primary", "secondary", "deprecated") excluding { alias ->
+        alias == "deprecated"
+    }
+}
+```
+
+Multiple exclusions are cumulative. Generation fails with `FiktionConfigurationException` if every candidate is excluded.
+
+Sealed type generation can exclude subtypes by `KClass`, or by `KType` when generic arguments matter:
+
+```kotlin
+val message = fake<Message> {
+    type<Message>() generates auto excluding ImageMessage::class
+    type<Message>() generates auto excluding typeOf<BoxMessage<String>>()
+    type<Message>() generates auto excluding { type ->
+        type.classifier == InternalMessage::class
+    }
+}
+```
+
 ## Nulls And Defaults
 
 Automatic nullable values generate either a non-null value or `null` with 50% probability. Explicit generated values stay

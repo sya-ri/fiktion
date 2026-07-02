@@ -89,6 +89,7 @@ internal fun generateAutomaticValue(
     seed: Long,
     depth: Int,
     context: FakeContext,
+    exclusions: GenerationExclusions = GenerationExclusions(),
 ): Any? {
     config.metadata[request.type.nonNullTypeId()]?.let { metadata ->
         return generateFromMetadata(
@@ -98,6 +99,13 @@ internal fun generateAutomaticValue(
             seed = seed,
             depth = depth,
             context = context,
+            exclusions = exclusions,
+        )
+    }
+
+    if (exclusions.isNotEmpty) {
+        throw FiktionConfigurationException(
+            "Exclusions can only be applied to enum, sealed, or oneOf candidate selection.",
         )
     }
 
@@ -126,9 +134,11 @@ private fun generateFromMetadata(
     seed: Long,
     depth: Int,
     context: FakeContext,
+    exclusions: GenerationExclusions = GenerationExclusions(),
 ): Any? =
     when (metadata) {
         is FiktionObjectMetadata<*> -> {
+            requireNoExclusions(exclusions, "object generation")
             generateObject(
                 request = request,
                 config = config,
@@ -139,6 +149,7 @@ private fun generateFromMetadata(
         }
 
         is FiktionArrayMetadata<*> -> {
+            requireNoExclusions(exclusions, "array generation")
             generateArray(
                 request = request,
                 config = config,
@@ -149,6 +160,7 @@ private fun generateFromMetadata(
         }
 
         is FiktionValueMetadata<*> -> {
+            requireNoExclusions(exclusions, "value class generation")
             generateValueClass(
                 request = request,
                 config = config,
@@ -163,6 +175,7 @@ private fun generateFromMetadata(
                 request = request,
                 context = context,
                 metadata = metadata,
+                exclusions = exclusions,
             )
         }
 
@@ -174,6 +187,7 @@ private fun generateFromMetadata(
                 depth = depth,
                 context = context,
                 metadata = metadata,
+                exclusions = exclusions,
             )
         }
     }
@@ -201,14 +215,16 @@ private fun generateFromRule(
     }
 
     if (rule.automaticallyGenerates) {
-        generateAutomaticContainerValue(
-            request = request,
-            config = config,
-            seed = contextSeed,
-            depth = depth,
-            context = context,
-        )?.let { value ->
-            return value
+        if (!rule.exclusions.isNotEmpty) {
+            generateAutomaticContainerValue(
+                request = request,
+                config = config,
+                seed = contextSeed,
+                depth = depth,
+                context = context,
+            )?.let { value ->
+                return value
+            }
         }
 
         return generateAutomaticValue(
@@ -217,6 +233,17 @@ private fun generateFromRule(
             seed = contextSeed,
             depth = depth,
             context = context,
+            exclusions = rule.exclusions,
+        )
+    }
+
+    if (rule is DefaultOneOfGenerationSpec<*>) {
+        return rule.generate(context)
+    }
+
+    if (rule.exclusions.isNotEmpty) {
+        throw FiktionConfigurationException(
+            "Exclusions can only be applied to enum, sealed, or oneOf candidate selection.",
         )
     }
 
@@ -244,6 +271,15 @@ private fun generateFromRule(
 }
 
 private const val DEFAULT_NULL_PROBABILITY: Double = 0.5
+
+private fun requireNoExclusions(
+    exclusions: GenerationExclusions,
+    target: String,
+) {
+    requireFiktionConfiguration(!exclusions.isNotEmpty) {
+        "Exclusions can only be applied to enum, sealed, or oneOf candidate selection, but $target does not select candidates."
+    }
+}
 
 /**
  * Generates collection or map values when an exact `generates auto` rule targets a configured converter type.
