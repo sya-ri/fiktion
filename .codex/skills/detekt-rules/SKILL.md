@@ -1,9 +1,9 @@
 ---
-name: fiktion-detekt-rules
-description: Fiktion repository workflow for implementing, documenting, and testing custom detekt rules in the fiktion-detekt-rules module. Use when Codex needs to add, modify, refactor, or review a Fiktion detekt rule, update the fiktion rule set, add autocorrect behavior, write rule tests, write Fiktion core before/after behavior tests, or update detekt rule documentation.
+name: detekt-rules
+description: Repository contributor workflow for implementing, documenting, and testing custom detekt rules in the fiktion-detekt-rules module. Use when Codex needs to add, modify, refactor, or review a detekt rule, update the rule set, add autocorrect behavior, write rule tests, write Fiktion core before/after behavior tests, or update detekt rule documentation in this repository.
 ---
 
-# Fiktion Detekt Rules
+# Detekt Rules
 
 Use this skill for work in `fiktion-detekt-rules`, especially new rule implementation, rule refactoring, autocorrect, rule ordering, docs, and tests.
 
@@ -59,7 +59,7 @@ Trust source and tests over docs if they disagree, then update docs.
        - `#### Limitations` for report-only rationale, PSI limits, skipped cases, or autocorrect/import notes.
    - Update `skills/fiktion/references/detekt-rules.md`:
      - Keep the short rule list aligned with README.
-     - Update authoring notes when a new rule changes common workflow, docs expectations, or autocorrect import handling.
+     - Keep the public reference user-facing; do not add repository implementation notes there.
    - Keep rules in alphabetical order everywhere rules are listed: `FiktionRuleSetProvider`, README table, README `detekt.yml`, README `###` sections, and `skills/fiktion/references/detekt-rules.md`.
    - Put `PreferGeneratesByForMutableValues`, `PreferGeneratesForFixedValue`, `PreferGeneratesInForRange`, `PreferGeneratesOneOf` in that exact alphabetical order.
 

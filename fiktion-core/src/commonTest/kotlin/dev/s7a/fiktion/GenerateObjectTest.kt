@@ -248,6 +248,23 @@ class GenerateObjectTest {
     }
 
     @Test
+    fun `type rules generate non-null branch for nullable object properties before metadata`() {
+        val fiktion =
+            Fiktion {
+                register(userMetadataWithOptionalProfile())
+                register(profileMetadata())
+                type<String>() generates "metadata"
+                type<Profile>() generatesBy {
+                    Profile(nickname = "${property?.name}:${property?.nullability}")
+                }
+            }
+
+        val user = fiktion.fake<User>(seed = 123)
+
+        assertEquals(User(id = "metadata", optionalProfile = Profile(nickname = "optionalProfile:NULLABLE")), user)
+    }
+
+    @Test
     fun `property reference rules generate null for nullable object properties`() {
         val fiktion =
             Fiktion {

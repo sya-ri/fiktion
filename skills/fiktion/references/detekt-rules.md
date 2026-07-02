@@ -6,14 +6,14 @@ Use the optional detekt rules artifact when a project wants style feedback for F
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.0")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.1")
 }
 ```
 
 The rules are provided under the `fiktion` rule set.
 
-Autocorrect should keep corrected code compilable. When a correction introduces a Fiktion DSL symbol, add the matching
-Fiktion import unless an existing direct or star import already covers it.
+Autocorrect is intended to keep corrected code compilable. When a correction introduces a Fiktion DSL symbol, it should
+add the matching Fiktion import unless an existing direct or star import already covers it.
 
 ## Rules
 
@@ -51,42 +51,3 @@ Fiktion import unless an existing direct or star import already covers it.
 - `PreferSeedParameter`: prefers `fake(seed = ...)` over `withSeed` inside a `fake` block. Report-only.
 - `PreferThisUsingInFakeSpec`: prefers `this using ...` over bare `using(...)` calls. Supports autocorrect.
 - `PreferTypeRuleForNonGeneric`: prefers exact type rules over non-generic type-family rules. Supports autocorrect.
-
-## Authoring Rules
-
-Before adding a rule that recommends another Fiktion DSL form, add a focused Fiktion API test proving either the
-original and recommended forms are equivalent or the recommended form preserves the intended behavior better. Keep those
-tests in `fiktion-core/src/commonTest/kotlin/dev/s7a/fiktion/detekt`, split by rule name.
-
-Keep individual rule docs short in user-facing docs. README should list the rule and intent; detailed examples should
-live in tests or dedicated rule docs if they become necessary.
-
-When adding or changing a rule, update `fiktion-detekt-rules/README.md` in the same change:
-
-- Add or adjust the rule table row.
-- Add or adjust the explicit default `detekt.yml` entry, including configurable defaults.
-- Add or adjust the `### <RuleName>` section with intent, examples or limitations when useful, and autocorrect import notes when relevant.
-
-Keep the rule list, README table, README default config, and README rule sections in alphabetical order.
-
-Prefer PSI-only rules first. Add import alias support when it is cheap. Avoid type resolution until a rule cannot be
-useful without it, because it increases setup and runtime cost for users.
-
-Rules that inspect Fiktion configuration declarations should ignore matching code outside Fiktion configuration scopes.
-Use shared PSI helpers such as `isInsideFiktionConfigurationScope()` and `isLambdaBodyOfCall(...)` instead of local
-parent traversal. Add tests proving non-Fiktion code is ignored and both `Fiktion { ... }` and `Fiktion.configure { ... }`
-still report.
-
-For autocorrect in detekt 2 tests, prefer `KtFile.modifiedText` over direct PSI `replace` when the standalone test
-environment lacks IntelliJ extension points required by tree replacement.
-
-Autocorrect import handling currently matters for:
-
-- `PreferFixedDefaultProbability`: may introduce `dev.s7a.fiktion.default` and `dev.s7a.fiktion.generates`.
-- `PreferFixedNullProbability`: may introduce `dev.s7a.fiktion.generates`.
-- `PreferGeneratesByForMutableValues`: may introduce `dev.s7a.fiktion.generatesBy`.
-- `PreferGeneratesForFixedValue`: may introduce `dev.s7a.fiktion.generates`.
-- `PreferGeneratesInForRange`: may introduce `dev.s7a.fiktion.generatesIn`.
-- `PreferGeneratesOneOf`: may introduce `dev.s7a.fiktion.generatesOneOf`.
-- `PreferGroupedRuleTarget`: may introduce `dev.s7a.fiktion.invoke`.
-- `PreferTypeRuleForNonGeneric`: may introduce `dev.s7a.fiktion.type`.

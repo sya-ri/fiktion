@@ -16,18 +16,7 @@ internal fun generateValue(
     val rule = config.selectRule(request)
 
     val contextSeed = rule?.seed ?: seed
-    val path = request.toFakePath()
-    val context =
-        DefaultFakeContext(
-            seed = contextSeed,
-            type = request.type.toFakeType(),
-            property = path.segments.lastOrNull(),
-            path = path,
-            depth = depth,
-            index = request.index,
-            config = config,
-            request = request,
-        )
+    val context = request.toFakeContext(config = config, seed = contextSeed, depth = depth)
 
     if (rule != null) {
         return generateFromRule(
@@ -44,12 +33,47 @@ internal fun generateValue(
         return null
     }
 
+    if (request.type.isMarkedNullable) {
+        config.effectiveRules().selectNullableNonNullRule(request)?.let { nullableNonNullRule ->
+            val nullableNonNullSeed = nullableNonNullRule.seed ?: seed
+            return generateFromRule(
+                rule = nullableNonNullRule,
+                request = request,
+                config = config,
+                contextSeed = nullableNonNullSeed,
+                depth = depth,
+                context = request.toFakeContext(config = config, seed = nullableNonNullSeed, depth = depth),
+            )
+        }
+    }
+
     return generateAutomaticValue(
         request = request,
         config = config,
         seed = seed,
         depth = depth,
         context = context,
+    )
+}
+
+/**
+ * Returns the fake context for a generation request at [seed] and [depth].
+ */
+private fun GenerationRequest.toFakeContext(
+    config: FiktionConfigState,
+    seed: Long,
+    depth: Int,
+): FakeContext {
+    val path = toFakePath()
+    return DefaultFakeContext(
+        seed = seed,
+        type = type.toFakeType(),
+        property = path.segments.lastOrNull(),
+        path = path,
+        depth = depth,
+        index = index,
+        config = config,
+        request = this,
     )
 }
 

@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "dev.s7a"
-version = "0.5.0"
+version = "0.5.1"
 
 val dokkaOlderVersionsDir = layout.buildDirectory.dir("dokka/olderVersions")
 
@@ -61,6 +61,12 @@ subprojects {
 
     group = rootProject.group
     version = rootProject.version
+
+    tasks.withType<org.gradle.plugins.signing.Sign>().configureEach {
+        onlyIf {
+            gradle.startParameter.taskNames.none { it.equals("publishToMavenLocal", ignoreCase = true) }
+        }
+    }
 
     extensions.configure<DetektExtension>("detekt") {
         config.setFrom(rootProject.files("detekt.yml"))

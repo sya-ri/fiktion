@@ -71,23 +71,23 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.5.0"
+    id("dev.s7a.fiktion") version "0.5.1"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.5.0")
+    testImplementation("dev.s7a:fiktion-core:0.5.1")
 
     // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.0")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.1")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.5.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.5.1")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.0")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.1")
 
     // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.0")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.1")
 }
 ```
 
@@ -96,6 +96,24 @@ If detekt is not configured yet, follow the
 
 Fiktion is enabled for test source sets by default, including JVM `test` and Multiplatform source sets such as
 `commonTest` and `jvmTest`.
+
+### Kotlin Compatibility
+
+Fiktion `0.5.1` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
+The repository is tested with a consumer project using Kotlin `2.4.0`.
+
+The compiler plugin uses Kotlin compiler APIs, so compatibility is verified per consumer Kotlin version instead of
+assuming all future compiler releases work automatically. Maintainers can run the same check locally with:
+
+```shell
+./gradlew publishToMavenLocal
+./gradlew -p compatibility/jvm-consumer test -Pconsumer.kotlin.version=2.4.0
+```
+
+Kotlin `2.3.x` and `2.2.x` are not supported by artifacts built with Kotlin `2.4.0`. Kotlin `2.3.0` fails to load the
+compiler plugin because the Kotlin compiler API is not binary-compatible with the `2.4.0`-built plugin. Supporting
+multiple Kotlin compiler lines requires publishing compiler-plugin artifacts per Kotlin version and selecting the
+matching artifact from the Gradle plugin.
 
 Runnable sample projects live in [`examples/`](examples/).
 
@@ -292,6 +310,11 @@ Use typed generator configuration when you want to keep Fiktion's default genera
 formats:
 
 ```kotlin
+import dev.s7a.fiktion.FiktionConfig
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.invoke
+
 val fiktion = Fiktion {
     this using FiktionConfig.Int.range(-200..200)
     this using FiktionConfig.String.length(8)
@@ -308,6 +331,11 @@ val names = fake<List<String>> {
     this using FiktionConfig.Collection.size(5)
 }
 ```
+
+`this using ...` is a `FakeSpec` member inside the `fake` lambda, so it does not need a separate `using` import. The
+`FiktionConfig.Collection.size(5)` shorthand uses Fiktion's `invoke` operator extension, so import `dev.s7a.fiktion.invoke`
+or use `import dev.s7a.fiktion.*`. Use `FiktionConfig.Collection.size` for `List`, `Set`, and other collection types,
+and `FiktionConfig.Map.size` for maps.
 
 Sets use normal set semantics by default, so duplicate generated elements can collapse and make the final set smaller
 than `FiktionConfig.Collection.size`. Use `UniqueElementStrategy.Exact` when a set must contain the configured number of
@@ -389,7 +417,7 @@ Add it as a detekt plugin dependency. If detekt is not configured in the project
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.0")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.1")
 }
 ```
 
@@ -663,7 +691,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.5.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.5.1")
 }
 ```
 
@@ -693,7 +721,7 @@ Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.0")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.1")
 }
 ```
 
@@ -729,7 +757,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.0")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.1")
 }
 ```
 
