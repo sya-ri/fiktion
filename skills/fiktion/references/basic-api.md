@@ -290,9 +290,33 @@ target generates auto
 target generates default
 target generatesIn 1..10
 target generatesOneOf listOf("a", "b")
+target generates auto excluding SomeEnum.Deprecated
+target generates auto excluding { value -> value == SomeEnum.Deprecated }
 target generates value withSeed 123
 target generates value orNullAt 0.3
 target generates value orDefaultAt 30.percent
+```
+
+Use `excluding` only for selection-based generators: enum entries, sealed subtypes, and `generatesOneOf` candidates.
+Multiple exclusions are cumulative, and generation fails with `FiktionConfigurationException` when every candidate is
+excluded.
+
+```kotlin
+fake<User> {
+    User::status generates auto excluding Status.Deleted excluding Status.Suspended
+    User::status generates auto excluding { status -> status.name.startsWith("Deprecated") }
+    User::status generatesOneOf listOf(Status.Active, Status.Pending, Status.Deleted) excluding Status.Deleted
+}
+```
+
+For sealed types, exclude subtypes with `KClass`, `KType`, or a `KType` predicate:
+
+```kotlin
+fake<Message> {
+    type<Message>() generates auto excluding ImageMessage::class
+    type<Message>() generates auto excluding typeOf<BoxMessage<String>>()
+    type<Message>() generates auto excluding { type -> type.classifier == InternalMessage::class }
+}
 ```
 
 Automatic nullable values generate either a non-null value or `null` with 50% probability. Automatic defaultable

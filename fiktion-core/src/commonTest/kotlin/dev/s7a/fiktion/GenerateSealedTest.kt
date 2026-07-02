@@ -53,6 +53,85 @@ class GenerateSealedTest {
     }
 
     @Test
+    fun `generates auto excludes sealed subtype by class`() {
+        val fiktion =
+            Fiktion {
+                register(messageMetadata())
+                register(textMessageMetadata())
+                register(imageMessageMetadata())
+                type<String>() generates "generated"
+                type<Message>() generates auto excluding ImageMessage::class
+            }
+
+        val messages = (0L until 20L).map { seed -> fiktion.fake<Message>(seed = seed) }
+
+        assertTrue(messages.all { message -> message is TextMessage })
+    }
+
+    @Test
+    fun `generates auto excludes multiple sealed subtypes by class`() {
+        val fiktion =
+            Fiktion {
+                register(messageMetadata())
+                register(textMessageMetadata())
+                register(imageMessageMetadata())
+                type<Message>() generates auto excluding setOf(TextMessage::class, ImageMessage::class)
+            }
+
+        assertFailsWith<FiktionConfigurationException> {
+            fiktion.fake<Message>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `generates auto applies cumulative sealed subtype exclusions`() {
+        val fiktion =
+            Fiktion {
+                register(messageMetadata())
+                register(textMessageMetadata())
+                register(imageMessageMetadata())
+                type<Message>() generates auto excluding TextMessage::class excluding ImageMessage::class
+            }
+
+        assertFailsWith<FiktionConfigurationException> {
+            fiktion.fake<Message>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `generates auto excludes generic sealed subtype by type`() {
+        val fiktion =
+            Fiktion {
+                register(genericMessageMetadata())
+                register(genericStringMessageMetadata())
+                register(genericIntMessageMetadata())
+                type<String>() generates "generated"
+                type<Int>() generates 1
+                type<GenericMessageRoot>() generates auto excluding typeOf<GenericMessage<String>>()
+            }
+
+        val messages = (0L until 20L).map { seed -> fiktion.fake<GenericMessageRoot>(seed = seed) }
+
+        assertTrue(messages.all { message -> message is GenericMessage<*> && message.value is Int })
+    }
+
+    @Test
+    fun `generates auto excludes sealed subtypes by predicate`() {
+        val fiktion =
+            Fiktion {
+                register(messageMetadata())
+                register(textMessageMetadata())
+                register(imageMessageMetadata())
+                type<String>() generates "generated"
+                type<Message>() generates auto excluding { type: KType -> type.classifier == ImageMessage::class }
+            }
+
+        val messages = (0L until 20L).map { seed -> fiktion.fake<Message>(seed = seed) }
+
+        assertTrue(messages.all { message -> message is TextMessage })
+    }
+
+    @Test
     fun `isolated instance sealed metadata does not leak to other isolated instances`() {
         val registered =
             Fiktion {
@@ -167,4 +246,38 @@ class GenerateSealedTest {
         ) { values ->
             ImageMessage(url = values[0].valueOrDefault(defaultValue = null) as String)
         }
+
+    private fun genericMessageMetadata(): FiktionSealedMetadata<GenericMessageRoot> =
+        FiktionSealedMetadata(
+            type = typeOf<GenericMessageRoot>(),
+            subtypes = listOf(typeOf<GenericMessage<String>>(), typeOf<GenericMessage<Int>>()),
+        )
+
+    private fun genericStringMessageMetadata(): FiktionObjectMetadata<GenericMessage<String>> =
+        FiktionObjectMetadata(
+            type = typeOf<GenericMessage<String>>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "value", type = typeOf<String>()),
+                ),
+        ) { values ->
+            GenericMessage(values[0].valueOrDefault(defaultValue = null) as String)
+        }
+
+    private fun genericIntMessageMetadata(): FiktionObjectMetadata<GenericMessage<Int>> =
+        FiktionObjectMetadata(
+            type = typeOf<GenericMessage<Int>>(),
+            properties =
+                listOf(
+                    FiktionObjectProperty(name = "value", type = typeOf<Int>()),
+                ),
+        ) { values ->
+            GenericMessage(values[0].valueOrDefault(defaultValue = null) as Int)
+        }
 }
+
+private sealed interface GenericMessageRoot
+
+private data class GenericMessage<T>(
+    val value: T,
+) : GenericMessageRoot

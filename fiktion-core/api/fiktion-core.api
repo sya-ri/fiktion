@@ -437,6 +437,9 @@ public final class dev/s7a/fiktion/FiktionValueMetadata : dev/s7a/fiktion/Fiktio
 }
 
 public abstract interface class dev/s7a/fiktion/GenerationSpec {
+	public abstract fun excluding (Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
+	public abstract fun excluding (Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public abstract fun excluding (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public fun orDefaultAt (D)Ldev/s7a/fiktion/GenerationSpec;
 	public abstract fun orDefaultAt-t9P778Q (D)Ldev/s7a/fiktion/GenerationSpec;
 	public fun orNullAt (D)Ldev/s7a/fiktion/GenerationSpec;
@@ -447,6 +450,14 @@ public abstract interface class dev/s7a/fiktion/GenerationSpec {
 public final class dev/s7a/fiktion/GenerationSpec$DefaultImpls {
 	public static fun orDefaultAt (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun orNullAt (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/GenerationSpecExclusionsKt {
+	public static final fun excluding (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/reflect/KClass;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excluding (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excludingClasses (Ldev/s7a/fiktion/GenerationSpec;Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excludingTypePredicate (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excludingTypes (Ldev/s7a/fiktion/GenerationSpec;Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
 }
 
 public final class dev/s7a/fiktion/MapElementTargetKt {
@@ -783,6 +794,9 @@ public final class dev/s7a/fiktion/generators/NumberFormatExceptionKt {
 }
 
 public final class dev/s7a/fiktion/generators/OneOfKt {
+	public static final fun excluding (Ljava/lang/Iterable;Ljava/lang/Iterable;)Ljava/util/List;
+	public static final fun excluding (Ljava/lang/Iterable;Ljava/lang/Object;)Ljava/util/List;
+	public static final fun excluding (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
 	public static final fun oneOf (Ldev/s7a/fiktion/FakeContext;Ljava/util/List;)Ljava/lang/Object;
 	public static final fun oneOf (Ldev/s7a/fiktion/FakeContext;[Ljava/lang/Object;)Ljava/lang/Object;
 }

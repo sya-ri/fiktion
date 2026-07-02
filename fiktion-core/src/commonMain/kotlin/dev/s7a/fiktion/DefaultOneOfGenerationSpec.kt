@@ -1,12 +1,12 @@
 package dev.s7a.fiktion
 
 /**
- * Mutable generation spec registered for a type family.
+ * Generation spec that selects one value from a fixed candidate list.
  */
-internal class DefaultTypeFamilyGenerationSpec<T>(
+internal class DefaultOneOfGenerationSpec<T>(
     override val key: RuleKey,
     override val matcher: RuleMatcher,
-    private val typeFamilyGenerator: TypeFamilyGenerator<T>,
+    private val values: List<T>,
     override var seed: Long? = null,
     override var nullProbability: Probability? = null,
     override var defaultProbability: Probability? = null,
@@ -21,16 +21,18 @@ internal class DefaultTypeFamilyGenerationSpec<T>(
         exclusions = exclusions,
         precedence = precedence,
     ) {
-    /**
-     * Generates a value from [context].
-     */
-    fun generate(context: TypeFamilyGenerationContext): T = context.typeFamilyGenerator()
+    fun generate(context: FakeContext): T {
+        requireNoTypeExclusions(exclusions, "generatesOneOf")
+        val candidates = values.filterNot { value -> exclusions.excludesValue(value) }
+        requireFiktionConfiguration(candidates.isNotEmpty()) { "values must not be empty after exclusions." }
+        return candidates[context.random.nextInt(candidates.size)]
+    }
 
     override fun snapshot(precedence: RulePrecedence): DefaultGenerationSpec<T> =
-        DefaultTypeFamilyGenerationSpec(
+        DefaultOneOfGenerationSpec(
             key = key,
             matcher = matcher,
-            typeFamilyGenerator = typeFamilyGenerator,
+            values = values,
             seed = seed,
             nullProbability = nullProbability,
             defaultProbability = defaultProbability,
