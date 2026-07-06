@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.6.0
+
+- Added property dependency rules with `dependsOn(...)`, so generated constructor properties can derive values from
+  earlier properties in the same generated object.
+- Added `excluding` support for selection-based generation, including enum entries, sealed subtypes, and
+  `generatesOneOf` candidate lists.
+- Added composable generator candidate configuration for numeric ranges, range/progression bounds, progression steps,
+  string and regex lengths, collection/map/array sizes, `Duration`, and `Instant`.
+- Added min/max and excluded-range configuration keys such as `min`, `max`, `minLength`, `maxLength`, `minSize`,
+  `maxSize`, and `excludingSizes`, while keeping `range(...)`, `length(...)`, and `size(...)` as full candidate-set
+  replacements.
+- Added fixed closed-range config shorthand so equal-bound ranges such as `FiktionConfig.Int.range(3..3)` can be written
+  as `FiktionConfig.Int.range(3)`.
+- Changed built-in and add-on collection/map generators to consume the composed candidate sets, so size constraints and
+  excluded sizes apply consistently to core, Arrow Core, and Java container generation.
+
 ## v0.5.1
 
 - Fixed nullable type rule selection so nullable targets can use the most specific matching rules.
