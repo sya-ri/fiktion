@@ -11,7 +11,7 @@ import java.util.HashMap
  * Generates a Java hash map using [key] and [value].
  */
 public fun <K, V> FakeContext.hashMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): HashMap<K, V> = HashMap(map(size = size, key = key, value = value))
@@ -21,7 +21,7 @@ public fun <K, V> FakeContext.hashMap(
  */
 internal fun TypeFamilyGenerationContext.hashMap(): HashMap<Any?, Any?> =
     hashMap(
-        size = int(config(FiktionConfig.Map.size)),
+        size = FiktionConfig.Map.size(),
         key = {
             fakeKey(index)
         },

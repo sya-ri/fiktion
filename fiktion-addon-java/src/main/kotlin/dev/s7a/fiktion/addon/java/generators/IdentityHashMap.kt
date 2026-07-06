@@ -11,7 +11,7 @@ import java.util.IdentityHashMap
  * Generates a Java identity hash map using [key] and [value].
  */
 public fun <K, V> FakeContext.identityHashMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): IdentityHashMap<K, V> = IdentityHashMap(map(size = size, key = key, value = value))
@@ -21,7 +21,7 @@ public fun <K, V> FakeContext.identityHashMap(
  */
 internal fun TypeFamilyGenerationContext.identityHashMap(): IdentityHashMap<Any?, Any?> =
     identityHashMap(
-        size = int(config(FiktionConfig.Map.size)),
+        size = FiktionConfig.Map.size(),
         key = {
             fakeKey(index)
         },

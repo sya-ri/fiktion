@@ -57,28 +57,15 @@ internal fun <Value : Any> FiktionConfigState.selectConfig(
 ): Value =
     effectiveConfigs()
         .filter { config -> config.key == key && config.matcher.matches(request) }
-        .fold(initial = null as DefaultConfigSpec<*>?) { selected, candidate ->
-            when {
-                selected == null -> candidate
-                candidate.hasHigherPriorityThan(selected) -> candidate
-                else -> selected
-            }
-        }?.value as? Value ?: key.defaultValue
+        .sortedWith(compareBy<DefaultConfigSpec<*>> { config -> config.precedence }.thenBy { config -> config.matcher.specificity })
+        .fold(initial = key.defaultValue) { _, candidate ->
+            candidate.setting.value as Value
+        }
 
 /**
  * Returns whether this rule should override [other] within the effective lookup order.
  */
 private fun DefaultGenerationSpec<*>.hasHigherPriorityThan(other: DefaultGenerationSpec<*>): Boolean =
-    when {
-        precedence != other.precedence -> precedence > other.precedence
-        matcher.specificity != other.matcher.specificity -> matcher.specificity > other.matcher.specificity
-        else -> true
-    }
-
-/**
- * Returns whether this config should override [other] within the effective lookup order.
- */
-private fun DefaultConfigSpec<*>.hasHigherPriorityThan(other: DefaultConfigSpec<*>): Boolean =
     when {
         precedence != other.precedence -> precedence > other.precedence
         matcher.specificity != other.matcher.specificity -> matcher.specificity > other.matcher.specificity

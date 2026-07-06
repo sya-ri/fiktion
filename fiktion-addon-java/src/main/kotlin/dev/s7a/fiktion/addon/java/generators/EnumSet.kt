@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
  * Generates a Java enum set using [element].
  */
 public inline fun <reified E : Enum<E>> FakeContext.enumSet(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> E,
 ): EnumSet<E> =
     EnumSet.noneOf(E::class.java).apply {
@@ -27,7 +27,7 @@ public inline fun <reified E : Enum<E>> FakeContext.enumSet(
 internal fun TypeFamilyGenerationContext.enumSet(): EnumSet<*> {
     val enumClass = enumClass(argumentIndex = 0)
     val values = mutableListOf<Enum<*>>()
-    repeat(int(config(FiktionConfig.Collection.size))) { index ->
+    repeat(FiktionConfig.Collection.size()) { index ->
         fakeElement(index)?.let { value ->
             values += enumClass.cast(value)
         }

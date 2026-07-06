@@ -3,6 +3,7 @@
 package dev.s7a.fiktion
 
 import kotlin.random.Random
+import kotlin.reflect.KType
 
 /**
  * Generates an object from registered construction [metadata].
@@ -14,13 +15,23 @@ internal fun generateObject(
     depth: Int,
     metadata: FiktionObjectMetadata<*>,
 ): Any? {
-    val arguments =
-        metadata.properties.mapIndexed { index, property ->
-            val childRequest = request.child(property = property)
-            val childSeed = seed.childSeed(index)
+    val arguments = mutableListOf<FiktionObjectArgument>()
+    metadata.properties.forEachIndexed { index, property ->
+        val childRequest = request.child(property = property)
+        val childSeed = seed.childSeed(index)
+        val argument =
             if (property.usesDefault(config = config, request = childRequest, seed = childSeed)) {
                 FiktionObjectDefault
             } else {
+                val rule = config.selectRule(childRequest)
+                val dependencyValues =
+                    (rule as? DefaultDependentGenerationSpec<*>)
+                        ?.resolveDependencyValues(
+                            owner = request.type,
+                            target = property,
+                            properties = metadata.properties,
+                            arguments = arguments,
+                        )
                 val valueSeed = if (property.hasDefault) childSeed.childSeed(DEFAULTABLE_VALUE_SEED_INDEX) else childSeed
                 FiktionObjectValue(
                     try {
@@ -29,6 +40,7 @@ internal fun generateObject(
                             config = config,
                             seed = valueSeed,
                             depth = depth + 1,
+                            dependencyValues = dependencyValues,
                         )
                     } catch (cause: CannotGenerateException) {
                         throw CannotGenerateException(
@@ -38,10 +50,54 @@ internal fun generateObject(
                     },
                 )
             }
-        }
+        arguments += argument
+    }
 
     return metadata.construct(arguments)
 }
+
+/**
+ * Resolves dependency values from arguments generated earlier for the same object.
+ */
+private fun DefaultDependentGenerationSpec<*>.resolveDependencyValues(
+    owner: KType,
+    target: FiktionObjectProperty,
+    properties: List<FiktionObjectProperty>,
+    arguments: List<FiktionObjectArgument>,
+): List<Any?> =
+    dependencies.map { dependency ->
+        if (dependency.owner != owner) {
+            throw CannotGenerateException(unknownDependencyPropertyMessage(owner = owner, target = target, dependency = dependency))
+        }
+        val dependencyIndex = properties.indexOfFirst { property -> property.name == dependency.name }
+        if (dependencyIndex == -1) {
+            throw CannotGenerateException(unknownDependencyPropertyMessage(owner = owner, target = target, dependency = dependency))
+        }
+        val dependencyProperty = properties[dependencyIndex]
+        if (dependency.value != null && dependencyProperty.type != dependency.value) {
+            throw CannotGenerateException(
+                dependencyTypeMismatchMessage(
+                    owner = owner,
+                    target = target,
+                    dependency = dependency,
+                    property = dependencyProperty,
+                ),
+            )
+        }
+        if (dependencyIndex >= arguments.size) {
+            throw CannotGenerateException(dependencyOrderMessage(owner = owner, target = target, dependency = dependency))
+        }
+
+        when (val argument = arguments[dependencyIndex]) {
+            FiktionObjectDefault -> {
+                throw CannotGenerateException(dependencyDefaultValueMessage(owner = owner, target = target, dependency = dependency))
+            }
+
+            is FiktionObjectValue -> {
+                argument.value
+            }
+        }
+    }
 
 /**
  * Returns whether [property] should use its constructor default for this generation.

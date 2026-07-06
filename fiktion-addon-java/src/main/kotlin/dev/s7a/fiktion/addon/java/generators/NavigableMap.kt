@@ -10,7 +10,7 @@ import java.util.NavigableMap
  * Generates a Java navigable map using [key] and [value].
  */
 public fun <K : Any, V> FakeContext.navigableMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): NavigableMap<K, V> = treeMap(size = size, key = key, value = value)

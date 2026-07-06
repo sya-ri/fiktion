@@ -10,6 +10,7 @@ internal class DefaultTypeFamilyGenerationSpec<T>(
     override var seed: Long? = null,
     override var nullProbability: Probability? = null,
     override var defaultProbability: Probability? = null,
+    override var exclusions: GenerationExclusions = GenerationExclusions(),
     override val precedence: RulePrecedence = RulePrecedence.GLOBAL,
 ) : DefaultGenerationSpec<T>(
         key = key,
@@ -17,6 +18,7 @@ internal class DefaultTypeFamilyGenerationSpec<T>(
         seed = seed,
         nullProbability = nullProbability,
         defaultProbability = defaultProbability,
+        exclusions = exclusions,
         precedence = precedence,
     ) {
     /**
@@ -32,6 +34,7 @@ internal class DefaultTypeFamilyGenerationSpec<T>(
             seed = seed,
             nullProbability = nullProbability,
             defaultProbability = defaultProbability,
+            exclusions = exclusions,
             precedence = precedence,
         )
 }

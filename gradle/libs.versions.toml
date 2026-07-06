@@ -6,7 +6,7 @@ gradlePluginPublish = "2.1.1"
 kotlin = "2.4.0"
 kotlinxDatetime = "0.8.0"
 kover = "0.9.8"
-kotlinter = "5.5.0"
+kotlinter = "5.6.0"
 mavenPublish = "0.37.0"
 
 [libraries]

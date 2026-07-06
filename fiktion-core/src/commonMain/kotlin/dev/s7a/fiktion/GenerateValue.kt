@@ -12,6 +12,7 @@ internal fun generateValue(
     config: FiktionConfigState,
     seed: Long,
     depth: Int,
+    dependencyValues: List<Any?>? = null,
 ): Any? {
     val rule = config.selectRule(request)
 
@@ -26,6 +27,7 @@ internal fun generateValue(
             contextSeed = contextSeed,
             depth = depth,
             context = context,
+            dependencyValues = dependencyValues,
         )
     }
 
@@ -43,6 +45,7 @@ internal fun generateValue(
                 contextSeed = nullableNonNullSeed,
                 depth = depth,
                 context = request.toFakeContext(config = config, seed = nullableNonNullSeed, depth = depth),
+                dependencyValues = null,
             )
         }
     }
@@ -72,7 +75,7 @@ private fun GenerationRequest.toFakeContext(
         path = path,
         depth = depth,
         index = index,
-        config = config,
+        configState = config,
         request = this,
     )
 }
@@ -86,6 +89,7 @@ internal fun generateAutomaticValue(
     seed: Long,
     depth: Int,
     context: FakeContext,
+    exclusions: GenerationExclusions = GenerationExclusions(),
 ): Any? {
     config.metadata[request.type.nonNullTypeId()]?.let { metadata ->
         return generateFromMetadata(
@@ -95,6 +99,13 @@ internal fun generateAutomaticValue(
             seed = seed,
             depth = depth,
             context = context,
+            exclusions = exclusions,
+        )
+    }
+
+    if (exclusions.isNotEmpty) {
+        throw FiktionConfigurationException(
+            "Exclusions can only be applied to enum, sealed, or oneOf candidate selection.",
         )
     }
 
@@ -106,6 +117,7 @@ internal fun generateAutomaticValue(
             contextSeed = seed,
             depth = depth,
             context = context,
+            dependencyValues = null,
         )
     }
 
@@ -122,9 +134,11 @@ private fun generateFromMetadata(
     seed: Long,
     depth: Int,
     context: FakeContext,
+    exclusions: GenerationExclusions = GenerationExclusions(),
 ): Any? =
     when (metadata) {
         is FiktionObjectMetadata<*> -> {
+            requireNoExclusions(exclusions, "object generation")
             generateObject(
                 request = request,
                 config = config,
@@ -135,6 +149,7 @@ private fun generateFromMetadata(
         }
 
         is FiktionArrayMetadata<*> -> {
+            requireNoExclusions(exclusions, "array generation")
             generateArray(
                 request = request,
                 config = config,
@@ -145,6 +160,7 @@ private fun generateFromMetadata(
         }
 
         is FiktionValueMetadata<*> -> {
+            requireNoExclusions(exclusions, "value class generation")
             generateValueClass(
                 request = request,
                 config = config,
@@ -159,6 +175,7 @@ private fun generateFromMetadata(
                 request = request,
                 context = context,
                 metadata = metadata,
+                exclusions = exclusions,
             )
         }
 
@@ -170,6 +187,7 @@ private fun generateFromMetadata(
                 depth = depth,
                 context = context,
                 metadata = metadata,
+                exclusions = exclusions,
             )
         }
     }
@@ -184,6 +202,7 @@ private fun generateFromRule(
     contextSeed: Long,
     depth: Int,
     context: FakeContext,
+    dependencyValues: List<Any?>?,
 ): Any? {
     if (request.type.isMarkedNullable) {
         rule.nullProbability?.let { nullProbability ->
@@ -196,14 +215,16 @@ private fun generateFromRule(
     }
 
     if (rule.automaticallyGenerates) {
-        generateAutomaticContainerValue(
-            request = request,
-            config = config,
-            seed = contextSeed,
-            depth = depth,
-            context = context,
-        )?.let { value ->
-            return value
+        if (!rule.exclusions.isNotEmpty) {
+            generateAutomaticContainerValue(
+                request = request,
+                config = config,
+                seed = contextSeed,
+                depth = depth,
+                context = context,
+            )?.let { value ->
+                return value
+            }
         }
 
         return generateAutomaticValue(
@@ -212,6 +233,26 @@ private fun generateFromRule(
             seed = contextSeed,
             depth = depth,
             context = context,
+            exclusions = rule.exclusions,
+        )
+    }
+
+    if (rule is DefaultOneOfGenerationSpec<*>) {
+        return rule.generate(context)
+    }
+
+    if (rule.exclusions.isNotEmpty) {
+        throw FiktionConfigurationException(
+            "Exclusions can only be applied to enum, sealed, or oneOf candidate selection.",
+        )
+    }
+
+    if (rule is DefaultDependentGenerationSpec<*>) {
+        return rule.generate(
+            context = context,
+            values =
+                dependencyValues
+                    ?: throw CannotGenerateException(dependencyRuleWithoutObjectContextMessage(request = request)),
         )
     }
 
@@ -220,7 +261,7 @@ private fun generateFromRule(
             TypeFamilyGenerationContext(
                 context = context,
                 requestedType = request.type,
-                config = config,
+                configState = config,
                 request = request,
             ),
         )
@@ -230,6 +271,15 @@ private fun generateFromRule(
 }
 
 private const val DEFAULT_NULL_PROBABILITY: Double = 0.5
+
+private fun requireNoExclusions(
+    exclusions: GenerationExclusions,
+    target: String,
+) {
+    requireFiktionConfiguration(!exclusions.isNotEmpty) {
+        "Exclusions can only be applied to enum, sealed, or oneOf candidate selection, but $target does not select candidates."
+    }
+}
 
 /**
  * Generates collection or map values when an exact `generates auto` rule targets a configured converter type.
@@ -243,12 +293,12 @@ private fun generateAutomaticContainerValue(
 ): Any? {
     config.selectCollectionConverter(request)?.let { converter ->
         val elementType = request.type.typeArgument(index = 0) ?: return null
-        val size = context.config(FiktionConfig.Collection.size).random(context.random)
+        val size = context(context) { FiktionConfig.Collection.size() }
         val elements =
             if (converter.unique) {
                 generateUniqueElements(
                     size = size,
-                    strategy = context.config(FiktionConfig.Collection.uniqueElementStrategy),
+                    strategy = context(context) { FiktionConfig.Collection.uniqueElementStrategy.get() },
                 ) { index ->
                     generateCollectionElement(
                         request = request,
@@ -278,7 +328,7 @@ private fun generateAutomaticContainerValue(
         val keyType = request.type.typeArgument(index = 0) ?: return null
         val valueType = request.type.typeArgument(index = 1) ?: return null
         val entries =
-            List(context.config(FiktionConfig.Map.size).random(context.random)) { index ->
+            List(context(context) { FiktionConfig.Map.size() }) { index ->
                 generateValue(
                     request =
                         GenerationRequest(
@@ -291,6 +341,7 @@ private fun generateAutomaticContainerValue(
                     config = config,
                     seed = seed.childSeed(index * 2),
                     depth = depth + 1,
+                    dependencyValues = null,
                 ) to
                     generateValue(
                         request =
@@ -304,6 +355,7 @@ private fun generateAutomaticContainerValue(
                         config = config,
                         seed = seed.childSeed(index * 2 + 1),
                         depth = depth + 1,
+                        dependencyValues = null,
                     )
             }
         return converter.convert(entries)
@@ -332,4 +384,5 @@ private fun generateCollectionElement(
         config = config,
         seed = seed.childSeed(index),
         depth = depth + 1,
+        dependencyValues = null,
     )

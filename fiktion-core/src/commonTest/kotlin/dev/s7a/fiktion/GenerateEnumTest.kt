@@ -46,6 +46,72 @@ class GenerateEnumTest {
     }
 
     @Test
+    fun `generates auto excludes enum entry`() {
+        val fiktion =
+            Fiktion {
+                register(statusMetadata())
+                type<Status>() generates auto excluding Status.DELETED
+            }
+
+        val statuses = (0L until 20L).map { seed -> fiktion.fake<Status>(seed = seed) }
+
+        assertTrue(Status.DELETED !in statuses)
+        assertTrue(statuses.any { status -> status != Status.ACTIVE })
+    }
+
+    @Test
+    fun `generates auto excludes multiple enum entries`() {
+        val fiktion =
+            Fiktion {
+                register(statusMetadata())
+                type<Status>() generates auto excluding setOf(Status.SUSPENDED, Status.DELETED)
+            }
+
+        val statuses = (0L until 20L).map { seed -> fiktion.fake<Status>(seed = seed) }.toSet()
+
+        assertEquals(setOf(Status.ACTIVE), statuses)
+    }
+
+    @Test
+    fun `generates auto applies cumulative enum exclusions`() {
+        val fiktion =
+            Fiktion {
+                register(statusMetadata())
+                type<Status>() generates auto excluding Status.SUSPENDED excluding Status.DELETED
+            }
+
+        val statuses = (0L until 20L).map { seed -> fiktion.fake<Status>(seed = seed) }.toSet()
+
+        assertEquals(setOf(Status.ACTIVE), statuses)
+    }
+
+    @Test
+    fun `generates auto excludes enum entries by predicate`() {
+        val fiktion =
+            Fiktion {
+                register(statusMetadata())
+                type<Status>() generates auto excluding { status: Status -> status.name.startsWith("D") }
+            }
+
+        val statuses = (0L until 20L).map { seed -> fiktion.fake<Status>(seed = seed) }
+
+        assertTrue(Status.DELETED !in statuses)
+    }
+
+    @Test
+    fun `generates auto fails when all enum entries are excluded`() {
+        val fiktion =
+            Fiktion {
+                register(statusMetadata())
+                type<Status>() generates auto excluding Status.entries
+            }
+
+        assertFailsWith<FiktionConfigurationException> {
+            fiktion.fake<Status>(seed = 123)
+        }
+    }
+
+    @Test
     fun `isolated instance enum metadata does not leak to other isolated instances`() {
         val registered =
             Fiktion {

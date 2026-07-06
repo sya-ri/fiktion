@@ -177,3 +177,81 @@ internal fun defaultValueWithoutConstructorArgumentMessage(type: KType): String 
     Use `generates default` only for constructor arguments with default values, or generate an explicit value:
     type<$type>() generatesBy { ... }
     """.trimIndent()
+
+/**
+ * Returns the message used when a dependent property rule is selected outside object constructor generation.
+ */
+internal fun dependencyRuleWithoutObjectContextMessage(request: GenerationRequest): String =
+    """
+    Cannot generate ${request.type}.
+
+    A dependent property rule was selected, but dependency values are available only while generating object constructor arguments.
+
+    Use dependsOn only for direct constructor properties generated from object metadata.
+    """.trimIndent()
+
+/**
+ * Returns the message used when a dependency is not a constructor property of the object currently being generated.
+ */
+internal fun unknownDependencyPropertyMessage(
+    owner: KType,
+    target: FiktionObjectProperty,
+    dependency: DependentProperty,
+): String =
+    """
+    Cannot generate $owner.
+
+    Dependency ${dependency.name}: ${dependency.value} for ${target.name}: ${target.type} is not a direct constructor property of $owner.
+
+    Use dependsOn only with direct properties of the same generated object.
+    """.trimIndent()
+
+/**
+ * Returns the message used when a dependency has not been generated yet.
+ */
+internal fun dependencyOrderMessage(
+    owner: KType,
+    target: FiktionObjectProperty,
+    dependency: DependentProperty,
+): String =
+    """
+    Cannot generate $owner.
+
+    Dependency ${dependency.name}: ${dependency.value} must be generated before ${target.name}: ${target.type}.
+
+    Reorder the constructor properties, depend only on earlier properties, or generate $owner with type<$owner>() generatesBy { ... }.
+    """.trimIndent()
+
+/**
+ * Returns the message used when dependency metadata does not match the declared dependency property type.
+ */
+internal fun dependencyTypeMismatchMessage(
+    owner: KType,
+    target: FiktionObjectProperty,
+    dependency: DependentProperty,
+    property: FiktionObjectProperty,
+): String =
+    """
+    Cannot generate $owner.
+
+    Dependency ${dependency.name}: ${dependency.value} for ${target.name}: ${target.type} resolved to constructor property ${property.name}: ${property.type}.
+
+    The dependency property type does not match the generated constructor metadata.
+    Check that registered metadata for $owner is up to date.
+    """.trimIndent()
+
+/**
+ * Returns the message used when a dependency used a constructor default value.
+ */
+internal fun dependencyDefaultValueMessage(
+    owner: KType,
+    target: FiktionObjectProperty,
+    dependency: DependentProperty,
+): String =
+    """
+    Cannot generate $owner.
+
+    Dependency ${dependency.name}: ${dependency.value} for ${target.name}: ${target.type} used a constructor default value.
+
+    Fiktion cannot read constructor default values before constructing the object. Generate an explicit dependency value instead.
+    """.trimIndent()

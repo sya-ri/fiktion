@@ -11,7 +11,7 @@ import java.util.ArrayList
  * Generates a Java array list using [element].
  */
 public fun <T> FakeContext.arrayList(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): ArrayList<T> = ArrayList(list(size = size, element = element))
 
@@ -19,6 +19,6 @@ public fun <T> FakeContext.arrayList(
  * Generates a Java array list from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.arrayList(): ArrayList<Any?> =
-    arrayList(size = int(config(FiktionConfig.Collection.size))) {
+    arrayList(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }

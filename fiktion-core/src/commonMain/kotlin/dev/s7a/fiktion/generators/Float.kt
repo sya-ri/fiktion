@@ -9,7 +9,7 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates a float in `0.0 <= value < 1.0`.
  */
-public fun FakeContext.float(): Float = float(config(FiktionConfig.Float.range))
+public fun FakeContext.float(): Float = FiktionConfig.Float.range()
 
 /**
  * Generates a float from [min] to [max].

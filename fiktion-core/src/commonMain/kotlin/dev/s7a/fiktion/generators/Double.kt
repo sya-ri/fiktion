@@ -9,7 +9,7 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates a double in `0.0 <= value < 1.0`.
  */
-public fun FakeContext.double(): Double = double(config(FiktionConfig.Double.range))
+public fun FakeContext.double(): Double = FiktionConfig.Double.range()
 
 /**
  * Generates a double from [min] to [max].

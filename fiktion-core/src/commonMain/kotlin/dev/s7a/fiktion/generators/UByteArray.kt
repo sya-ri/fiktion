@@ -8,4 +8,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates an unsigned byte array.
  */
-public fun FakeContext.ubyteArray(size: Int = int(config(FiktionConfig.Array.size))): UByteArray = UByteArray(size) { ubyte() }
+public fun FakeContext.ubyteArray(size: Int = FiktionConfig.Array.size()): UByteArray = UByteArray(size) { ubyte() }

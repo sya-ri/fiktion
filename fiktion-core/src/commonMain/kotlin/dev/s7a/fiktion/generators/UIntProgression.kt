@@ -6,7 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a finite unsigned integer progression.
  */
-public fun FakeContext.uintProgression(): UIntProgression =
-    config(FiktionConfig.UIntProgression.bounds).let { range ->
-        uintRange(min = range.start, max = range.endInclusive) step int(config(FiktionConfig.UIntProgression.step))
-    }
+public fun FakeContext.uintProgression(): UIntProgression = FiktionConfig.UIntProgression.bounds() step FiktionConfig.UIntProgression.step()

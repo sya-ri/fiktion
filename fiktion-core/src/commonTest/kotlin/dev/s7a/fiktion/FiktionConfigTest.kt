@@ -50,15 +50,6 @@ class FiktionConfigTest {
     }
 
     @Test
-    fun `closed range config accepts a fixed comparable value`() {
-        val config = FiktionConfig<Int, ClosedRange<Int>>(0..10)
-        val setting = config(5)
-
-        assertEquals(5, setting.value.start)
-        assertEquals(5, setting.value.endInclusive)
-    }
-
-    @Test
     fun `per-call collection element config applies to generated elements`() {
         val value =
             fake<List<Int>>(seed = 1) {

@@ -71,23 +71,23 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.5.1"
+    id("dev.s7a.fiktion") version "0.6.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.5.1")
+    testImplementation("dev.s7a:fiktion-core:0.6.0")
 
     // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.0")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.5.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.0")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.1")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.0")
 
     // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.1")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.0")
 }
 ```
 
@@ -99,7 +99,7 @@ Fiktion is enabled for test source sets by default, including JVM `test` and Mul
 
 ### Kotlin Compatibility
 
-Fiktion `0.5.1` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
+Fiktion `0.6.0` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
 The repository is tested with a consumer project using Kotlin `2.4.0`.
 
 The compiler plugin uses Kotlin compiler APIs, so compatibility is verified per consumer Kotlin version instead of
@@ -210,6 +210,33 @@ val index = fake<SearchIndex> {
     }
 
     SearchIndex::aliases generatesOneOf listOf("primary", "secondary")
+}
+```
+
+Selection-based generators can exclude candidates before choosing a value:
+
+```kotlin
+val user = fake<User> {
+    User::status generates auto excluding Status.DELETED
+    User::role generates auto excluding Role.ADMIN excluding Role.OWNER
+    User::status generates auto excluding { status -> status.name.startsWith("DEPRECATED_") }
+    SearchIndex::aliases generatesOneOf listOf("primary", "secondary", "deprecated") excluding { alias ->
+        alias == "deprecated"
+    }
+}
+```
+
+Multiple exclusions are cumulative. Generation fails with `FiktionConfigurationException` if every candidate is excluded.
+
+Sealed type generation can exclude subtypes by `KClass`, or by `KType` when generic arguments matter:
+
+```kotlin
+val message = fake<Message> {
+    type<Message>() generates auto excluding ImageMessage::class
+    type<Message>() generates auto excluding typeOf<BoxMessage<String>>()
+    type<Message>() generates auto excluding { type ->
+        type.classifier == InternalMessage::class
+    }
 }
 ```
 
@@ -324,6 +351,33 @@ val fiktion = Fiktion {
 val users = fiktion.fake<List<User>>()
 ```
 
+`range(...)`, `length(...)`, and `size(...)` reset the current candidate range. In custom generators and add-ons, sample
+from the composed candidates with `FiktionConfig.Int.range()`, `FiktionConfig.String.length()`, or
+`FiktionConfig.Collection.size()`. Config keys such as `min`, `max`, `minLength`, `maxLength`, `minSize`, and `maxSize`
+remove candidates below or above the configured edge. `excluding`, `excludingLengths`, `excludingSizes`,
+`excludingBounds`, `excludingSteps`, `excludingEpochSeconds`, and `excludingNanoseconds` are ordinary config keys that
+replace the excluded ranges for the candidate set.
+Matching configs are applied from lower precedence to higher precedence, and configs in the same scope apply in
+declaration order:
+
+```kotlin
+val score = fake<Int> {
+    this using FiktionConfig.Int.range(10..20)
+    this using FiktionConfig.Int.min(15) // 15..20
+    this using FiktionConfig.Int.max(18) // 15..18
+    this using FiktionConfig.Int.excluding(listOf(16..17)) // 15, 18
+}
+
+val title = fake<String> {
+    this using FiktionConfig.String.minLength(12)
+    this using FiktionConfig.String.maxLength(24)
+}
+```
+
+The same pattern is available for numeric generators, range/progression bounds, progression steps, string and regex
+lengths, collection/map/array sizes, `Duration`, and `Instant` epoch-second/nanosecond parts. Invalid composed ranges,
+negative lengths or sizes, and non-positive steps fail with `FiktionConfigurationException`.
+
 Per-call configuration is scoped to the generated root type:
 
 ```kotlin
@@ -332,10 +386,8 @@ val names = fake<List<String>> {
 }
 ```
 
-`this using ...` is a `FakeSpec` member inside the `fake` lambda, so it does not need a separate `using` import. The
-`FiktionConfig.Collection.size(5)` shorthand uses Fiktion's `invoke` operator extension, so import `dev.s7a.fiktion.invoke`
-or use `import dev.s7a.fiktion.*`. Use `FiktionConfig.Collection.size` for `List`, `Set`, and other collection types,
-and `FiktionConfig.Map.size` for maps.
+`this using ...` is a `FakeSpec` member inside the `fake` lambda, so it does not need a separate `using` import. Use
+`FiktionConfig.Collection.size` for `List`, `Set`, and other collection types, and `FiktionConfig.Map.size` for maps.
 
 Sets use normal set semantics by default, so duplicate generated elements can collapse and make the final set smaller
 than `FiktionConfig.Collection.size`. Use `UniqueElementStrategy.Exact` when a set must contain the configured number of
@@ -366,24 +418,28 @@ Container target configuration narrows defaults to values generated below collec
 ```kotlin
 val counts = fake<List<Int>> {
     this using FiktionConfig.Collection.size(5)
-    element using FiktionConfig.Int.range(10..20)
+    element using FiktionConfig.Int.min(10)
+    element using FiktionConfig.Int.max(20)
 }
 
 val labels = fake<Map<String, List<Int>>> {
     this using FiktionConfig.Map.size(2)
-    key using FiktionConfig.String.length(4)
+    key using FiktionConfig.String.minLength(4)
+    key using FiktionConfig.String.maxLength(8)
     value.element using FiktionConfig.Int.range(10..20)
 }
 
 val groups = fake<List<Map<String, Int>>> {
     element {
         key using FiktionConfig.String.length(4)
-        value using FiktionConfig.Int.range(10..20)
+        value using FiktionConfig.Int.min(10)
+        value using FiktionConfig.Int.max(20)
     }
 }
 
 val catalog = fake<Catalog> {
-    property(Catalog::counts).element using FiktionConfig.Int.range(10..20)
+    property(Catalog::counts).element using FiktionConfig.Int.min(10)
+    property(Catalog::counts).element using FiktionConfig.Int.max(20)
 }
 
 val indexed = fake<Map<String, Int>> {
@@ -398,12 +454,13 @@ Property configuration narrows a generator default to one property:
 
 ```kotlin
 val user = fake<User> {
-    User::id using FiktionConfig.String.length(12)
+    this using FiktionConfig.String.length(4..16)
+    User::id using FiktionConfig.String.minLength(12)
 }
 ```
 
-Configuration keys are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects such as
-`JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
+Configuration keys and helpers are grouped under `FiktionConfig`, with add-on specific keys under add-on config objects
+such as `JavaFiktionConfig` and `KotlinxDatetimeFiktionConfig`.
 
 ## Detekt Rules
 
@@ -417,7 +474,7 @@ Add it as a detekt plugin dependency. If detekt is not configured in the project
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.1")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.0")
 }
 ```
 
@@ -595,6 +652,31 @@ User::id generates "user-1"
 Property references such as `User::id generates "user-1"` are the concise form for owner-specific property rules.
 `property<User, String>("id")` is the equivalent explicit form when the owner and value type should be spelled out.
 
+Property rules can depend on constructor properties generated earlier for the same object:
+
+```kotlin
+val user = fake<User> {
+    User::id generates "user-1"
+    User::email.dependsOn(User::id) generatesBy { id ->
+        "$id@example.test"
+    }
+}
+```
+
+Multiple dependencies are passed to the generator in declaration order:
+
+```kotlin
+val profile = fake<Profile> {
+    Profile::displayName.dependsOn(Profile::firstName, Profile::lastName) generatesBy { first, last ->
+        "$first $last"
+    }
+}
+```
+
+`dependsOn` only reads direct constructor properties of the same object, and the dependency must be generated before the
+dependent property. If the dependency used a constructor default value, Fiktion cannot observe that value and fails the
+generation.
+
 ## Compiler Plugin
 
 The compiler plugin generates runtime metadata for Kotlin types in enabled source sets. This is what lets Fiktion create
@@ -691,7 +773,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.5.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.0")
 }
 ```
 
@@ -721,7 +803,7 @@ Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.5.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.0")
 }
 ```
 
@@ -757,7 +839,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.1")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.0")
 }
 ```
 
@@ -794,7 +876,13 @@ public object CustomFiktionAddon : FiktionAddon {
             }
 
             typeFamily<CustomList<*>>() generatesBy {
-                CustomList(List(int(config(FiktionConfig.Collection.size))) { index -> fakeElement(index) })
+                val size = FiktionConfig.Collection.size()
+                CustomList(List(size) { index -> fakeElement(index) })
+            }
+
+            typeFamily<CustomMap<*, *>>() generatesBy {
+                val size = FiktionConfig.Map.size()
+                CustomMap(List(size) { index -> fakeKey(index) to fakeValue(index) }.toMap())
             }
         }
     }

@@ -11,7 +11,7 @@ import java.util.TreeSet
  * Generates a Java tree set using [element].
  */
 public fun <T> FakeContext.treeSet(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): TreeSet<T & Any> =
     TreeSet<T & Any>(compareBy { value -> value.toString() }).apply {
@@ -22,6 +22,6 @@ public fun <T> FakeContext.treeSet(
  * Generates a Java tree set from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.treeSet(): TreeSet<Any> =
-    treeSet(size = int(config(FiktionConfig.Collection.size))) {
+    treeSet(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }

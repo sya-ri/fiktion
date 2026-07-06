@@ -9,7 +9,7 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates an unsigned long across the full unsigned long range.
  */
-public fun FakeContext.ulong(): ULong = ulong(config(FiktionConfig.ULong.range))
+public fun FakeContext.ulong(): ULong = FiktionConfig.ULong.range()
 
 /**
  * Generates an unsigned long from [min] to [max].

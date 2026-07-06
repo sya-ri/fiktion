@@ -6,7 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a finite integer progression.
  */
-public fun FakeContext.intProgression(): IntProgression =
-    config(FiktionConfig.IntProgression.bounds).let { range ->
-        intRange(min = range.start, max = range.endInclusive) step int(config(FiktionConfig.IntProgression.step))
-    }
+public fun FakeContext.intProgression(): IntProgression = FiktionConfig.IntProgression.bounds() step FiktionConfig.IntProgression.step()

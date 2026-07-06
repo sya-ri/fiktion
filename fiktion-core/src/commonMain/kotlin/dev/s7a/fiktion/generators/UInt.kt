@@ -9,7 +9,7 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates an unsigned integer across the full unsigned integer range.
  */
-public fun FakeContext.uint(): UInt = uint(config(FiktionConfig.UInt.range))
+public fun FakeContext.uint(): UInt = FiktionConfig.UInt.range()
 
 /**
  * Generates an unsigned integer from [min] to [max].

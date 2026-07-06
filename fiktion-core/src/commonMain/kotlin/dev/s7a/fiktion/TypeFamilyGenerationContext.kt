@@ -11,7 +11,7 @@ public class TypeFamilyGenerationContext internal constructor(
      */
     public val context: FakeContext,
     private val requestedType: KType,
-    private val config: FiktionConfigState,
+    private val configState: FiktionConfigState,
     private val request: GenerationRequest,
 ) : FakeContext by context {
     /**
@@ -67,9 +67,10 @@ public class TypeFamilyGenerationContext internal constructor(
                         },
                     index = index,
                 ),
-            config = config,
+            config = configState,
             seed = context.seed.childSeed(seedIndex),
             depth = context.depth + 1,
+            dependencyValues = null,
         )
 
     /**

@@ -11,7 +11,7 @@ import java.util.LinkedHashMap
  * Generates a Java linked hash map using [key] and [value].
  */
 public fun <K, V> FakeContext.linkedHashMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): LinkedHashMap<K, V> = LinkedHashMap(map(size = size, key = key, value = value))
@@ -21,7 +21,7 @@ public fun <K, V> FakeContext.linkedHashMap(
  */
 internal fun TypeFamilyGenerationContext.linkedHashMap(): LinkedHashMap<Any?, Any?> =
     linkedHashMap(
-        size = int(config(FiktionConfig.Map.size)),
+        size = FiktionConfig.Map.size(),
         key = {
             fakeKey(index)
         },

@@ -12,7 +12,7 @@ import java.util.Deque
  * Generates a Java deque using [element].
  */
 public fun <T> FakeContext.deque(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): Deque<T> = ArrayDeque(list(size = size, element = element).filterNotNull())
 

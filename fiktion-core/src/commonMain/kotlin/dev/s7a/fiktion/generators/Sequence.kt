@@ -8,7 +8,7 @@ import dev.s7a.fiktion.TypeFamilyGenerationContext
  * Generates a finite sequence using [element].
  */
 public fun <T> FakeContext.sequence(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): Sequence<T> = list(size = size, element = element).asSequence()
 

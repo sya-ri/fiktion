@@ -7,14 +7,14 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.5.1"
+    id("dev.s7a.fiktion") version "0.6.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.5.1")
-    testImplementation("dev.s7a:fiktion-addon-java:0.5.1") // optional JVM add-on
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.1") // optional kotlinx-datetime add-on
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.1") // optional detekt rules
+    testImplementation("dev.s7a:fiktion-core:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.0") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.0") // optional kotlinx-datetime add-on
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.0") // optional detekt rules
 }
 ```
 
@@ -269,6 +269,31 @@ Fiktion {
 
 Prefer reified targets in shared configuration when they make the owner/value type obvious, especially for name rules or regex rules.
 
+Property rules can depend on direct constructor properties generated earlier for the same object:
+
+```kotlin
+fake<User> {
+    User::id generates "user-1"
+    User::email.dependsOn(User::id) generatesBy { id ->
+        "$id@example.test"
+    }
+}
+```
+
+Multiple dependencies are passed to the generator in declaration order:
+
+```kotlin
+fake<Profile> {
+    Profile::displayName.dependsOn(Profile::firstName, Profile::lastName) generatesBy { first, last ->
+        "$first $last"
+    }
+}
+```
+
+Use `dependsOn` only for direct constructor properties of the same generated object. The dependency must be generated
+before the dependent property; if the dependency used a constructor default value, Fiktion cannot observe that value and
+generation fails.
+
 Type-family targets are for generic families:
 
 ```kotlin
@@ -290,9 +315,33 @@ target generates auto
 target generates default
 target generatesIn 1..10
 target generatesOneOf listOf("a", "b")
+target generates auto excluding SomeEnum.Deprecated
+target generates auto excluding { value -> value == SomeEnum.Deprecated }
 target generates value withSeed 123
 target generates value orNullAt 0.3
 target generates value orDefaultAt 30.percent
+```
+
+Use `excluding` only for selection-based generators: enum entries, sealed subtypes, and `generatesOneOf` candidates.
+Multiple exclusions are cumulative, and generation fails with `FiktionConfigurationException` when every candidate is
+excluded.
+
+```kotlin
+fake<User> {
+    User::status generates auto excluding Status.Deleted excluding Status.Suspended
+    User::status generates auto excluding { status -> status.name.startsWith("Deprecated") }
+    User::status generatesOneOf listOf(Status.Active, Status.Pending, Status.Deleted) excluding Status.Deleted
+}
+```
+
+For sealed types, exclude subtypes with `KClass`, `KType`, or a `KType` predicate:
+
+```kotlin
+fake<Message> {
+    type<Message>() generates auto excluding ImageMessage::class
+    type<Message>() generates auto excluding typeOf<BoxMessage<String>>()
+    type<Message>() generates auto excluding { type -> type.classifier == InternalMessage::class }
+}
 ```
 
 Automatic nullable values generate either a non-null value or `null` with 50% probability. Automatic defaultable
@@ -543,11 +592,29 @@ val fiktion = Fiktion {
 ```
 
 `this using ...` is available as a member inside `fake` and `Fiktion` configuration lambdas, so callers do not need a
-separate `using` import for root config. The `FiktionConfig.Collection.size(5)` shorthand uses Fiktion's `invoke`
-operator extension, so import `dev.s7a.fiktion.invoke` or use `import dev.s7a.fiktion.*`. Use
-`FiktionConfig.Collection.size` for `List`, `Set`, and other collection types, and `FiktionConfig.Map.size` for maps.
+separate `using` import for root config. Use `FiktionConfig.Collection.size` for `List`, `Set`, and other collection
+types, and `FiktionConfig.Map.size` for maps.
 
-When a config key accepts a range, prefer the fixed-value shorthand for equal bounds:
+`range(...)`, `length(...)`, and `size(...)` reset the current candidate range. In custom generators and add-ons, sample
+from the composed candidates with `FiktionConfig.Int.range()`, `FiktionConfig.String.length()`, or
+`FiktionConfig.Collection.size()`. Config keys such as `min`, `max`, `minLength`, `maxLength`, `minSize`, and `maxSize`
+remove candidates below or above one edge. `excluding`, `excludingLengths`, `excludingSizes`, `excludingBounds`,
+`excludingSteps`, `excludingEpochSeconds`, and `excludingNanoseconds` are ordinary config keys that replace the excluded
+ranges for the candidate set.
+Matching configs apply from lower precedence to higher precedence; within the same scope, declaration order is preserved:
+
+```kotlin
+this using FiktionConfig.Int.range(10..20)
+this using FiktionConfig.Int.min(15) // 15..20
+this using FiktionConfig.Int.max(18) // 15..18
+this using FiktionConfig.Int.excluding(listOf(16..17)) // 15, 18
+```
+
+The same pattern applies to numeric ranges, generated range/progression bounds, progression steps, string and regex
+lengths, collection/map/array sizes, `Duration`, and `Instant` epoch-second/nanosecond parts. Invalid composed ranges,
+negative lengths or sizes, and non-positive steps fail with `FiktionConfigurationException`.
+
+When a range-setting helper accepts a range, prefer the fixed-value shorthand for equal bounds:
 
 ```kotlin
 this using FiktionConfig.Collection.size(2)
@@ -563,7 +630,14 @@ this using FiktionConfig.Int.range(42..42)
 
 Global, instance, and add-on builder configs apply to every generated value matching the config key's scope. Per-call
 root config applies only when the config scope can affect the generated root type. Property config applies only to that
-property path.
+property path. Higher-precedence scopes continue composing from broader scopes:
+
+```kotlin
+val user = fake<User> {
+    this using FiktionConfig.String.length(4..16)
+    User::id using FiktionConfig.String.minLength(12)
+}
+```
 
 Generator config is intentionally separate from rules: rules define how a value is generated, while config changes
 parameters read by the existing generator. Container targets can be chained through generated collection and map parts,
@@ -571,6 +645,19 @@ so `fake<Map<String, List<Int>>> { value.element using FiktionConfig.Int.range(1
 `Int` elements below map values. Container targets can also be grouped with blocks, such as
 `fake<List<Map<String, Int>>> { element { key using FiktionConfig.String.length(4) } }`. Map keys and values can also
 be defined through `key generatesBy { ... }` and `value generatesBy { ... }`.
+
+```kotlin
+val groups = fake<List<Map<String, Int>>> {
+    this using FiktionConfig.Collection.size(2)
+    element {
+        this using FiktionConfig.Map.size(1..3)
+        key using FiktionConfig.String.minLength(4)
+        key using FiktionConfig.String.maxLength(8)
+        value using FiktionConfig.Int.min(10)
+        value using FiktionConfig.Int.max(20)
+    }
+}
+```
 
 ## Collections And Maps
 

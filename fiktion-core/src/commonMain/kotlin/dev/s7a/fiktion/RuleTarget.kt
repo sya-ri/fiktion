@@ -6,7 +6,6 @@ import dev.s7a.fiktion.generators.double
 import dev.s7a.fiktion.generators.float
 import dev.s7a.fiktion.generators.int
 import dev.s7a.fiktion.generators.long
-import dev.s7a.fiktion.generators.oneOf
 import dev.s7a.fiktion.generators.short
 import dev.s7a.fiktion.generators.ubyte
 import dev.s7a.fiktion.generators.uint
@@ -52,7 +51,14 @@ public fun <T, Value : Any> RuleTarget<T>.using(
  * Configures built-in or add-on generator behavior for this rule target.
  */
 public infix fun <T, Value : Any> RuleTarget<T>.using(value: FiktionConfigSetting<in T, Value>) {
-    (this as DefaultRuleTarget<T>).config(configKey = value.key, value = value.value)
+    (this as DefaultRuleTarget<T>).config(value)
+}
+
+/**
+ * Configures built-in or add-on generator behavior for this rule target.
+ */
+public infix fun <T> RuleTarget<T>.using(value: FiktionConfigSettingGroup<in T>) {
+    (this as DefaultRuleTarget<T>).config(value)
 }
 
 /**
@@ -153,9 +159,7 @@ public infix fun RuleTarget<ULong>.generatesIn(range: ULongRange): GenerationSpe
  * Generates one value from [values].
  */
 public infix fun <T> RuleTarget<T>.generatesOneOf(values: Iterable<T>): GenerationSpec<T> =
-    generatesBy {
-        oneOf(values.toList())
-    }
+    (this as DefaultRuleTarget<T>).generatesOneOf(values.toList())
 
 /**
  * Uses Fiktion's automatic generation for this rule target.

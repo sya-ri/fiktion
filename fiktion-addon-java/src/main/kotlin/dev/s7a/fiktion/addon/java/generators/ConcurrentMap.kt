@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentMap
  * Generates a Java concurrent map using [key] and [value].
  */
 public fun <K : Any, V : Any> FakeContext.concurrentMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): ConcurrentMap<K, V> = concurrentHashMap(size = size, key = key, value = value)

@@ -37,6 +37,10 @@ internal open class DefaultGenerationSpec<T>(
      */
     open val defaultGenerates: Boolean = false,
     /**
+     * Candidate exclusions applied before selection-based generation.
+     */
+    open var exclusions: GenerationExclusions = GenerationExclusions(),
+    /**
      * Precedence layer assigned while composing configurations.
      */
     open val precedence: RulePrecedence = RulePrecedence.GLOBAL,
@@ -56,6 +60,25 @@ internal open class DefaultGenerationSpec<T>(
         return this
     }
 
+    override fun excluding(value: T): GenerationSpec<T> {
+        exclusions = exclusions.plusValue(value)
+        return this
+    }
+
+    override fun excluding(values: Iterable<T>): GenerationSpec<T> {
+        exclusions = exclusions.plusValues(values)
+        return this
+    }
+
+    override fun excluding(predicate: (T) -> Boolean): GenerationSpec<T> {
+        exclusions =
+            exclusions.plusValuePredicate { value ->
+                @Suppress("UNCHECKED_CAST")
+                predicate(value as T)
+            }
+        return this
+    }
+
     /**
      * Returns a detached copy that can be stored in an immutable configuration snapshot.
      */
@@ -69,6 +92,7 @@ internal open class DefaultGenerationSpec<T>(
             defaultProbability = defaultProbability,
             automaticallyGenerates = automaticallyGenerates,
             defaultGenerates = defaultGenerates,
+            exclusions = exclusions,
             precedence = precedence,
         )
 }

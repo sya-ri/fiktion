@@ -11,7 +11,7 @@ import java.util.WeakHashMap
  * Generates a Java weak hash map using [key] and [value].
  */
 public fun <K, V> FakeContext.weakHashMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): WeakHashMap<K, V> = WeakHashMap(map(size = size, key = key, value = value))
@@ -21,7 +21,7 @@ public fun <K, V> FakeContext.weakHashMap(
  */
 internal fun TypeFamilyGenerationContext.weakHashMap(): WeakHashMap<Any?, Any?> =
     weakHashMap(
-        size = int(config(FiktionConfig.Map.size)),
+        size = FiktionConfig.Map.size(),
         key = {
             fakeKey(index)
         },

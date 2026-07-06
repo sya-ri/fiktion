@@ -12,12 +12,19 @@ internal fun generateSealed(
     depth: Int,
     context: FakeContext,
     metadata: FiktionSealedMetadata<*>,
+    exclusions: GenerationExclusions = GenerationExclusions(),
 ): Any? {
+    requireNoValueExclusions(exclusions, "sealed generation")
     if (metadata.subtypes.isEmpty()) {
         throw CannotGenerateException(emptySealedMetadataMessage(request.type))
     }
 
-    val subtype = metadata.subtypes[context.random.nextInt(metadata.subtypes.size)]
+    val subtypes = metadata.subtypes.filterNot { subtype -> exclusions.excludesType(subtype) }
+    if (subtypes.isEmpty()) {
+        throw FiktionConfigurationException("Cannot generate ${request.type} because all sealed subtypes were excluded.")
+    }
+
+    val subtype = subtypes[context.random.nextInt(subtypes.size)]
     try {
         return generateValue(
             request =
@@ -27,6 +34,7 @@ internal fun generateSealed(
             config = config,
             seed = seed.childSeed(index = 0),
             depth = depth + 1,
+            dependencyValues = null,
         )
     } catch (cause: CannotGenerateException) {
         throw CannotGenerateException(

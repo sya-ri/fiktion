@@ -35,11 +35,125 @@ public final class dev/s7a/fiktion/DefaultKt {
 	public static final fun getDefault ()Ldev/s7a/fiktion/Default;
 }
 
+public final class dev/s7a/fiktion/DependentRuleTarget {
+	public final fun generatesBy (Lkotlin/jvm/functions/Function2;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget1 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function2;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget10 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function11;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget11 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function12;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget12 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function13;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget13 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function14;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget14 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function15;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget15 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function16;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget16 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function17;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget17 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function18;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget18 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function19;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget19 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function20;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget2 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function3;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget20 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function21;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget21 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function22;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget22 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/FunctionN;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget3 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function4;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget4 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function5;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget5 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function6;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget6 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function7;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget7 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function8;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget8 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function9;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/DependentRuleTarget9 {
+	public fun <init> (Ldev/s7a/fiktion/DependentRuleTarget;)V
+	public final fun generatesBy (Lkotlin/jvm/functions/Function10;)Ldev/s7a/fiktion/GenerationSpec;
+}
+
 public abstract interface annotation class dev/s7a/fiktion/ExperimentalFiktionApi : java/lang/annotation/Annotation {
 }
 
 public abstract interface class dev/s7a/fiktion/FakeContext {
-	public abstract fun config (Ldev/s7a/fiktion/FiktionConfig;)Ljava/lang/Object;
+	public fun config (Ldev/s7a/fiktion/FiktionConfig;)Ljava/lang/Object;
 	public abstract fun getDepth ()I
 	public abstract fun getIndex ()I
 	public abstract fun getPath ()Ldev/s7a/fiktion/FakePath;
@@ -47,6 +161,10 @@ public abstract interface class dev/s7a/fiktion/FakeContext {
 	public abstract fun getRandom ()Lkotlin/random/Random;
 	public abstract fun getSeed ()J
 	public abstract fun getType ()Ldev/s7a/fiktion/FakeType;
+}
+
+public final class dev/s7a/fiktion/FakeContext$DefaultImpls {
+	public static fun config (Ldev/s7a/fiktion/FakeContext;Ldev/s7a/fiktion/FiktionConfig;)Ljava/lang/Object;
 }
 
 public final class dev/s7a/fiktion/FakeKt {
@@ -95,6 +213,7 @@ public final class dev/s7a/fiktion/FakeProperty {
 
 public final class dev/s7a/fiktion/FakeSpec {
 	public fun <init> ()V
+	public final fun dependencyTarget (Lkotlin/reflect/KProperty1;Lkotlin/reflect/KType;[Lkotlin/reflect/KProperty1;Ljava/util/List;)Ldev/s7a/fiktion/DependentRuleTarget;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
@@ -110,6 +229,7 @@ public final class dev/s7a/fiktion/FakeSpec {
 	public final fun property (Lkotlin/reflect/KProperty1;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/RuleTarget;
 	public final fun using (Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;)V
 	public final fun using (Ldev/s7a/fiktion/FiktionConfigSetting;)V
+	public final fun using (Ldev/s7a/fiktion/FiktionConfigSettingGroup;)V
 	public final fun withSeed (J)V
 }
 
@@ -166,155 +286,316 @@ public abstract class dev/s7a/fiktion/FiktionBuilder : dev/s7a/fiktion/FiktionRu
 
 public final class dev/s7a/fiktion/FiktionConfig {
 	public fun <init> (Ljava/lang/Object;)V
+	public final fun get (Ldev/s7a/fiktion/FakeContext;)Ljava/lang/Object;
 	public final fun getDefaultValue ()Ljava/lang/Object;
+	public final fun invoke (Ljava/lang/Object;)Ldev/s7a/fiktion/FiktionConfigSetting;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Array {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Array;
-	public final fun getSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSizes ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun size (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun size (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun size (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Byte {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Byte;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Char {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Char;
 	public final fun getCharset ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSteps ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinStep ()Ldev/s7a/fiktion/FiktionConfig;
 	public final fun getRangeCharsets ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun step (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun step (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun step (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Collection {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Collection;
-	public final fun getSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSizes ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinSize ()Ldev/s7a/fiktion/FiktionConfig;
 	public final fun getUniqueElementStrategy ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun size (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun size (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun size (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Double {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Double;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (D)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range (Ldev/s7a/fiktion/FakeContext;)D
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Duration {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Duration;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range-5sfh64U (Ldev/s7a/fiktion/FakeContext;)J
+	public final fun range-LRDsOJo (J)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Float {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Float;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (F)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range (Ldev/s7a/fiktion/FakeContext;)F
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Instant {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Instant;
-	public final fun getEpochSeconds ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getNanosecond ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun epochSeconds (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun epochSeconds (Ldev/s7a/fiktion/FakeContext;)J
+	public final fun epochSeconds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingEpochSeconds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingNanoseconds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxEpochSeconds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxNanosecond ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinEpochSeconds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinNanosecond ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun nanosecond (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun nanosecond (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun nanosecond (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Int {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Int;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$IntProgression {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$IntProgression;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/IntRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSteps ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun step (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun step (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun step (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$IntRange {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$IntRange;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/IntRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Long {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Long;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range (Ldev/s7a/fiktion/FakeContext;)J
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$LongProgression {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$LongProgression;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/LongRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSteps ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun step (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun step (Ldev/s7a/fiktion/FakeContext;)J
+	public final fun step (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$LongRange {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$LongRange;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/LongRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Map {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Map;
-	public final fun getSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSizes ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinSize ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun size (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun size (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun size (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Regex {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Regex;
 	public final fun getCharset ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getLength ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingLengths ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxLength ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinLength ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun length (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun length (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun length (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$Short {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$Short;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$String {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$String;
 	public final fun getCharset ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getLength ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingLengths ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxLength ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinLength ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun length (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun length (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun length (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$UByte {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$UByte;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range-OGnWXxg (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun range-WZ4Q5Ns (I)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$UInt {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$UInt;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range-OGnWXxg (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun range-WZ4Q5Ns (I)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$UIntProgression {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$UIntProgression;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/UIntRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds-WZ4Q5Ns (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSteps ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun step (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun step (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun step (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$UIntRange {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$UIntRange;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/UIntRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds-WZ4Q5Ns (I)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$ULong {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$ULong;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range-I7RO_PI (Ldev/s7a/fiktion/FakeContext;)J
+	public final fun range-VKZWuLQ (J)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$ULongProgression {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$ULongProgression;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
-	public final fun getStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/ULongRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds-VKZWuLQ (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcludingSteps ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinStep ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun step (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun step (Ldev/s7a/fiktion/FakeContext;)J
+	public final fun step (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$ULongRange {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$ULongRange;
-	public final fun getBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun bounds (Ldev/s7a/fiktion/FakeContext;)Lkotlin/ranges/ULongRange;
+	public final fun bounds (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun bounds-VKZWuLQ (J)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun getExcludingBounds ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMaxBound ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMinBound ()Ldev/s7a/fiktion/FiktionConfig;
 }
 
 public final class dev/s7a/fiktion/FiktionConfig$UShort {
 	public static final field INSTANCE Ldev/s7a/fiktion/FiktionConfig$UShort;
-	public final fun getRange ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getExcluding ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMax ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun getMin ()Ldev/s7a/fiktion/FiktionConfig;
+	public final fun range (Lkotlin/ranges/ClosedRange;)Ldev/s7a/fiktion/FiktionConfigSettings;
+	public final fun range-OGnWXxg (Ldev/s7a/fiktion/FakeContext;)I
+	public final fun range-WZ4Q5Ns (I)Ldev/s7a/fiktion/FiktionConfigSettings;
 }
 
 public final class dev/s7a/fiktion/FiktionConfigKt {
-	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Comparable;)Ldev/s7a/fiktion/FiktionConfigSetting;
-	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;)Ldev/s7a/fiktion/FiktionConfigSetting;
+	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;D)Ldev/s7a/fiktion/FiktionConfigSetting;
+	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;F)Ldev/s7a/fiktion/FiktionConfigSetting;
+	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;I)Ldev/s7a/fiktion/FiktionConfigSetting;
+	public static final fun invoke (Ldev/s7a/fiktion/FiktionConfig;J)Ldev/s7a/fiktion/FiktionConfigSetting;
+	public static final fun invokeUIntRange (Ldev/s7a/fiktion/FiktionConfig;I)Ldev/s7a/fiktion/FiktionConfigSetting;
+	public static final fun invokeULongRange (Ldev/s7a/fiktion/FiktionConfig;J)Ldev/s7a/fiktion/FiktionConfigSetting;
 }
 
-public final class dev/s7a/fiktion/FiktionConfigSetting {
+public final class dev/s7a/fiktion/FiktionConfigSetting : dev/s7a/fiktion/FiktionConfigSettingGroup {
 	public fun <init> (Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;)V
 	public final fun component1 ()Ldev/s7a/fiktion/FiktionConfig;
 	public final fun component2 ()Ljava/lang/Object;
@@ -322,8 +603,18 @@ public final class dev/s7a/fiktion/FiktionConfigSetting {
 	public static synthetic fun copy$default (Ldev/s7a/fiktion/FiktionConfigSetting;Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;ILjava/lang/Object;)Ldev/s7a/fiktion/FiktionConfigSetting;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getKey ()Ldev/s7a/fiktion/FiktionConfig;
+	public fun getSettings ()Ljava/util/List;
 	public final fun getValue ()Ljava/lang/Object;
 	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class dev/s7a/fiktion/FiktionConfigSettingGroup {
+	public abstract fun getSettings ()Ljava/util/List;
+}
+
+public final class dev/s7a/fiktion/FiktionConfigSettings : dev/s7a/fiktion/FiktionConfigSettingGroup {
+	public fun getSettings ()Ljava/util/List;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -389,6 +680,7 @@ public abstract class dev/s7a/fiktion/FiktionRuleBuilder {
 	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
 	public final fun configureCollection (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;Z)V
 	public final fun configureMap (Lkotlin/reflect/KType;Lkotlin/jvm/functions/Function1;)V
+	public final fun dependencyTarget (Lkotlin/reflect/KProperty1;Lkotlin/reflect/KType;Lkotlin/reflect/KType;[Lkotlin/reflect/KProperty1;Ljava/util/List;)Ldev/s7a/fiktion/DependentRuleTarget;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public final fun generates (Ldev/s7a/fiktion/PropertyPath;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
@@ -407,6 +699,7 @@ public abstract class dev/s7a/fiktion/FiktionRuleBuilder {
 	public final fun typeFamily (Lkotlin/reflect/KType;)Ldev/s7a/fiktion/TypeFamilyRuleTarget;
 	public final fun using (Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;)V
 	public final fun using (Ldev/s7a/fiktion/FiktionConfigSetting;)V
+	public final fun using (Ldev/s7a/fiktion/FiktionConfigSettingGroup;)V
 }
 
 public final class dev/s7a/fiktion/FiktionSealedMetadata : dev/s7a/fiktion/FiktionTypeMetadata {
@@ -437,6 +730,9 @@ public final class dev/s7a/fiktion/FiktionValueMetadata : dev/s7a/fiktion/Fiktio
 }
 
 public abstract interface class dev/s7a/fiktion/GenerationSpec {
+	public abstract fun excluding (Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
+	public abstract fun excluding (Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;
+	public abstract fun excluding (Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
 	public fun orDefaultAt (D)Ldev/s7a/fiktion/GenerationSpec;
 	public abstract fun orDefaultAt-t9P778Q (D)Ldev/s7a/fiktion/GenerationSpec;
 	public fun orNullAt (D)Ldev/s7a/fiktion/GenerationSpec;
@@ -447,6 +743,14 @@ public abstract interface class dev/s7a/fiktion/GenerationSpec {
 public final class dev/s7a/fiktion/GenerationSpec$DefaultImpls {
 	public static fun orDefaultAt (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
 	public static fun orNullAt (Ldev/s7a/fiktion/GenerationSpec;D)Ldev/s7a/fiktion/GenerationSpec;
+}
+
+public final class dev/s7a/fiktion/GenerationSpecExclusionsKt {
+	public static final fun excluding (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/reflect/KClass;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excluding (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/reflect/KType;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excludingClasses (Ldev/s7a/fiktion/GenerationSpec;Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excludingTypePredicate (Ldev/s7a/fiktion/GenerationSpec;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/GenerationSpec;
+	public static final fun excludingTypes (Ldev/s7a/fiktion/GenerationSpec;Ljava/lang/Iterable;)Ldev/s7a/fiktion/GenerationSpec;
 }
 
 public final class dev/s7a/fiktion/MapElementTargetKt {
@@ -510,6 +814,7 @@ public final class dev/s7a/fiktion/RuleTargetKt {
 	public static final fun invoke (Ldev/s7a/fiktion/RuleTarget;Lkotlin/jvm/functions/Function1;)Ldev/s7a/fiktion/RuleTarget;
 	public static final fun using (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/FiktionConfig;Ljava/lang/Object;)V
 	public static final fun using (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/FiktionConfigSetting;)V
+	public static final fun using (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/FiktionConfigSettingGroup;)V
 }
 
 public final class dev/s7a/fiktion/TypeFamilyGenerationContext : dev/s7a/fiktion/FakeContext {
@@ -783,6 +1088,9 @@ public final class dev/s7a/fiktion/generators/NumberFormatExceptionKt {
 }
 
 public final class dev/s7a/fiktion/generators/OneOfKt {
+	public static final fun excluding (Ljava/lang/Iterable;Ljava/lang/Iterable;)Ljava/util/List;
+	public static final fun excluding (Ljava/lang/Iterable;Ljava/lang/Object;)Ljava/util/List;
+	public static final fun excluding (Ljava/lang/Iterable;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
 	public static final fun oneOf (Ldev/s7a/fiktion/FakeContext;Ljava/util/List;)Ljava/lang/Object;
 	public static final fun oneOf (Ldev/s7a/fiktion/FakeContext;[Ljava/lang/Object;)Ljava/lang/Object;
 }

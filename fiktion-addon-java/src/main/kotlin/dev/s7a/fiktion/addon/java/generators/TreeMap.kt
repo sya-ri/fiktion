@@ -11,7 +11,7 @@ import java.util.TreeMap
  * Generates a Java tree map using [key] and [value].
  */
 public fun <K, V> FakeContext.treeMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): TreeMap<K & Any, V> =
@@ -28,7 +28,7 @@ public fun <K, V> FakeContext.treeMap(
  */
 internal fun TypeFamilyGenerationContext.treeMap(): TreeMap<Any, Any?> =
     treeMap(
-        size = int(config(FiktionConfig.Map.size)),
+        size = FiktionConfig.Map.size(),
         key = {
             fakeKey(index)
         },

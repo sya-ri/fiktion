@@ -11,7 +11,7 @@ import java.util.PriorityQueue
  * Generates a Java priority queue using [element].
  */
 public fun <T> FakeContext.priorityQueue(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): PriorityQueue<T & Any> =
     PriorityQueue<T & Any>(compareBy { value -> value.toString() }).apply {
@@ -22,6 +22,6 @@ public fun <T> FakeContext.priorityQueue(
  * Generates a Java priority queue from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.priorityQueue(): PriorityQueue<Any> =
-    priorityQueue(size = int(config(FiktionConfig.Collection.size))) {
+    priorityQueue(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }

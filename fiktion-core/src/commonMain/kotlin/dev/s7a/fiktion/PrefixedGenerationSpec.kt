@@ -20,7 +20,11 @@ internal fun DefaultGenerationSpec<*>.prefixedBy(prefix: List<PathRuleSegment>):
  * Returns this config spec scoped below [prefix].
  */
 internal fun <Value : Any> DefaultConfigSpec<Value>.prefixedBy(prefix: List<PathRuleSegment>): DefaultConfigSpec<Value> =
-    copy(matcher = matcher.prefixedBy(prefix = prefix, allowRootTarget = true))
+    DefaultConfigSpec(
+        setting = setting,
+        matcher = matcher.prefixedBy(prefix = prefix, allowRootTarget = true),
+        precedence = precedence,
+    )
 
 /**
  * Returns this rule key scoped below [prefix].

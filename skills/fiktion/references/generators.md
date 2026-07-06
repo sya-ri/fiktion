@@ -20,11 +20,11 @@ This gives each generated part a deterministic child seed, increments `depth`, a
 need independent random streams, such as map keys and values.
 
 Use context methods and other generators instead of ad hoc randomness when possible. Generator defaults should read
-typed config keys through `config(...)`:
+typed config keys through their context-aware `get()` function:
 
 ```kotlin
 public fun FakeContext.customInt(): Int =
-    int(config(FiktionConfig.Int.range))
+    FiktionConfig.Int.range()
 ```
 
 ## Core Built-Ins
@@ -62,6 +62,8 @@ string(length = 1..32)
 string(length = 12, charset = FiktionCharset.LowercaseAlpha)
 oneOf("a", "b", "c")
 oneOf(listOf("a", "b"))
+oneOf(listOf("a", "b", "deprecated") excluding "deprecated")
+oneOf(listOf("a", "b", "deprecated") excluding { value -> value == "deprecated" })
 uuid()
 duration()
 durationUnit()

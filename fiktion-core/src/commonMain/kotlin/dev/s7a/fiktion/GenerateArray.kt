@@ -2,6 +2,8 @@
 
 package dev.s7a.fiktion
 
+import kotlin.random.Random
+
 /**
  * Generates an array from registered construction [metadata].
  */
@@ -12,7 +14,14 @@ internal fun generateArray(
     depth: Int,
     metadata: FiktionArrayMetadata<*>,
 ): Any {
-    val count = config.selectConfig(key = FiktionConfig.Array.size, request = request).random(kotlin.random.Random(seed))
+    val count =
+        config
+            .selectCandidates(
+                min = FiktionConfig.Array.minSize,
+                max = FiktionConfig.Array.maxSize,
+                excluding = FiktionConfig.Array.excludingSizes,
+                request = request,
+            ).sample(random = Random(seed))
     val elements =
         List(count) { index ->
             generateValue(
@@ -20,6 +29,7 @@ internal fun generateArray(
                 config = config,
                 seed = seed.childSeed(index),
                 depth = depth + 1,
+                dependencyValues = null,
             )
         }
 

@@ -11,7 +11,7 @@ import java.util.LinkedHashSet
  * Generates a Java linked hash set using [element].
  */
 public fun <T> FakeContext.linkedHashSet(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): LinkedHashSet<T> = LinkedHashSet(set(size = size, element = element))
 
@@ -19,6 +19,6 @@ public fun <T> FakeContext.linkedHashSet(
  * Generates a Java linked hash set from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.linkedHashSet(): LinkedHashSet<Any?> =
-    linkedHashSet(size = int(config(FiktionConfig.Collection.size))) {
+    linkedHashSet(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }
