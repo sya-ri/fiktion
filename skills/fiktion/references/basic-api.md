@@ -7,14 +7,14 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.5.1"
+    id("dev.s7a.fiktion") version "0.6.0"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.5.1")
-    testImplementation("dev.s7a:fiktion-addon-java:0.5.1") // optional JVM add-on
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.5.1") // optional kotlinx-datetime add-on
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.5.1") // optional detekt rules
+    testImplementation("dev.s7a:fiktion-core:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.0") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.0") // optional kotlinx-datetime add-on
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.0") // optional detekt rules
 }
 ```
 
@@ -292,8 +292,7 @@ fake<Profile> {
 
 Use `dependsOn` only for direct constructor properties of the same generated object. The dependency must be generated
 before the dependent property; if the dependency used a constructor default value, Fiktion cannot observe that value and
-generation fails. The typed overloads should share the same registration path as `dependsOn(vararg dependencies)` so
-typed and untyped dependency rules behave consistently.
+generation fails.
 
 Type-family targets are for generic families:
 

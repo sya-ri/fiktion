@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "dev.s7a"
-version = "0.5.1"
+version = "0.6.0"
 
 val dokkaOlderVersionsDir = layout.buildDirectory.dir("dokka/olderVersions")
 
