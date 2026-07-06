@@ -27,7 +27,16 @@ public sealed class FiktionRuleBuilder protected constructor() {
      * Configures built-in or add-on generator behavior for every generated value matching [value]'s scope.
      */
     public infix fun <Scope, Value : Any> using(value: FiktionConfigSetting<Scope, Value>) {
-        mutableConfig.add(DefaultConfigSpec(key = value.key, matcher = RuleMatcher.All, value = value.value))
+        mutableConfig.add(DefaultConfigSpec(setting = value, matcher = RuleMatcher.All))
+    }
+
+    /**
+     * Configures built-in or add-on generator behavior for every generated value matching [value]'s scope.
+     */
+    public infix fun <Scope> using(value: FiktionConfigSettingGroup<Scope>) {
+        value.settings.forEach { setting ->
+            mutableConfig.add(DefaultConfigSpec(setting = setting, matcher = RuleMatcher.All))
+        }
     }
 
     /**

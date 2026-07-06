@@ -76,11 +76,11 @@ internal class MutableFiktionConfig(
     }
 
     /**
-     * Adds [config], replacing an existing config with the same key and matcher within the current layer.
+     * Adds [config] to the current layer. Configs with the same key and matcher are intentionally retained because
+     * one-sided overrides compose in declaration order.
      */
     fun add(config: DefaultConfigSpec<*>) {
         val targetConfigs = installingAddonConfigs ?: configs
-        targetConfigs.removeAll { it.key == config.key && it.matcher == config.matcher }
         targetConfigs += config
     }
 

@@ -11,7 +11,7 @@ import java.util.EnumMap
  * Generates a Java enum map using [key] and [value].
  */
 public inline fun <reified K : Enum<K>, V> FakeContext.enumMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): EnumMap<K, V> =
@@ -28,7 +28,7 @@ internal fun TypeFamilyGenerationContext.enumMap(): EnumMap<*, *> {
     val enumClass = enumClass(argumentIndex = 0)
     val values = mutableMapOf<Enum<*>, Any?>()
     map(
-        size = int(config(FiktionConfig.Map.size)),
+        size = FiktionConfig.Map.size(),
         key = {
             fakeKey(index)
         },

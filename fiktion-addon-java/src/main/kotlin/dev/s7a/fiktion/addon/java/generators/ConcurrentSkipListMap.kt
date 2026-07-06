@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListMap
  * Generates a Java concurrent skip list map using [key] and [value].
  */
 public fun <K : Any, V : Any> FakeContext.concurrentSkipListMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): ConcurrentSkipListMap<K, V> =
@@ -25,7 +25,7 @@ public fun <K : Any, V : Any> FakeContext.concurrentSkipListMap(
 internal fun TypeFamilyGenerationContext.concurrentSkipListMap(): ConcurrentSkipListMap<Any, Any> =
     ConcurrentSkipListMap<Any, Any>(compareBy { value -> value.toString() }).apply {
         map(
-            size = int(config(FiktionConfig.Map.size)),
+            size = FiktionConfig.Map.size(),
             key = {
                 fakeKey(index)
             },

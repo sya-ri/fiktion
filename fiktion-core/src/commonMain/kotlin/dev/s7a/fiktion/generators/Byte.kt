@@ -8,7 +8,10 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates a byte across the full byte range.
  */
-public fun FakeContext.byte(): Byte = byte(config(FiktionConfig.Byte.range))
+public fun FakeContext.byte(): Byte =
+    FiktionConfig.Byte
+        .range()
+        .toByte()
 
 /**
  * Generates a byte from [min] to [max].

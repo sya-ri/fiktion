@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListSet
  * Generates a Java concurrent skip list set using [element].
  */
 public fun <T : Any> FakeContext.concurrentSkipListSet(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): ConcurrentSkipListSet<T> =
     ConcurrentSkipListSet<T>(compareBy { value -> value.toString() }).apply {
@@ -23,7 +23,7 @@ public fun <T : Any> FakeContext.concurrentSkipListSet(
  */
 internal fun TypeFamilyGenerationContext.concurrentSkipListSet(): ConcurrentSkipListSet<Any> =
     ConcurrentSkipListSet<Any>(compareBy { value -> value.toString() }).apply {
-        repeat(int(config(FiktionConfig.Collection.size))) { index ->
+        repeat(FiktionConfig.Collection.size()) { index ->
             fakeElement(index)?.let(::add)
         }
     }

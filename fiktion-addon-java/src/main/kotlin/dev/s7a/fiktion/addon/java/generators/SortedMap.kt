@@ -10,7 +10,7 @@ import java.util.SortedMap
  * Generates a Java sorted map using [key] and [value].
  */
 public fun <K : Any, V> FakeContext.sortedMap(
-    size: Int = int(config(FiktionConfig.Map.size)),
+    size: Int = FiktionConfig.Map.size(),
     key: FakeContext.() -> K,
     value: FakeContext.() -> V,
 ): SortedMap<K, V> = treeMap(size = size, key = key, value = value)

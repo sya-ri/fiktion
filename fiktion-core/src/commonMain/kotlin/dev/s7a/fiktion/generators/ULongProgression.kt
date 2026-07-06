@@ -7,6 +7,4 @@ import dev.s7a.fiktion.FiktionConfig
  * Generates a finite unsigned long progression.
  */
 public fun FakeContext.ulongProgression(): ULongProgression =
-    config(FiktionConfig.ULongProgression.bounds).let { range ->
-        ulongRange(min = range.start, max = range.endInclusive) step long(config(FiktionConfig.ULongProgression.step))
-    }
+    FiktionConfig.ULongProgression.bounds() step FiktionConfig.ULongProgression.step()

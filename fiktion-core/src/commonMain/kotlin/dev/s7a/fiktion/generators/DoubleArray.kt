@@ -6,4 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a double array.
  */
-public fun FakeContext.doubleArray(size: Int = int(config(FiktionConfig.Array.size))): DoubleArray = DoubleArray(size) { double() }
+public fun FakeContext.doubleArray(size: Int = FiktionConfig.Array.size()): DoubleArray = DoubleArray(size) { double() }

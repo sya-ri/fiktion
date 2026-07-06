@@ -6,4 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a finite character progression.
  */
-public fun FakeContext.charProgression(): CharProgression = charRange() step int(config(FiktionConfig.Char.step))
+public fun FakeContext.charProgression(): CharProgression = charRange() step FiktionConfig.Char.step()

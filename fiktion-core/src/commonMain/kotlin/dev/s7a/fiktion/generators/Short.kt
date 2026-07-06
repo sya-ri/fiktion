@@ -8,7 +8,10 @@ import kotlin.ranges.ClosedRange
 /**
  * Generates a short across the full short range.
  */
-public fun FakeContext.short(): Short = short(config(FiktionConfig.Short.range))
+public fun FakeContext.short(): Short =
+    FiktionConfig.Short
+        .range()
+        .toShort()
 
 /**
  * Generates a short from [min] to [max].

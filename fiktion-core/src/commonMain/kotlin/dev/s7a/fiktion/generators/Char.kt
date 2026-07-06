@@ -7,7 +7,7 @@ import dev.s7a.fiktion.requireFiktionConfiguration
 /**
  * Generates a character from the default alpha-numeric character set.
  */
-public fun FakeContext.char(charset: FiktionCharset = config(FiktionConfig.Char.charset)): Char =
+public fun FakeContext.char(charset: FiktionCharset = FiktionConfig.Char.charset.get()): Char =
     string(length = 1, charset = charset).single()
 
 /**

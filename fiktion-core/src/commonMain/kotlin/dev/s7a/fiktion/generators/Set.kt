@@ -5,18 +5,17 @@ import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.TypeFamilyGenerationContext
 import dev.s7a.fiktion.childContext
 import dev.s7a.fiktion.generateUniqueElements
-import dev.s7a.fiktion.random
 
 /**
  * Generates a set using [element].
  */
 public fun <T> FakeContext.set(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): Set<T> =
     generateUniqueElements(
         size = size,
-        strategy = config(FiktionConfig.Collection.uniqueElementStrategy),
+        strategy = FiktionConfig.Collection.uniqueElementStrategy.get(),
     ) { index ->
         element(childContext(index))
     }.toSet()
@@ -25,7 +24,7 @@ public fun <T> FakeContext.set(
  * Generates a mutable set using [element].
  */
 public fun <T> FakeContext.mutableSet(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): MutableSet<T> = set(size = size, element = element).toMutableSet()
 
@@ -34,8 +33,8 @@ public fun <T> FakeContext.mutableSet(
  */
 internal fun TypeFamilyGenerationContext.set(): Set<Any?> =
     generateUniqueElements(
-        size = config(FiktionConfig.Collection.size).random(random),
-        strategy = config(FiktionConfig.Collection.uniqueElementStrategy),
+        size = FiktionConfig.Collection.size(),
+        strategy = FiktionConfig.Collection.uniqueElementStrategy.get(),
     ) { index ->
         fakeElement(index)
     }.toSet()

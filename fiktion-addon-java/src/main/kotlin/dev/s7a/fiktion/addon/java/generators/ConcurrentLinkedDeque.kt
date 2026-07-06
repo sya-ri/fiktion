@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
  * Generates a Java concurrent linked deque using [element].
  */
 public fun <T> FakeContext.concurrentLinkedDeque(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): ConcurrentLinkedDeque<T & Any> = ConcurrentLinkedDeque(list(size = size, element = element).filterNotNull())
 
@@ -19,6 +19,6 @@ public fun <T> FakeContext.concurrentLinkedDeque(
  * Generates a Java concurrent linked deque from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.concurrentLinkedDeque(): ConcurrentLinkedDeque<Any> =
-    concurrentLinkedDeque(size = int(config(FiktionConfig.Collection.size))) {
+    concurrentLinkedDeque(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }

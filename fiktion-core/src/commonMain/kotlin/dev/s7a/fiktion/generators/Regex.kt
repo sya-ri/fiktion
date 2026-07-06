@@ -7,6 +7,6 @@ import dev.s7a.fiktion.FiktionConfig
  * Generates a regex whose pattern is a literal alpha-numeric string.
  */
 public fun FakeContext.regex(
-    length: Int = int(config(FiktionConfig.Regex.length)),
-    charset: FiktionCharset = config(FiktionConfig.Regex.charset),
+    length: Int = FiktionConfig.Regex.length(),
+    charset: FiktionCharset = FiktionConfig.Regex.charset.get(),
 ): Regex = Regex(string(length = length, charset = charset))

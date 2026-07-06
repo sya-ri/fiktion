@@ -12,6 +12,6 @@ import kotlin.time.Instant
  */
 public fun FakeContext.instant(): Instant =
     Instant.fromEpochSeconds(
-        epochSeconds = long(config(FiktionConfig.Instant.epochSeconds)),
-        nanosecondAdjustment = int(config(FiktionConfig.Instant.nanosecond)),
+        epochSeconds = FiktionConfig.Instant.epochSeconds(),
+        nanosecondAdjustment = FiktionConfig.Instant.nanosecond(),
     )

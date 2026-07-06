@@ -10,7 +10,7 @@ import java.util.SortedSet
  * Generates a Java sorted set using [element].
  */
 public fun <T : Any> FakeContext.sortedSet(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): SortedSet<T> = treeSet(size = size, element = element)
 

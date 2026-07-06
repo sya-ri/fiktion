@@ -71,10 +71,24 @@ internal class DefaultRuleTarget<T>(
     fun <Value : Any> config(
         configKey: FiktionConfig<in T, Value>,
         value: Value,
-    ): DefaultConfigSpec<Value> {
-        val spec = DefaultConfigSpec(key = configKey, matcher = matcher, value = value)
+    ): DefaultConfigSpec<Value> = config(configKey(value))
+
+    /**
+     * Registers [setting] on this target.
+     */
+    fun <Value : Any> config(setting: FiktionConfigSetting<in T, Value>): DefaultConfigSpec<Value> {
+        val spec = DefaultConfigSpec(setting = setting, matcher = matcher)
         config.add(spec)
         return spec
+    }
+
+    /**
+     * Registers [settings] on this target.
+     */
+    fun config(settings: FiktionConfigSettingGroup<in T>) {
+        settings.settings.forEach { setting ->
+            config.add(DefaultConfigSpec(setting = setting, matcher = matcher))
+        }
     }
 
     /**

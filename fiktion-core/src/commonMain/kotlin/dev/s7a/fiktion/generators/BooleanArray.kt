@@ -6,4 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a boolean array.
  */
-public fun FakeContext.booleanArray(size: Int = int(config(FiktionConfig.Array.size))): BooleanArray = BooleanArray(size) { boolean() }
+public fun FakeContext.booleanArray(size: Int = FiktionConfig.Array.size()): BooleanArray = BooleanArray(size) { boolean() }

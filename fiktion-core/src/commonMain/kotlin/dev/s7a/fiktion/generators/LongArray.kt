@@ -6,4 +6,4 @@ import dev.s7a.fiktion.FiktionConfig
 /**
  * Generates a long array.
  */
-public fun FakeContext.longArray(size: Int = int(config(FiktionConfig.Array.size))): LongArray = LongArray(size) { long() }
+public fun FakeContext.longArray(size: Int = FiktionConfig.Array.size()): LongArray = LongArray(size) { long() }

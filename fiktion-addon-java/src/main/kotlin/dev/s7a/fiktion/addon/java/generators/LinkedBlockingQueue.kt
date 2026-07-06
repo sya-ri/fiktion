@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue
  * Generates a Java linked blocking queue using [element].
  */
 public fun <T> FakeContext.linkedBlockingQueue(
-    size: Int = int(config(FiktionConfig.Collection.size)),
+    size: Int = FiktionConfig.Collection.size(),
     element: FakeContext.() -> T,
 ): LinkedBlockingQueue<T & Any> = LinkedBlockingQueue(list(size = size, element = element).filterNotNull())
 
@@ -19,6 +19,6 @@ public fun <T> FakeContext.linkedBlockingQueue(
  * Generates a Java linked blocking queue from the first requested type argument.
  */
 internal fun TypeFamilyGenerationContext.linkedBlockingQueue(): LinkedBlockingQueue<Any> =
-    linkedBlockingQueue(size = int(config(FiktionConfig.Collection.size))) {
+    linkedBlockingQueue(size = FiktionConfig.Collection.size()) {
         fakeElement(index)
     }
