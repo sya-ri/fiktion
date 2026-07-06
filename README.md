@@ -651,6 +651,18 @@ User::id generates "user-1"
 
 Property references such as `User::id generates "user-1"` are the concise form for owner-specific property rules.
 `property<User, String>("id")` is the equivalent explicit form when the owner and value type should be spelled out.
+Use the explicit name form for private constructor properties or constructor parameters that are not `val`/`var`, because
+Kotlin code outside the class cannot reference them:
+
+```kotlin
+class User(private val id: String)
+
+val fiktion = Fiktion {
+    property<User, String>("id") generates "user-1"
+}
+```
+
+Inside `fake<User> { ... }`, the root-scoped equivalent is `name<String>("id")`.
 
 Property rules can depend on constructor properties generated earlier for the same object:
 

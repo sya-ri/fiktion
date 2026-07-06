@@ -34,6 +34,26 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata for private constructor properties`() {
+        val user =
+            Fiktion {
+                property<GeneratedRegularUserWithPrivateProperty, String>("id") generates "configured-id"
+            }.fake<GeneratedRegularUserWithPrivateProperty>(seed = 123)
+
+        assertEquals("configured-id", user.id())
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for constructor parameters`() {
+        val user =
+            Fiktion {
+                property<GeneratedRegularUserWithConstructorParameter, String>("id") generates "configured-id"
+            }.fake<GeneratedRegularUserWithConstructorParameter>(seed = 123)
+
+        assertEquals("configured-id", user.id)
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for constructor property type arguments`() {
         val fiktion =
             Fiktion {
@@ -558,6 +578,36 @@ private class GeneratedRegularUser(
      */
     val id: String,
 )
+
+/**
+ * Smoke-test regular class with a private constructor property.
+ */
+private class GeneratedRegularUserWithPrivateProperty(
+    /**
+     * Private regular user identifier generated from constructor property metadata.
+     */
+    private val id: String,
+) {
+    /**
+     * Returns the private identifier for assertions.
+     */
+    fun id(): String = id
+}
+
+/**
+ * Smoke-test regular class with a non-property constructor parameter.
+ */
+private class GeneratedRegularUserWithConstructorParameter(
+    /**
+     * Regular user identifier accepted as a constructor argument.
+     */
+    id: String,
+) {
+    /**
+     * Identifier copied from the constructor parameter.
+     */
+    val id: String = id
+}
 
 /**
  * Smoke-test regular class with constructor property type arguments.
