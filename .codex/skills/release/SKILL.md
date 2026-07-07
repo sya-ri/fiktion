@@ -15,16 +15,38 @@ When bumping Fiktion from an old version to a new version:
 2. Update the root project version in `build.gradle.kts`.
 3. Add or update the matching top section in `CHANGELOG.md`.
 4. Update public dependency snippets in `README.md`.
-5. Update project-local Codex skill references under `.codex/skills/**` when they contain public dependency snippets or maintainer workflow examples.
-6. Do not update historical changelog sections, generated API dumps, lockfiles, or unrelated dependency versions merely because they contain the old version.
+5. Update public skill dependency snippets under `skills/fiktion/**`.
+6. Update project-local Codex skill references under `.codex/skills/**` when they contain public dependency snippets or maintainer workflow examples.
+7. Update runnable example and consumer-check snippets that should track the current release:
+   - `examples/**/build.gradle.kts` for public sample projects.
+   - `compatibility/jvm-consumer/build.gradle.kts` for the consumer compatibility project.
+   - `README.md` compatibility commands and `.github/workflows/ci.yml` matrix values when the supported Kotlin line changes.
+8. Do not update historical changelog sections, generated API dumps, lockfiles, or unrelated dependency versions merely because they contain the old version.
+
+Version-bearing locations are intentionally split by purpose:
+
+- Product version: root `build.gradle.kts`.
+- Public release notes: latest top section of `CHANGELOG.md`.
+- Public user docs: `README.md`.
+- Public Codex skill docs: `skills/fiktion/**`, especially dependency snippets in `references/basic-api.md`, `references/addons.md`, and `references/detekt-rules.md`.
+- Maintainer workflows: `.codex/skills/**`, especially this release skill's examples and search patterns.
+- Runnable samples: `examples/**/build.gradle.kts`.
+- Compatibility consumer: `compatibility/jvm-consumer/build.gradle.kts`; `compatibility/jvm-consumer/settings.gradle.kts` only changes when the default consumer Kotlin version changes.
+- Automation/workflow snippets: `.github/workflows/ci.yml` only when the Kotlin compatibility matrix or published Kotlin line changes.
 
 Use targeted searches instead of broad blind replacement:
 
 ```bash
-rg -n "0\\.2\\.1|v0\\.2\\.1" README.md CHANGELOG.md .codex/skills skills build.gradle.kts fiktion-* gradle -g '!**/build/**'
+rg -n "0\\.2\\.1|v0\\.2\\.1" README.md CHANGELOG.md .codex/skills skills build.gradle.kts examples compatibility .github/workflows gradle -g '!**/build/**'
 ```
 
 Adjust the old version in the search pattern to match the release being replaced.
+
+Also search for the Kotlin compiler line when the release changes Kotlin compatibility:
+
+```bash
+rg -n "2\\.4\\.0|2\\.4\\.x|consumer.kotlin.version" README.md skills compatibility .github/workflows gradle -g '!**/build/**'
+```
 
 ## Release Order
 

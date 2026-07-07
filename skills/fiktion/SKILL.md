@@ -33,7 +33,7 @@ returned snapshot in teardown.
 Read only the file needed for the user's task:
 
 - Basic usage, rule precedence, target selection, collections/maps, nulls/defaults, compiler plugin, Gradle config: `references/basic-api.md`
-- Built-in generator functions and project-local generator patterns: `references/generators.md`
+- Built-in generator functions, project-local generator patterns, and realistic domain data: `references/generators.md`
 - Add-on usage, automatic add-on registration, and custom add-on authoring: `references/addons.md`
 - Optional detekt setup and available Fiktion rules: `references/detekt-rules.md`
 - Common failures, error messages, and review checklist: `references/troubleshooting.md`

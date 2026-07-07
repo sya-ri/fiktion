@@ -32,7 +32,8 @@ val fiktion = Fiktion {
 
 The Arrow Core add-on includes generation rules for `Option`, `Either`, `Ior`, `NonEmptyList`, and `NonEmptySet`.
 `NonEmptySet` follows normal set semantics, so duplicate generated values can make the final set smaller than
-`FiktionConfig.Collection.size`.
+`FiktionConfig.Collection.size`. Use `FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(...))`
+when an exact distinct `NonEmptySet` size matters.
 
 ## Java Add-On Usage
 
