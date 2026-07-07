@@ -8,7 +8,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.2")
 }
 ```
 
@@ -32,7 +32,8 @@ val fiktion = Fiktion {
 
 The Arrow Core add-on includes generation rules for `Option`, `Either`, `Ior`, `NonEmptyList`, and `NonEmptySet`.
 `NonEmptySet` follows normal set semantics, so duplicate generated values can make the final set smaller than
-`FiktionConfig.Collection.size`.
+`FiktionConfig.Collection.size`. Use `FiktionConfig.Collection.uniqueElementStrategy(UniqueElementStrategy.Exact(...))`
+when an exact distinct `NonEmptySet` size matters.
 
 ## Java Add-On Usage
 
@@ -40,7 +41,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.2")
 }
 ```
 
@@ -84,7 +85,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.2")
 }
 ```
 

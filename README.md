@@ -71,23 +71,23 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.6.1"
+    id("dev.s7a.fiktion") version "0.6.2"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.6.1")
+    testImplementation("dev.s7a:fiktion-core:0.6.2")
 
     // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.2")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.2")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.2")
 
     // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.1")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.2")
 }
 ```
 
@@ -99,7 +99,7 @@ Fiktion is enabled for test source sets by default, including JVM `test` and Mul
 
 ### Kotlin Compatibility
 
-Fiktion `0.6.1` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
+Fiktion `0.6.2` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
 The repository is tested with a consumer project using Kotlin `2.4.0`.
 
 The compiler plugin uses Kotlin compiler APIs, so compatibility is verified per consumer Kotlin version instead of
@@ -474,7 +474,7 @@ Add it as a detekt plugin dependency. If detekt is not configured in the project
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.1")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.2")
 }
 ```
 
@@ -702,6 +702,7 @@ Supported shapes include:
 - enum classes
 - sealed classes and sealed interfaces
 - singleton objects and companion objects
+- classes with explicitly configured factory methods
 
 Shapes that should be configured explicitly are skipped:
 
@@ -711,6 +712,46 @@ Shapes that should be configured explicitly are skipped:
 - classes without a primary constructor
 - private or protected primary constructors
 - vararg or otherwise unsupported constructor parameters
+
+Use `constructsBy` when a type should be generated through a top-level, object, or companion object factory method
+instead of its primary constructor:
+
+```kotlin
+class User private constructor(
+    val id: String,
+    val role: Role,
+) {
+    companion object {
+        fun create(id: String, roleName: String): User = User(id, Role.valueOf(roleName))
+    }
+}
+
+val user = Fiktion {
+    type<User>() constructsBy User::create
+    property<User, String>("roleName") generates "Admin"
+}.fake<User>()
+```
+
+Factory method parameters become the generated metadata properties. When a factory parameter has a different name or
+type from the stored property, target the factory parameter name and type, such as `roleName: String` in the example
+above. If the production factory is awkward for tests because it converts names or types, define a test-only factory
+in test code with parameters that match the properties you want to configure, then pass that factory to `constructsBy`.
+Nullable factory methods are supported for nullable targets, for example
+`type<User?>() constructsBy User::createOrNull`. Nullable factory metadata is only selected for nullable generation
+requests, so it cannot accidentally satisfy `fake<User>()`.
+
+When a type has overloaded factory methods with the same name, give the callable reference an explicit `KFunctionN`
+type before passing it to `constructsBy`. Keep it as a `KFunctionN` rather than a plain function type so the compiler
+plugin can read parameter names and default values:
+
+```kotlin
+val createUser: KFunction2<String, String, User> = User::create
+
+val user = Fiktion {
+    type<User>() constructsBy createUser
+    property<User, String>("roleName") generates "Admin"
+}.fake<User>()
+```
 
 Value class overrides depend on what the test wants to control. For a public underlying property, target that property:
 
@@ -785,7 +826,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.2")
 }
 ```
 
@@ -815,7 +856,7 @@ Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.2")
 }
 ```
 
@@ -851,7 +892,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.2")
 }
 ```
 

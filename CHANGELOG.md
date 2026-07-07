@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.6.2
+
+- Added `constructsBy` for compiler-generated metadata, so classes with private constructors can be generated through
+  explicitly selected top-level, object, or companion object factory methods.
+- Added support for nullable factory metadata, overloaded factory names with explicit `KFunctionN` references, factory
+  default parameters, and factory parameter type metadata collection.
+- Documented factory parameter targeting and test-code factory patterns for constructors that convert or rename
+  production factory arguments.
+
 ## v0.6.1
 
 - Fixed compiler-generated metadata for generic classes instantiated with concrete type arguments, so types such as

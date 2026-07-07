@@ -6,6 +6,8 @@ import dev.s7a.fiktion.FakeType
 import dev.s7a.fiktion.Fiktion
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.Probability
+import dev.s7a.fiktion.auto
+import dev.s7a.fiktion.constructsBy
 import dev.s7a.fiktion.default
 import dev.s7a.fiktion.fake
 import dev.s7a.fiktion.generates
@@ -14,9 +16,11 @@ import dev.s7a.fiktion.invoke
 import dev.s7a.fiktion.using
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.jvm.JvmInline
+import kotlin.reflect.KFunction2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalFiktionApi::class)
@@ -228,6 +232,71 @@ class GeneratedMetadataSmokeTest {
             }
 
         assertEquals("configured", fiktion.fake<GeneratedPrivateConstructorUser>(seed = 123).id)
+    }
+
+    @Test
+    fun `compiler plugin uses configured factory methods for private constructors`() {
+        val fiktion =
+            Fiktion {
+                type<GeneratedFactoryConstructorUser>() constructsBy GeneratedFactoryConstructorUser::create
+                property<GeneratedFactoryConstructorUser, String>("roleName") generates "admin"
+            }
+        val user = fiktion.fake<GeneratedFactoryConstructorUser>(seed = 123)
+
+        assertEquals(fiktion.fake<GeneratedFactoryConstructorUser>(seed = 123).id, user.id)
+        assertEquals(GeneratedFactoryRole.Admin, user.role)
+    }
+
+    @Test
+    fun `compiler plugin uses nullable factory methods for nullable targets`() {
+        val fiktion =
+            Fiktion {
+                type<GeneratedNullableFactoryConstructorUser?>() constructsBy GeneratedNullableFactoryConstructorUser::createOrNull
+                type<GeneratedNullableFactoryConstructorUser?>() generates auto orNullAt 0.0
+                property<GeneratedNullableFactoryConstructorUser?, String>("id") generates "missing"
+            }
+
+        assertNull(fiktion.fake<GeneratedNullableFactoryConstructorUser?>(seed = 123))
+        assertFailsWith<CannotGenerateException> {
+            fiktion.fake<GeneratedNullableFactoryConstructorUser>(seed = 123)
+        }
+    }
+
+    @Test
+    fun `compiler plugin uses explicitly typed overloaded factory methods`() {
+        val create: KFunction2<String, String, GeneratedOverloadedFactoryConstructorUser> =
+            GeneratedOverloadedFactoryConstructorUser::create
+        val fiktion =
+            Fiktion {
+                type<GeneratedOverloadedFactoryConstructorUser>() constructsBy create
+                property<GeneratedOverloadedFactoryConstructorUser, String>("suffix") generates "configured"
+            }
+        val user = fiktion.fake<GeneratedOverloadedFactoryConstructorUser>(seed = 123)
+
+        assertEquals("configured", user.suffix)
+    }
+
+    @Test
+    fun `compiler plugin uses configured top-level factory methods`() {
+        val fiktion =
+            Fiktion {
+                type<GeneratedTopLevelFactoryConstructorUser>() constructsBy ::createGeneratedTopLevelFactoryConstructorUser
+            }
+        val user = fiktion.fake<GeneratedTopLevelFactoryConstructorUser>(seed = 123)
+
+        assertEquals(GeneratedFactoryRole.Admin, user.role)
+    }
+
+    @Test
+    fun `compiler plugin uses factory parameter defaults`() {
+        val fiktion =
+            Fiktion {
+                type<GeneratedDefaultFactoryConstructorUser>() constructsBy GeneratedDefaultFactoryConstructorUser::create
+                property<GeneratedDefaultFactoryConstructorUser, String>("suffix") generates default
+            }
+        val user = fiktion.fake<GeneratedDefaultFactoryConstructorUser>(seed = 123)
+
+        assertEquals("default", user.suffix)
     }
 
     @Test
@@ -790,6 +859,176 @@ private class GeneratedPrivateConstructorUser private constructor(
          * Creates a private-constructor user for explicit rule tests.
          */
         fun create(id: String): GeneratedPrivateConstructorUser = GeneratedPrivateConstructorUser(id)
+    }
+}
+
+/**
+ * Smoke-test class generated through an explicitly configured factory method.
+ */
+private class GeneratedFactoryConstructorUser private constructor(
+    /**
+     * Factory-created user identifier.
+     */
+    val id: String,
+    /**
+     * Factory-created user role.
+     */
+    val role: GeneratedFactoryRole,
+) {
+    /**
+     * Factory for generated metadata tests.
+     */
+    companion object {
+        /**
+         * Creates a user and converts a differently named factory parameter.
+         */
+        fun create(
+            id: String,
+            roleName: String,
+        ): GeneratedFactoryConstructorUser =
+            GeneratedFactoryConstructorUser(
+                id = id,
+                role = GeneratedFactoryRole.valueOf(roleName.replaceFirstChar(Char::uppercase)),
+            )
+    }
+}
+
+/**
+ * Smoke-test role converted inside a factory method.
+ */
+private enum class GeneratedFactoryRole {
+    /**
+     * Administrator role.
+     */
+    Admin,
+}
+
+/**
+ * Smoke-test class generated through a nullable factory method.
+ */
+private class GeneratedNullableFactoryConstructorUser private constructor(
+    /**
+     * Factory-created user identifier.
+     */
+    val id: String,
+) {
+    /**
+     * Factory for nullable generated metadata tests.
+     */
+    companion object {
+        /**
+         * Creates a user unless [id] asks the factory to return null.
+         */
+        fun createOrNull(id: String): GeneratedNullableFactoryConstructorUser? =
+            if (id == "missing") {
+                null
+            } else {
+                GeneratedNullableFactoryConstructorUser(id)
+            }
+    }
+}
+
+/**
+ * Smoke-test class generated through an overloaded factory method.
+ */
+private class GeneratedOverloadedFactoryConstructorUser private constructor(
+    /**
+     * Factory-created user identifier.
+     */
+    val id: String,
+    /**
+     * Factory-created suffix proving the selected overload.
+     */
+    val suffix: String,
+) {
+    /**
+     * Overloaded factories for generated metadata tests.
+     */
+    companion object {
+        /**
+         * Creates a user with a default suffix.
+         */
+        fun create(id: String): GeneratedOverloadedFactoryConstructorUser =
+            GeneratedOverloadedFactoryConstructorUser(id = id, suffix = "default")
+
+        /**
+         * Creates a user with an explicit suffix.
+         */
+        fun create(
+            id: String,
+            suffix: String,
+        ): GeneratedOverloadedFactoryConstructorUser = GeneratedOverloadedFactoryConstructorUser(id = id, suffix = suffix)
+    }
+}
+
+/**
+ * Smoke-test class generated through a top-level factory method.
+ */
+private class GeneratedTopLevelFactoryConstructorUser private constructor(
+    /**
+     * Factory-created user identifier.
+     */
+    val id: String,
+    /**
+     * Factory-created user role.
+     */
+    val role: GeneratedFactoryRole,
+) {
+    /**
+     * Production-style factory used by the test-code top-level factory.
+     */
+    companion object {
+        /**
+         * Creates a user and converts a differently typed factory parameter.
+         */
+        fun create(
+            id: String,
+            roleName: String,
+        ): GeneratedTopLevelFactoryConstructorUser =
+            GeneratedTopLevelFactoryConstructorUser(
+                id = id,
+                role = GeneratedFactoryRole.valueOf(roleName.replaceFirstChar(Char::uppercase)),
+            )
+    }
+}
+
+private fun createGeneratedTopLevelFactoryConstructorUser(
+    id: String,
+    role: GeneratedFactoryRole,
+): GeneratedTopLevelFactoryConstructorUser =
+    GeneratedTopLevelFactoryConstructorUser.create(
+        id = id,
+        roleName = role.name.lowercase(),
+    )
+
+/**
+ * Smoke-test class generated through a factory method with a default parameter.
+ */
+private class GeneratedDefaultFactoryConstructorUser private constructor(
+    /**
+     * Factory-created user identifier.
+     */
+    val id: String,
+    /**
+     * Factory-created suffix.
+     */
+    val suffix: String,
+) {
+    /**
+     * Factory for default-parameter generated metadata tests.
+     */
+    companion object {
+        /**
+         * Creates a user with an optional suffix.
+         */
+        fun create(
+            id: String,
+            suffix: String = "default",
+        ): GeneratedDefaultFactoryConstructorUser =
+            GeneratedDefaultFactoryConstructorUser(
+                id = id,
+                suffix = suffix,
+            )
     }
 }
 

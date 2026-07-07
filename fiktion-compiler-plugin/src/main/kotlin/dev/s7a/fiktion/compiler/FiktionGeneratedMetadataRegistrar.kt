@@ -261,6 +261,13 @@ internal class FiktionGeneratedMetadataRegistrar(
                 )
             }
 
+            is FiktionGeneratedObjectFactoryMetadataCandidate -> {
+                objectMetadata(
+                    candidate,
+                    objectConstructorLambda(candidate, lambdaParent).reference,
+                )
+            }
+
             is FiktionGeneratedSealedMetadataCandidate -> {
                 sealedMetadata(candidate)
             }
@@ -329,10 +336,27 @@ internal class FiktionGeneratedMetadataRegistrar(
     private fun DeclarationIrBuilder.objectMetadata(
         candidate: FiktionGeneratedObjectMetadataCandidate,
         constructor: IrExpression,
+    ): IrExpression = objectMetadata(type = candidate.type, properties = propertyList(candidate), constructor = constructor)
+
+    /**
+     * Returns a `FiktionObjectMetadata<T>` expression for [candidate].
+     */
+    private fun DeclarationIrBuilder.objectMetadata(
+        candidate: FiktionGeneratedObjectFactoryMetadataCandidate,
+        constructor: IrExpression,
+    ): IrExpression = objectMetadata(type = candidate.type, properties = propertyList(candidate), constructor = constructor)
+
+    /**
+     * Returns a `FiktionObjectMetadata<T>` expression.
+     */
+    private fun DeclarationIrBuilder.objectMetadata(
+        type: IrType,
+        properties: IrExpression,
+        constructor: IrExpression,
     ): IrExpression =
-        irCallConstructor(symbols.objectMetadataConstructor, listOf(candidate.type)).apply {
-            setRegularArgument(0, typeOf(candidate.type))
-            setRegularArgument(1, propertyList(candidate))
+        irCallConstructor(symbols.objectMetadataConstructor, listOf(type)).apply {
+            setRegularArgument(0, typeOf(type))
+            setRegularArgument(1, properties)
             setRegularArgument(2, constructor)
         }
 
@@ -360,10 +384,22 @@ internal class FiktionGeneratedMetadataRegistrar(
     /**
      * Returns a list of generated `FiktionObjectProperty` values for [candidate].
      */
-    private fun DeclarationIrBuilder.propertyList(candidate: FiktionGeneratedObjectMetadataCandidate): IrExpression {
+    private fun DeclarationIrBuilder.propertyList(candidate: FiktionGeneratedObjectMetadataCandidate): IrExpression =
+        propertyList(candidate.properties)
+
+    /**
+     * Returns a list of generated `FiktionObjectProperty` values for [candidate].
+     */
+    private fun DeclarationIrBuilder.propertyList(candidate: FiktionGeneratedObjectFactoryMetadataCandidate): IrExpression =
+        propertyList(candidate.properties)
+
+    /**
+     * Returns a list of generated `FiktionObjectProperty` values.
+     */
+    private fun DeclarationIrBuilder.propertyList(properties: List<FiktionGeneratedMetadataPropertyCandidate>): IrExpression {
         val propertyType = symbols.objectPropertyType
-        val properties =
-            candidate.properties.map { property ->
+        val propertyExpressions =
+            properties.map { property ->
                 irCallConstructor(symbols.objectPropertyConstructor, emptyList()).apply {
                     setRegularArgument(0, irString(property.name))
                     setRegularArgument(1, typeOf(property.type))
@@ -373,7 +409,7 @@ internal class FiktionGeneratedMetadataRegistrar(
 
         return irCall(symbols.listOf).apply {
             setTypeArgument(0, propertyType)
-            setRegularArgument(0, irVararg(propertyType, properties))
+            setRegularArgument(0, irVararg(propertyType, propertyExpressions))
         }
     }
 
@@ -437,15 +473,38 @@ internal class FiktionGeneratedMetadataRegistrar(
     private fun DeclarationIrBuilder.objectConstructorLambda(
         candidate: FiktionGeneratedObjectMetadataCandidate,
         parent: IrDeclarationParent,
+    ): ConstructorLambda =
+        objectConstructorLambda(parent = parent, returnType = candidate.type) { arguments ->
+            constructorCall(candidate, arguments)
+        }
+
+    /**
+     * Returns the generated constructor lambda used by `FiktionObjectMetadata`.
+     */
+    private fun DeclarationIrBuilder.objectConstructorLambda(
+        candidate: FiktionGeneratedObjectFactoryMetadataCandidate,
+        parent: IrDeclarationParent,
+    ): ConstructorLambda =
+        objectConstructorLambda(parent = parent, returnType = candidate.type) { arguments ->
+            factoryCall(candidate, arguments)
+        }
+
+    /**
+     * Returns the generated constructor lambda used by `FiktionObjectMetadata`.
+     */
+    private fun DeclarationIrBuilder.objectConstructorLambda(
+        parent: IrDeclarationParent,
+        returnType: IrType,
+        construct: DeclarationIrBuilder.(IrValueParameter) -> IrExpression,
     ): ConstructorLambda {
-        val classType = candidate.type
         val argumentsType = symbols.objectArgumentListType
-        val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
-        val function = buildLocalLambda(parent = parent, returnType = classType)
+        val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, returnType)
+        val function = buildLocalLambda(parent = parent, returnType = returnType)
         val arguments = function.addValueParameter("values", argumentsType)
+        val bodyBuilder = DeclarationIrBuilder(pluginContext, function.symbol)
         function.body =
-            DeclarationIrBuilder(pluginContext, function.symbol).irBlockBody {
-                +irReturn(constructorCall(candidate, arguments))
+            bodyBuilder.irBlockBody {
+                +bodyBuilder.irReturn(bodyBuilder.construct(arguments))
             }
 
         return ConstructorLambda(
@@ -636,6 +695,79 @@ internal class FiktionGeneratedMetadataRegistrar(
         }
 
     /**
+     * Returns a factory call for [candidate] reading generated values from [arguments].
+     */
+    private fun DeclarationIrBuilder.factoryCall(
+        candidate: FiktionGeneratedObjectFactoryMetadataCandidate,
+        arguments: IrValueParameter,
+    ): IrExpression =
+        factoryCall(
+            candidate = candidate,
+            arguments = arguments,
+            defaultParameterIndexes = emptySet(),
+            pendingDefaultParameterIndexes =
+                candidate.properties
+                    .mapIndexedNotNull { index, property -> index.takeIf { property.hasDefault } },
+        )
+
+    /**
+     * Returns a factory call expression with branches for remaining defaultable parameters.
+     */
+    private fun DeclarationIrBuilder.factoryCall(
+        candidate: FiktionGeneratedObjectFactoryMetadataCandidate,
+        arguments: IrValueParameter,
+        defaultParameterIndexes: Set<Int>,
+        pendingDefaultParameterIndexes: List<Int>,
+    ): IrExpression {
+        val parameterIndex =
+            pendingDefaultParameterIndexes.firstOrNull() ?: return factoryCall(
+                candidate = candidate,
+                arguments = arguments,
+                defaultParameterIndexes = defaultParameterIndexes,
+            )
+
+        val remaining = pendingDefaultParameterIndexes.drop(1)
+        return irIfThenElse(
+            type = candidate.type,
+            condition = generatedArgumentUsesDefault(arguments, parameterIndex),
+            thenPart =
+                factoryCall(
+                    candidate = candidate,
+                    arguments = arguments,
+                    defaultParameterIndexes = defaultParameterIndexes + parameterIndex,
+                    pendingDefaultParameterIndexes = remaining,
+                ),
+            elsePart =
+                factoryCall(
+                    candidate = candidate,
+                    arguments = arguments,
+                    defaultParameterIndexes = defaultParameterIndexes,
+                    pendingDefaultParameterIndexes = remaining,
+                ),
+        )
+    }
+
+    /**
+     * Returns a factory call for a resolved default argument combination.
+     */
+    private fun DeclarationIrBuilder.factoryCall(
+        candidate: FiktionGeneratedObjectFactoryMetadataCandidate,
+        arguments: IrValueParameter,
+        defaultParameterIndexes: Set<Int>,
+    ): IrExpression =
+        irCall(candidate.factory.symbol).apply {
+            dispatchReceiverParameterOrNull?.let { receiver ->
+                val receiverClass = requireNotNull(receiver.type.classOrNull)
+                setDispatchReceiver(irGetObjectValue(receiver.type, receiverClass))
+            }
+            candidate.properties.forEachIndexed { index, property ->
+                if (index !in defaultParameterIndexes) {
+                    setRegularArgument(index, generatedArgument(arguments, index, property.type))
+                }
+            }
+        }
+
+    /**
      * Returns a value-class constructor call reading the generated underlying [value].
      */
     private fun DeclarationIrBuilder.valueConstructorCall(
@@ -788,6 +920,7 @@ private fun IrType.constructorTypeArguments(): List<IrType> {
 private fun FiktionGeneratedMetadataCandidate.arrayTypes(): List<Pair<IrType, IrType>> =
     when (this) {
         is FiktionGeneratedObjectMetadataCandidate -> properties.flatMap { property -> property.type.arrayTypes() }
+        is FiktionGeneratedObjectFactoryMetadataCandidate -> properties.flatMap { property -> property.type.arrayTypes() }
         is FiktionGeneratedValueMetadataCandidate -> property.type.arrayTypes()
         else -> emptyList()
     }
@@ -798,6 +931,7 @@ private fun FiktionGeneratedMetadataCandidate.arrayTypes(): List<Pair<IrType, Ir
 private val FiktionGeneratedMetadataCandidate.metadataType: IrType
     get() =
         when (this) {
+            is FiktionGeneratedObjectFactoryMetadataCandidate -> type
             is FiktionGeneratedObjectMetadataCandidate -> type
             is FiktionGeneratedValueMetadataCandidate -> type
             else -> irClass.defaultType
@@ -828,6 +962,12 @@ private val IrMemberAccessExpression<*>.regularParameters: List<IrValueParameter
  */
 private val IrMemberAccessExpression<*>.dispatchReceiverParameter: IrValueParameter
     get() = functionSymbol.owner.parameters.single { parameter -> parameter.kind == IrParameterKind.DispatchReceiver }
+
+/**
+ * Dispatch receiver parameter, if this call has one.
+ */
+private val IrMemberAccessExpression<*>.dispatchReceiverParameterOrNull: IrValueParameter?
+    get() = functionSymbol.owner.parameters.firstOrNull { parameter -> parameter.kind == IrParameterKind.DispatchReceiver }
 
 /**
  * Extension receiver parameter.
