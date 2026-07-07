@@ -8,7 +8,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.1")
 }
 ```
 
@@ -40,7 +40,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.1")
 }
 ```
 
@@ -84,7 +84,7 @@ Install dependency:
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.1")
 }
 ```
 

@@ -34,6 +34,26 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata for private constructor properties`() {
+        val user =
+            Fiktion {
+                property<GeneratedRegularUserWithPrivateProperty, String>("id") generates "configured-id"
+            }.fake<GeneratedRegularUserWithPrivateProperty>(seed = 123)
+
+        assertEquals("configured-id", user.id())
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata for constructor parameters`() {
+        val user =
+            Fiktion {
+                property<GeneratedRegularUserWithConstructorParameter, String>("id") generates "configured-id"
+            }.fake<GeneratedRegularUserWithConstructorParameter>(seed = 123)
+
+        assertEquals("configured-id", user.id)
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for constructor property type arguments`() {
         val fiktion =
             Fiktion {
@@ -49,6 +69,23 @@ class GeneratedMetadataSmokeTest {
                 .bio
                 .isNotBlank(),
         )
+    }
+
+    @Test
+    fun `compiler plugin substitutes concrete type arguments into generic constructor properties`() {
+        val value = fake<GeneratedHolder<GeneratedBoxImpl<String>>>(seed = 123)
+
+        assertTrue(value.box.value.isNotBlank())
+    }
+
+    @Test
+    fun `compiler plugin uses substituted generic constructor property types for property rules`() {
+        val value =
+            fake<GeneratedHolder<GeneratedBoxImpl<String>>>(seed = 123) {
+                property(GeneratedHolder<GeneratedBoxImpl<String>>::box) generates GeneratedBoxImpl("value")
+            }
+
+        assertEquals(GeneratedBoxImpl("value"), value.box)
     }
 
     @Test
@@ -560,6 +597,36 @@ private class GeneratedRegularUser(
 )
 
 /**
+ * Smoke-test regular class with a private constructor property.
+ */
+private class GeneratedRegularUserWithPrivateProperty(
+    /**
+     * Private regular user identifier generated from constructor property metadata.
+     */
+    private val id: String,
+) {
+    /**
+     * Returns the private identifier for assertions.
+     */
+    fun id(): String = id
+}
+
+/**
+ * Smoke-test regular class with a non-property constructor parameter.
+ */
+private class GeneratedRegularUserWithConstructorParameter(
+    /**
+     * Regular user identifier accepted as a constructor argument.
+     */
+    id: String,
+) {
+    /**
+     * Identifier copied from the constructor parameter.
+     */
+    val id: String = id
+}
+
+/**
  * Smoke-test regular class with constructor property type arguments.
  */
 private data class GeneratedRegularUserWithProfiles(
@@ -577,6 +644,31 @@ private data class GeneratedRegularUserProfile(
      * Required profile text.
      */
     val bio: String,
+)
+
+/**
+ * Smoke-test generic interface bound.
+ */
+private interface GeneratedBox<T>
+
+/**
+ * Smoke-test concrete generic interface implementation.
+ */
+private data class GeneratedBoxImpl<T>(
+    /**
+     * Generated boxed value.
+     */
+    val value: T,
+) : GeneratedBox<T>
+
+/**
+ * Smoke-test generic class whose constructor property references its type parameter.
+ */
+private data class GeneratedHolder<B : GeneratedBox<String>>(
+    /**
+     * Generated generic box.
+     */
+    val box: B,
 )
 
 /**

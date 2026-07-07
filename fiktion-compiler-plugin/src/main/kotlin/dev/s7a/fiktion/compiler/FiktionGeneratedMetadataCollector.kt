@@ -163,12 +163,7 @@ internal class FiktionGeneratedMetadataCollector {
         if (constructor.hasUnsupportedParameters()) return null
         val parameters = constructor.parameters
         if (valueClass && parameters.size != 1) return null
-        val substitutor =
-            if (valueClass) {
-                (candidateType as? IrSimpleType)?.let { type -> AbstractIrTypeSubstitutor.forType(type) }
-            } else {
-                null
-            }
+        val substitutor = (candidateType as? IrSimpleType)?.let { type -> AbstractIrTypeSubstitutor.forType(type) }
         val properties =
             parameters.map { parameter ->
                 val type = substitutor?.substitute(parameter.type) ?: parameter.type
@@ -191,6 +186,7 @@ internal class FiktionGeneratedMetadataCollector {
         } else {
             FiktionGeneratedObjectMetadataCandidate(
                 irClass = this,
+                type = candidateType,
                 constructor = constructor,
                 className = className,
                 properties = properties,
@@ -238,6 +234,7 @@ internal class FiktionGeneratedMetadataCollector {
     private val FiktionGeneratedMetadataCandidate.id: String
         get() =
             when (this) {
+                is FiktionGeneratedObjectMetadataCandidate -> type.render()
                 is FiktionGeneratedValueMetadataCandidate -> type.render()
                 else -> className
             }

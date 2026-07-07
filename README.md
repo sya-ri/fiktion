@@ -71,23 +71,23 @@ Apply the Gradle plugin and add the runtime to your test dependencies:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.6.0"
+    id("dev.s7a.fiktion") version "0.6.1"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.6.0")
+    testImplementation("dev.s7a:fiktion-core:0.6.1")
 
     // Optional: Arrow Core types such as Option, Either, Ior, NonEmptyList, and NonEmptySet.
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.1")
 
     // Optional: common JVM types such as Instant, UUID, URI, and Java collections.
-    testImplementation("dev.s7a:fiktion-addon-java:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.1")
 
     // Optional: kotlinx-datetime types such as LocalDate, LocalDateTime, and TimeZone.
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.1")
 
     // Optional: detekt rules that recommend equivalent, more focused Fiktion DSL forms.
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.0")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.1")
 }
 ```
 
@@ -99,7 +99,7 @@ Fiktion is enabled for test source sets by default, including JVM `test` and Mul
 
 ### Kotlin Compatibility
 
-Fiktion `0.6.0` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
+Fiktion `0.6.1` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`.
 The repository is tested with a consumer project using Kotlin `2.4.0`.
 
 The compiler plugin uses Kotlin compiler APIs, so compatibility is verified per consumer Kotlin version instead of
@@ -474,7 +474,7 @@ Add it as a detekt plugin dependency. If detekt is not configured in the project
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.0")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.1")
 }
 ```
 
@@ -651,6 +651,18 @@ User::id generates "user-1"
 
 Property references such as `User::id generates "user-1"` are the concise form for owner-specific property rules.
 `property<User, String>("id")` is the equivalent explicit form when the owner and value type should be spelled out.
+Use the explicit name form for private constructor properties or constructor parameters that are not `val`/`var`, because
+Kotlin code outside the class cannot reference them:
+
+```kotlin
+class User(private val id: String)
+
+val fiktion = Fiktion {
+    property<User, String>("id") generates "user-1"
+}
+```
+
+Inside `fake<User> { ... }`, the root-scoped equivalent is `name<String>("id")`.
 
 Property rules can depend on constructor properties generated earlier for the same object:
 
@@ -773,7 +785,7 @@ Add `fiktion-addon-java` when tests need common JVM types such as `java.time`, `
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-java:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.1")
 }
 ```
 
@@ -803,7 +815,7 @@ Add `fiktion-addon-arrow-core` when tests need Arrow Core types such as `Option`
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.1")
 }
 ```
 
@@ -839,7 +851,7 @@ Add `fiktion-addon-kotlinx-datetime` when tests need `kotlinx-datetime` types su
 
 ```kotlin
 dependencies {
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.0")
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.1")
 }
 ```
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.6.1
+
+- Fixed compiler-generated metadata for generic classes instantiated with concrete type arguments, so types such as
+  `Holder<BoxImpl<String>>` can be generated and targeted by property rules without internal type-argument errors.
+- Documented explicit rule targets for private constructor properties and plain constructor parameters that do not have
+  public property references.
+- Added compiler-plugin smoke coverage for private constructor argument overrides, plain constructor parameters, and
+  generic constructor property type substitution.
+
 ## v0.6.0
 
 - Added property dependency rules with `dependsOn(...)`, so generated constructor properties can derive values from
