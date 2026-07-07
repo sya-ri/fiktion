@@ -702,6 +702,7 @@ Supported shapes include:
 - enum classes
 - sealed classes and sealed interfaces
 - singleton objects and companion objects
+- classes with explicitly configured factory methods
 
 Shapes that should be configured explicitly are skipped:
 
@@ -711,6 +712,46 @@ Shapes that should be configured explicitly are skipped:
 - classes without a primary constructor
 - private or protected primary constructors
 - vararg or otherwise unsupported constructor parameters
+
+Use `constructsBy` when a type should be generated through a top-level, object, or companion object factory method
+instead of its primary constructor:
+
+```kotlin
+class User private constructor(
+    val id: String,
+    val role: Role,
+) {
+    companion object {
+        fun create(id: String, roleName: String): User = User(id, Role.valueOf(roleName))
+    }
+}
+
+val user = Fiktion {
+    type<User>() constructsBy User::create
+    property<User, String>("roleName") generates "Admin"
+}.fake<User>()
+```
+
+Factory method parameters become the generated metadata properties. When a factory parameter has a different name or
+type from the stored property, target the factory parameter name and type, such as `roleName: String` in the example
+above. If the production factory is awkward for tests because it converts names or types, define a test-only factory
+in test code with parameters that match the properties you want to configure, then pass that factory to `constructsBy`.
+Nullable factory methods are supported for nullable targets, for example
+`type<User?>() constructsBy User::createOrNull`. Nullable factory metadata is only selected for nullable generation
+requests, so it cannot accidentally satisfy `fake<User>()`.
+
+When a type has overloaded factory methods with the same name, give the callable reference an explicit `KFunctionN`
+type before passing it to `constructsBy`. Keep it as a `KFunctionN` rather than a plain function type so the compiler
+plugin can read parameter names and default values:
+
+```kotlin
+val createUser: KFunction2<String, String, User> = User::create
+
+val user = Fiktion {
+    type<User>() constructsBy createUser
+    property<User, String>("roleName") generates "Admin"
+}.fake<User>()
+```
 
 Value class overrides depend on what the test wants to control. For a public underlying property, target that property:
 

@@ -12,6 +12,7 @@ import dev.s7a.fiktion.generators.uint
 import dev.s7a.fiktion.generators.ulong
 import dev.s7a.fiktion.generators.ushort
 import kotlin.jvm.JvmName
+import kotlin.reflect.KFunction
 
 /**
  * Target selected by a rule declaration.
@@ -36,6 +37,16 @@ public infix fun <T> RuleTarget<T>.generates(value: T): GenerationSpec<T> = gene
  */
 public infix fun <T> RuleTarget<T>.generatesBy(generator: Generator<T>): GenerationSpec<T> =
     (this as DefaultRuleTarget<T>).generatesBy(generator)
+
+/**
+ * Selects [factory] as the construction function for compiler-generated metadata of this type.
+ *
+ * The compiler plugin consumes this declaration and generates metadata from the factory parameters. Without the
+ * compiler plugin, this declaration is a marker and does not register runtime metadata.
+ */
+@Suppress("UNUSED_PARAMETER")
+public infix fun <T> RuleTarget<T>.constructsBy(factory: KFunction<T>) {
+}
 
 /**
  * Configures built-in or add-on generator behavior for this rule target.

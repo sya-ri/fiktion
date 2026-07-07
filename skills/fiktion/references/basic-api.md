@@ -715,6 +715,7 @@ Supported shapes include:
 - enum classes
 - sealed classes and sealed interfaces
 - singleton objects and companion objects
+- classes with explicitly configured factory methods
 
 Skipped shapes should be configured explicitly:
 
@@ -734,6 +735,51 @@ Fiktion {
     }
 }
 ```
+
+Use `constructsBy` when generated metadata should construct a type through a top-level, object, or companion object
+factory method:
+
+```kotlin
+class User private constructor(
+    val id: String,
+    val role: Role,
+) {
+    companion object {
+        fun create(id: String, roleName: String): User = User(id, Role.valueOf(roleName))
+    }
+}
+
+val user = Fiktion {
+    type<User>() constructsBy User::create
+    property<User, String>("roleName") generates "Admin"
+}.fake<User>()
+```
+
+Factory parameters become metadata properties. If a factory parameter has a different name or type from the stored
+property, configure the factory parameter name and type. If a production factory does conversion that makes tests
+awkward, add a test-only factory in test code with parameters matching the properties the test wants to configure:
+
+```kotlin
+class User private constructor(
+    val id: String,
+    val role: Role,
+) {
+    companion object {
+        fun create(id: String, roleName: String): User = User(id, Role.valueOf(roleName))
+    }
+}
+
+private fun createUserForTest(id: String, role: Role): User =
+    User.create(id = id, roleName = role.name)
+
+val user = Fiktion {
+    type<User>() constructsBy ::createUserForTest
+}.fake<User>()
+```
+
+Nullable factory methods are for nullable targets, for example `type<User?>() constructsBy User::createOrNull`. For
+overloaded factory names, disambiguate the callable reference with an explicit `KFunctionN` typed value before passing
+it to `constructsBy`.
 
 Manual metadata registration exists for advanced tests and compiler-plugin work:
 
