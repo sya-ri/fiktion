@@ -1,0 +1,610 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>FiktionConfig</title>
+<link href="../../../images/logo-icon.svg" rel="icon" type="image/svg"><script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer></script></head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+<a class="library-name--link" href="../../../index.html" tabindex="1">
+                    fiktion
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+<dokka-template-command data="{&quot;@class&quot;:&quot;org.jetbrains.dokka.base.templating.ReplaceVersionsCommand&quot;,&quot;location&quot;:&quot;dev.s7a.fiktion/-fiktion-config/index.html&quot;}"><div class="dropdown versions-dropdown" data-role="dropdown">
+  <div class="button button_dropdown versions-dropdown-button" role="combobox" data-role="dropdown-toggle" aria-controls="versions-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Select version" tabindex="0" title="0.6.2"><span class="versions-dropdown-button-text">0.6.2</span></div>
+  <div class="dropdown--list dropdown--list_positioned_left versions-dropdown-data" role="listbox" data-role="dropdown-listbox" aria-label="Versions" id="versions-listbox">
+    <div class="dropdown--header" data-remove-style="true" style="display: none"><span>Select version</span><button class="button" data-role="dropdown-toggle" aria-label="Close versions selection"><i class="ui-kit-icon ui-kit-icon_cross"></i></button></div>
+<a href="../../../../../fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.6.3"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.6.3</span></a><a href="index.html" class="dropdown--option dropdown--option_active dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.6.2"><span class="dropdown--option-icon dropdown--option-icon_selected"></span><span class="dropdown--option-text">0.6.2</span></a><a href="../../../../0.6.1/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.6.1"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.6.1</span></a><a href="../../../../0.6.0/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.6.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.6.0</span></a><a href="../../../../0.5.1/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.5.1"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.5.1</span></a><a href="../../../../0.5.0/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.5.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.5.0</span></a><a href="../../../../0.4.2/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.4.2"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.4.2</span></a><a href="../../../../0.4.1/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.4.1"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.4.1</span></a><a href="../../../../0.4.0/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.4.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.4.0</span></a><a href="../../../../0.3.0/fiktion-core/dev.s7a.fiktion/-fiktion-config/index.html" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.3.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.3.0</span></a><a href="../../../../../not-found-version.html?v=0.2.4" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.4"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.4</span></a><a href="../../../../../not-found-version.html?v=0.2.3" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.3"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.3</span></a><a href="../../../../../not-found-version.html?v=0.2.2" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.2"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.2</span></a><a href="../../../../../not-found-version.html?v=0.2.1" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.1"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.1</span></a><a href="../../../../../not-found-version.html?v=0.2.0" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.2.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.2.0</span></a><a href="../../../../../not-found-version.html?v=0.1.0" class="dropdown--option dropdown--option-link" style="display: block; padding: 5px; color: #fff" data-remove-style="true" role="option" title="0.1.0"><span class="dropdown--option-icon"></span><span class="dropdown--option-text">0.1.0</span></a></div>
+  <div class="dropdown--overlay"></div>
+</div>
+</dokka-template-command>        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true" data-filter=":fiktion-core/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":fiktion-core/commonMain" data-filter=":fiktion-core/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config="{&quot;defaultSize&quot;: 280, &quot;minSize&quot;: 200, &quot;maxSize&quot;: 400}">
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    fiktion
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageids="fiktion-core::dev.s7a.fiktion/FiktionConfig///PointingToDeclaration//1493795707">
+  <div class="breadcrumbs"><a href="../../index.html">fiktion-core</a><span class="delimiter">/</span><a href="../index.html">dev.s7a.fiktion</a><span class="delimiter">/</span><span class="current">FiktionConfig</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Fiktion</span><wbr><span><span>Config</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">FiktionConfig</a><span class="token operator">&lt;</span><a href="index.html">Scope</a><span class="token punctuation">, </span><a href="index.html">Value</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>defaultValue<span class="token operator">: </span><a href="index.html">Value</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Typed key for configuring built-in and add-on generators.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-586867590%2FConstructors%2F1493795707" anchor-label="FiktionConfig" id="-586867590%2FConstructors%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fiktion-config.html"><span>Fiktion</span><wbr><span><span>Config</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-586867590%2FConstructors%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">defaultValue<span class="token operator">: </span><a href="index.html">Value</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-1989455099%2FClasslikes%2F1493795707" anchor-label="Array" id="-1989455099%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-array/index.html"><span><span>Array</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1989455099%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-array/index.html">Array</a></div><div class="brief "><p class="paragraph">Array generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1327067268%2FClasslikes%2F1493795707" anchor-label="Byte" id="-1327067268%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-byte/index.html"><span><span>Byte</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1327067268%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-byte/index.html">Byte</a></div><div class="brief "><p class="paragraph">Byte generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1285951250%2FClasslikes%2F1493795707" anchor-label="Char" id="-1285951250%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-char/index.html"><span><span>Char</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1285951250%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-char/index.html">Char</a></div><div class="brief "><p class="paragraph">Character generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1160835994%2FClasslikes%2F1493795707" anchor-label="Collection" id="-1160835994%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-collection/index.html"><span><span>Collection</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1160835994%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-collection/index.html">Collection</a></div><div class="brief "><p class="paragraph">Collection generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1167978515%2FClasslikes%2F1493795707" anchor-label="Double" id="1167978515%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-double/index.html"><span><span>Double</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1167978515%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Double generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-870009104%2FClasslikes%2F1493795707" anchor-label="Duration" id="-870009104%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-duration/index.html"><span><span>Duration</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-870009104%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-duration/index.html">Duration</a></div><div class="brief "><p class="paragraph">Duration generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1187406750%2FClasslikes%2F1493795707" anchor-label="Float" id="-1187406750%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-float/index.html"><span><span>Float</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1187406750%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-float/index.html">Float</a></div><div class="brief "><p class="paragraph">Float generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1873864387%2FClasslikes%2F1493795707" anchor-label="Instant" id="-1873864387%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-instant/index.html"><span><span>Instant</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1873864387%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-instant/index.html">Instant</a></div><div class="brief "><p class="paragraph">Instant generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-749117073%2FClasslikes%2F1493795707" anchor-label="Int" id="-749117073%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-int/index.html"><span><span>Int</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-749117073%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-int/index.html">Int</a></div><div class="brief "><p class="paragraph">Integer generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1809688072%2FClasslikes%2F1493795707" anchor-label="IntProgression" id="-1809688072%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-int-progression/index.html"><span>Int</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1809688072%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-int-progression/index.html">IntProgression</a></div><div class="brief "><p class="paragraph">Integer progression generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1874322230%2FClasslikes%2F1493795707" anchor-label="IntRange" id="1874322230%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-int-range/index.html"><span>Int</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1874322230%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-int-range/index.html">IntRange</a></div><div class="brief "><p class="paragraph">Integer range generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1851296632%2FClasslikes%2F1493795707" anchor-label="Long" id="-1851296632%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-long/index.html"><span><span>Long</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1851296632%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Long generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1756597567%2FClasslikes%2F1493795707" anchor-label="LongProgression" id="1756597567%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-long-progression/index.html"><span>Long</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1756597567%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-long-progression/index.html">LongProgression</a></div><div class="brief "><p class="paragraph">Long progression generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="149346237%2FClasslikes%2F1493795707" anchor-label="LongRange" id="149346237%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-long-range/index.html"><span>Long</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="149346237%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-long-range/index.html">LongRange</a></div><div class="brief "><p class="paragraph">Long range generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1508222814%2FClasslikes%2F1493795707" anchor-label="Map" id="-1508222814%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-map/index.html"><span><span>Map</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1508222814%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-map/index.html">Map</a></div><div class="brief "><p class="paragraph">Map generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="105102551%2FClasslikes%2F1493795707" anchor-label="Regex" id="105102551%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-regex/index.html"><span><span>Regex</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="105102551%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-regex/index.html">Regex</a></div><div class="brief "><p class="paragraph">Regex generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-350167486%2FClasslikes%2F1493795707" anchor-label="Short" id="-350167486%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-short/index.html"><span><span>Short</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-350167486%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-short/index.html">Short</a></div><div class="brief "><p class="paragraph">Short generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="314397651%2FClasslikes%2F1493795707" anchor-label="String" id="314397651%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-string/index.html"><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="314397651%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-string/index.html">String</a></div><div class="brief "><p class="paragraph">String generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1985030463%2FClasslikes%2F1493795707" anchor-label="UByte" id="-1985030463%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-byte/index.html"><span><span>UByte</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1985030463%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-byte/index.html">UByte</a></div><div class="brief "><p class="paragraph">Unsigned byte generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1584962954%2FClasslikes%2F1493795707" anchor-label="UInt" id="1584962954%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-int/index.html"><span><span>UInt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1584962954%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-int/index.html">UInt</a></div><div class="brief "><p class="paragraph">Unsigned integer generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1574826243%2FClasslikes%2F1493795707" anchor-label="UIntProgression" id="-1574826243%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-int-progression/index.html"><span>UInt</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1574826243%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-int-progression/index.html">UIntProgression</a></div><div class="brief "><p class="paragraph">Unsigned integer progression generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1865351173%2FClasslikes%2F1493795707" anchor-label="UIntRange" id="-1865351173%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-int-range/index.html"><span>UInt</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1865351173%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-int-range/index.html">UIntRange</a></div><div class="brief "><p class="paragraph">Unsigned integer range generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1785707469%2FClasslikes%2F1493795707" anchor-label="ULong" id="1785707469%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-long/index.html"><span><span>ULong</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1785707469%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-long/index.html">ULong</a></div><div class="brief "><p class="paragraph">Unsigned long generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="447379674%2FClasslikes%2F1493795707" anchor-label="ULongProgression" id="447379674%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-long-progression/index.html"><span>ULong</span><wbr><span><span>Progression</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="447379674%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-long-progression/index.html">ULongProgression</a></div><div class="brief "><p class="paragraph">Unsigned long progression generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="183587736%2FClasslikes%2F1493795707" anchor-label="ULongRange" id="183587736%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-long-range/index.html"><span>ULong</span><wbr><span><span>Range</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="183587736%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-long-range/index.html">ULongRange</a></div><div class="brief "><p class="paragraph">Unsigned long range generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="727809949%2FClasslikes%2F1493795707" anchor-label="UShort" id="727809949%2FClasslikes%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-short/index.html"><span><span>UShort</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="727809949%2FClasslikes%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">object </span><a href="-u-short/index.html">UShort</a></div><div class="brief "><p class="paragraph">Unsigned short generator configuration.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-40269537%2FProperties%2F1493795707" anchor-label="defaultValue" id="-40269537%2FProperties%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="default-value.html"><span>default</span><wbr><span><span>Value</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-40269537%2FProperties%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">val </span><a href="default-value.html">defaultValue</a><span class="token operator">: </span><a href="index.html">Value</a></div><div class="brief "><p class="paragraph">Value used when no matching configuration is registered.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-649661158%2FFunctions%2F1493795707" anchor-label="get" id="-649661158%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get.html"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-649661158%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">context</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">context<span class="token operator">: </span><a href="../-fake-context/index.html">FakeContext</a></span></span><span class="token punctuation">)</span><br><span class="token keyword">fun </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">Value</a></div><div class="brief "><p class="paragraph">Returns the effective generator configuration value for the current generation context.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1875510652%2FFunctions%2F1493795707" anchor-label="invoke" id="-1875510652%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="invoke.html"><span><span>invoke</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1875510652%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><a href="invoke.html"><span class="token function">invoke</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="index.html">Value</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fiktion-config-setting/index.html">FiktionConfigSetting</a><span class="token operator">&lt;</span><a href="index.html">Scope</a><span class="token punctuation">, </span><a href="index.html">Value</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a typed generator configuration value for this key.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2019898096%2FFunctions%2F1493795707" anchor-label="invoke" id="2019898096%2FFunctions%2F1493795707" data-filterable-set=":fiktion-core/commonMain"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":fiktion-core/commonMain" data-filterable-set=":fiktion-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../invoke.html"><span><span>invoke</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2019898096%2FFunctions%2F1493795707"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":fiktion-core/commonMain"><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token operator">&gt; </span><a href="index.html">FiktionConfig</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../invoke.html"><span class="token function">invoke</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fiktion-config-setting/index.html">FiktionConfigSetting</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token operator">&gt; </span><a href="index.html">FiktionConfig</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../invoke.html"><span class="token function">invoke</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fiktion-config-setting/index.html">FiktionConfigSetting</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-float/index.html">Float</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token operator">&gt; </span><a href="index.html">FiktionConfig</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../invoke.html"><span class="token function">invoke</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fiktion-config-setting/index.html">FiktionConfigSetting</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token operator">&gt; </span><a href="index.html">FiktionConfig</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../invoke.html"><span class="token function">invoke</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fiktion-config-setting/index.html">FiktionConfigSetting</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"invokeUIntRange"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token operator">&gt; </span><a href="index.html">FiktionConfig</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../invoke.html"><span class="token function">invoke</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fiktion-config-setting/index.html">FiktionConfigSetting</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-int/index.html">UInt</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-name/index.html"><span class="token annotation builtin">JvmName</span></a><span class="token punctuation">(</span><span>name<span class="token operator"> = </span><span class="breakable-word"><span class="token string">"invokeULongRange"</span></span></span><wbr><span class="token punctuation">)</span></div></div><span class="token keyword">operator </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token operator">&gt; </span><a href="index.html">FiktionConfig</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../invoke.html"><span class="token function">invoke</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-fiktion-config-setting/index.html">FiktionConfigSetting</a><span class="token operator">&lt;</span><a href="../invoke.html">Scope</a><span class="token punctuation">, </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.ranges/-closed-range/index.html">ClosedRange</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-u-long/index.html">ULong</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates a typed generator configuration value that fixes a closed-range configuration to <a href="../invoke.html">value</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
