@@ -12,6 +12,7 @@ plugins {
 
 dependencies {
     testImplementation("dev.s7a:fiktion-core:0.6.1")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.1") // optional Arrow Core add-on
     testImplementation("dev.s7a:fiktion-addon-java:0.6.1") // optional JVM add-on
     testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.1") // optional kotlinx-datetime add-on
     detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.1") // optional detekt rules
@@ -19,6 +20,9 @@ dependencies {
 ```
 
 The Gradle plugin enables Fiktion for test source sets by default, including JVM `test` and Multiplatform `commonTest` / `jvmTest`.
+Fiktion `0.6.1` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`. The compiler plugin
+uses Kotlin compiler APIs, so do not assume artifacts built for one Kotlin compiler line will load on older compiler
+lines. Kotlin `2.3.x` and `2.2.x` are not supported by the `2.4.0`-built artifacts.
 
 Opt in main source sets explicitly:
 
@@ -40,6 +44,48 @@ fiktion {
         enabled.set(true)
     }
 }
+```
+
+## Imports
+
+Most Fiktion examples assume imports from `dev.s7a.fiktion`. Import top-level entry points and marker values explicitly,
+or use a package star import in test files that are mostly Fiktion configuration:
+
+```kotlin
+import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionConfig
+import dev.s7a.fiktion.auto
+import dev.s7a.fiktion.constructsBy
+import dev.s7a.fiktion.default
+import dev.s7a.fiktion.fake
+import dev.s7a.fiktion.generates
+import dev.s7a.fiktion.generatesBy
+import dev.s7a.fiktion.generatesIn
+import dev.s7a.fiktion.generatesOneOf
+import dev.s7a.fiktion.invoke
+import dev.s7a.fiktion.percent
+import dev.s7a.fiktion.using
+```
+
+Import `dev.s7a.fiktion.invoke` when using shorthand config calls such as
+`FiktionConfig.Int.range(10..20)`, `FiktionConfig.String.length(12)`, or
+`FiktionConfig.Collection.size(3)`.
+
+Inside `fake { ... }`, `Fiktion { ... }`, and `Fiktion.configure { ... }` receivers, many DSL functions are members and
+do not need their own imports: `withSeed`, `this using ...`, `User::id generates ...`, `User::profile { ... }`,
+`property(...)`, `name(...)`, `type(...)`, `typeFamily(...)`, `element`, `key`, and `value`.
+
+When a member returns a `RuleTarget`, the follow-up operation is a top-level extension and usually needs an import:
+`type<User>() generates ...`, `property<User, String>("id") generates ...`, `name<String>("email") generatesBy ...`,
+and `type<User>() constructsBy User::create` need imports such as `generates`, `generatesBy`, or `constructsBy`.
+The same applies to `using` when configuring a `RuleTarget`, for example
+`property(Catalog::counts).element using FiktionConfig.Int.range(10..20)`.
+
+Generator functions live in `dev.s7a.fiktion.generators`, so import the functions you call directly:
+
+```kotlin
+import dev.s7a.fiktion.generators.int
+import dev.s7a.fiktion.generators.string
 ```
 
 ## Generate Values

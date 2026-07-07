@@ -180,6 +180,22 @@ val fiktion = Fiktion {
 val token = fiktion.fake<Token>()
 ```
 
+## Realistic Domain Data
+
+Fiktion core focuses on object graph generation, rule resolution, and Kotlin metadata. Use project-local generators,
+add-ons, or dedicated libraries such as Datafaker when tests need strict domain data such as names, email addresses,
+postal addresses, or localized text:
+
+```kotlin
+val faker = Faker()
+
+val user = fake<User> {
+    User::email generatesBy {
+        faker.internet().emailAddress()
+    }
+}
+```
+
 ## Type Family Generators
 
 Use `typeFamily<T>()` for generic families where generation depends on requested type arguments:
