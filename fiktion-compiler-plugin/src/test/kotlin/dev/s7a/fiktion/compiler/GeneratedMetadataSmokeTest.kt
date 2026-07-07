@@ -4,6 +4,8 @@ import dev.s7a.fiktion.CannotGenerateException
 import dev.s7a.fiktion.ExperimentalFiktionApi
 import dev.s7a.fiktion.FakeType
 import dev.s7a.fiktion.Fiktion
+import dev.s7a.fiktion.FiktionAddon
+import dev.s7a.fiktion.FiktionAddonBuilder
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.Probability
 import dev.s7a.fiktion.auto
@@ -263,6 +265,80 @@ class GeneratedMetadataSmokeTest {
 
             assertTrue(generatedMetadata.get().isNotEmpty())
             assertTrue(guard.getBoolean(null))
+        } finally {
+            generatedMetadata.set(previousMetadata)
+            guard.setBoolean(null, previous)
+        }
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata when factory methods are globally configured`() {
+        val guard = generatedRegistrarGuardField()
+        val generatedMetadata = generatedMetadataReference()
+        val previous = guard.getBoolean(null)
+        val previousMetadata = generatedMetadata.get()
+        try {
+            generatedMetadata.set(emptyMap())
+            guard.setBoolean(null, false)
+
+            val snapshot =
+                Fiktion.configure {
+                    type<GeneratedFactoryConstructorUser>() constructsBy GeneratedFactoryConstructorUser::create
+                }
+            try {
+                assertTrue(generatedMetadata.get().isNotEmpty())
+                assertTrue(guard.getBoolean(null))
+            } finally {
+                assertTrue(snapshot.restore())
+            }
+        } finally {
+            generatedMetadata.set(previousMetadata)
+            guard.setBoolean(null, previous)
+        }
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata when factory methods are installed from addons`() {
+        val guard = generatedRegistrarGuardField()
+        val generatedMetadata = generatedMetadataReference()
+        val previous = guard.getBoolean(null)
+        val previousMetadata = generatedMetadata.get()
+        try {
+            generatedMetadata.set(emptyMap())
+            guard.setBoolean(null, false)
+
+            Fiktion {
+                install(GeneratedFactoryConstructorTestAddon)
+            }
+
+            assertTrue(generatedMetadata.get().isNotEmpty())
+            assertTrue(guard.getBoolean(null))
+        } finally {
+            generatedMetadata.set(previousMetadata)
+            guard.setBoolean(null, previous)
+        }
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata when factory methods are globally installed from addons`() {
+        val guard = generatedRegistrarGuardField()
+        val generatedMetadata = generatedMetadataReference()
+        val previous = guard.getBoolean(null)
+        val previousMetadata = generatedMetadata.get()
+        try {
+            generatedMetadata.set(emptyMap())
+            guard.setBoolean(null, false)
+
+            val snapshot =
+                Fiktion.configure {
+                    install(GeneratedFactoryConstructorTestAddon)
+                }
+            try {
+                assertTrue(generatedMetadata.get().isNotEmpty())
+                assertTrue(guard.getBoolean(null))
+            } finally {
+                assertTrue(snapshot.restore())
+            }
         } finally {
             generatedMetadata.set(previousMetadata)
             guard.setBoolean(null, previous)
@@ -912,6 +988,48 @@ private class GeneratedFactoryConstructorUser private constructor(
                 id = id,
                 role = GeneratedFactoryRole.valueOf(roleName.replaceFirstChar(Char::uppercase)),
             )
+    }
+}
+
+/**
+ * Smoke-test class generated through an automatic add-on factory declaration.
+ */
+private class GeneratedAddonFactoryConstructorUser private constructor(
+    /**
+     * Factory-created user identifier.
+     */
+    val id: String,
+    /**
+     * Converted factory-created role.
+     */
+    val role: GeneratedFactoryRole,
+) {
+    companion object {
+        /**
+         * Creates a user and converts a differently named factory parameter.
+         */
+        fun create(
+            id: String,
+            roleName: String,
+        ): GeneratedAddonFactoryConstructorUser =
+            GeneratedAddonFactoryConstructorUser(
+                id = id,
+                role = GeneratedFactoryRole.valueOf(roleName.replaceFirstChar { char -> char.uppercase() }),
+            )
+    }
+}
+
+/**
+ * Smoke-test add-on that contributes factory metadata.
+ */
+private object GeneratedFactoryConstructorTestAddon : FiktionAddon {
+    override val id: String = "dev.s7a.fiktion.compiler.generatedFactoryConstructorTestAddon"
+
+    override fun install(builder: FiktionAddonBuilder) {
+        with(builder) {
+            type<GeneratedAddonFactoryConstructorUser>() constructsBy GeneratedAddonFactoryConstructorUser::create
+            property<GeneratedAddonFactoryConstructorUser, String>("roleName") generates "admin"
+        }
     }
 }
 
