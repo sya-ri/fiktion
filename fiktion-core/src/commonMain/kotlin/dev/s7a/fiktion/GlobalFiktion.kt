@@ -56,7 +56,7 @@ internal object GlobalFiktion {
     fun registerGenerated(metadata: FiktionTypeMetadata<*>) {
         while (true) {
             val previous = generatedMetadata.load()
-            val next = previous + (metadata.type.nonNullTypeId() to metadata)
+            val next = previous + (metadata.type.typeId() to metadata)
             if (generatedMetadata.compareAndSet(previous, next)) return
         }
     }

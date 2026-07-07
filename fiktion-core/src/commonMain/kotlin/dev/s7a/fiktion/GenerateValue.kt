@@ -91,7 +91,10 @@ internal fun generateAutomaticValue(
     context: FakeContext,
     exclusions: GenerationExclusions = GenerationExclusions(),
 ): Any? {
-    config.metadata[request.type.nonNullTypeId()]?.let { metadata ->
+    val metadata =
+        config.metadata[request.type.typeId()]
+            ?: if (request.type.isMarkedNullable) config.metadata[request.type.nonNullTypeId()] else null
+    metadata?.let { metadata ->
         return generateFromMetadata(
             metadata = metadata,
             request = request,

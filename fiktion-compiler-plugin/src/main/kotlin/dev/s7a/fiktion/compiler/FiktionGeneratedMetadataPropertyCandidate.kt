@@ -4,11 +4,11 @@ import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.types.IrType
 
 /**
- * Constructor property metadata that can be generated for one Kotlin value parameter.
+ * Object construction property metadata that can be generated for one Kotlin value parameter.
  */
 internal data class FiktionGeneratedMetadataPropertyCandidate(
     /**
-     * IR constructor parameter represented by this property.
+     * IR value parameter represented by this property.
      */
     val parameter: IrValueParameter,
     /**

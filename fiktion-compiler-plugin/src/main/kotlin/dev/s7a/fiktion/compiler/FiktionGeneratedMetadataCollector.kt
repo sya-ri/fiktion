@@ -9,15 +9,23 @@ import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
+import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
+import org.jetbrains.kotlin.ir.declarations.IrVariable
 import org.jetbrains.kotlin.ir.expressions.IrCall
+import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrFunctionReference
+import org.jetbrains.kotlin.ir.expressions.IrGetValue
+import org.jetbrains.kotlin.ir.expressions.IrTypeOperatorCall
 import org.jetbrains.kotlin.ir.symbols.UnsafeDuringIrConstructionAPI
 import org.jetbrains.kotlin.ir.types.AbstractIrTypeSubstitutor
 import org.jetbrains.kotlin.ir.types.IrSimpleType
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.makeNotNull
 import org.jetbrains.kotlin.ir.types.typeOrNull
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
+import org.jetbrains.kotlin.ir.util.isNullable
 import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.IrVisitorVoid
 
@@ -40,6 +48,9 @@ internal class FiktionGeneratedMetadataCollector {
                 @OptIn(UnsafeDuringIrConstructionAPI::class)
                 override fun visitCall(expression: IrCall) {
                     expression
+                        .factoryMetadataCandidate()
+                        ?.addCandidate(candidates, visited = mutableSetOf())
+                    expression
                         .takeIf { call -> call.isFiktionFakeCall() }
                         ?.type
                         ?.addCandidates(candidates, visited = mutableSetOf())
@@ -49,7 +60,13 @@ internal class FiktionGeneratedMetadataCollector {
             null,
         )
 
-        return candidates.distinctBy { candidate -> candidate.id }
+        return candidates
+            .groupBy { candidate -> candidate.id }
+            .values
+            .map { matchingCandidates ->
+                matchingCandidates.firstOrNull { candidate -> candidate is FiktionGeneratedObjectFactoryMetadataCandidate }
+                    ?: matchingCandidates.first()
+            }
     }
 
     /**
@@ -76,9 +93,19 @@ internal class FiktionGeneratedMetadataCollector {
         visited: MutableSet<String>,
     ) {
         val candidate = toCandidate(type) ?: return
-        if (!visited.add(candidate.id)) return
-        candidates.add(candidate)
-        candidate.referencedClasses().forEach { irClass ->
+        candidate.addCandidate(candidates, visited)
+    }
+
+    /**
+     * Adds this candidate and metadata candidates required by its referenced types.
+     */
+    private fun FiktionGeneratedMetadataCandidate.addCandidate(
+        candidates: MutableList<FiktionGeneratedMetadataCandidate>,
+        visited: MutableSet<String>,
+    ) {
+        if (!visited.add(id)) return
+        candidates.add(this)
+        referencedClasses().forEach { irClass ->
             irClass.addCandidate(irClass.defaultType, candidates, visited)
         }
     }
@@ -89,6 +116,12 @@ internal class FiktionGeneratedMetadataCollector {
     private fun FiktionGeneratedMetadataCandidate.referencedClasses(): List<IrClass> =
         when (this) {
             is FiktionGeneratedObjectMetadataCandidate -> {
+                properties.flatMap { property ->
+                    property.type.referencedClasses()
+                }
+            }
+
+            is FiktionGeneratedObjectFactoryMetadataCandidate -> {
                 properties.flatMap { property ->
                     property.type.referencedClasses()
                 }
@@ -131,7 +164,7 @@ internal class FiktionGeneratedMetadataCollector {
         if (isExpect || isInner) return null
         val className = fqNameWhenAvailable?.asString().orEmpty()
         if (className.isBlank()) return null
-        val candidateType = type.takeIf { it.classOrNull?.owner == this } ?: defaultType
+        val candidateType = (type.takeIf { it.classOrNull?.owner == this } ?: defaultType).makeNotNull()
 
         if (modality == Modality.SEALED) {
             return FiktionGeneratedSealedMetadataCandidate(
@@ -223,6 +256,83 @@ internal class FiktionGeneratedMetadataCollector {
         }
 
     /**
+     * Returns generated metadata for an explicit `constructsBy` declaration.
+     */
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrCall.factoryMetadataCandidate(): FiktionGeneratedObjectFactoryMetadataCandidate? {
+        if (symbol.owner.fqNameWhenAvailable?.asString() != FIKTION_CONSTRUCTS_BY_FUNCTION) return null
+        val factoryParameter = symbol.owner.parameters.single { parameter -> parameter.kind == IrParameterKind.Regular }
+        val factory =
+            arguments[factoryParameter]
+                ?.factoryFunctionReference()
+                ?.symbol
+                ?.owner as? IrSimpleFunction ?: return null
+        if (factory.hasUnsupportedFactoryParameters()) return null
+        val type = typeArguments.singleOrNull() ?: factory.returnType
+        if (factory.returnType.isNullable() && !type.isNullable()) return null
+        val irClass = type.classOrNull?.owner ?: return null
+        if (irClass.kind != ClassKind.CLASS || irClass.modality == Modality.ABSTRACT) return null
+        val className = irClass.fqNameWhenAvailable?.asString().orEmpty()
+        if (className.isBlank()) return null
+        val substitutor = (type as? IrSimpleType)?.let { type -> AbstractIrTypeSubstitutor.forType(type) }
+        val properties =
+            factory.parameters
+                .filter { parameter -> parameter.kind == IrParameterKind.Regular }
+                .map { parameter ->
+                    val parameterType = substitutor?.substitute(parameter.type) ?: parameter.type
+                    FiktionGeneratedMetadataPropertyCandidate(
+                        parameter = parameter,
+                        type = parameterType,
+                        name = parameter.name.asString(),
+                        hasDefault = parameter.defaultValue != null,
+                    )
+                }
+        return FiktionGeneratedObjectFactoryMetadataCandidate(
+            irClass = irClass,
+            type = type,
+            factory = factory,
+            className = className,
+            properties = properties,
+        )
+    }
+
+    /**
+     * Returns a callable reference passed directly or through a local typed value.
+     */
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrExpression.factoryFunctionReference(): IrFunctionReference? =
+        when (this) {
+            is IrFunctionReference -> this
+            is IrGetValue -> (symbol.owner as? IrVariable)?.initializer?.factoryFunctionReference()
+            is IrTypeOperatorCall -> argument.factoryFunctionReference()
+            else -> null
+        }
+
+    /**
+     * Returns whether this factory function contains parameters generated metadata cannot call safely.
+     */
+    @OptIn(UnsafeDuringIrConstructionAPI::class)
+    private fun IrSimpleFunction.hasUnsupportedFactoryParameters(): Boolean =
+        parameters.any { parameter ->
+            when (parameter.kind) {
+                IrParameterKind.Regular -> {
+                    parameter.varargElementType != null
+                }
+
+                IrParameterKind.DispatchReceiver -> {
+                    parameter.type
+                        .classOrNull
+                        ?.owner
+                        ?.kind != ClassKind.OBJECT
+                }
+
+                else -> {
+                    true
+                }
+            }
+        }
+
+    /**
      * Returns whether this call targets a Fiktion fake entry point.
      */
     @OptIn(UnsafeDuringIrConstructionAPI::class)
@@ -235,6 +345,7 @@ internal class FiktionGeneratedMetadataCollector {
         get() =
             when (this) {
                 is FiktionGeneratedObjectMetadataCandidate -> type.render()
+                is FiktionGeneratedObjectFactoryMetadataCandidate -> type.render()
                 is FiktionGeneratedValueMetadataCandidate -> type.render()
                 else -> className
             }

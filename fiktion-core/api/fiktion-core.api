@@ -795,6 +795,7 @@ public abstract interface class dev/s7a/fiktion/RuleTarget {
 }
 
 public final class dev/s7a/fiktion/RuleTargetKt {
+	public static final fun constructsBy (Ldev/s7a/fiktion/RuleTarget;Lkotlin/reflect/KFunction;)V
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/Auto;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ldev/s7a/fiktion/Default;)Ldev/s7a/fiktion/GenerationSpec;
 	public static final fun generates (Ldev/s7a/fiktion/RuleTarget;Ljava/lang/Object;)Ldev/s7a/fiktion/GenerationSpec;

@@ -16,6 +16,11 @@ internal const val FIKTION_PACKAGE: String = "dev.s7a.fiktion"
 internal const val FIKTION_FAKE_FUNCTION: String = "$FIKTION_PACKAGE.fake"
 
 /**
+ * Fully qualified name for factory-construction declarations.
+ */
+internal const val FIKTION_CONSTRUCTS_BY_FUNCTION: String = "$FIKTION_PACKAGE.constructsBy"
+
+/**
  * Generated top-level registrar function name.
  */
 internal const val FIKTION_GENERATED_REGISTRAR_NAME: String = $$"$fiktionRegisterGeneratedMetadata"
