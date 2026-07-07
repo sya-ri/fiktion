@@ -103,7 +103,8 @@ internal class FiktionGeneratedMetadataRegistrar(
 
     override fun visitCall(expression: IrCall): IrExpression {
         expression.transformChildrenVoid(this)
-        if (!expression.isFiktionFakeCall()) return expression
+        val shouldRegisterGeneratedMetadata = expression.isFiktionFakeCall() || expression.isFiktionConstructsByCall()
+        if (!shouldRegisterGeneratedMetadata) return expression
 
         val builder =
             DeclarationIrBuilder(pluginContext, currentScope!!.scope.scopeOwnerSymbol, expression.startOffset, expression.endOffset)
@@ -116,16 +117,18 @@ internal class FiktionGeneratedMetadataRegistrar(
             generatedRegistrar?.let { registrar ->
                 +builder.irCall(registrar)
             }
-            expression.type.arrayTypes().forEach { (arrayType, elementType) ->
-                val parent = currentScope!!.scope.scopeOwnerSymbol.owner as IrDeclarationParent
-                val constructor =
-                    builder
-                        .arrayConstructorLambda(
-                            arrayType = arrayType,
-                            elementType = elementType,
-                            parent = parent,
-                        ).reference
-                +builder.registerGeneratedArray(arrayType = arrayType, elementType = elementType, constructor = constructor)
+            if (expression.isFiktionFakeCall()) {
+                expression.type.arrayTypes().forEach { (arrayType, elementType) ->
+                    val parent = currentScope!!.scope.scopeOwnerSymbol.owner as IrDeclarationParent
+                    val constructor =
+                        builder
+                            .arrayConstructorLambda(
+                                arrayType = arrayType,
+                                elementType = elementType,
+                                parent = parent,
+                            ).reference
+                    +builder.registerGeneratedArray(arrayType = arrayType, elementType = elementType, constructor = constructor)
+                }
             }
             +expression
         }
@@ -205,6 +208,11 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Returns whether this call targets a Fiktion fake entry point.
      */
     private fun IrCall.isFiktionFakeCall(): Boolean = symbol.owner.fqNameWhenAvailable?.asString() == FIKTION_FAKE_FUNCTION
+
+    /**
+     * Returns whether this call targets a Fiktion factory-construction declaration.
+     */
+    private fun IrCall.isFiktionConstructsByCall(): Boolean = symbol.owner.fqNameWhenAvailable?.asString() == FIKTION_CONSTRUCTS_BY_FUNCTION
 
     /**
      * Returns a registration call for [candidate].

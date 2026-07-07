@@ -248,6 +248,28 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin registers generated metadata when factory methods are configured`() {
+        val guard = generatedRegistrarGuardField()
+        val generatedMetadata = generatedMetadataReference()
+        val previous = guard.getBoolean(null)
+        val previousMetadata = generatedMetadata.get()
+        try {
+            generatedMetadata.set(emptyMap())
+            guard.setBoolean(null, false)
+
+            Fiktion {
+                type<GeneratedFactoryConstructorUser>() constructsBy GeneratedFactoryConstructorUser::create
+            }
+
+            assertTrue(generatedMetadata.get().isNotEmpty())
+            assertTrue(guard.getBoolean(null))
+        } finally {
+            generatedMetadata.set(previousMetadata)
+            guard.setBoolean(null, previous)
+        }
+    }
+
+    @Test
     fun `compiler plugin uses nullable factory methods for nullable targets`() {
         val fiktion =
             Fiktion {
