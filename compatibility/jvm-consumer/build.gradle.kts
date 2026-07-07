@@ -1,10 +1,10 @@
 plugins {
     kotlin("jvm")
-    id("dev.s7a.fiktion") version "0.6.2"
+    id("dev.s7a.fiktion") version "0.6.3"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.6.2")
+    testImplementation("dev.s7a:fiktion-core:0.6.3")
     testImplementation(kotlin("test"))
 }
 

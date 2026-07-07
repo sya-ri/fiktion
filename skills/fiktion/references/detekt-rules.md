@@ -6,7 +6,7 @@ Use the optional detekt rules artifact when a project wants style feedback for F
 
 ```kotlin
 dependencies {
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.2")
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.3")
 }
 ```
 
