@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.3
+
+- Changed compiler-generated metadata registration to run when `constructsBy` factory declarations are configured, so
+  factory-based metadata is available immediately without waiting for a later `fake` call.
+- Added compiler-plugin smoke coverage for automatic metadata registration at factory configuration time.
+
 ## v0.6.2
 
 - Added `constructsBy` for compiler-generated metadata, so classes with private constructors can be generated through

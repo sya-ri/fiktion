@@ -7,20 +7,20 @@ Typical JVM test setup:
 ```kotlin
 plugins {
     kotlin("jvm") version "2.4.0"
-    id("dev.s7a.fiktion") version "0.6.2"
+    id("dev.s7a.fiktion") version "0.6.3"
 }
 
 dependencies {
-    testImplementation("dev.s7a:fiktion-core:0.6.2")
-    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.2") // optional Arrow Core add-on
-    testImplementation("dev.s7a:fiktion-addon-java:0.6.2") // optional JVM add-on
-    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.2") // optional kotlinx-datetime add-on
-    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.2") // optional detekt rules
+    testImplementation("dev.s7a:fiktion-core:0.6.3")
+    testImplementation("dev.s7a:fiktion-addon-arrow-core:0.6.3") // optional Arrow Core add-on
+    testImplementation("dev.s7a:fiktion-addon-java:0.6.3") // optional JVM add-on
+    testImplementation("dev.s7a:fiktion-addon-kotlinx-datetime:0.6.3") // optional kotlinx-datetime add-on
+    detektPlugins("dev.s7a:fiktion-detekt-rules:0.6.3") // optional detekt rules
 }
 ```
 
 The Gradle plugin enables Fiktion for test source sets by default, including JVM `test` and Multiplatform `commonTest` / `jvmTest`.
-Fiktion `0.6.2` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`. The compiler plugin
+Fiktion `0.6.3` is built with Kotlin `2.4.0` and supports consumer projects using Kotlin `2.4.x`. The compiler plugin
 uses Kotlin compiler APIs, so do not assume artifacts built for one Kotlin compiler line will load on older compiler
 lines. Kotlin `2.3.x` and `2.2.x` are not supported by the `2.4.0`-built artifacts.
 
