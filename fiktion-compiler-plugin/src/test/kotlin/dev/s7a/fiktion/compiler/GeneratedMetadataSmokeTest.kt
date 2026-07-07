@@ -72,6 +72,23 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
+    fun `compiler plugin substitutes concrete type arguments into generic constructor properties`() {
+        val value = fake<GeneratedHolder<GeneratedBoxImpl<String>>>(seed = 123)
+
+        assertTrue(value.box.value.isNotBlank())
+    }
+
+    @Test
+    fun `compiler plugin uses substituted generic constructor property types for property rules`() {
+        val value =
+            fake<GeneratedHolder<GeneratedBoxImpl<String>>>(seed = 123) {
+                property(GeneratedHolder<GeneratedBoxImpl<String>>::box) generates GeneratedBoxImpl("value")
+            }
+
+        assertEquals(GeneratedBoxImpl("value"), value.box)
+    }
+
+    @Test
     fun `compiler plugin registers generated metadata for dependency data classes`() {
         val type = fake<FakeType>(seed = 123)
 
@@ -627,6 +644,31 @@ private data class GeneratedRegularUserProfile(
      * Required profile text.
      */
     val bio: String,
+)
+
+/**
+ * Smoke-test generic interface bound.
+ */
+private interface GeneratedBox<T>
+
+/**
+ * Smoke-test concrete generic interface implementation.
+ */
+private data class GeneratedBoxImpl<T>(
+    /**
+     * Generated boxed value.
+     */
+    val value: T,
+) : GeneratedBox<T>
+
+/**
+ * Smoke-test generic class whose constructor property references its type parameter.
+ */
+private data class GeneratedHolder<B : GeneratedBox<String>>(
+    /**
+     * Generated generic box.
+     */
+    val box: B,
 )
 
 /**

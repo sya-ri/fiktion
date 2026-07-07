@@ -330,8 +330,8 @@ internal class FiktionGeneratedMetadataRegistrar(
         candidate: FiktionGeneratedObjectMetadataCandidate,
         constructor: IrExpression,
     ): IrExpression =
-        irCallConstructor(symbols.objectMetadataConstructor, listOf(candidate.irClass.defaultType)).apply {
-            setRegularArgument(0, typeOf(candidate.irClass.defaultType))
+        irCallConstructor(symbols.objectMetadataConstructor, listOf(candidate.type)).apply {
+            setRegularArgument(0, typeOf(candidate.type))
             setRegularArgument(1, propertyList(candidate))
             setRegularArgument(2, constructor)
         }
@@ -366,7 +366,7 @@ internal class FiktionGeneratedMetadataRegistrar(
             candidate.properties.map { property ->
                 irCallConstructor(symbols.objectPropertyConstructor, emptyList()).apply {
                     setRegularArgument(0, irString(property.name))
-                    setRegularArgument(1, typeOf(property.parameter.type))
+                    setRegularArgument(1, typeOf(property.type))
                     setRegularArgument(2, irBoolean(property.hasDefault))
                 }
             }
@@ -438,7 +438,7 @@ internal class FiktionGeneratedMetadataRegistrar(
         candidate: FiktionGeneratedObjectMetadataCandidate,
         parent: IrDeclarationParent,
     ): ConstructorLambda {
-        val classType = candidate.irClass.defaultType
+        val classType = candidate.type
         val argumentsType = symbols.objectArgumentListType
         val functionType = pluginContext.irBuiltIns.functionN(1).typeWith(argumentsType, classType)
         val function = buildLocalLambda(parent = parent, returnType = classType)
@@ -627,10 +627,10 @@ internal class FiktionGeneratedMetadataRegistrar(
         arguments: IrValueParameter,
         defaultParameterIndexes: Set<Int>,
     ): IrExpression =
-        irCallConstructor(candidate.constructor.symbol, emptyList()).apply {
+        irCallConstructor(candidate.constructor.symbol, candidate.type.constructorTypeArguments()).apply {
             candidate.properties.forEachIndexed { index, property ->
                 if (index !in defaultParameterIndexes) {
-                    setRegularArgument(index, generatedArgument(arguments, index, property.parameter.type))
+                    setRegularArgument(index, generatedArgument(arguments, index, property.type))
                 }
             }
         }
@@ -787,7 +787,7 @@ private fun IrType.constructorTypeArguments(): List<IrType> {
  */
 private fun FiktionGeneratedMetadataCandidate.arrayTypes(): List<Pair<IrType, IrType>> =
     when (this) {
-        is FiktionGeneratedObjectMetadataCandidate -> properties.flatMap { property -> property.parameter.type.arrayTypes() }
+        is FiktionGeneratedObjectMetadataCandidate -> properties.flatMap { property -> property.type.arrayTypes() }
         is FiktionGeneratedValueMetadataCandidate -> property.type.arrayTypes()
         else -> emptyList()
     }
@@ -798,6 +798,7 @@ private fun FiktionGeneratedMetadataCandidate.arrayTypes(): List<Pair<IrType, Ir
 private val FiktionGeneratedMetadataCandidate.metadataType: IrType
     get() =
         when (this) {
+            is FiktionGeneratedObjectMetadataCandidate -> type
             is FiktionGeneratedValueMetadataCandidate -> type
             else -> irClass.defaultType
         }
