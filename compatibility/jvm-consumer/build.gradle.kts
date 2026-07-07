@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    id("dev.s7a.fiktion") version "0.6.0"
+    id("dev.s7a.fiktion") version "0.6.1"
 }
 
 dependencies {
