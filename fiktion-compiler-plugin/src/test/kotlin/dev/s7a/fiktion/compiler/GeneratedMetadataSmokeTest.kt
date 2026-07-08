@@ -9,6 +9,13 @@ import dev.s7a.fiktion.FiktionAddonBuilder
 import dev.s7a.fiktion.FiktionConfig
 import dev.s7a.fiktion.Probability
 import dev.s7a.fiktion.auto
+import dev.s7a.fiktion.compiler.fixture.ExternalAddonFactoryConstructorUser
+import dev.s7a.fiktion.compiler.fixture.ExternalFactoryConstructorAddon
+import dev.s7a.fiktion.compiler.fixture.ExternalFactoryConstructorUser
+import dev.s7a.fiktion.compiler.fixture.ExternalFactoryRole
+import dev.s7a.fiktion.compiler.fixture.configureExternalFactoryConstructor
+import dev.s7a.fiktion.compiler.fixture.externalFactoryConstructorRegistrarGuard
+import dev.s7a.fiktion.compiler.fixture.resetExternalFactoryConstructorRegistrarGuard
 import dev.s7a.fiktion.constructsBy
 import dev.s7a.fiktion.default
 import dev.s7a.fiktion.fake
@@ -342,6 +349,58 @@ class GeneratedMetadataSmokeTest {
         } finally {
             generatedMetadata.set(previousMetadata)
             guard.setBoolean(null, previous)
+        }
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata from factory declarations in another module`() {
+        val guard = generatedRegistrarGuardField()
+        val generatedMetadata = generatedMetadataReference()
+        val previous = guard.getBoolean(null)
+        val previousMetadata = generatedMetadata.get()
+        try {
+            generatedMetadata.set(emptyMap())
+            guard.setBoolean(null, false)
+            resetExternalFactoryConstructorRegistrarGuard(false)
+
+            val fiktion =
+                Fiktion {
+                    configureExternalFactoryConstructor(this)
+                }
+
+            assertTrue(generatedMetadata.get().isNotEmpty())
+            assertTrue(externalFactoryConstructorRegistrarGuard())
+            assertEquals(ExternalFactoryRole.Admin, fiktion.fake<ExternalFactoryConstructorUser>(seed = 123).role)
+        } finally {
+            generatedMetadata.set(previousMetadata)
+            guard.setBoolean(null, previous)
+            resetExternalFactoryConstructorRegistrarGuard(false)
+        }
+    }
+
+    @Test
+    fun `compiler plugin registers generated metadata from addon factory declarations in another module`() {
+        val guard = generatedRegistrarGuardField()
+        val generatedMetadata = generatedMetadataReference()
+        val previous = guard.getBoolean(null)
+        val previousMetadata = generatedMetadata.get()
+        try {
+            generatedMetadata.set(emptyMap())
+            guard.setBoolean(null, false)
+            resetExternalFactoryConstructorRegistrarGuard(false)
+
+            val fiktion =
+                Fiktion {
+                    install(ExternalFactoryConstructorAddon)
+                }
+
+            assertTrue(generatedMetadata.get().isNotEmpty())
+            assertTrue(externalFactoryConstructorRegistrarGuard())
+            assertEquals(ExternalFactoryRole.Admin, fiktion.fake<ExternalAddonFactoryConstructorUser>(seed = 123).role)
+        } finally {
+            generatedMetadata.set(previousMetadata)
+            guard.setBoolean(null, previous)
+            resetExternalFactoryConstructorRegistrarGuard(false)
         }
     }
 

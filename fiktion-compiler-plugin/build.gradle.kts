@@ -1,6 +1,7 @@
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.SourcesJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -15,14 +16,21 @@ dependencies {
     testImplementation(project(":fiktion-core"))
 }
 
+val crossModuleTestFixtures = sourceSets.create("crossModuleTestFixtures")
+
+dependencies {
+    add(crossModuleTestFixtures.implementationConfigurationName, project(":fiktion-core"))
+    testImplementation(crossModuleTestFixtures.output)
+}
+
 kotlin {
     jvmToolchain(25)
 }
 
 val compilerPluginJar = tasks.named<Jar>("jar")
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    if (name != "compileTestKotlin") return@configureEach
+tasks.withType<KotlinCompile>().configureEach {
+    if (name != "compileTestKotlin" && name != "compileCrossModuleTestFixturesKotlin") return@configureEach
 
     dependsOn(compilerPluginJar)
     compilerOptions.freeCompilerArgs.add(
