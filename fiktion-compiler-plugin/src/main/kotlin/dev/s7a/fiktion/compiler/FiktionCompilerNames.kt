@@ -31,6 +31,11 @@ internal const val FIKTION_GENERATED_REGISTRAR_NAME: String = $$"$fiktionRegiste
 internal const val FIKTION_GENERATED_REGISTRAR_FIELD_NAME: String = $$"$fiktionGeneratedMetadataRegistered"
 
 /**
+ * Generated per-class metadata initializer field name.
+ */
+internal const val FIKTION_GENERATED_METADATA_INITIALIZER_FIELD_NAME: String = $$"$fiktionGeneratedMetadataInitialized"
+
+/**
  * Returns a top-level callable id.
  */
 internal fun callableId(
