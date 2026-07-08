@@ -33,6 +33,7 @@ tasks.withType<KotlinCompile>().configureEach {
     if (name != "compileTestKotlin" && name != "compileCrossModuleTestFixturesKotlin") return@configureEach
 
     dependsOn(compilerPluginJar)
+    inputs.files(compilerPluginJar)
     compilerOptions.freeCompilerArgs.add(
         compilerPluginJar.map { jar ->
             "-Xplugin=${jar.archiveFile.get().asFile.absolutePath}"

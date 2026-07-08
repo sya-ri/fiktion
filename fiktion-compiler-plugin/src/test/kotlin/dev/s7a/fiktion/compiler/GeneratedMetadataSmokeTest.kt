@@ -11,7 +11,6 @@ import dev.s7a.fiktion.Probability
 import dev.s7a.fiktion.auto
 import dev.s7a.fiktion.compiler.fixture.ExternalFactoryConstructorUser
 import dev.s7a.fiktion.compiler.fixture.ExternalFactoryRole
-import dev.s7a.fiktion.compiler.fixture.externalFactoryConstructorRegistrarGuard
 import dev.s7a.fiktion.compiler.fixture.resetExternalFactoryConstructorRegistrarGuard
 import dev.s7a.fiktion.constructsBy
 import dev.s7a.fiktion.default
@@ -363,7 +362,6 @@ class GeneratedMetadataSmokeTest {
             val user = fake<ExternalFactoryConstructorUser>(seed = 123)
 
             assertEquals(ExternalFactoryRole.Admin, user.role)
-            assertTrue(externalFactoryConstructorRegistrarGuard())
         } finally {
             generatedMetadata.set(previousMetadata)
             guard.setBoolean(null, previous)
@@ -681,7 +679,7 @@ class GeneratedMetadataSmokeTest {
     }
 
     @Test
-    fun `compiler plugin generated registrar uses once guard`() {
+    fun `compiler plugin generated metadata can initialize from generated classes`() {
         val guard = generatedRegistrarGuardField()
         val generatedMetadata = generatedMetadataReference()
         val previous = guard.getBoolean(null)
@@ -689,9 +687,7 @@ class GeneratedMetadataSmokeTest {
         try {
             generatedMetadata.set(emptyMap())
             guard.setBoolean(null, true)
-            assertFailsWith<CannotGenerateException> {
-                fake<GeneratedGuardedUser>(seed = 123)
-            }
+            assertEquals(fake<GeneratedGuardedUser>(seed = 123), fake<GeneratedGuardedUser>(seed = 123))
 
             guard.setBoolean(null, false)
             assertEquals(fake<GeneratedGuardedUser>(seed = 123), fake<GeneratedGuardedUser>(seed = 123))

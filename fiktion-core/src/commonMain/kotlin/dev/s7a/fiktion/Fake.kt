@@ -23,13 +23,15 @@ public fun <T> fake(
     type: KType,
     seed: Long? = null,
     configure: FakeSpec<T>.() -> Unit = {},
-): T =
-    generateFake(
+): T {
+    initializeGeneratedMetadata(type)
+    return generateFake(
         type = type,
         baseConfig = GlobalFiktion.config,
         seed = seed,
         configure = configure,
     )
+}
 
 /**
  * Generates fake data for [T] using this Fiktion instance.
@@ -51,10 +53,17 @@ public fun <T> Fiktion.fake(
     type: KType,
     seed: Long? = null,
     configure: FakeSpec<T>.() -> Unit = {},
-): T =
-    generateFake(
+): T {
+    initializeGeneratedMetadata(type)
+    return generateFake(
         type = type,
         baseConfig = configOf(this),
         seed = seed,
         configure = configure,
     )
+}
+
+/**
+ * Initializes compiler-generated metadata attached to [type] on platforms that need explicit class initialization.
+ */
+internal expect fun initializeGeneratedMetadata(type: KType)

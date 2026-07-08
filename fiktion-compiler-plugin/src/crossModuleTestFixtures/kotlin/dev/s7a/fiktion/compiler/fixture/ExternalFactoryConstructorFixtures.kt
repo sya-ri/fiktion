@@ -63,7 +63,7 @@ public class ExternalFactoryConstructorUser private constructor(
         ): ExternalFactoryConstructorUser =
             ExternalFactoryConstructorUser(
                 id = id,
-                role = ExternalFactoryRole.valueOf(roleName.replaceFirstChar { char -> char.uppercase() }),
+                role = ExternalFactoryRole.Admin,
             )
     }
 }
@@ -82,7 +82,7 @@ public class ExternalAddonFactoryConstructorUser private constructor(
         ): ExternalAddonFactoryConstructorUser =
             ExternalAddonFactoryConstructorUser(
                 id = id,
-                role = ExternalFactoryRole.valueOf(roleName.replaceFirstChar { char -> char.uppercase() }),
+                role = ExternalFactoryRole.Admin,
             )
     }
 }

@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationParent
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
 import org.jetbrains.kotlin.ir.declarations.IrField
+import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
@@ -53,6 +54,7 @@ import org.jetbrains.kotlin.ir.types.typeOrNull
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
+import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.name.Name
 
@@ -89,9 +91,15 @@ internal class FiktionGeneratedMetadataRegistrar(
         }
 
     /**
+     * Files emitted by the current compilation.
+     */
+    private var currentModuleFiles: Set<IrFile> = emptySet()
+
+    /**
      * Inserts generated metadata registrations into [moduleFragment].
      */
     fun registerBeforeFakeCalls(moduleFragment: IrModuleFragment) {
+        currentModuleFiles = moduleFragment.files.toSet()
         generatedRegistrar = moduleFragment.generatedRegistrar()?.symbol
         moduleFragment.transformChildrenVoid(this)
     }
@@ -118,6 +126,9 @@ internal class FiktionGeneratedMetadataRegistrar(
                 +builder.irCall(registrar)
             }
             if (expression.isFiktionFakeCall()) {
+                expression.type.generatedMetadataInitializerFields().forEach { field ->
+                    +builder.irGetField(null, field)
+                }
                 expression.type.arrayTypes().forEach { (arrayType, elementType) ->
                     val parent = currentScope!!.scope.scopeOwnerSymbol.owner as IrDeclarationParent
                     val constructor =
@@ -149,6 +160,9 @@ internal class FiktionGeneratedMetadataRegistrar(
             }
         val builder = DeclarationIrBuilder(pluginContext, function.symbol)
         val initializedField = file.generatedInitializedField(builder)
+        candidates.filter { candidate -> candidate.irClass.isDeclaredInCurrentModule() }.forEach { candidate ->
+            candidate.generatedMetadataInitializerField()
+        }
         function.body =
             builder.irBlockBody {
                 +builder.irIfThen(
@@ -205,6 +219,48 @@ internal class FiktionGeneratedMetadataRegistrar(
     }
 
     /**
+     * Adds a generated metadata initializer field to the candidate class.
+     */
+    private fun FiktionGeneratedMetadataCandidate.generatedMetadataInitializerField(): IrField {
+        val candidate = this
+        val field =
+            pluginContext.irFactory.buildField {
+                name = candidate.generatedMetadataInitializerFieldName
+                origin = IrDeclarationOrigin.DEFINED
+                visibility = DescriptorVisibilities.PUBLIC
+                type = pluginContext.irBuiltIns.booleanType
+                isFinal = true
+                isStatic = true
+            }
+        field.parent = candidate.irClass
+        val builder = DeclarationIrBuilder(pluginContext, field.symbol)
+        field.initializer =
+            pluginContext.irFactory.createExpressionBody(
+                builder.startOffset,
+                builder.endOffset,
+                builder.irBlock(resultType = pluginContext.irBuiltIns.booleanType) {
+                    candidate.arrayTypes().forEach { (arrayType, elementType) ->
+                        +builder.registerGeneratedArray(
+                            arrayType = arrayType,
+                            elementType = elementType,
+                            constructor =
+                                builder
+                                    .arrayConstructorLambda(
+                                        arrayType = arrayType,
+                                        elementType = elementType,
+                                        parent = field,
+                                    ).reference,
+                        )
+                    }
+                    +builder.registerGenerated(candidate, builder.metadata(candidate, field))
+                    +builder.irBoolean(true)
+                },
+            )
+        candidate.irClass.declarations.add(0, field)
+        return field
+    }
+
+    /**
      * Returns whether this call targets a Fiktion fake entry point.
      */
     private fun IrCall.isFiktionFakeCall(): Boolean = symbol.owner.fqNameWhenAvailable?.asString() == FIKTION_FAKE_FUNCTION
@@ -213,6 +269,45 @@ internal class FiktionGeneratedMetadataRegistrar(
      * Returns whether this call targets a Fiktion factory-construction declaration.
      */
     private fun IrCall.isFiktionConstructsByCall(): Boolean = symbol.owner.fqNameWhenAvailable?.asString() == FIKTION_CONSTRUCTS_BY_FUNCTION
+
+    /**
+     * Returns a generated metadata initializer field attached to this type's class.
+     */
+    private fun IrType.generatedMetadataInitializerFields(): List<IrField> =
+        classOrNull
+            ?.owner
+            ?.declarations
+            ?.filterIsInstance<IrField>()
+            ?.filter { field -> field.name.asString().startsWith(FIKTION_GENERATED_METADATA_INITIALIZER_FIELD_NAME) }
+            ?: emptyList()
+
+    /**
+     * Returns whether this class is emitted by the current compilation.
+     */
+    private fun org.jetbrains.kotlin.ir.declarations.IrClass.isDeclaredInCurrentModule(): Boolean {
+        var declarationParent: IrDeclarationParent? = parent
+        while (true) {
+            when (val current = declarationParent) {
+                is IrFile -> return current in currentModuleFiles
+                is org.jetbrains.kotlin.ir.declarations.IrDeclaration -> declarationParent = current.parent
+                else -> return false
+            }
+        }
+    }
+
+    /**
+     * Returns a unique generated metadata initializer field name for this candidate.
+     */
+    private val FiktionGeneratedMetadataCandidate.generatedMetadataInitializerFieldName: Name
+        get() {
+            val suffix =
+                metadataType
+                    .render()
+                    .hashCode()
+                    .toUInt()
+                    .toString(radix = 16)
+            return Name.identifier("${FIKTION_GENERATED_METADATA_INITIALIZER_FIELD_NAME}_$suffix")
+        }
 
     /**
      * Returns a registration call for [candidate].
